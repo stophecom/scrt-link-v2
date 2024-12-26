@@ -6,5 +6,7 @@
 </script>
 
 <ParaglideJS {i18n}>
-	{@render children()}
+	<div class="dark container">
+		{@render children()}
+	</div>
 </ParaglideJS>
