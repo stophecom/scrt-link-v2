@@ -1,4 +1,5 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from fr!"
+	"hello_world": "Hello, {name} from fr!",
+	"backToPlans": "Zurück zu den Plänen"
 }

@@ -13,6 +13,8 @@
 </script>
 
 <h1>{m.hello_world({ name: 'SvelteKit User' })}</h1>
+<h2>{m.backToPlans()}</h2>
+<p>{m.button_cancel()}</p>
 <div>
 	<button onclick={() => switchToLanguage('en')}>en</button>
 	<button onclick={() => switchToLanguage('de')}>de</button>

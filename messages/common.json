@@ -1,0 +1,706 @@
+{
+  "abbreviations" : {
+    "faq" : "FAQ"
+  },
+  "button" : {
+    "backToPlans" : "Zurück zu den Plänen",
+    "cancel" : "Abbrechen",
+    "cancelSubscription" : "Abo kündigen",
+    "close" : "Schließen",
+    "closeMenu" : "Menü schließen",
+    "copied" : "Kopiert",
+    "copy" : "Kopieren",
+    "createNewSecret" : "Neues Geheimnis erstellen",
+    "createSecretLink" : "Geheimlink erstellen",
+    "decryptMessage" : "Nachricht entschlüsseln",
+    "deleteAccount" : "Konto löschen",
+    "demo" : "Demo",
+    "destroySecret" : "Nachricht zerstören",
+    "goPremium" : "Premium",
+    "home" : "Startseite",
+    "installNow" : "Jetzt installieren",
+    "learnMore" : "Mehr erfahren",
+    "lessOptions" : "Weniger Optionen",
+    "menu" : "Menü",
+    "moreOptions" : "Mehr Optionen",
+    "myAccount" : "Mein Konto",
+    "openMenu" : "Menü öffnen",
+    "preview" : "Vorschau",
+    "privacyPolicy" : "Datenschutzbestimmungen",
+    "reactivatePlan" : "Plan reaktivieren",
+    "readMoreFaq" : "Mehr auf FAQ Seite",
+    "replyWithSecret" : "Mit einem Geheimnis antworten",
+    "revealSecret" : "Geheimnis lüften",
+    "save" : "Speichern",
+    "selectPlan" : "Plan auswählen",
+    "send" : "Absenden",
+    "share" : "Teilen",
+    "signIn" : "Anmelden",
+    "signOut" : "Abmelden",
+    "signUp" : "Registrieren",
+    "signUpFirst" : "Zuerst registrieren",
+    "signUpFree" : "Gratis registrieren",
+    "takeMeHome" : "Zur Startseite",
+    "tryAgain" : "Nochmals versuchen",
+    "viewPlans" : "Pläne ansehen"
+  },
+  "components" : {
+    "BasePasswordField" : {
+      "ariaLabel" : "Klartext ein- und ausschalten"
+    },
+    "DropZone" : {
+      "backdrop" : "Drop It Like It's Hot",
+      "button" : "Datei auswählen",
+      "dragAndDrop" : "…oder via Drag & Drop.",
+      "error" : {
+        "fileToLarge" : "Datei zu gross. Maximale erlaubte Dateigrösse ist {{max}}.",
+        "noFiles" : "Keine Datei ausgewählt. Bitte füge eine andere Datei hinzu.",
+        "tooManyFiles" : "Zu viele Dateien. Zu diesem Zeitpunkt ist nur eine Datei erlaubt. Du kannst mehrere Dateien vor dem Hochladen in eine Zip-Datei komprimieren."
+      },
+      "maxFileSize" : "Max. {{maxSize}}"
+    },
+    "Error" : {
+      "defaultTitle" : "Es ist ein Fehler aufgetreten!"
+    },
+    "Footer" : {
+      "abstract" : "Dank **scrt.link** kannst du sensible Informationen online teilen. Ende-zu-Ende-verschlüsselt. Einmalig.\nHalte vertrauliche Informationen aus E-Mails, Slack, Teams, Whatsapp und anderen Kommunikationskanälen fern. Ein Einmal-Link garantiert, dass ein Geheimnis nur einmal gelesen werden kann - bevor es für immer zerstört wird."
+    },
+    "FormCreateSecret" : {
+      "secretSaved" : "Geheimnis gespeichert!",
+      "selectSecretType" : "Geheimnistyp auswählen"
+    },
+    "FormCustomer" : {
+      "account" : "Konto",
+      "defaults" : "Voreinstellungen",
+      "emojiLink" : {
+        "description" : "Hab Spaß mit unseren Emoji-Links. Beispiel: {{exampleLink}}..\n**Achtung.** Emoji Links funktionieren mit: {{supportedList}}. Im Moment nicht möglich mit: {{unsupportedList}}. ",
+        "title" : "Emoji Link"
+      },
+      "privacyNotice" : "Diese Information ist <1>privat</1> und nur für dich sichtbar. Wir benötigen sie ausschliesslich für Empfangsbestätigungen.",
+      "success" : "Deine Einstellungen wurden gespeichert!"
+    },
+    "FormDeleteAccount" : {
+      "label" : "Ich möchte mein Konto löschen."
+    },
+    "FormShareSecretLink" : {
+      "message" : {
+        "helperText" : "Wir empfehlen dir einen Hinweis zum Absender beizufügen. Andernfalls könnte der Empfänger die E-Mail für Spam halten.",
+        "label" : "Nachricht",
+        "placeholder" : "Nachricht, die der E-Mail angefügt wird..."
+      },
+      "recipientName" : {
+        "label" : "Name des Empfängers",
+        "placeholder" : "Erika Muster"
+      },
+      "success" : "E-Mail erfolgreich verschickt!"
+    },
+    "FormSignIn" : {
+      "agreement" : "Ich stimme den <2>Nutzungsbedingungen</2> und den dazugehörigen Datenschutzrichtlinien zu.",
+      "success" : "Schaue in dein Postfach! Ein Anmelde-Link wurde soeben an folgende Adresse verschickt: <1>{{email}}</1>."
+    },
+    "LanguageSelector" : {
+      "label" : "Wähle deine gewünschte Sprache"
+    },
+    "Navigation" : {
+      "ariaLabel" : "Navigationsmenü"
+    },
+    "PlanSelection" : {
+      "activePlan" : "Dieser Plan ist derzeit aktiv.",
+      "amountBilledPerMonth" : "zahlbar {{amount}} pro Monat",
+      "amountBilledPerYear" : "zahlbar {{amount}} pro Jahr",
+      "cancellationNotice" : "Dieser Plan wurde gekündigt und wird am {{cancellationDate}} auf den kostenlosen Plan zurückgestuft.",
+      "enterprise" : {
+        "subtitle" : "Für Visionäre"
+      },
+      "free" : {
+        "price" : "Kostenlos",
+        "subtitle" : "Für Beginner"
+      },
+      "interval" : {
+        "monthly" : "Monatlich",
+        "yearly" : "Jährlich",
+        "yearlySavings" : "Spare {{percentage}}%"
+      },
+      "loading" : "Lade Pläne",
+      "plans" : {
+        "enterprise" : {
+          "usps" : {
+            "premiumSupport" : {
+              "body" : "Persönliche Unterstützung durch den Gründer.",
+              "heading" : "Premium Support"
+            },
+            "support" : {
+              "body" : "Schließen Sie sich einem Kreis von Gleichgesinnten an, die das Internet zu einem besseren Ort machen. Mit deinem Beitrag hilfst du uns diese Projekt zu finanzieren.",
+              "heading" : "Du wirst Teil der {{enterprisePlanName}} Gesellschaft."
+            }
+          }
+        },
+        "free" : {
+          "usps" : {
+            "0" : {
+              "body" : "Du kannst geheime Nachrichten mit bis zu {{characterLimit}} Zeichen schreiben.",
+              "heading" : "Bis zu {{characterLimit}} Zeichen"
+            },
+            "1" : {
+              "body" : "Du bekommst eine E-Mail Benachrichtigung sobald ein Geheimnis gelesen wurde.",
+              "heading" : "Lesebestätigungen per E-Mail"
+            },
+            "files" : {
+              "body" : "Sende Dateien bis zu {{uploadLimit}}.",
+              "heading" : "{{uploadLimit}} Dateien"
+            },
+            "secretTypes" : {
+              "body" : "Mit einem Gratis-Konto kannst du alle Arten von Geheimnissen teilen.",
+              "heading" : "Alle Arten von Geheimnissen"
+            }
+          }
+        },
+        "premium" : {
+          "usps" : {
+            "1" : {
+              "body" : "Du kannst geheime Nachrichten mit bis zu {{characterLimit}} Zeichen schreiben. Genug Worte für den perfekten geheimen Liebesbrief, ein Geständnis oder eine Enthüllung.",
+              "heading" : "Bis zu {{characterLimit}} Zeichen"
+            },
+            "2" : {
+              "heading" : "Lesebestätigungen per E-Mail"
+            },
+            "3" : {
+              "body" : "Eine besondere Note für deine Geheimnisse.",
+              "heading" : "Individuelle Neogram Nachrichten"
+            },
+            "4" : {
+              "body" : "Wenn du Hilfe benötigst bist du als Erstes an der Reihe.",
+              "heading" : "Persönlicher Support"
+            },
+            "5" : {
+              "body" : "Du erhältst alle zukünftigen Updates ohne zusätzliche Kosten. Außerdem bekommst du frühzeitigen Zugang zu neuen Funktionen.",
+              "heading" : "Es kommt noch mehr…"
+            },
+            "files" : {
+              "body" : "Sende Dateien bis zu {{uploadLimit}}.",
+              "heading" : "{{uploadLimit}} Dateien"
+            }
+          }
+        },
+        "previousPlanBenefits" : "Alles in {{plan}}"
+      },
+      "premium" : {
+        "subtitle" : "Für die Mehrheit"
+      },
+      "subscriptionActiveSuccessMessage" : "Mission erfüllt! Dein Abonnement ist aktiv.",
+      "subscriptionCancellationSuccessMessage" : "Dein Abonnement wurde erfolgreich gekündigt! Dein Abonnement wird am {{cancellationDate}} automatisch auf das kostenlose Abonnement zurückgestuft. Wenn du deine Meinung bis dahin änderst, kannst du dein Abonnement jederzeit wieder aktivieren.",
+      "subscriptionChangeSuccessMessage" : "Du hast dein Abonnement erfolgreich geändert!"
+    },
+    "ShareSecretResult" : {
+      "emailService" : {
+        "subtitle" : "Lass uns dein Geheimnis für dich schicken.",
+        "title" : "E-Mail Service"
+      },
+      "emojiLink" : {
+        "ariaLabel" : "Emoji Link ein-/ausschalten",
+        "title" : "Emoji Link ein-/ausschalten"
+      },
+      "loading" : "Verschlüsseln und speichern…",
+      "markdown" : {
+        "ariaLabel" : "Als Markdown anzeigen",
+        "info" : "Wenn diese Option aktiviert ist, wird der geheime Text als Markdown angezeigt.",
+        "title" : "Als Markdown anzeigen"
+      },
+      "rememberAliasInfo" : "Deine Geheimnis ID ist **{{ alias }}**.  \nWir verwenden sie für die Empfangsbestätigung. Merk sie dir.",
+      "sharingOptions" : {
+        "title" : "Optionen"
+      },
+      "skipConfirmation" : {
+        "info" : "Wenn diese Option aktiviert ist, wird der Bestätigungsbildschirm übersprungen. Beachte, dass dies zu einem Verlust von Geheimnissen führen kann, da einige Apps Links im Voraus besuchen.",
+        "label" : "Sofortige Enthüllung"
+      },
+      "webShare" : {
+        "text" : "Du hast ein Geheimnis erhalten: {{shortenedUrl}} \n \nAntworte mit einem Geheimnis:",
+        "title" : "Teile dein Geheimlink:"
+      }
+    },
+    "Stats" : {
+      "created" : "erstellt:",
+      "title" : "Geheimnisse",
+      "viewed" : "gelesen:"
+    },
+    "Trust" : {
+      "encryption" : "Ende-zu-Ende-verschlüsselt",
+      "noTrace" : "Ohne Spuren",
+      "privacy" : "Schweizer Diskretion"
+    },
+    "UpgradeLimits" : {
+      "default" : "Brauchst du mehr? <2>Eröffne ein kostenloses Konto</2>, um deine Limits zu erhöhen.",
+      "free" : "Brauchst du mehr? Siehe <2>Premiumpläne</2> für weitere Informationen."
+    },
+    "UpgradeNotice" : {
+      "free" : "<1>Eröffne ein Gratis-Konto</1>, um diese Funktion zu nutzen.",
+      "premium" : "Besorge dir ein <1>Premium-Konto</1>, um diese Funktion zu aktivieren."
+    }
+  },
+  "currency" : "Währung",
+  "demoNeogramDestructionMessage" : "Diese Nachricht zerstört sich selbst in …",
+  "demoNeogramMessage" : "Aufwachen Neo…\nDies ist nur ein Beispiel!\nNeogram-Nachrichten zerstören sich nach einer bestimmten Zeit automatisch.\n\n Viel Spaß beim Geheimnisse teilen \uD83D\uDE18",
+  "demoTextMessage" : "Hallo…\nDies ist nur eine Demo!\n\nViel Spaß beim Geheimnisse teilen \uD83D\uDE18",
+  "email" : "E-Mail",
+  "error" : {
+    "API_SECRET_NOT_FOUND" : "Geheimnis nicht gefunden - Dies bedeutet normalerweise, dass der geheime Link bereits besucht wurde und daher nicht mehr existiert.",
+    "invalidAlias" : "Alias ungültig.",
+    "missingDecryptionKey" : "Entschlüsselungscode fehlt",
+    "noMessage" : "Keine Nachricht.",
+    "signIn" : {
+      "emailUnknown" : "Unbekannte E-Mail-Adresse. Überprüfe die E-Mail oder registriere dich zuerst."
+    },
+    "signUp" : {
+      "emailAlreadyExists" : "Diese E-Mail-Adresse wurde bereits registriert - du kannst dich stattdessen anmelden."
+    },
+    "unexpectedError" : "Unerwarteter Fehler",
+    "wrongPassword" : "Falsches Passwort"
+  },
+  "faq" : {
+    "anonymity" : {
+      "body" : "Wir unternehmen eine Reihe von Schritten, um deine Privatsphäre zu schützen, die auf der [Datenschutzseite](privacy) detailliert beschrieben sind - einige der Funktionen erfordern jedoch Dienste von Drittanbietern, die Zugang zu personenbezogenen Daten (PII) haben können. Wenn du deine Privatsphäre weiter schützen möchtest, empfehlen wir dir Folgendes:\n\n-Verbinde dich mit unserem Dienst über ein virtuelles privates Netzwerk (VPN): Auf diese Weise gibst niemals deine persönliche IP-Adresse preis. Wir empfehlen [ProtonVPN](https://protonvpn.com/).\n- Verwende einen Dienst wie [Abine Blur](https://www.abine.com/), um deine persönliche E-Mail-Adresse, Telefonnummer und/oder Kreditkarteninformationen zu verbergen.",
+      "heading" : "Wie wird meine Privatsphäre geschützt?"
+    },
+    "category" : {
+      "accountAndBilling" : "Konto und Bezahlung",
+      "general" : "Allgemeines",
+      "product" : "Produkt und Dienstleistungen",
+      "securityAndPrivacy" : "Sicherheit und Privatsphäre"
+    },
+    "difference-to-disappearing-messages" : {
+      "body" : "Anonymität und Sicherheit. Nachrichten in einem Chatprotokoll können immer zu dir zurückverfolgt werden. Dank scrt.link wird immer nur ein Link in deinem Gesprächsverlauf bleiben. Nachdem der Link einmal besucht wurde, führt er zu einer 404-Fehlerseite. Es gibt keine Möglichkeit, auf den ursprünglichen Inhalt zuzugreifen.",
+      "heading" : "Was ist der Unterschied zu selbstlöschenden Nachrichten auf Signal oder Whatsapp?"
+    },
+    "difference-to-snapchat" : {
+      "body" : "Dieselbe Antwort wie bei der vorherigen Frage. Außerdem widerspricht das Geschäftsmodell hinter Snapchat und jeder anderen großen Social-Media-Plattform der Idee von Privatsphäre und Anonymität. Social-Media-Unternehmen müssen ihre Nutzer:innen kennen, um Werbung verkaufen zu können. \n \nEs ist jedoch in Ordnung, einen generierten Geheimlink über Snapchat, Facebook, Instagram, Telegram usw. zu teilen.",
+      "heading" : "Was ist der Unterschied zu Snapchat?"
+    },
+    "end-subscription" : {
+      "body" : "Melde dich auf der [Konto-Seite](/account) an. Unter der Registerkarte \"Abonnement\" kannst du dein Abonnement jederzeit kündigen. Es werden **keine Fragen gestellt**.",
+      "heading" : "Wie kann ich ein Abonnement kündigen?"
+    },
+    "end-to-end-encryption-info" : {
+      "body" : "Wir erzeugen zwei zufällige Zeichenfolgen, eine zur Identifizierung des Geheimnisses in der Datenbank und eine zur Verschlüsselung deiner Nachricht. Wir speichern den Verschlüsselungscode nicht. Nur mit dem vollständigen Link kann das Geheimnis entschlüsselt werden.\n{{illustration}}",
+      "heading" : "Wie wird die Ende-zu-Ende-Verschlüsselung erreicht?"
+    },
+    "how" : {
+      "body" : "Nachdem du das Formular abgeschickt hast, wird dein Geheimnis verschlüsselt und gespeichert. Du kannst nun den generierten Geheimlink per SMS, E-Mail oder einem anderen Dienst deines Vertrauens weitergeben. (Wir empfehlen Signal, Threema oder Matrix.) Nachdem der Empfänger auf den Link geklickt hat, wird die Nachricht angezeigt und dauerhaft aus der Datenbank entfernt. \n \nFür **zusätzliche Sicherheit** kannst du ein Passwort angeben, das zur Entschlüsselung der Nachricht benötigt wird. (Wir empfehlen, das Kennwort über einen anderen Kanal als den Link weiterzugeben).",
+      "heading" : "Wie funktioniert dieser Service"
+    },
+    "message-size" : {
+      "body" : "Die derzeitige Grenze liegt bei {{ maxMessageLengthVisitor }} Zeichen für Besucher. Mit einem Premium-Plan kannst du bis zu {{ maxMessageLengthPremium }} Zeichen erhalten.",
+      "heading" : "Wie lange Nachrichten kann ich schreiben?"
+    },
+    "notification" : {
+      "body" : "Ja, **E-Mail-Benachrichtigungen** kannst du mittels Konto freischalten. [Gehe zu Konto](/account)",
+      "heading" : "Kann ich benachrichtigt werden, sobald ein Geheimnis angesehen wurde?"
+    },
+    "payment-methods" : {
+      "body" : "Unser Zahlungsanbieter {{paymentProcessor}} bietet eine Vielzahl von Zahlungsmöglichkeiten: Google Pay, Kreditkarte (VISA, Mastercard, American Express, etc.) und viele andere. Sobald du sich für einen Premium-Plan entscheidest, wirst du zu Stripe weitergeleitet, wo du deine bevorzugte Methode auswählen kannst.",
+      "heading" : "Welche Zahlungsarten werden unterstützt?"
+    },
+    "payment-provider" : {
+      "body" : "Wir arbeiten mit {{paymentProcessor}} als Zahlungsanbieter und speichern keinerlei zahlungsbezogene Informationen selbst.",
+      "heading" : "Wer ist der Zahlungsanbieter?"
+    },
+    "promo-codes" : {
+      "body" : "Promo-Codes können während dem Bezahlvorgang auf Stripe angewendet werden. Gib deinen persönlichen Promo-Code ein und klicke auf \"Anwenden\". Danach solltest du sofort den reduzierten Preis sehen.",
+      "heading" : "Wie kann ich Promo-Codes verwenden?"
+    },
+    "read-receipts-info" : {
+      "body" : "Für jedes Geheimnis generieren wir eine geheime ID (eine zufällige Zeichenfolge); sie ist die einzige Referenz auf die ursprüngliche Nachricht. Sobald der Empfänger den geheimen Link öffnet, benachrichtigen wir dich auf die von dir gewählte Weise. In der Benachrichtigung geben wir nur die Secret ID an - bewahre diese also unbedingt auf. Selbstverständlich werden die Kontaktinformationen (E-Mail oder Telefonnummer) **niemals für den Empfänger sichtbar**.\n\n**E-Mail**:  Du erhältst eine E-Mail von *{{ email }}*.",
+      "heading" : "Wie funktionieren Lesebenachrichtigungen?"
+    },
+    "recovery" : {
+      "body" : "Nein, unmöglich. Es ist ein **einmaliges Geheimnis**. Wir zeigen es einmal und löschen es dann endgültig aus der Datenbank. Es gibt keine Sicherungskopie. Es ist für immer weg.",
+      "heading" : "Kann ich ein Geheimnis, das bereits besucht wurde, wiederfinden?"
+    },
+    "save" : {
+      "body" : "Sicher. Es ist immer möglich einen Screenshot zu machen. Die Idee hinter diesem Dienst ist es, sensible Informationen einmalig und sicher weiterzugeben. Wir haben keine Kontrolle darüber, was der Empfänger mit der Nachricht macht.",
+      "heading" : "Kann der Empfänger die Nachricht speichern?"
+    },
+    "secret-expiration" : {
+      "body" : "Bis zum Ende der Zeiten. Im Ernst: Es gibt keine zeitliche Obergrenze. Aber du kannst ein Geheimnis jederzeit zerstören, indem du den Geheimlink besuchst.",
+      "heading" : "Wie lange werden ungesehene Geheimnisse aufbewahrt?"
+    },
+    "secret-not-found" : {
+      "body" : "Dies bedeutet, dass der geheime Link bereits besucht wurde. Wenn dies unerwartet geschieht:\n- Erkundige dich beim Absender, um sicherzustellen, dass der Link nicht versehentlich besucht wurde.\n- Der Zugriff auf das Geheimnis erfolgte durch einen Brut-Force-Angriff oder es liegt ein Problem mit der Serverinfrastruktur vor (keine Sorge, der Inhalt der Geheimnisse wäre immer noch verschlüsselt) - beide Fälle sind sehr unwahrscheinlich.\n- **Schlimmster Fall**: Eine dritte Partei hat auf den Link zugegriffen, was letztlich bedeutet, dass dein Kommunikationskanal und/oder das Gerät einer der Parteien kompromittiert wurde.",
+      "heading" : "Warum erhalte ich die Fehlermeldung \"Geheimnis nicht gefunden\"?"
+    },
+    "secret-types" : {
+      "body" : "- **Text**: Dies ist der Standardmodus. Es ist die bevorzugte Art, Passwörter und ähnliche Geheimnisse zu teilen. Der Empfänger hat die Möglichkeit das Geheimnis zu kopieren.\n[Demo]({{ demoSecretMessageLink }})\n- **Datei**: Schicke eine Datei, egal welches Format. Dies ist ein Beta-Funktion.\n- **Redirect**: Ein anonymer Link, der nur ein einziges Mal funktioniert.\n- **Neogram**: Eine digitale Nachricht, die sich nach dem Lesen automatisch zerstört. Für vertrauliche Notizen, Geständnisse oder geheime Liebesbriefe. [Demo]({{ demoSecretNeogramLink }})",
+      "heading" : "*Text*, *Dateien*, *Redirect* und *Neogram*?"
+    },
+    "security" : {
+      "body" : "Alle Nachrichten werden Ende-zu-Ende mit **AES-256** verschlüsselt, das mit Brute-Force-Methoden praktisch unknackbar ist. Es würde Milliarden von Jahren dauern, AES mit der heutigen Computertechnologie zu knacken.\nFür ein Höchstmaß an Sicherheit kann ein optionales Passwort (das ebenfalls nie gespeichert wird) zur Verschlüsselung deiner Nachricht verwendet werden. Mehr Informationen dazu auf unserer Seite [Sicherheit](/security).",
+      "heading" : "Wie sicher ist dieser Dienst?"
+    },
+    "service-provider" : {
+      "body" : "Scrt.link ist ein Service von [SANTiHANS GmbH](https://santihans.com), einem in der Schweiz ansässigen Technologieunternehmen, das es sich zur Aufgabe gemacht hat, das Web zu verbessern. Wir arbeiten nach Schweizer Recht. Als Kunde profitierst du von einer der weltweit stärksten Daten- und Datenschutzbestimmungen, dem [Bundesgesetz über den Datenschutz (DSG)](https://fedlex.data.admin.ch/eli/cc/1993/1945_1945_1945). Dieses Produkt wurde erstellt und wird betrieben von [@stophecom](https://twitter.com/stophecom).",
+      "heading" : "Wer steckt hinter diesem Dienst?"
+    },
+    "subscriptions" : {
+      "body" : "Wenn du einen Premium-Plan abonnierst, erhältst du sofortigen Zugriff auf die entsprechenden Funktionen, solange das Abonnement läuft. Die Abrechnung erfolgt monatlich oder jährlich, je nach dem gewählten Abrechnungsintervall. Ein Abonnement kann jederzeit gekündigt werden.",
+      "heading" : "Wie funktionieren die Abos?"
+    },
+    "who" : {
+      "body" : "Im Grunde genommen jede und jeder. Alle sollten sich um die Privatsphäre kümmern.  \n Die Möglichkeit, sensible Informationen anonym zu übermitteln, ist vor allem für Journalisten, Anwälte, Politiker, Whistleblower, Menschen, die unterdrückt werden, usw. essentiell.",
+      "heading" : "Für wen ist der Service gedacht?"
+    },
+    "why" : {
+      "body" : "Der Austausch von Geheimnissen im Internet ist heikel. Du möchtest nicht, dass sensible Informationen (vertrauliche Informationen wie Passwörter, API-Schlüssel, Zugriffstoken, PIN Codes, Geständnisse usw.) in deinem Slack-Kanal, Whatsapp-Chatprotokoll, Posteingang oder einem anderen Kommunikationskanal bleiben. Ein Einweg-Link garantiert, dass dein Geheimnis nur ein einziges Mal eingesehen werden kann, bevor es dauerhaft zerstört wird.\n\n**Nutze diesen Dienst, wenn du...**\n- dein Netflix-Passwort einem Familienmitglied mitteilen möchtest.\n- eine private Nachricht von einem öffentlichen Computer aus senden möchtest.\n- Zugangstoken, API-Schlüssel, PIN-Codes an einen Kollegen/eine Kollegin senden möchtest.\n- Zahlungsinformationen wie Kreditkartennummer oder Bitcoin-Wallet-Adresse übermitteln möchtest.\n- einer geheime Schwärmerei deine Liebe gestehen möchtest.\n- Informationen weitergeben möchtest, die gegen dich verwendet werden könnten.",
+      "heading" : "Warum sollte ich diesen Dienst nutzen?"
+    }
+  },
+  "FormField" : {
+    "isEmojiShortLinkEnabled" : {
+      "label" : "Emoji Link verwenden"
+    },
+    "name" : {
+      "helperText" : "Diese Informationen sind <1>privat</1> und werden niemals an Dritte weitergegeben. Wir verwenden sie nur, um dir ein personalisiertes Erlebnis zu bieten."
+    },
+    "neogramDestructionMessage" : {
+      "label" : "Zerstörungsmeldung",
+      "placeholder" : "Diese Nachricht zerstört sich selbst in…"
+    },
+    "neogramDestructionTimeout" : {
+      "endAdornment" : "Sekunden",
+      "label" : "Countdown bis zur Zerstörung"
+    },
+    "readReceiptMethod" : {
+      "label" : "Empfangsbestätigung"
+    },
+    "readReceiptsOptions" : {
+      "email" : "Via E-Mail",
+      "none" : "Ohne"
+    },
+    "receiptEmail" : {
+      "label" : "E-Mail"
+    },
+    "receiptNtfy" : {
+      "help" : "Eindeutiger Endpunkt, der verwendet wird, um Benachrichtigungen an deine ntfy-App zu senden. Für weitere Informationen siehe {{link}}.",
+      "label" : "Ntfy-Endpunkt"
+    },
+    "receiptPhoneNumber" : {
+      "label" : "Mobile-Nummer"
+    },
+    "url" : {
+      "helperText" : "Die URL, zu der einmalig umgeleitet werden soll.",
+      "label" : "Geheime URL"
+    }
+  },
+  "menu" : {
+    "about" : "Über uns",
+    "acceptableUsePolicy" : "Nutzungsrichtlinien",
+    "account" : "Mein Konto",
+    "blog" : "Blog",
+    "contact" : "Kontakt",
+    "cookiePolicy" : "Cookie-Richtlinien",
+    "dangerZone" : "Gefahrenzone",
+    "faq" : "FAQ",
+    "imprint" : "Impressum",
+    "pricing" : "Preise",
+    "privacy" : "Privatsphäre",
+    "privacyPolicy" : "Datenschutzbestimmungen",
+    "register" : "Registrieren",
+    "secrets" : {
+      "files" : "Datei",
+      "neogram" : "Neogram",
+      "redirect" : "Redirect",
+      "text" : "Text"
+    },
+    "security" : "Sicherheit",
+    "settings" : "Einstellungen",
+    "signIn" : "Anmelden",
+    "signOut" : "Abmelden",
+    "status" : "Status",
+    "subscription" : "Abo",
+    "termsOfService" : "Nutzungsbedingungen",
+    "title" : {
+      "account" : "Account",
+      "createSecret" : "Geheimnis erstellen",
+      "help" : "Hilfe",
+      "information" : "Information",
+      "integrations" : "Integration",
+      "secrets" : "Geheimnisse",
+      "support" : "Support"
+    }
+  },
+  "meta" : {
+    "description" : "Teile ein Geheimnis. Mit {{appTitle}} kannst du Passwörter, Kreditkarteninformationen, private Schlüssel oder andere sensible Daten auf sichere Weise übertragen: Ende-zu-Ende verschlüsselt. Einmalig. Diskret.",
+    "images" : {
+      "alt" : "{{appTitle}} - Teile ein Geheimnis!'"
+    },
+    "keywords" : "Geheim Link, Geheimnachricht, Einmal-Geheimnis, Einmal-Passwort, Einmal-Nachricht, Einmal-Link, Einmal Link, Einwegnachricht, Einweg Link, E2EE, Selbstzerstörende Links, Passwort teilen, Sicher Dateien senden"
+  },
+  "missingTranslationsNotice" : "Liebe Kundin, lieber Kunde, leider sind einige Inhalte auf dieser Seite noch nicht in die von dir bevorzugte Sprache übersetzt worden. Wir arbeiten daran. Wenn du in der Zwischenzeit Fragen hast oder weitere Unterstützung benötigst, wende dich bitte an den Support.",
+  "off" : "Aus",
+  "on" : "An",
+  "password" : "Passwort",
+  "perMonth" : "pro Monat",
+  "secretType" : {
+    "file" : {
+      "label" : "Nachricht (optional)",
+      "placeholder" : "Fügen eine Nachricht für den Empfänger hinzu…",
+      "tabLabel" : "Datei"
+    },
+    "neogram" : {
+      "label" : "Dein Geheimnis",
+      "placeholder" : "Wach auf Neo…",
+      "tabLabel" : "Neogram"
+    },
+    "text" : {
+      "label" : "Dein Geheimnis",
+      "placeholder" : "Was ist dein Geheimnis?",
+      "tabLabel" : "Text"
+    },
+    "url" : {
+      "label" : "URL",
+      "placeholder" : "z.B. https://www.example.com",
+      "tabLabel" : "Redirect"
+    }
+  },
+  "validation" : {
+    "confirmationRequired" : "Dieses Feld ist obligatorisch.",
+    "consentRequired" : "Deine Zustimmung ist erforderlich.",
+    "destructionMessage" : "Zerstörungsmeldung",
+    "destructionTimeout" : "Zerstörungs-Countdown",
+    "email" : "E-Mail",
+    "emojiLink" : "Emoji Kurzlink",
+    "message" : "Nachricht",
+    "name" : "Name",
+    "notAllowed" : "Nicht möglich.",
+    "password" : "Passwort",
+    "phone" : "Mobilnummer",
+    "phoneNotValid" : "Mobilnummer nicht gültig",
+    "readReceipts" : "Empfangsbestätigungen",
+    "secretUrl" : "Geheim-URL",
+    "urlNotValid" : "{{label}} hat kein gültiges URL-Format"
+  },
+  "views" : {
+    "About" : {
+      "Accounts" : {
+        "markdown" : "Der Hauptgrund, warum wir Konten anbieten, ist der Schutz vor Spam und Betrug. Alle Grundfunktionen sind kostenlos und erfordern kein Konto.\n\nAllerdings erfordern einige Funktionen eine Authentifizierung (wir fragen nur nach einer E-Mail-Adresse - es macht uns nichts aus, wenn eine temporäre E-Mail-Adresse verwendet wird). Zu diesen Funktionen gehört das Senden von Informationen per E-Mail oder SMS. Konten helfen uns, den Missbrauch der zugrunde liegenden Systeme zu verhindern. \n\nBezahlte Premium-Abos sind für Power-User und Leute gedacht, die [dieses Projekt unterstützen](/de/pricing) möchten.",
+        "subtitle" : "Warum wir Nutzerkonten anbieten.",
+        "title" : "Nutzerkonten"
+      },
+      "intro" : "Am Anfang stand die Idee, private Nachrichten auf unterhaltsame Art und Weise zu versenden. Nachrichten, die nicht bestehen bleiben. Denke an Snapchat, aber ohne dass du deine Benutzerdaten preisgibst. Die Idee wuchs zu einem Projekt heran, das man als \"Geheimnisse teilen als Service\" zusammenfassen könnte. Es gibt ähnliche Produkte da draußen - einige haben uns sogar sehr inspiriert. Was scrt.link jedoch von anderen abhebt, ist die Kombination aus all den großartigen Ideen und Konzepten rund um Sicherheit und Datenschutz mit dem Augenmerk auf Design und Benutzerfreundlichkeit. Bleib gespannt - es kommt noch mehr!",
+      "Philosophy" : {
+        "markdown" : "Meinungsfreiheit, Pressefreiheit und das Recht auf Privatsphäre gehören zu den wichtigsten Freiheitsrechten in einer freien Gesellschaft. Mit diesem Projekt unterstützen wir dich, Informationen über das Internet auf wirklich sichere und private Weise auszutauschen. Dieses Produkt ist so konzipiert, dass die Integrität und die Privatsphäre in jeder Hinsicht respektiert werden. Wir haben kein Interesse an dir! Weder an dir als Person, noch an deinen Geheimnissen. Erfahre mehr auf unserer [Datenschutzseite](/de/privacy).",
+        "title" : "Philosophie"
+      },
+      "subtitle" : "Das gesamte Projekt beruht auf einer einfachen Prämisse: Je weniger wir wissen, desto besser.",
+      "title" : "Über uns"
+    },
+    "AcceptableUsePolicy" : {
+      "subtitle" : "Richtlinie zur akzeptablen Nutzung.",
+      "title" : "Nutzungsrichtlinien"
+    },
+    "Account" : {
+      "accountDeletion" : "Konto löschen",
+      "activeSubscriptionWarning" : "Du hast ein laufendes Abonnement. Wir empfehlen dieses zuerst zu kündigen.",
+      "ManageSubscriptionButton" : {
+        "button" : "Abo auf Stripe verwalten"
+      },
+      "settingsDisclaimer" : "Die folgenden Angaben sind Standardeinstellungen. Du kannst jede Einstellung für jedes erstellte Geheimnis überschreiben.",
+      "signedInAs" : "Du bist angemeldet als {{email}}.",
+      "subscription" : {
+        "info" : "Du hast derzeit das **{{ productName }}** Abo."
+      },
+      "subtitle" : "Hallo {{name}}, willkommen zurück!",
+      "tabsMenu" : {
+        "label" : "Konto Optionen"
+      },
+      "title" : "Mein Konto"
+    },
+    "Alias" : {
+      "enterPassword" : "Gebe das Passwort ein um die Nachricht zu entschlüsseln:",
+      "errorOccurred" : "Fehler aufgetreten",
+      "file" : {
+        "button" : {
+          "label" : "Entschlüsseln und herunterladen"
+        },
+        "info" : "Geheime Datei",
+        "name" : "Name",
+        "optionalMessage" : "Nachricht",
+        "size" : "Grösse",
+        "type" : "Typ",
+        "warning" : "Wichtig! Wir haben keinerlei Kenntnis über den Inhalt der Datei. Öffne die Datei nur wenn du dem Absender vertraust!"
+      },
+      "loadingSecret" : "Geheimnis wird geladen",
+      "passwordRequired" : "Passwort notwendig",
+      "secretRevelationInfo" : "Achtung! Das folgende Geheimnis kann nur ein einziges Mal gelüftet werden.",
+      "subtitle" : "Du hast eine geheime Nachricht erhalten.",
+      "title1" : "Pssst",
+      "title2" : "Klopf Klopf",
+      "title3" : "Hallo",
+      "title4" : "Es kommt was…"
+    },
+    "Contact" : {
+      "subtitle" : "Hast du eine Frage oder brauchst du Unterstützung? Wir helfen dir gerne weiter!",
+      "title" : "Kontakt",
+      "topic" : {
+        "general" : "Allgemeine Anfragen",
+        "support" : "Support"
+      }
+    },
+    "CookiePolicy" : {
+      "subtitle" : "Nur das Wesentliche, kein Tracking.",
+      "title" : "Cookie-Richtlinien"
+    },
+    "Error" : {
+      "subtitle" : "Sorry, es ist etwas schiefgelaufen.",
+      "title" : "Fehler {{statusCode}}"
+    },
+    "FAQ" : {
+      "introQuestion" : "Bei welchem Thema können wir dir weiterhelfen?",
+      "noAnswer" : "Hast du keine passende Antwort gefunden? Wir helfen dir gerne weiter:",
+      "subtitle" : "Häufig gestellte Fragen"
+    },
+    "Files" : {
+      "flowDisclaimer" : "Schweizer Privatsphäre: Dateien werden Ende-zu-Ende verschlüsselt und in Zürich, Schweiz bei der Flow Swiss AG gespeichert.",
+      "subtitle" : "Teile Ende-zu-Ende-verschlüsselte Dateien. Einmalig.",
+      "title" : "Geheime Datei"
+    },
+    "Home" : {
+      "default" : {
+        "subtitle" : "…mit einem Link der nur <1>ein Mal</1> funktioniert und sich dann <4>selbst zerstört.</4>",
+        "title" : "Teile ein Geheimnis"
+      },
+      "FAQ" : {
+        "subtitle" : "Häufig gestellte Fragen."
+      },
+      "HowItWorks" : {
+        "burn" : {
+          "text" : "Nachdem das Geheimnis gesehen wurde, wird es vernichtet.",
+          "title" : "Zerstören"
+        },
+        "create" : {
+          "text" : "Verfasse dein Geheimnis und erhalte einen einmaligen Link.",
+          "title" : "Schreiben"
+        },
+        "share" : {
+          "text" : "Sende den generierten Link an deine Vertrauensperson.",
+          "title" : "Teilen"
+        },
+        "subtitle" : "Gib vertrauliche Informationen weiter, die nur ein einziges Mal eingesehen werden können. Der perfekte Weg, um Passwörter, Kreditkarteninformationen, private Schlüssel oder andere vertrauliche Informationen zu übertragen.",
+        "title" : "Einmal-Geheimnisse"
+      },
+      "SecretLinksExplained" : {
+        "button" : "Mehr über Sicherheit erfahren",
+        "imageAlt" : "Geheime Links erklärt",
+        "subtitle" : "Wir verschlüsseln deine Geheiminformation bereits auf deinem Gerät. Der Verschlüsselungscode wird niemals gespeichert, sondern wird Teil des Links selbst. Ohne den vollständigen Link wird niemand, auch wir nicht, dein Geheimnis entschlüsseln können.",
+        "title" : "Ende-zu-Ende-Verschlüsselung"
+      },
+      "success" : {
+        "subtitle" : "Dein Geheimlink wurde erstellt - teile ihn nun mit deiner Vertrauensperson.",
+        "title" : "Erfolg!"
+      }
+    },
+    "Imprint" : {
+      "credits" : "Credits",
+      "flowSwiss" : "Dieses Projekt wird unterstützt von Flow Swiss AG - Premium Cloud Services aus Zürich, Schweiz.",
+      "inspiration" : "Inspiration",
+      "policiesAndTerms" : "Richtlinien und Bedingungen",
+      "subtitle" : "Kurz: Beschränkte Haftung.",
+      "title" : "Impressum"
+    },
+    "Neogram" : {
+      "subtitle" : "Selbstzerstörende Nachrichten im Matrix-Stil. Ende-zu-Ende verschlüsselt.",
+      "title" : "Neogram"
+    },
+    "Onboarding" : {
+      "button" : {
+        "accept" : "Auftrag annehmen",
+        "skip" : "Vielleicht später"
+      },
+      "intro" : "Unsere Mission ist es, allen die Möglichkeit zu geben, sensible Informationen auf eine **wirklich private, sichere und anonyme** Weise auszutauschen - etwas, das in einer freien Gesellschaft unerlässlich ist. Wir betreiben dies als leidenschaftliches Projekt, das eher von Idealismus als von Profit angetrieben wird. Um die grundlegenden Funktionen kostenlos zu halten, sind wir auf eine kleine Anzahl von außergewöhnlichen Menschen angewiesen.  \n\n**Deine Aufgabe, solltest du sie annehmen**, ist es, mehr über unsere geheimen Pläne zu erfahren, die es uns ermöglichen, dieses Projekt am Laufen zu halten. Viel Glück!",
+      "subtitle" : "Hallo {{name}}, willkommen an Bord!",
+      "title" : "Missions-Briefing"
+    },
+    "Pricing" : {
+      "Canceled" : {
+        "error" : "Du hast entweder den Zahlungsvorgang abgebrochen oder es ist etwas schief gelaufen. Das tut uns leid. Versuche es einfach noch einmal.",
+        "title" : "Bezahlvorgang abgebrochen"
+      },
+      "FAQ" : {
+        "subtitle" : "Häufig gestellte Fragen zu Plänen und Preisen."
+      },
+      "subtitle" : "Einfache Pläne, faire Preise.",
+      "title" : "Preisgestaltung"
+    },
+    "Privacy" : {
+      "Account" : {
+        "markdown" : "Für Power-User bieten wir Benutzerkonten an, die eine Authentifizierung erfordern. Eine E-Mail-Adresse ist ausreichend für die Erstellung eines Kontos. (Du kannst eine temporäre oder maskierte E-Mail verwenden)\n\nFür Besucher:innen unserer Website verwenden wir nur essentielle Cookies. Mit anderen Worten: Cookies, die für die Bereitstellung von Kernfunktionen erforderlich sind: Z.B. die Verwaltung der sicheren Authentifizierung. Mehr dazu in unseren Datenschutzrichtlinien.",
+        "title" : "Konto & Cookies"
+      },
+      "Analytics" : {
+        "markdown" : "Wir verwenden {{linkPlausible}},der einfachen und datenschutzfreundlichen Alternative zu Google Analytics, für elementare Web-Traffic-Analysen.\n\n- Keine Verwendung von Cookies\n- Vollständig konform mit den Datenschutzbestimmungen GDPR, CCPA und PECR\n- Keine Erhebung von personenbezogenen Daten\n- Das Projekt ist Open Source\n- Alle Analysedaten sind **öffentlich verfügbar**: {{linkDashboard}}",
+        "title" : "Analytics"
+      },
+      "intro" : "Für uns ist die Privatsphäre nicht verhandelbar. Wir wählen unsere Werkzeuge sorgfältig aus, um das Recht eines jeden auf Privatsphäre zu schützen. Wir schalten keine Werbung, wir verzichten auf Tracking, wir verkaufen keine Daten und wir beschränken die Anforderungen an persönliche Daten auf das absolute Minimum. Selbst mit einem Konto würden wir niemals ohne triftigen Grund nach persönlich identifizierbaren Informationen (PII) fragen. Darüber hinaus wenden wir \"Privacy by Design\" Grundsätze an: Wir haben unsere Datenbank so strukturiert, dass ein einzelnes Geheimnis eine völlig unabhängige Einheit bleibt - selbst wenn du ein Benutzerkonto verwendest, kann ein Geheimnis niemals zu dir zurückverfolgt werden.",
+      "subtitle" : "Keine Werbung, kein Tracking, kein Quatsch.",
+      "title" : "Privatsphäre"
+    },
+    "PrivacyPolicy" : {
+      "subtitle" : "Privatsphäre ist uns wichtig.",
+      "title" : "Datenschutzbestimmungen"
+    },
+    "Redirect" : {
+      "subtitle" : "Erstelle eine einmalige Umleitung. Ohne Spuren zu hinterlassen.",
+      "title" : "Geheime Weiterleitung"
+    },
+    "Security" : {
+      "Infrastructure" : {
+        "markdown" : "Wir haben uns für branchenführende Anbieter entschieden, um unsere Infrastruktur zu hosten:\n\n- Website/API auf {{linkVercel}}\n- Cloud Database mit {{linkScaleGrid}}\n- Object Storage (Dateien) mit {{linkFlowSwiss}}\n- Slack App auf {{linkHeroku}}\n- Sämtlicher Code auf {{linkGitlab}}",
+        "subtitle" : "Vertrauenswürdige Akteure, wenige Abhängigkeiten.",
+        "title" : "Infrastruktur"
+      },
+      "markdown" : "Alle Nachrichten sind **Ende-zu-Ende-verschlüsselt**. Wir generieren einen zufälligen Hash, um dein Geheimnis **auf dem Client** mit **AES-256** (Advanced Encryption Standard) zu verschlüsseln. Der Verschlüsselungscode wird niemals gespeichert, sondern dem geheimen Link hinzugefügt. Ohne den vollständigen Link wird niemand (auch wir nicht) in der Lage sein, deine Nachricht zu entschlüsseln. \n\nWenn du ein Passwort angibst, verwenden wir es, um dein Geheimnis **zusätzlich** zur Standardverschlüsselung zu verschlüsseln. Das Passwort wird nicht gespeichert. Selbst mit **Zugang zu unserer gesamten Infrastruktur** könnte ein Angreifer deine Nachricht nicht lesen. Nachdem ein Geheimnis eingesehen wurde, löschen wir es dauerhaft aus unserer Datenbank. Es gibt kein Backup.\n{{illustration}}\n\n### Von Grund auf sicher\n- Alle Verbindungen sind über HTTPS gesichert\n- Alle Daten werden verschlüsselt gespeichert (nicht nur Geheimnisse)\n- So wenig Code von Drittanbietern wie möglich\n- Abhängigkeiten werden regelmäßig überprüft und aktualisiert\n- Der gesamte Code ist Open-Source auf {{gitlabLink}}",
+      "subtitle" : "Bewährte Praktiken, keine Extras.",
+      "title" : "Sicherheit"
+    },
+    "SignIn" : {
+      "noAccountYet" : "Noch kein Konto?",
+      "signUpNow" : "Jetzt registrieren",
+      "subtitle" : "Melde dich im Konto an. Schütze deine Geheimnisse.",
+      "title" : "Anmelden"
+    },
+    "SignOut" : {
+      "loading" : "Abmeldung…",
+      "subtitle" : "Alles Gute! Komm bald wieder.",
+      "success" : "Du hast dich erfolgreich abgemeldet.",
+      "title" : "Abmeldung"
+    },
+    "SignUp" : {
+      "FreeAccount" : {
+        "title" : "Deine Gratis-Konto Vorteile",
+        "upsell" : "Du brauchst mehr? <1>Hier gibt's mehr</1>.",
+        "Usps" : {
+          "0" : "Mehr Zeichen für deine Geheimnisse",
+          "1" : "E-Mail-Lesebestätigungen",
+          "4" : "Persönlicher Support",
+          "5" : "Emoji Links \uD83E\uDD2B"
+        }
+      },
+      "gotAccount" : "Du hast bereits ein Konto?",
+      "signInNow" : "Jetzt anmelden",
+      "subtitle" : "Große Dinge beginnen hier…",
+      "title" : "Konto eröffnen"
+    },
+    "TermsOfService" : {
+      "policies" : "Richtlinien",
+      "subtitle" : "Tl;dr: Nichts Besonderes",
+      "title" : "Nutzungsbedingungen"
+    },
+    "Text" : {
+      "subtitle" : "Teile Ende-zu-Ende-verschlüsselte Nachrichten. Einmalig.",
+      "title" : "Geheimer Text"
+    }
+  },
+  "Widget" : {
+    "myAccount" : "Mein Konto",
+    "noAccountYet" : "Noch kein Konto?"
+  }
+}

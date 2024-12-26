@@ -1,28 +1,29 @@
-# sv
+# scrt-link-v2
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
+Version 2 - built with Svelte: [`sv`](https://github.com/sveltejs/cli).
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
 ```bash
-npm run dev
+pnpm run dev
 
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm run dev -- --open
+
+# drizzle (ORM, DB):
+# You will need to set POSTGRES_URL in your production environment
+pnpm run db:start  # Start the docker container
+pnpm run db:push # Update your database schema
+
+# lucia (auth):
+# Run pnpm run db:push to update your database schema
+# Visit /demo/lucia route to view the demo
+
+# paraglide (i18n):
+# Edit your messages in messages/en.json
+# Consider installing the Sherlock IDE Extension
+# Visit /demo/paraglide route to view the demo
+
 ```
 
 ## Building
@@ -30,9 +31,5 @@ npm run dev -- --open
 To create a production version of your app:
 
 ```bash
-npm run build
+pnpm run build
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
