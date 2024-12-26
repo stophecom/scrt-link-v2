@@ -2,6 +2,9 @@
 
 Version 2 - built with Svelte: [`sv`](https://github.com/sveltejs/cli).
 
+> [!WARNING]  
+> This is work-in-progress.
+
 ## Developing
 
 ```bash
@@ -18,7 +21,15 @@ pnpm run db:push # Update your database schema
 # Lucia (auth):
 # Run pnpm run db:push to update your database schema
 # Visit /demo/lucia route to view the demo
+```
 
+## UI / Components
+
+https://www.shadcn-svelte.com/
+
+```bash
+# Install component (e.g. form)
+pnpm dlx shadcn-svelte@latest add form
 ```
 
 ## Translations / i18n
