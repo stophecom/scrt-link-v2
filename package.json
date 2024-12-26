@@ -18,8 +18,9 @@
 		"db:push": "drizzle-kit push",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
-		"translate": "npx @inlang/cli machine translate --project ./project.inlang",
-		"translate:lint": "npx @inlang/cli lint --project ./project.inlang"
+		"inlang:machine-translate": "npx @inlang/cli machine translate --project ./project.inlang",
+		"inlang:lint": "npx @inlang/cli lint --project ./project.inlang",
+		"inlang:editor": "npx @inlang/cli open editor"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.3",
@@ -35,6 +36,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0",
 		"globals": "^15.0.0",
+		"lucide-svelte": "^0.469.0",
 		"mdsvex": "^0.11.2",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
@@ -56,6 +58,7 @@
 		"@oslojs/encoding": "^1.1.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"drizzle-orm": "^0.33.0",
+		"mode-watcher": "^0.5.0",
 		"postgres": "^3.4.4"
 	}
 }

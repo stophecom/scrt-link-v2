@@ -15,15 +15,23 @@ pnpm run dev -- --open
 pnpm run db:start  # Start the docker container
 pnpm run db:push # Update your database schema
 
-# lucia (auth):
+# Lucia (auth):
 # Run pnpm run db:push to update your database schema
 # Visit /demo/lucia route to view the demo
 
-# paraglide (i18n):
+```
+
+## Translations / i18n
+
+Translations are done with [Paraglide.js by Inlang](https://inlang.com/m/gerre34r/library-inlang-paraglideJs)
+
+```bash
 # Edit your messages in messages/en.json
 # Consider installing the Sherlock IDE Extension
 # Visit /demo/paraglide route to view the demo
-
+pnpm inlang:machine-translate # Machine translate missing keys
+pnpm inlang:lint
+pnpm inlang:editor # Opens visual editor
 ```
 
 ## Building
