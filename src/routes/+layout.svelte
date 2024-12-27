@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { i18n } from '$lib/i18n';
-	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
-	import { ModeWatcher } from 'mode-watcher';
-
-	import Sun from 'lucide-svelte/icons/sun';
-	import Moon from 'lucide-svelte/icons/moon';
-
-	import { toggleMode } from 'mode-watcher';
-	import { Button } from '$lib/components/ui/button/index.js';
-
 	import '../app.css';
+
+	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
+	import Moon from 'lucide-svelte/icons/moon';
+	import Sun from 'lucide-svelte/icons/sun';
+	import { ModeWatcher } from 'mode-watcher';
+	import { toggleMode } from 'mode-watcher';
+
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { i18n } from '$lib/i18n';
 	let { children } = $props();
 </script>
 

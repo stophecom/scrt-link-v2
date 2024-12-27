@@ -1,6 +1,7 @@
-import { sequence } from '@sveltejs/kit/hooks';
-import { i18n } from '$lib/i18n';
 import type { Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
+
+import { i18n } from '$lib/i18n';
 import * as auth from '$lib/server/auth.js';
 
 const handleAuth: Handle = async ({ event, resolve }) => {

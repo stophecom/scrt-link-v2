@@ -26,3 +26,6 @@ vite.config.ts.timestamp-*
 # Paraglide
 src/lib/paraglide
 .env*.local
+
+# Rest/Http
+*.http

@@ -1,4 +1,5 @@
-import { pgTable, serial, text, integer, timestamp } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { createInsertSchema } from 'drizzle-zod';
 
 export const user = pgTable('user', {
 	id: text('id').primaryKey(),
@@ -6,6 +7,8 @@ export const user = pgTable('user', {
 	username: text('username').notNull().unique(),
 	passwordHash: text('password_hash').notNull()
 });
+
+export const userInsertSchema = createInsertSchema(user);
 
 export const session = pgTable('session', {
 	id: text('id').primaryKey(),

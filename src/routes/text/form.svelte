@@ -1,16 +1,25 @@
 <script lang="ts">
-	import * as Form from '$lib/components/ui/form';
-	import { Input } from '$lib/components/ui/input';
-	import { formSchema, type FormSchema } from './schema';
-	import SuperDebug, { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
+	import SuperDebug, { type Infer, superForm,type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { browser } from '$app/environment';
+	import * as Form from '$lib/components/ui/form';
+	import { Input } from '$lib/components/ui/input';
+
+	import { type FormSchema,formSchema } from './schema';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(formSchema)
+		validators: zodClient(formSchema),
+
+		onUpdated: ({ form: f }) => {
+			if (f.valid) {
+				console.log(`You submitted ${JSON.stringify(f.data, null, 2)}`);
+			} else {
+				console.log('Please fix the errors in the form.');
+			}
+		}
 	});
 
 	const { form: formData, enhance } = form;

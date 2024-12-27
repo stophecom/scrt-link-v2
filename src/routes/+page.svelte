@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-
-	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import Mail from 'lucide-svelte/icons/mail';
 	import { slide } from 'svelte/transition';
+
+	import * as Accordion from '$lib/components/ui/accordion/index.js';
+	import { Button } from '$lib/components/ui/button';
 
 	const items = [
 		{
