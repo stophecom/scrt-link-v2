@@ -25,8 +25,9 @@
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
-<Button variant="outline">Button</Button>
-<Button variant="secondary">Secondary</Button>
+<Button variant="outline" href="/signup">Signup</Button>
+<Button variant="secondary" href="/account">Account</Button>
+
 <Button>
 	<Mail class="mr-2 h-4 w-4" />
 	Login with Email

@@ -3,6 +3,7 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
@@ -13,26 +14,47 @@
 	export let data: SuperValidated<Infer<FormSchema>>;
 
 	const form = superForm(data, {
+		// resetForm: false,
 		validators: zodClient(formSchema),
-
+		validationMethod: 'auto',
 		onUpdated: ({ form: f }) => {
+			if (f.message) {
+				console.log(`Message ${JSON.stringify(f.data, null, 2)}`);
+			}
 			if (f.valid) {
 				console.log(`You submitted ${JSON.stringify(f.data, null, 2)}`);
 			} else {
 				console.log('Please fix the errors in the form.');
+				console.log({ data });
 			}
+		},
+		onError({ result }) {
+			// We use message for unexpected errors
+			$message = result.error.message || 'Unknown error';
 		}
 	});
 
-	const { form: formData, message, errors, enhance } = form;
+	const { form: formData, message, errors, constraints, allErrors, enhance } = form;
 </script>
 
 <div class="rounded border bg-slate-100 p-3 dark:bg-slate-900">
-	<form action="?/signup" method="POST" use:enhance>
+	{#if $allErrors.length}
+		<div class="bg-red-50">
+			<ul>
+				{#each $allErrors as error}
+					<li>
+						<b>{error.path}:</b>
+						{error.messages.join('. ')}
+					</li>
+				{/each}
+			</ul>
+		</div>
+	{/if}
+	<form method="POST" use:enhance>
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>Email</Form.Label>
-				<Input {...attrs} bind:value={$formData.email} />
+				<Input {...attrs} bind:value={$formData.email} {...$constraints.email} />
 			</Form.Control>
 			<Form.Description>This is your public display name.</Form.Description>
 			<Form.FieldErrors />
@@ -41,7 +63,7 @@
 		<Form.Field {form} name="password" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>Password</Form.Label>
-				<Input {...attrs} bind:value={$formData.password} />
+				<Input {...attrs} bind:value={$formData.password} {...$constraints.password} />
 				{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
 			</Form.Control>
 			<Form.Description>Choose a strong password</Form.Description>
@@ -73,7 +95,7 @@
 		</div>
 
 		{#if $message}
-			<div class="message text-green-700">{$message}</div>
+			<div class="message text-red-700">{$page.status} - {$message}</div>
 		{/if}
 
 		{#if browser}

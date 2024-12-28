@@ -1,12 +1,13 @@
 import { hash } from '@node-rs/argon2';
 import { encodeBase32LowerCase } from '@oslojs/encoding';
-import { fail, redirect } from '@sveltejs/kit';
-import { message, superValidate } from 'sveltekit-superforms';
+import { error, redirect } from '@sveltejs/kit';
+import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
+import { checkIfUserExists } from '$lib/server/helpers';
 
 // import { userInsertSchema } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
@@ -22,20 +23,17 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
-	signup: async (event) => {
+	default: async (event) => {
 		const form = await superValidate(event.request, zod(formSchema));
-		// @todo check if additional DB Schema validation is necessary
-		// console.log(userInsertSchema.parse({ username }));
 
 		const { email, password } = form.data;
 
+		// Server side validation
+		// @todo check if additional DB Schema validation is necessary
+		// console.log(userInsertSchema.parse({ username }));
 		if (!form.valid) {
-			console.log('error');
-			return fail(400, { form, message: 'invalid' });
+			return fail(400, { form });
 		}
-
-		console.log('foo');
-		console.log(form);
 
 		const userId = generateUserId();
 		const passwordHash = await hash(password, {
@@ -46,6 +44,14 @@ export const actions: Actions = {
 			parallelism: 1
 		});
 
+		// Check existing email
+		if (await checkIfUserExists(email)) {
+			// Technically we can use "return setError". For some reason this doesn't work with "use:enhance" enabled.
+			setError(form, 'email', 'E-mail already exists.');
+			return { form };
+		}
+
+		// Save new user and create session
 		try {
 			await db.insert(table.users).values({ id: userId, username: email, passwordHash });
 
@@ -54,7 +60,7 @@ export const actions: Actions = {
 			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 		} catch (e) {
 			console.error(e);
-			return fail(500, { form, message: 'An error has occurred' });
+			error(500, 'Failed to register');
 		}
 
 		return redirect(302, '/account');
