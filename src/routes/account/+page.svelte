@@ -8,8 +8,9 @@
 	let { data }: { data: PageServerData } = $props();
 </script>
 
-<h1>{m.zany_jolly_cuckoo_scoop({ name: 'SvelteKit User' })}</h1>
+<h1>{m.zany_jolly_cuckoo_scoop({ name: data.user.name || 'Foo' })}</h1>
 <p>Your user ID is {data.user.id}.</p>
+<p>Your email is {data.user.email}.</p>
 
 <form method="post" action="?/logout" use:enhance>
 	<Button type="submit" variant="outline">Sign out</Button>

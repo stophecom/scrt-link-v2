@@ -53,7 +53,7 @@ export const actions: Actions = {
 
 		// Save new user and create session
 		try {
-			await db.insert(table.users).values({ id: userId, username: email, passwordHash });
+			await db.insert(table.users).values({ id: userId, email, passwordHash });
 
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, userId);

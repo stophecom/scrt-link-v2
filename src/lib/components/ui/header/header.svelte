@@ -10,6 +10,7 @@
 	<div class="fixed left-0 top-0 h-16 w-full bg-background">
 		<div class="container flex h-full items-center">
 			<div class="grid grid-flow-col gap-2">
+				<a href="/text">Text</a>
 				<Button href="/signup">Sign up</Button>
 				<Button href="/signin">Sign in</Button>
 

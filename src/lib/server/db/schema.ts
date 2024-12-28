@@ -1,14 +1,16 @@
-import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
-	age: integer('age'),
-	username: text('username').notNull().unique(),
-	passwordHash: text('password_hash').notNull()
+	email: text('email').notNull().unique(),
+	passwordHash: text('password_hash').notNull(),
+	name: text('name'),
+	image: text('image'),
+	emailVerified: timestamp('email_verified', { withTimezone: true, mode: 'date' })
 });
 
-export const userInsertSchema = createInsertSchema(users);
+export const userInsertSchema = createInsertSchema(users); // Not used atm
 
 export const session = pgTable('session', {
 	id: text('id').primaryKey(),
