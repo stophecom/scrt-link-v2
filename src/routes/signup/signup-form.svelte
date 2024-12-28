@@ -10,26 +10,15 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label/index.js';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import { type FormSchema, formSchema } from './schema';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
 	const form = superForm(data, {
-		// resetForm: false,
 		validators: zodClient(formSchema),
 		validationMethod: 'auto',
-		onUpdated: ({ form: f }) => {
-			if (f.message) {
-				console.log(`Message ${JSON.stringify(f.data, null, 2)}`);
-			}
-			if (f.valid) {
-				console.log(`You submitted ${JSON.stringify(f.data, null, 2)}`);
-			} else {
-				console.log('Please fix the errors in the form.');
-				console.log({ data });
-			}
-		},
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = result.error.message || 'Unknown error';
@@ -55,7 +44,7 @@
 	<form method="POST" use:enhance>
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
-				<Form.Label>Email</Form.Label>
+				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
 				<Input {...attrs} bind:value={$formData.email} {...$constraints.email} />
 			</Form.Control>
 			<Form.Description>This is your public display name.</Form.Description>
@@ -64,11 +53,11 @@
 
 		<Form.Field {form} name="password" class="py-4">
 			<Form.Control let:attrs>
-				<Form.Label>Password</Form.Label>
+				<Form.Label>{m.tame_actual_raven_adapt()}</Form.Label>
 				<Input {...attrs} bind:value={$formData.password} {...$constraints.password} />
 				{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
 			</Form.Control>
-			<Form.Description>Choose a strong password</Form.Description>
+			<Form.Description>{m.front_fun_husky_pray()}</Form.Description>
 			<Form.FieldErrors />
 		</Form.Field>
 
