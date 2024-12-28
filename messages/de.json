@@ -1,6 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hallo, {name} von de!",
-	"backToPlans": "Zurück zu den Plänen",
-	"button_cancel": "Abbrechen"
+	"any_this_gull_reside": "Passwort",
+	"front_fun_husky_pray": "Wählen Sie ein sicheres Passwort",
+	"clear_lost_goose_beam": "E-Mail",
+	"tame_actual_raven_adapt": "Passwort",
+	"zany_jolly_cuckoo_scoop": "Hallo, {name} !"
 }

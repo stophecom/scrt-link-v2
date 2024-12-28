@@ -1,6 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from sr!",
-	"backToPlans": "Zurück zu den Plänen",
-	"button_cancel": "Откажи"
+	"any_this_gull_reside": "Лозинка",
+	"front_fun_husky_pray": "Изаберите јаку лозинку",
+	"clear_lost_goose_beam": "Емаил",
+	"tame_actual_raven_adapt": "Лозинка",
+	"zany_jolly_cuckoo_scoop": "Здраво, {name} !"
 }
