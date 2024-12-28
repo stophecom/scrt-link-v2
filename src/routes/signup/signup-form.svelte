@@ -2,8 +2,8 @@
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
+	import { dev } from '$app/environment';
+	import { page } from '$app/state';
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
@@ -95,10 +95,10 @@
 		</div>
 
 		{#if $message}
-			<div class="message text-red-700">{$page.status} - {$message}</div>
+			<div class="message text-red-700">{page.status} - {$message}</div>
 		{/if}
 
-		{#if browser}
+		{#if dev}
 			<div class="py-3">
 				<SuperDebug data={$formData} />
 			</div>
