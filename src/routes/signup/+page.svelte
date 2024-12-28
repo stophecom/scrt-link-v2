@@ -1,6 +1,7 @@
 <script lang="ts">
+	import SignupForm from '$lib/components/forms/signup-form.svelte';
+
 	import type { PageData } from './$types';
-	import SignupForm from './signup-form.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>

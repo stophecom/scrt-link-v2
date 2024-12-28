@@ -4,6 +4,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { signupFormSchema } from '$lib/formSchemas';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
@@ -11,20 +12,19 @@ import { checkIfUserExists } from '$lib/server/helpers';
 
 // import { userInsertSchema } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
-import { formSchema } from './schema';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
 		return redirect(302, '/account');
 	}
 	return {
-		form: await superValidate(zod(formSchema))
+		form: await superValidate(zod(signupFormSchema))
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event.request, zod(formSchema));
+		const form = await superValidate(event.request, zod(signupFormSchema));
 
 		const { email, password } = form.data;
 

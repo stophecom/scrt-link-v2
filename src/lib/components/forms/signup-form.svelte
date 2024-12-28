@@ -10,14 +10,13 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label/index.js';
+	import { type SignupFormSchema, signupFormSchema } from '$lib/formSchemas';
 	import * as m from '$lib/paraglide/messages.js';
 
-	import { type FormSchema, formSchema } from './schema';
-
-	export let data: SuperValidated<Infer<FormSchema>>;
+	export let data: SuperValidated<Infer<SignupFormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(formSchema),
+		validators: zodClient(signupFormSchema),
 		validationMethod: 'auto',
 		onError({ result }) {
 			// We use message for unexpected errors
