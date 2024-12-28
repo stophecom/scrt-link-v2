@@ -3,7 +3,6 @@ import postgres from 'postgres';
 
 import { env } from '$env/dynamic/private';
 
-console.log('DB', env.POSTGRES_URL);
 if (!env.POSTGRES_URL) {
 	throw new Error('POSTGRES_URL is not set');
 }

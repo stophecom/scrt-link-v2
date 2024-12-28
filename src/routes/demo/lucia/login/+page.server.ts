@@ -29,7 +29,7 @@ export const actions: Actions = {
 			return fail(400, { message: 'Invalid password' });
 		}
 
-		const results = await db.select().from(table.user).where(eq(table.user.username, username));
+		const results = await db.select().from(table.users).where(eq(table.users.username, username));
 
 		const existingUser = results.at(0);
 		if (!existingUser) {
@@ -74,7 +74,7 @@ export const actions: Actions = {
 		});
 
 		try {
-			await db.insert(table.user).values({ id: userId, username, passwordHash });
+			await db.insert(table.users).values({ id: userId, username, passwordHash });
 
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, userId);
