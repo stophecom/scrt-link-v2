@@ -1,8 +1,10 @@
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
+import { Google } from 'arctic';
 import { eq } from 'drizzle-orm';
 
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
@@ -32,7 +34,13 @@ export async function validateSessionToken(token: string) {
 	const [result] = await db
 		.select({
 			// Adjust user table here to tweak returned data
-			user: { id: table.users.id, name: table.users.name, email: table.users.email },
+			user: {
+				id: table.users.id,
+				name: table.users.name,
+				email: table.users.email,
+				googleId: table.users.googleId,
+				picture: table.users.picture
+			},
 			session: table.session
 		})
 		.from(table.session)
@@ -80,3 +88,10 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
 		path: '/'
 	});
 }
+
+// OAuth Provider
+export const google = new Google(
+	GOOGLE_CLIENT_ID,
+	GOOGLE_CLIENT_SECRET,
+	'http://localhost:5173/login/google/callback'
+);

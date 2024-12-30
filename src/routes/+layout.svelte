@@ -3,15 +3,19 @@
 
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
 	import { ModeWatcher } from 'mode-watcher';
+	import type { Snippet } from 'svelte';
 
-	import Footer from '$lib/components/ui/footer/footer.svelte';
-	import Header from '$lib/components/ui/header/header.svelte';
 	import { i18n } from '$lib/i18n';
-	let { children } = $props();
+
+	import type { LayoutData } from './$types';
+	import Footer from './footer.svelte';
+	import Header from './header.svelte';
+
+	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
 <ParaglideJS {i18n}>
-	<Header />
+	<Header user={data.user} />
 	<div class="container py-8">
 		{@render children()}
 	</div>

@@ -1,5 +1,4 @@
 import { hash } from '@node-rs/argon2';
-import { encodeBase32LowerCase } from '@oslojs/encoding';
 import { error, redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -8,7 +7,7 @@ import { signupFormSchema } from '$lib/formSchemas';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import { checkIfUserExists } from '$lib/server/helpers';
+import { checkIfUserExists, generateUserId } from '$lib/server/helpers';
 
 // import { userInsertSchema } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
@@ -66,10 +65,3 @@ export const actions: Actions = {
 		return redirect(302, '/account');
 	}
 };
-
-function generateUserId() {
-	// ID with 120 bits of entropy, or about the same as UUID v4.
-	const bytes = crypto.getRandomValues(new Uint8Array(15));
-	const id = encodeBase32LowerCase(bytes);
-	return id;
-}

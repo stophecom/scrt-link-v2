@@ -52,3 +52,11 @@ To create a production version of your app:
 ```bash
 pnpm run build
 ```
+
+## Authentication
+
+Following examples from [Lucia](https://v2.lucia-auth.com/database-adapters/postgres/)
+
+### Google OAuth Client
+
+Redirect URI: `/login/google/callback`

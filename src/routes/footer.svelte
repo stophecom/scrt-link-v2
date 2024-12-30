@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { i18n } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
 	import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
-
-	import Separator from '../separator/separator.svelte';
 
 	function switchToLanguage(newLanguage: AvailableLanguageTag) {
 		const canonicalPath = i18n.route(page.url.pathname);
