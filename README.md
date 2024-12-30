@@ -57,6 +57,11 @@ pnpm run build
 
 Following examples from [Lucia](https://v2.lucia-auth.com/database-adapters/postgres/)
 
+The following login methods are available:
+
+- Email & Password
+- OAuth with Google
+
 ### Google OAuth Client
 
 Redirect URI: `/login/google/callback`
