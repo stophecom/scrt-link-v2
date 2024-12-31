@@ -20,7 +20,8 @@
 		"db:studio": "drizzle-kit studio",
 		"inlang:machine-translate": "npx @inlang/cli machine translate --project ./project.inlang",
 		"inlang:lint": "npx @inlang/cli lint --project ./project.inlang",
-		"inlang:editor": "npx @inlang/cli open editor"
+		"inlang:editor": "npx @inlang/cli open editor",
+		"prepare": "husky"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.3",
@@ -38,6 +39,7 @@
 		"eslint-plugin-svelte": "^2.36.0",
 		"formsnap": "1.0.1",
 		"globals": "^15.0.0",
+		"husky": "^9.1.7",
 		"lucide-svelte": "^0.469.0",
 		"mdsvex": "^0.11.2",
 		"prettier": "^3.3.2",
