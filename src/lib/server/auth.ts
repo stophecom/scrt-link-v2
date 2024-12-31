@@ -15,7 +15,7 @@ import * as table from '$lib/server/db/schema';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
-const scheme = VERCEL_ENV === 'dev' ? 'http' : 'https';
+const scheme = VERCEL_ENV === 'development' ? 'http' : 'https';
 export const sessionCookieName = 'auth-session';
 
 export function generateSessionToken() {

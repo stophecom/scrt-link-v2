@@ -10,7 +10,7 @@
 
 <Page title="TEST">
 	<div class="container">
-		<div class="prose">
+		<div class="prose dark:prose-invert">
 			<Markdown md={markdown} />
 		</div>
 	</div>
