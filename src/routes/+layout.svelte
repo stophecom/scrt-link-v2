@@ -16,7 +16,7 @@
 
 <ParaglideJS {i18n}>
 	<Header user={data.user} />
-	<div class="container py-8">
+	<div class="py-8">
 		{@render children()}
 	</div>
 	<Footer />

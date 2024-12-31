@@ -24,82 +24,68 @@
 		}
 	});
 
-	const { form: formData, message, errors, constraints, allErrors, enhance } = form;
+	const { form: formData, message, errors, constraints, enhance } = form;
 </script>
 
-<div class="rounded border bg-slate-100 p-3 dark:bg-slate-900">
-	{#if $allErrors.length}
-		<div class="bg-red-50">
-			<ul>
-				{#each $allErrors as error}
-					<li>
-						<b>{error.path}:</b>
-						{error.messages.join('. ')}
-					</li>
-				{/each}
-			</ul>
+<form method="POST" use:enhance>
+	<Form.Field {form} name="email" class="py-4">
+		<Form.Control let:attrs>
+			<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
+			<Input {...attrs} bind:value={$formData.email} {...$constraints.email} />
+		</Form.Control>
+		<Form.Description>This is your public display name.</Form.Description>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="password" class="py-4">
+		<Form.Control let:attrs>
+			<Form.Label>{m.tame_actual_raven_adapt()}</Form.Label>
+			<Input {...attrs} bind:value={$formData.password} {...$constraints.password} />
+			{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
+		</Form.Control>
+		<Form.Description>{m.front_fun_husky_pray()}</Form.Description>
+		<Form.FieldErrors />
+	</Form.Field>
+
+	<Form.Field {form} name="hasTermsAccepted" class="py-4">
+		<div class="items-top flex space-x-2">
+			<Form.Control let:attrs>
+				<Label class="flex">
+					<Checkbox {...attrs} bind:checked={$formData.hasTermsAccepted} />
+					<span class="grid gap-1.5 ps-3 leading-none">
+						<span
+							class="cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+						>
+							Accept terms and conditions
+						</span>
+						<p class="text-sm text-muted-foreground">
+							You agree to our Terms of Service and Privacy Policy.
+						</p>
+					</span>
+				</Label>
+			</Form.Control>
+		</div>
+	</Form.Field>
+
+	<div class="py-4">
+		<Form.Button size="lg">Sign up</Form.Button>
+	</div>
+
+	<!-- Global error messages -->
+	{#if $message}
+		<div class="py-3">
+			<Alert.Root variant="destructive">
+				<CircleAlert class="h-4 w-4" />
+				<Alert.Title>Es ist ein Fehler aufgetreten - {page.status}</Alert.Title>
+				<Alert.Description>{$message}</Alert.Description>
+			</Alert.Root>
 		</div>
 	{/if}
-	<form method="POST" use:enhance>
-		<Form.Field {form} name="email" class="py-4">
-			<Form.Control let:attrs>
-				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
-				<Input {...attrs} bind:value={$formData.email} {...$constraints.email} />
-			</Form.Control>
-			<Form.Description>This is your public display name.</Form.Description>
-			<Form.FieldErrors />
-		</Form.Field>
 
-		<Form.Field {form} name="password" class="py-4">
-			<Form.Control let:attrs>
-				<Form.Label>{m.tame_actual_raven_adapt()}</Form.Label>
-				<Input {...attrs} bind:value={$formData.password} {...$constraints.password} />
-				{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
-			</Form.Control>
-			<Form.Description>{m.front_fun_husky_pray()}</Form.Description>
-			<Form.FieldErrors />
-		</Form.Field>
-
-		<Form.Field {form} name="hasTermsAccepted" class="py-4">
-			<div class="items-top flex space-x-2">
-				<Form.Control let:attrs>
-					<Label class="flex">
-						<Checkbox {...attrs} bind:checked={$formData.hasTermsAccepted} />
-						<span class="grid gap-1.5 ps-3 leading-none">
-							<span
-								class="cursor-pointer text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-							>
-								Accept terms and conditions
-							</span>
-							<p class="text-sm text-muted-foreground">
-								You agree to our Terms of Service and Privacy Policy.
-							</p>
-						</span>
-					</Label>
-				</Form.Control>
-			</div>
-		</Form.Field>
-
-		<div class="py-4">
-			<Form.Button size="lg">Sign up</Form.Button>
+	<!-- For debugging -->
+	{#if dev}
+		<div class="py-3">
+			<SuperDebug data={$formData} />
 		</div>
-
-		<!-- Global error messages -->
-		{#if $message}
-			<div class="py-3">
-				<Alert.Root variant="destructive">
-					<CircleAlert class="h-4 w-4" />
-					<Alert.Title>Es ist ein Fehler aufgetreten - {page.status}</Alert.Title>
-					<Alert.Description>{$message}</Alert.Description>
-				</Alert.Root>
-			</div>
-		{/if}
-
-		<!-- For debugging -->
-		{#if dev}
-			<div class="py-3">
-				<SuperDebug data={$formData} />
-			</div>
-		{/if}
-	</form>
-</div>
+	{/if}
+</form>
