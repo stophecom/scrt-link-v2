@@ -14,7 +14,8 @@
 <header class="h-16">
 	<div class="fixed left-0 top-0 h-16 w-full bg-background">
 		<div class="container flex h-full items-center">
-			<div class="logo">Logo</div>
+			<a class="p-2 hover:text-primary" href="/">Logo Home</a>
+			<a class="p-2 hover:text-primary" href="/text">Text</a>
 			<div class="ml-auto grid grid-flow-col gap-2">
 				<Button on:click={toggleMode} variant="outline" size="icon">
 					<Sun
