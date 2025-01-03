@@ -1,13 +1,10 @@
-import { hash } from '@node-rs/argon2';
-import { error, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { signupFormSchema } from '$lib/formSchemas';
-import * as auth from '$lib/server/auth';
-import { db } from '$lib/server/db';
-import * as table from '$lib/server/db/schema';
-import { checkIfUserExists, generateUserId } from '$lib/server/helpers';
+import { createEmailVerificationRequest } from '$lib/server/email-verification';
+import { checkIfUserExists, checkIsEmailVerified } from '$lib/server/helpers';
+import { emailFormSchema } from '$lib/validators/formSchemas';
 
 // import { userInsertSchema } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
@@ -17,15 +14,15 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(302, '/account');
 	}
 	return {
-		form: await superValidate(zod(signupFormSchema))
+		form: await superValidate(zod(emailFormSchema))
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event.request, zod(signupFormSchema));
+		const form = await superValidate(event.request, zod(emailFormSchema));
 
-		const { email, password } = form.data;
+		const { email } = form.data;
 
 		// Server side validation
 		// @todo check if additional DB Schema validation is necessary
@@ -34,34 +31,21 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const userId = generateUserId();
-		const passwordHash = await hash(password, {
-			// recommended minimum parameters
-			memoryCost: 19456,
-			timeCost: 2,
-			outputLen: 32,
-			parallelism: 1
-		});
-
 		// Check existing email
-		if (await checkIfUserExists(email)) {
+		if ((await checkIfUserExists(email)) && (await checkIsEmailVerified(email))) {
 			// Technically we can use "return setError". For some reason this doesn't work with "use:enhance" enabled.
-			setError(form, 'email', 'E-mail already exists.');
+			setError(form, 'email', 'E-mail already exists. Sign in instead.');
 			return { form };
 		}
 
-		// Save new user and create session
-		try {
-			await db.insert(table.users).values({ id: userId, email, passwordHash });
+		// User needs to verify his/her email
+		await createEmailVerificationRequest(email);
 
-			const sessionToken = auth.generateSessionToken();
-			const session = await auth.createSession(sessionToken, userId);
-			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-		} catch (e) {
-			console.error(e);
-			error(500, 'Failed to register');
-		}
+		event.cookies.set('email_verification', email, {
+			path: '/'
+			// secure: import.meta.env.PROD
+		});
 
-		return redirect(302, '/account');
+		return redirect(302, '/signup/verify-email');
 	}
 };

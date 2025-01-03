@@ -4,17 +4,16 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
-	import { page } from '$app/state';
 	import * as Alert from '$lib/components/ui/alert';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import * as m from '$lib/paraglide/messages.js';
-	import { type SignupFormSchema, signupFormSchema } from '$lib/validators/formSchemas';
+	import { type CodeFormSchema, codeFormSchema } from '$lib/validators/formSchemas';
 
-	export let data: SuperValidated<Infer<SignupFormSchema>>;
+	export let data: SuperValidated<Infer<CodeFormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(signupFormSchema),
+		validators: zodClient(codeFormSchema),
 		validationMethod: 'auto',
 		onError({ result }) {
 			// We use message for unexpected errors
@@ -22,31 +21,26 @@
 		}
 	});
 
-	const { form: formData, message, errors, constraints, enhance } = form;
+	const { form: formData, message, constraints, enhance } = form;
 </script>
 
-<form method="POST" use:enhance>
-	<Form.Field {form} name="email" class="py-4">
+<form method="POST" action="?/verifyCode" use:enhance>
+	<Form.Field {form} name="code" class="py-4">
 		<Form.Control let:attrs>
-			<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
-			<Input {...attrs} bind:value={$formData.email} {...$constraints.email} />
+			<Form.Label>{m.few_lime_kudu_imagine()}</Form.Label>
+			<Input {...attrs} bind:value={$formData.code} {...$constraints.code} />
 		</Form.Control>
-		<Form.Description>This is your public display name.</Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
 
-	<Form.Field {form} name="password" class="py-4">
-		<Form.Control let:attrs>
-			<Form.Label>{m.tame_actual_raven_adapt()}</Form.Label>
-			<Input {...attrs} bind:value={$formData.password} {...$constraints.password} />
-			{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
-		</Form.Control>
-		<Form.Description>{m.front_fun_husky_pray()}</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
+	<input name="email" type="hidden" bind:value={$formData.email} />
 
 	<div class="py-4">
-		<Form.Button size="lg">Sign up</Form.Button>
+		<Form.Button size="lg">Submit</Form.Button>
+	</div>
+
+	<div class="py-4">
+		<Form.Button type="submit" formaction="?/resend" size="lg">Send code again</Form.Button>
 	</div>
 
 	<!-- Global error messages -->
@@ -54,7 +48,6 @@
 		<div class="py-3">
 			<Alert.Root variant="destructive">
 				<CircleAlert class="h-4 w-4" />
-				<Alert.Title>Es ist ein Fehler aufgetreten - {page.status}</Alert.Title>
 				<Alert.Description>{$message}</Alert.Description>
 			</Alert.Root>
 		</div>

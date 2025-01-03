@@ -7,7 +7,6 @@ import * as auth from '$lib/server/auth';
 import { google } from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import { generateUserId } from '$lib/server/helpers';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const storedState = event.cookies.get('google_oauth_state') ?? null;
@@ -45,29 +44,28 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		console.log('google user', googleUser);
 
 		// Check if user exists.
-		const existingUsers = await db
+		const [existingUser] = await db
 			.select()
-			.from(table.users)
-			.where(eq(table.users.email, googleUser.email))
+			.from(table.user)
+			.where(eq(table.user.email, googleUser.email))
 			.limit(1);
 
-		console.log('existing user', existingUsers);
+		console.log('existing user', existingUser);
 
-		if (existingUsers.length > 0) {
+		if (existingUser) {
 			console.log('existing user -> login');
-			const existingUser = existingUsers[0];
 
 			// Add GoogleID and complete/overwrite user based on Google Account
 			if (!existingUser.googleId) {
 				await db
-					.update(table.users)
+					.update(table.user)
 					.set({
 						googleId: googleUser.sub,
 						emailVerified: googleUser.email_verified,
 						picture: googleUser.picture,
 						name: googleUser.name
 					})
-					.where(eq(table.users.email, existingUser.email));
+					.where(eq(table.user.email, existingUser.email));
 			}
 
 			const sessionToken = auth.generateSessionToken();
@@ -76,17 +74,19 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 		} else {
 			console.log('create user');
-			const userId = generateUserId();
-			await db.insert(table.users).values({
-				id: userId,
-				googleId: googleUser.sub,
-				email: googleUser.email,
-				picture: googleUser.picture,
-				name: googleUser.name
-			});
+
+			const [userResult] = await db
+				.insert(table.user)
+				.values({
+					googleId: googleUser.sub,
+					email: googleUser.email,
+					picture: googleUser.picture,
+					name: googleUser.name
+				})
+				.returning();
 
 			const sessionToken = auth.generateSessionToken();
-			const session = await auth.createSession(sessionToken, userId);
+			const session = await auth.createSession(sessionToken, userResult.id);
 			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 		}
 		return new Response(null, {

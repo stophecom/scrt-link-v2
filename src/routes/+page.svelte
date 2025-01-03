@@ -3,6 +3,8 @@
 
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import { Button } from '$lib/components/ui/button';
+	import { generateBase64Token } from '$lib/crypo';
+	import { generateUuid } from '$lib/web-crypto';
 
 	import Page from './page.svelte';
 
@@ -21,10 +23,32 @@
 			content: 'Give them your time, attention, and love.'
 		}
 	];
+
+	let otp = $state('');
+	let randomOtp = $state('');
+
+	let uuid = $state('');
+	let customToken = $state('');
+
+	let updateOtp = () => {
+		uuid = generateUuid();
+		customToken = generateBase64Token();
+	};
 </script>
 
 <Page title="Welcome">
 	<div class="container">
+		<div class="border p-3">
+			<div>otp 6: {otp}</div>
+			<div>random otp {randomOtp}</div>
+
+			<div>UUID {uuid}</div>
+			<div>Custom Token {customToken}</div>
+			<div class="p-2">
+				<Button onclick={() => updateOtp()}>Generate random OTP</Button>
+			</div>
+		</div>
+
 		<Button variant="secondary" href="/account">Account</Button>
 
 		<Accordion.Root class="w-full sm:max-w-[70%]" multiple>

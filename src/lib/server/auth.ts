@@ -1,5 +1,3 @@
-import { sha256 } from '@oslojs/crypto/sha2';
-import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
 import { Google } from 'arctic';
 import { eq } from 'drizzle-orm';
@@ -10,8 +8,10 @@ import {
 	VERCEL_ENV,
 	VERCEL_PROJECT_PRODUCTION_URL
 } from '$env/static/private';
+import { generateBase64Token } from '$lib/crypo';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
+import { createHash } from '$lib/web-crypto';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -19,13 +19,12 @@ const scheme = VERCEL_ENV === 'development' ? 'http' : 'https';
 export const sessionCookieName = 'auth-session';
 
 export function generateSessionToken() {
-	const bytes = crypto.getRandomValues(new Uint8Array(18));
-	const token = encodeBase64url(bytes);
-	return token;
+	return generateBase64Token();
 }
 
 export async function createSession(token: string, userId: string) {
-	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+	const hash = await createHash(token);
+	const sessionId = hash;
 	const session: table.Session = {
 		id: sessionId,
 		userId,
@@ -36,21 +35,21 @@ export async function createSession(token: string, userId: string) {
 }
 
 export async function validateSessionToken(token: string) {
-	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+	const sessionId = await createHash(token);
 	const [result] = await db
 		.select({
 			// Adjust user table here to tweak returned data
 			user: {
-				id: table.users.id,
-				name: table.users.name,
-				email: table.users.email,
-				googleId: table.users.googleId,
-				picture: table.users.picture
+				id: table.user.id,
+				name: table.user.name,
+				email: table.user.email,
+				googleId: table.user.googleId,
+				picture: table.user.picture
 			},
 			session: table.session
 		})
 		.from(table.session)
-		.innerJoin(table.users, eq(table.session.userId, table.users.id))
+		.innerJoin(table.user, eq(table.session.userId, table.user.id))
 		.where(eq(table.session.id, sessionId));
 
 	if (!result) {

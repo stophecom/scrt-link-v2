@@ -9,12 +9,12 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import * as m from '$lib/paraglide/messages.js';
-	import { type SignupFormSchema, signupFormSchema } from '$lib/validators/formSchemas';
+	import { type EmailFormSchema, emailFormSchema } from '$lib/validators/formSchemas';
 
-	export let data: SuperValidated<Infer<SignupFormSchema>>;
+	export let data: SuperValidated<Infer<EmailFormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(signupFormSchema),
+		validators: zodClient(emailFormSchema),
 		validationMethod: 'auto',
 		onError({ result }) {
 			// We use message for unexpected errors
@@ -22,7 +22,7 @@
 		}
 	});
 
-	const { form: formData, message, errors, constraints, enhance } = form;
+	const { form: formData, message, constraints, enhance } = form;
 </script>
 
 <form method="POST" use:enhance>
@@ -31,22 +31,11 @@
 			<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
 			<Input {...attrs} bind:value={$formData.email} {...$constraints.email} />
 		</Form.Control>
-		<Form.Description>This is your public display name.</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
-
-	<Form.Field {form} name="password" class="py-4">
-		<Form.Control let:attrs>
-			<Form.Label>{m.tame_actual_raven_adapt()}</Form.Label>
-			<Input {...attrs} bind:value={$formData.password} {...$constraints.password} />
-			{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
-		</Form.Control>
-		<Form.Description>{m.front_fun_husky_pray()}</Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<div class="py-4">
-		<Form.Button size="lg">Sign up</Form.Button>
+		<Form.Button size="lg">Continue with email</Form.Button>
 	</div>
 
 	<!-- Global error messages -->
