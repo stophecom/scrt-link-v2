@@ -39,10 +39,6 @@
 		<Form.Button size="lg">Submit</Form.Button>
 	</div>
 
-	<div class="py-4">
-		<Form.Button type="submit" formaction="?/resend" size="lg">Send code again</Form.Button>
-	</div>
-
 	<!-- Global error messages -->
 	{#if $message}
 		<div class="py-3">

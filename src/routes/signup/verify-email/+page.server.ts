@@ -3,11 +3,14 @@ import { and, desc, eq } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { hashPassword, verifyPassword } from '$lib/crypo';
+import { verifyPassword } from '$lib/crypo';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import { emailVerificationRequest, user } from '$lib/server/db/schema';
-import { createEmailVerificationRequest } from '$lib/server/email-verification';
+import {
+	createEmailVerificationRequest,
+	deleteEmailVerificationRequests
+} from '$lib/server/email-verification';
 import { checkIfUserExists } from '$lib/server/helpers';
 // import { ExpiringTokenBucket } from '$lib/server/rate-limit';
 import { codeFormSchema } from '$lib/validators/formSchemas';
@@ -56,74 +59,47 @@ async function verifyCode(event: RequestEvent) {
 			.where(and(eq(emailVerificationRequest.email, email)))
 			.orderBy(desc(emailVerificationRequest.expiresAt));
 
-		console.log(result);
-		console.log('code', code.toString());
-
-		console.log('hashed code', await hashPassword(code));
+		if (!result) {
+			return message(
+				form,
+				'Email validation request failed or token has expired. Please restart the verification process.'
+			);
+		}
 
 		if (!(await verifyPassword(code, result.codeHash))) {
-			return message(form, 'Invalid Token');
+			return message(form, 'Token invalid. Check your code or send a new code.');
 		}
 
 		if (result.expiresAt < new Date()) {
-			return message(form, 'Token expired');
+			return message(form, 'Token expired. Send a new code.');
 		}
 
 		// Check existing email
 		if (await checkIfUserExists(email)) {
-			// Technically we can use "return setError". For some reason this doesn't work with "use:enhance" enabled.
 			return message(form, 'E-mail already exists. Sign in instead.');
 		}
 
+		// All check passed. We create a user and session.
 		const [userResult] = await db.insert(user).values({ email, emailVerified: true }).returning();
-
-		// Save
 
 		const sessionToken = auth.generateSessionToken();
 		const session = await auth.createSession(sessionToken, userResult.id);
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-		return message(form, 'Works');
 	} catch (e) {
 		console.error(e);
 		error(500, 'Failed to register');
+	} finally {
+		// Cleanup DB
+		await deleteEmailVerificationRequests(email);
 	}
-
-	// if (!bucket.check(event.locals.user.id, 1)) {
-	// 	return fail(429, {
-	// 		verify: {
-	// 			message: 'Too many requests'
-	// 		}
-	// 	});
-	// }
-
-	// if (Date.now() >= verificationRequest.expiresAt.getTime()) {
-	// 	verificationRequest = createEmailVerificationRequest(
-	// 		verificationRequest.userId,
-	// 		verificationRequest.email
-	// 	);
-	// 	sendVerificationEmail(verificationRequest.email, verificationRequest.code);
-	// 	return {
-	// 		verify: {
-	// 			message: 'The verification code was expired. We sent another code to your inbox.'
-	// 		}
-	// 	};
-	// }
-
-	// deleteUserEmailVerificationRequest(event.locals.user.id);
-	// invalidateUserPasswordResetSessions(event.locals.user.id);
-	// updateUserEmailAndSetEmailAsVerified(event.locals.user.id);
-	// deleteEmailVerificationRequestCookie(event);
 
 	return redirect(302, '/signup/set-password');
 }
 
 async function resendEmail(event: RequestEvent) {
-	const form = await superValidate(event.request, zod(codeFormSchema));
-	const { email } = form.data;
-	console.log('foobar');
-	return message(form, 'Works');
+	console.log('Send code again');
 
-	// const email = event.cookies.get('email_verification');
+	const email = event.cookies.get('email_verification');
 	// No email from cookie
 	if (!email) {
 		return redirect(302, '/signup');
@@ -134,15 +110,5 @@ async function resendEmail(event: RequestEvent) {
 		console.error(e);
 		error(500, `Something went wrong. Couldn't send email verification code.`);
 	}
-
-	// Throttling
-	// Cleanup?
-
-	// if (!sendVerificationEmailBucket.consume(event.locals.user.id, 1)) {
-	// 	return fail(429, {
-	// 		resend: {
-	// 			message: 'Too many requests'
-	// 		}
-	// 	});
-	// }
+	return { success: true };
 }

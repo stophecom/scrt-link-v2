@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SignupForm from '$lib/components/forms/signup-form.svelte';
+	import EmailForm from '$lib/components/forms/email-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as m from '$lib/paraglide/messages.js';
@@ -17,7 +17,7 @@
 			<div class="py-5">
 				<Separator />
 			</div>
-			<SignupForm data={data.form} />
+			<EmailForm data={data.form} />
 		</div>
 	</div>
 </Page>

@@ -29,7 +29,7 @@ export async function createEmailVerificationRequest(
 	}
 }
 
-export async function deleteUserEmailVerificationRequest(email: string) {
+export async function deleteEmailVerificationRequests(email: string) {
 	return await db.delete(emailVerificationRequest).where(eq(emailVerificationRequest.email, email));
 }
 
