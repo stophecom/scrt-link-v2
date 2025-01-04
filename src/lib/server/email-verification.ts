@@ -5,7 +5,6 @@ import { type EmailVerificationRequest, emailVerificationRequest } from '$lib/se
 
 import { generateOtp, hashPassword } from '../crypo';
 import { db } from './db';
-import { ExpiringTokenBucket } from './rate-limit';
 
 export async function createEmailVerificationRequest(
 	email: string
@@ -37,4 +36,4 @@ export function sendVerificationEmail(email: string, code: string): void {
 	console.log(`To ${email}: Your verification code is ${code}`);
 }
 
-export const sendVerificationEmailBucket = new ExpiringTokenBucket<number>(3, 60 * 10);
+// export const sendVerificationEmailBucket = new ExpiringTokenBucket<number>(3, 60 * 10);
