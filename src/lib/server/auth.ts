@@ -5,9 +5,9 @@ import { eq } from 'drizzle-orm';
 import {
 	GOOGLE_CLIENT_ID,
 	GOOGLE_CLIENT_SECRET,
-	VERCEL_ENV,
 	VERCEL_PROJECT_PRODUCTION_URL
 } from '$env/static/private';
+import { PUBLIC_ENV } from '$env/static/public';
 import { generateBase64Token } from '$lib/crypo';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
@@ -15,7 +15,7 @@ import { createHash } from '$lib/web-crypto';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
-const scheme = VERCEL_ENV === 'development' ? 'http' : 'https';
+const scheme = PUBLIC_ENV === 'development' ? 'http' : 'https';
 export const sessionCookieName = 'auth-session';
 
 export function generateSessionToken() {

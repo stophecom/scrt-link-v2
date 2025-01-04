@@ -12,18 +12,12 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 	event.cookies.set('google_oauth_state', state, {
 		path: '/',
-		secure: import.meta.env.PROD, // set to false in localhost
-		httpOnly: true,
-		maxAge: 60 * 10,
-		sameSite: 'lax'
+		maxAge: 60 * 10
 	});
 
 	event.cookies.set('google_code_verifier', codeVerifier, {
-		secure: import.meta.env.PROD, // set to false in localhost
 		path: '/',
-		httpOnly: true,
-		maxAge: 60 * 10, // 10 min
-		sameSite: 'lax'
+		maxAge: 60 * 10 // 10 min
 	});
 
 	redirect(302, url.toString());
