@@ -29,3 +29,5 @@ src/lib/paraglide
 
 # Rest/Http
 *.http
+
+temp.*

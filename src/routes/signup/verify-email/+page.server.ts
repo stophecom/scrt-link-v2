@@ -13,7 +13,7 @@ import {
 } from '$lib/server/email-verification';
 import { checkIfUserExists } from '$lib/server/helpers';
 // import { ExpiringTokenBucket } from '$lib/server/rate-limit';
-import { codeFormSchema } from '$lib/validators/formSchemas';
+import { codeFormSchema, emailFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, RequestEvent } from './$types';
 
@@ -35,8 +35,12 @@ export async function load(event: RequestEvent) {
 	};
 
 	return {
-		form: await superValidate(defaultValues, zod(codeFormSchema), {
+		verificationForm: await superValidate(defaultValues, zod(codeFormSchema), {
 			errors: false
+		}),
+		resendForm: await superValidate(defaultValues, zod(emailFormSchema), {
+			errors: false,
+			id: 'resend-form'
 		})
 	};
 }
@@ -49,8 +53,8 @@ export const actions: Actions = {
 };
 
 async function verifyCode(event: RequestEvent) {
-	const form = await superValidate(event.request, zod(codeFormSchema));
-	const { code, email } = form.data;
+	const verificationForm = await superValidate(event.request, zod(codeFormSchema));
+	const { code, email } = verificationForm.data;
 
 	try {
 		const [result] = await db
@@ -60,23 +64,38 @@ async function verifyCode(event: RequestEvent) {
 			.orderBy(desc(emailVerificationRequest.expiresAt));
 
 		if (!result) {
-			return message(
-				form,
-				'Email validation request failed or token has expired. Please restart the verification process.'
-			);
+			return message(verificationForm, {
+				type: 'error',
+				title: 'No token found',
+				description:
+					'Email validation request failed or token has expired. Please restart the verification process.'
+			});
 		}
 
 		if (!(await verifyPassword(code, result.codeHash))) {
-			return message(form, 'Token invalid. Check your code or send a new code.');
+			return message(verificationForm, {
+				type: 'error',
+				title: 'Invalid token',
+				description: 'Check your code or send a new code.'
+			});
 		}
 
 		if (result.expiresAt < new Date()) {
-			return message(form, 'Token expired. Send a new code.');
+			return message(verificationForm, {
+				type: 'error',
+				title: 'Token expired',
+				description: 'Send a new code.'
+			});
 		}
 
 		// Check existing email
 		if (await checkIfUserExists(email)) {
-			return message(form, 'E-mail already exists. Sign in instead.');
+			return message(verificationForm, {
+				type: 'error',
+				title: 'Email already exists',
+				description:
+					'There is a user account associated with the email: {emailAddress}. Try to sign in instead.'
+			});
 		}
 
 		// All check passed. We create a user and session.
@@ -98,8 +117,11 @@ async function verifyCode(event: RequestEvent) {
 
 async function resendEmail(event: RequestEvent) {
 	console.log('Send code again');
+	const resendForm = await superValidate(event.request, zod(emailFormSchema), {
+		id: 'resend-form'
+	});
+	const { email } = resendForm.data;
 
-	const email = event.cookies.get('email_verification');
 	// No email from cookie
 	if (!email) {
 		return redirect(302, '/signup');
@@ -110,5 +132,10 @@ async function resendEmail(event: RequestEvent) {
 		console.error(e);
 		error(500, `Something went wrong. Couldn't send email verification code.`);
 	}
-	return { success: true };
+
+	return message(resendForm, {
+		type: 'success',
+		title: 'Code sent',
+		description: 'We sent you a new code. Please check your email.'
+	});
 }

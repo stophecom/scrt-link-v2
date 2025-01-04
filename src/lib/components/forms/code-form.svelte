@@ -17,7 +17,11 @@
 		validationMethod: 'auto',
 		onError({ result }) {
 			// We use message for unexpected errors
-			$message = result.error.message || 'Unknown error';
+			$message = {
+				type: 'error',
+				title: 'Unexpected error',
+				description: result.error.message || 'Some error'
+			};
 		}
 	});
 
@@ -44,7 +48,8 @@
 		<div class="py-3">
 			<Alert.Root variant="destructive">
 				<CircleAlert class="h-4 w-4" />
-				<Alert.Description>{$message}</Alert.Description>
+				<Alert.Title>{$message.title}</Alert.Title>
+				<Alert.Description>{$message.description}</Alert.Description>
 			</Alert.Root>
 		</div>
 	{/if}

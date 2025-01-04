@@ -4,7 +4,6 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
-	import { page } from '$app/state';
 	import * as Alert from '$lib/components/ui/alert';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
@@ -18,7 +17,11 @@
 		validationMethod: 'auto',
 		onError({ result }) {
 			// We use message for unexpected errors
-			$message = result.error.message || 'Unknown error';
+			$message = {
+				type: 'error',
+				title: 'Unexpected error',
+				description: result.error.message || 'Some error'
+			};
 		}
 	});
 
@@ -43,8 +46,8 @@
 		<div class="py-3">
 			<Alert.Root variant="destructive">
 				<CircleAlert class="h-4 w-4" />
-				<Alert.Title>Es ist ein Fehler aufgetreten - {page.status}</Alert.Title>
-				<Alert.Description>{$message}</Alert.Description>
+				<Alert.Title>{$message.title}</Alert.Title>
+				<Alert.Description>{$message.description}</Alert.Description>
 			</Alert.Root>
 		</div>
 	{/if}
