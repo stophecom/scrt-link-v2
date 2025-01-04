@@ -13,5 +13,7 @@
 	"teary_soft_sparrow_believe": "Verify email address",
 	"proud_key_toad_promise": "We've sent you a six-digit confirmation code to {emailAddress}. Please enter it below to confirm your email address.",
 	"few_lime_kudu_imagine": "Enter 6-digit code",
-	"orange_arable_sloth_cuddle": "Check your email"
+	"orange_arable_sloth_cuddle": "Check your email",
+	"nimble_fancy_pony_amuse": "Too many requests",
+	"that_dark_cockroach_hint": "Try again in {amountOfMinutes} minutes."
 }

@@ -7,5 +7,7 @@
 	"zany_jolly_cuckoo_scoop": "Hallo, {name} !",
 	"equal_tiny_wren_skip": "Erstellte Geheimnisse: {number}",
 	"candid_red_lynx_offer": "Mit Scrt.link können Sie vertrauliche Informationen online teilen: Ende-zu-Ende verschlüsselt.\nZeit. Halten Sie vertrauliche Informationen aus E-Mails, Slack, Teams, WhatsApp oder anderen Kommunikationsmitteln fern\nKanal. Ein einmaliger Wegwerflink garantiert, dass Ihre Geheimnisse nur einmal abgerufen werden können - vor\nfür immer zerstört.",
-	"inner_clear_duck_bend": "Das ist Markdown \n\n## Das ist ein Titel\n\n- Listenelement\n- Listenelement\n- Listenelement\n"
+	"inner_clear_duck_bend": "Das ist Markdown \n\n## Das ist ein Titel\n\n- Listenelement\n- Listenelement\n- Listenelement\n",
+	"nimble_fancy_pony_amuse": "Zu viele Anfragen",
+	"that_dark_cockroach_hint": "Versuche es in {amountOfMinutes} minuten nochmals."
 }

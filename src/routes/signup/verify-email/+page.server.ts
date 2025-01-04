@@ -6,6 +6,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { RATE_LIMIT_COOKIE_SECRET } from '$env/static/private';
 import { verifyPassword } from '$lib/crypo';
+import * as m from '$lib/paraglide/messages.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import { emailVerificationRequest, user } from '$lib/server/db/schema';
@@ -72,8 +73,8 @@ async function verifyCode(event: RequestEvent) {
 	if (await limiter.isLimited(event)) {
 		return message(verificationForm, {
 			type: 'error',
-			title: 'Too many requests',
-			description: 'Try again in {amountOfMinutes} minutes.'
+			title: m.nimble_fancy_pony_amuse(),
+			description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
 		});
 	}
 
@@ -149,8 +150,8 @@ async function resendCode(event: RequestEvent) {
 	if (await limiter.isLimited(event)) {
 		return message(resendForm, {
 			type: 'error',
-			title: 'Too many requests',
-			description: 'Try again in {amountOfMinutes} minutes.'
+			title: m.nimble_fancy_pony_amuse(),
+			description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
 		});
 	}
 
