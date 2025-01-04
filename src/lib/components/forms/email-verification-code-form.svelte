@@ -20,7 +20,14 @@
 
 	const verificationForm = superForm(verificationFormData, {
 		validators: zodClient(codeFormSchema),
-		validationMethod: 'auto'
+		validationMethod: 'auto',
+		onError(event) {
+			$verificationFormMessage = {
+				type: 'error',
+				title: `${event.result.status}`,
+				description: event.result.error.message
+			};
+		}
 	});
 
 	const {
@@ -30,10 +37,22 @@
 		enhance
 	} = verificationForm;
 
-	const { message: resendFormMessage } = superForm(resendFormData);
+	const { message: resendFormMessage, enhance: enhanceResendForm } = superForm(resendFormData, {
+		onError(event) {
+			$resendFormMessage = {
+				type: 'error',
+				title: `${event.result.status}`,
+				description: event.result.error.message
+			};
+		}
+	});
 </script>
 
-<FormWrapper message={$verificationFormMessage || $resendFormMessage}>
+<FormWrapper
+	message={$verificationFormMessage || $resendFormMessage}
+	title={m.teary_soft_sparrow_believe()}
+	description={m.proud_key_toad_promise({ emailAddress: $formData.email })}
+>
 	<form method="POST" action="?/verifyCode" use:enhance>
 		<Form.Field form={verificationForm} name="code" class="py-4">
 			<Form.Control let:attrs>
@@ -57,10 +76,10 @@
 		{/if}
 	</form>
 
-	<form method="POST" action="?/resend">
+	<form method="POST" action="?/resend" use:enhanceResendForm>
 		<input type="hidden" name="email" value={$formData.email} />
 		<div class="py-4">
-			<Button type="submit" size="lg">Send code again</Button>
+			<Button type="submit" variant="outline">Send code again</Button>
 		</div>
 	</form>
 </FormWrapper>

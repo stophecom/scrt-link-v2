@@ -11,7 +11,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
-		return redirect(302, '/account');
+		return redirect(307, '/account');
 	}
 	return {
 		form: await superValidate(zod(emailFormSchema))
@@ -43,9 +43,8 @@ export const actions: Actions = {
 
 		event.cookies.set('email_verification', email, {
 			path: '/'
-			// secure: import.meta.env.PROD
 		});
 
-		return redirect(302, '/signup/verify-email');
+		return redirect(303, '/signup/verify-email');
 	}
 };

@@ -6,7 +6,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
-		return redirect(302, '/signup');
+		return redirect(307, '/signup');
 	}
 	return { user: event.locals.user };
 };
@@ -19,6 +19,6 @@ export const actions: Actions = {
 		await auth.invalidateSession(event.locals.session.id);
 		auth.deleteSessionTokenCookie(event);
 
-		return redirect(302, '/');
+		return redirect(303, '/');
 	}
 };

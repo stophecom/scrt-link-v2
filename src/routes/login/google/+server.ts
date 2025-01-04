@@ -20,5 +20,5 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		maxAge: 60 * 10 // 10 min
 	});
 
-	redirect(302, url.toString());
+	redirect(307, url.toString());
 }

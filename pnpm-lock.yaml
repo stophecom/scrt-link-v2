@@ -105,6 +105,9 @@ importers:
       svelte-check:
         specifier: ^4.0.0
         version: 4.1.1(picomatch@4.0.2)(svelte@5.16.0)(typescript@5.7.2)
+      sveltekit-rate-limiter:
+        specifier: ^0.6.1
+        version: 0.6.1(@sveltejs/kit@2.15.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2)))(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2)))
       sveltekit-superforms:
         specifier: ^2.22.1
         version: 2.22.1(@sveltejs/kit@2.15.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2)))(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2)))(@types/json-schema@7.0.15)(svelte@5.16.0)(typescript@5.7.2)
@@ -879,6 +882,10 @@ packages:
   '@isaacs/fs-minipass@4.0.1':
     resolution: {integrity: sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==}
     engines: {node: '>=18.0.0'}
+
+  '@isaacs/ttlcache@1.4.1':
+    resolution: {integrity: sha512-RQgQ4uQ+pLbqXfOmieB91ejmLwvSgv9nLx6sT6sD83s7umBypgg+OIBOBbEUiJXrfpnp9j0mRhYYdzp9uqq3lA==}
+    engines: {node: '>=12'}
 
   '@jridgewell/gen-mapping@0.3.8':
     resolution: {integrity: sha512-imAbBGkb+ebQyxKgzv5Hu2nmROxoDOXHh80evxdoXNOrvAnVx7zimzc1Oo5h9RlfV4vPXaE2iM5pOFbvOCClWA==}
@@ -3008,6 +3015,11 @@ packages:
     resolution: {integrity: sha512-Ygqsiac6UogVED2ruKclU+pOeMThxWtp9LG+li7BXeDKC2paVIsRTMkNmcON4Zejerd1s5sZHWx6ZtU85xklVg==}
     engines: {node: '>=18'}
 
+  sveltekit-rate-limiter@0.6.1:
+    resolution: {integrity: sha512-5b0ZAuJsGeFt3k8qe+SvPZXeg8f0XVcnUnL/5cOZVh1tLoi8NE9bDOtAkGN3L+66hjSkbBayhd7FVyjN4DV7pw==}
+    peerDependencies:
+      '@sveltejs/kit': 1.x || 2.x
+
   sveltekit-superforms@2.22.1:
     resolution: {integrity: sha512-SSePlvvEAo0eChLw1V9R1XdwwbE/XAOWTfzQOM01bFNT2IQGH5gy0wQkBffPKbDLZ7HYoRVao7spblTPBwyylA==}
     peerDependencies:
@@ -3887,6 +3899,8 @@ snapshots:
   '@isaacs/fs-minipass@4.0.1':
     dependencies:
       minipass: 7.1.2
+
+  '@isaacs/ttlcache@1.4.1': {}
 
   '@jridgewell/gen-mapping@0.3.8':
     dependencies:
@@ -6180,6 +6194,11 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.17
       zimmerframe: 1.1.2
+
+  sveltekit-rate-limiter@0.6.1(@sveltejs/kit@2.15.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2)))(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2))):
+    dependencies:
+      '@isaacs/ttlcache': 1.4.1
+      '@sveltejs/kit': 2.15.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2)))(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2))
 
   sveltekit-superforms@2.22.1(@sveltejs/kit@2.15.1(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2)))(svelte@5.16.0)(vite@5.4.11(@types/node@22.10.2)))(@types/json-schema@7.0.15)(svelte@5.16.0)(typescript@5.7.2):
     dependencies:

@@ -35,5 +35,3 @@ export async function deleteEmailVerificationRequests(email: string) {
 export function sendVerificationEmail(email: string, code: string): void {
 	console.log(`To ${email}: Your verification code is ${code}`);
 }
-
-// export const sendVerificationEmailBucket = new ExpiringTokenBucket<number>(3, 60 * 10);

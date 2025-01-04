@@ -1,8 +1,10 @@
 import { error, redirect } from '@sveltejs/kit';
 import { and, desc, eq } from 'drizzle-orm';
+import { RateLimiter } from 'sveltekit-rate-limiter/server';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { RATE_LIMIT_COOKIE_SECRET } from '$env/static/private';
 import { verifyPassword } from '$lib/crypo';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
@@ -12,22 +14,36 @@ import {
 	deleteEmailVerificationRequests
 } from '$lib/server/email-verification';
 import { checkIfUserExists } from '$lib/server/helpers';
-// import { ExpiringTokenBucket } from '$lib/server/rate-limit';
 import { codeFormSchema, emailFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, RequestEvent } from './$types';
 
+const ALLOWED_REQUESTS_PER_MINUTE = 3;
+
+const limiter = new RateLimiter({
+	IP: [10, 'h'], // IP address limiter
+	IPUA: [5, 'm'], // IP + User Agent limiter
+	cookie: {
+		// Cookie limiter
+		name: 'limiterid', // Unique cookie name for this limiter
+		secret: RATE_LIMIT_COOKIE_SECRET, // Use $env/static/private
+		rate: [ALLOWED_REQUESTS_PER_MINUTE, 'm'],
+		preflight: true // Require preflight call (see load function)
+	}
+});
+
 export async function load(event: RequestEvent) {
+	// await limiter.cookieLimiter?.preflight(event);
 	const email = event.cookies.get('email_verification');
 
 	// Already logged in
 	if (event.locals.user) {
-		return redirect(302, '/account');
+		return redirect(307, '/account');
 	}
 
 	// No email from cookie
 	if (!email) {
-		return redirect(302, '/signup');
+		return redirect(307, '/signup');
 	}
 
 	const defaultValues = {
@@ -45,15 +61,22 @@ export async function load(event: RequestEvent) {
 	};
 }
 
-// const bucket = new ExpiringTokenBucket<number>(5, 60 * 30);
-
 export const actions: Actions = {
 	verifyCode: verifyCode,
-	resend: resendEmail
+	resend: resendCode
 };
 
 async function verifyCode(event: RequestEvent) {
 	const verificationForm = await superValidate(event.request, zod(codeFormSchema));
+
+	if (await limiter.isLimited(event)) {
+		return message(verificationForm, {
+			type: 'error',
+			title: 'Too many requests',
+			description: 'Try again in {amountOfMinutes} minutes.'
+		});
+	}
+
 	const { code, email } = verificationForm.data;
 
 	try {
@@ -101,30 +124,41 @@ async function verifyCode(event: RequestEvent) {
 		// All check passed. We create a user and session.
 		const [userResult] = await db.insert(user).values({ email, emailVerified: true }).returning();
 
+		// Create session
 		const sessionToken = auth.generateSessionToken();
 		const session = await auth.createSession(sessionToken, userResult.id);
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+
+		// Cleanup DB and Cookies
+		await deleteEmailVerificationRequests(email);
+		event.cookies.delete('email_verification', { path: '/' });
 	} catch (e) {
 		console.error(e);
 		error(500, 'Failed to register');
-	} finally {
-		// Cleanup DB
-		await deleteEmailVerificationRequests(email);
 	}
 
-	return redirect(302, '/signup/set-password');
+	return redirect(303, '/signup/set-password');
 }
 
-async function resendEmail(event: RequestEvent) {
+async function resendCode(event: RequestEvent) {
 	console.log('Send code again');
 	const resendForm = await superValidate(event.request, zod(emailFormSchema), {
 		id: 'resend-form'
 	});
+
+	if (await limiter.isLimited(event)) {
+		return message(resendForm, {
+			type: 'error',
+			title: 'Too many requests',
+			description: 'Try again in {amountOfMinutes} minutes.'
+		});
+	}
+
 	const { email } = resendForm.data;
 
 	// No email from cookie
 	if (!email) {
-		return redirect(302, '/signup');
+		return redirect(307, '/signup');
 	}
 	try {
 		await createEmailVerificationRequest(email);
