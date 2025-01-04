@@ -31,6 +31,9 @@
 		--destructive: 0 72.2% 50.6%;
 		--destructive-foreground: 0 0% 98%;
 
+		--success: 123 38% 37%;
+		--success-foreground: 0 0% 100%;
+
 		--ring: 240 10% 3.9%;
 
 		--radius: 0.5rem;
@@ -61,8 +64,11 @@
 		--accent: 240 3.7% 15.9%;
 		--accent-foreground: 0 0% 98%;
 
-		--destructive: 0 62.8% 30.6%;
+		--destructive: 0 62.8% 60.6%;
 		--destructive-foreground: 0 0% 98%;
+
+		--success: 123 38% 57%;
+		--success-foreground: 0 0% 100%;
 
 		--ring: 240 4.9% 83.9%;
 	}

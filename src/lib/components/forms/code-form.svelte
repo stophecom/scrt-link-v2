@@ -1,63 +1,66 @@
 <script lang="ts">
-	import CircleAlert from 'lucide-svelte/icons/circle-alert';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
-	import * as Alert from '$lib/components/ui/alert';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import * as m from '$lib/paraglide/messages.js';
-	import { type CodeFormSchema, codeFormSchema } from '$lib/validators/formSchemas';
+	import {
+		type CodeFormSchema,
+		codeFormSchema,
+		type EmailFormSchema
+	} from '$lib/validators/formSchemas';
 
-	export let data: SuperValidated<Infer<CodeFormSchema>>;
+	import Button from '../ui/button/button.svelte';
+	import FormWrapper from './form-wrapper.svelte';
 
-	const form = superForm(data, {
+	export let verificationFormData: SuperValidated<Infer<CodeFormSchema>>;
+	export let resendFormData: SuperValidated<Infer<EmailFormSchema>>;
+
+	const verificationForm = superForm(verificationFormData, {
 		validators: zodClient(codeFormSchema),
-		validationMethod: 'auto',
-		onError({ result }) {
-			// We use message for unexpected errors
-			$message = {
-				type: 'error',
-				title: 'Unexpected error',
-				description: result.error.message || 'Some error'
-			};
-		}
+		validationMethod: 'auto'
 	});
 
-	const { form: formData, message, constraints, enhance } = form;
+	const {
+		form: formData,
+		message: verificationFormMessage,
+		constraints,
+		enhance
+	} = verificationForm;
+
+	const { message: resendFormMessage } = superForm(resendFormData);
 </script>
 
-<form method="POST" action="?/verifyCode" use:enhance>
-	<Form.Field {form} name="code" class="py-4">
-		<Form.Control let:attrs>
-			<Form.Label>{m.few_lime_kudu_imagine()}</Form.Label>
-			<Input {...attrs} bind:value={$formData.code} {...$constraints.code} />
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
+<FormWrapper message={$verificationFormMessage || $resendFormMessage}>
+	<form method="POST" action="?/verifyCode" use:enhance>
+		<Form.Field form={verificationForm} name="code" class="py-4">
+			<Form.Control let:attrs>
+				<Form.Label>{m.few_lime_kudu_imagine()}</Form.Label>
+				<Input {...attrs} bind:value={$formData.code} {...$constraints.code} />
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
 
-	<input name="email" type="hidden" bind:value={$formData.email} />
+		<input name="email" type="hidden" bind:value={$formData.email} />
 
-	<div class="py-4">
-		<Form.Button size="lg">Submit</Form.Button>
-	</div>
-
-	<!-- Global error messages -->
-	{#if $message}
-		<div class="py-3">
-			<Alert.Root variant="destructive">
-				<CircleAlert class="h-4 w-4" />
-				<Alert.Title>{$message.title}</Alert.Title>
-				<Alert.Description>{$message.description}</Alert.Description>
-			</Alert.Root>
+		<div class="py-4">
+			<Form.Button size="lg">Submit</Form.Button>
 		</div>
-	{/if}
 
-	<!-- For debugging -->
-	{#if dev}
-		<div class="py-3">
-			<SuperDebug data={$formData} />
+		<!-- For debugging -->
+		{#if dev}
+			<div class="py-3">
+				<SuperDebug data={$formData} />
+			</div>
+		{/if}
+	</form>
+
+	<form method="POST" action="?/resend">
+		<input type="hidden" name="email" value={$formData.email} />
+		<div class="py-4">
+			<Button type="submit" size="lg">Send code again</Button>
 		</div>
-	{/if}
-</form>
+	</form>
+</FormWrapper>
