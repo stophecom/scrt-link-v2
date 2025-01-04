@@ -22,8 +22,8 @@ import type { Actions, RequestEvent } from './$types';
 const ALLOWED_REQUESTS_PER_MINUTE = 3;
 
 const limiter = new RateLimiter({
-	// IP: [10, 'h'], // IP address limiter
-	// IPUA: [5, 'm'], // IP + User Agent limiter
+	IP: [10, 'h'], // IP address limiter
+	IPUA: [5, 'm'], // IP + User Agent limiter
 	cookie: {
 		// Cookie limiter
 		name: 'limiterid', // Unique cookie name for this limiter
@@ -34,7 +34,7 @@ const limiter = new RateLimiter({
 });
 
 export async function load(event: RequestEvent) {
-	// await limiter.cookieLimiter?.preflight(event);
+	await limiter.cookieLimiter?.preflight(event);
 	const email = event.cookies.get('email_verification');
 
 	// Already logged in
