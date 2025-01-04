@@ -3,11 +3,11 @@
 	import { superForm } from 'sveltekit-superforms';
 
 	import CodeForm from '$lib/components/forms/code-form.svelte';
+	import Page from '$lib/components/layout/page.svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 
-	import Page from '../../page.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();

@@ -1,9 +1,8 @@
 <script lang="ts">
 	import Markdown from 'svelte-exmarkdown';
 
+	import Page from '$lib/components/layout/page.svelte';
 	import * as m from '$lib/paraglide/messages.js';
-
-	import Page from '../page.svelte';
 
 	const markdown = m.inner_clear_duck_bend();
 </script>

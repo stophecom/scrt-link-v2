@@ -1,10 +1,10 @@
 <script lang="ts">
 	import EmailForm from '$lib/components/forms/email-form.svelte';
+	import Page from '$lib/components/layout/page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 
-	import Page from '../page.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();

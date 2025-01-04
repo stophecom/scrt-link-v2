@@ -6,11 +6,11 @@
 	import type { Snippet } from 'svelte';
 
 	import { PUBLIC_ENV } from '$env/static/public';
+	import Footer from '$lib/components/layout/footer.svelte';
+	import Header from '$lib/components/layout/header.svelte';
 	import { i18n } from '$lib/i18n';
 
 	import type { LayoutData } from './$types';
-	import Footer from './footer.svelte';
-	import Header from './header.svelte';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 

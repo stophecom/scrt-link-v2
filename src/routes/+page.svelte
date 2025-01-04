@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 
+	import Page from '$lib/components/layout/page.svelte';
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import { Button } from '$lib/components/ui/button';
 	import { generateBase64Token } from '$lib/crypo';
 	import { generateUuid } from '$lib/web-crypto';
-
-	import Page from './page.svelte';
 
 	const items = [
 		{

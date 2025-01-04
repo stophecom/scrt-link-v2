@@ -1,7 +1,6 @@
 <script lang="ts">
+	import Page from '$lib/components/layout/page.svelte';
 	import * as m from '$lib/paraglide/messages.js';
-
-	import Page from '../../page.svelte';
 	// import type { PageData } from './$types';
 
 	// let { data }: { data: PageData } = $props();
