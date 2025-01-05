@@ -1,12 +1,5 @@
 import { z } from 'zod';
 
-export const signupFormSchema = z.object({
-	email: z.string().email(),
-	password: z.string().min(6).max(255)
-});
-
-export type SignupFormSchema = typeof signupFormSchema;
-
 export const emailFormSchema = z.object({
 	email: z.string().email()
 });
@@ -35,6 +28,12 @@ export const passwordFormSchema = z.object({
 		})
 });
 
+export const signInFormSchema = z.object({
+	email: z.string().email(),
+	password: z.string().min(6).max(255)
+});
+
+export type SignInFormSchema = typeof signInFormSchema;
 export type EmailFormSchema = typeof emailFormSchema;
 export type CodeFormSchema = typeof emailVerificationCodeFormSchema;
 export type PasswordFormSchema = typeof passwordFormSchema;

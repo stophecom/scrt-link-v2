@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import { and, desc, eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { RateLimiter } from 'sveltekit-rate-limiter/server';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -84,7 +84,7 @@ async function verifyCode(event: RequestEvent) {
 		const [result] = await db
 			.select()
 			.from(emailVerificationRequest)
-			.where(and(eq(emailVerificationRequest.email, email)))
+			.where(eq(emailVerificationRequest.email, email))
 			.orderBy(desc(emailVerificationRequest.expiresAt));
 
 		if (!result) {
