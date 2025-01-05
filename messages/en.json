@@ -1,13 +1,13 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"any_this_gull_reside": "Password",
-	"front_fun_husky_pray": "Choose a strong password",
+	"front_fun_husky_pray": "Set password",
 	"clear_lost_goose_beam": "Email",
 	"tame_actual_raven_adapt": "Password",
 	"zany_jolly_cuckoo_scoop": "Hi, {name}!",
 	"equal_tiny_wren_skip": "Secrets created: {number}",
 	"candid_red_lynx_offer": "Scrt.link lets you share sensitive information online: End-to-end encrypted. One\n\t\t\ttime. Keep confidential information out of email, Slack, Teams, Whatsapp or any other communication\n\t\t\tchannel. A one-time disposable link guarantees your secrets can only ever be accessed once - before\n\t\t\tbeing destroyed forever.",
-	"tough_jumpy_anteater_taste": "Create account",
+	"tough_jumpy_anteater_taste": "Create an account",
 	"teary_brief_robin_scoop": "Great things start here…",
 	"inner_clear_duck_bend": "Some Markdown \n\n## This is a title\n\n- List item\n- List item\n- List item\n\n",
 	"teary_soft_sparrow_believe": "Verify email address",
@@ -20,5 +20,7 @@
 	"yummy_fair_gazelle_link": "Password",
 	"legal_weak_jay_bless": "Sign in",
 	"game_light_toucan_care": "Sign in",
-	"ago_crazy_pelican_pray": "to continue to your account."
+	"ago_crazy_pelican_pray": "to continue to your account.",
+	"aloof_careful_trout_dine": "Password must contain at least 8 characters.",
+	"every_chunky_osprey_zip": "Invalid email adress."
 }

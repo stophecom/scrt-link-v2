@@ -14,13 +14,13 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(307, '/account');
 	}
 	return {
-		form: await superValidate(zod(emailFormSchema))
+		form: await superValidate(zod(emailFormSchema()))
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event.request, zod(emailFormSchema));
+		const form = await superValidate(event.request, zod(emailFormSchema()));
 
 		const { email } = form.data;
 

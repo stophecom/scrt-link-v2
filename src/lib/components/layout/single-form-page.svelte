@@ -5,7 +5,7 @@
 		$props();
 </script>
 
-<div class="container flex justify-center pb-8 pt-12">
+<div class="container flex justify-center pb-8 pt-16">
 	<div
 		class="w-full max-w-md rounded border bg-slate-100 px-8 pb-8 pt-12 shadow-lg dark:bg-slate-900"
 	>

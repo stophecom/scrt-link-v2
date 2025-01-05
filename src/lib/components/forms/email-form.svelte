@@ -14,7 +14,7 @@
 	export let data: SuperValidated<Infer<EmailFormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(emailFormSchema),
+		validators: zodClient(emailFormSchema()),
 		validationMethod: 'auto',
 		onError({ result }) {
 			// We use message for unexpected errors
@@ -26,7 +26,7 @@
 		}
 	});
 
-	const { form: formData, message, constraints, enhance } = form;
+	const { form: formData, message, delayed, constraints, enhance } = form;
 </script>
 
 <FormWrapper message={$message}>
@@ -40,7 +40,7 @@
 		</Form.Field>
 
 		<div class="py-4">
-			<Form.Button class="w-full" size="lg">Continue with email</Form.Button>
+			<Form.Button delayed={$delayed} class="w-full" size="lg">Continue with email</Form.Button>
 		</div>
 	</form>
 	<div class="py-5">

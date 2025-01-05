@@ -15,7 +15,7 @@
 	export let data: SuperValidated<Infer<SignInFormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(signInFormSchema),
+		validators: zodClient(signInFormSchema()),
 		validationMethod: 'auto',
 		onError({ result }) {
 			// We use message for unexpected errors
@@ -27,7 +27,7 @@
 		}
 	});
 
-	const { form: formData, message, errors, constraints, enhance } = form;
+	const { form: formData, message, errors, delayed, constraints, enhance } = form;
 </script>
 
 <FormWrapper message={$message}>
@@ -56,7 +56,7 @@
 		</Form.Field>
 
 		<div class="py-4">
-			<Form.Button class="flex w-full" size="lg">Sign in</Form.Button>
+			<Form.Button delayed={$delayed} class="flex w-full" size="lg">Sign in</Form.Button>
 		</div>
 
 		<!-- For debugging -->

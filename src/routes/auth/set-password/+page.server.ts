@@ -14,9 +14,10 @@ export async function load(event: RequestEvent) {
 	if (!event.locals.user) {
 		return redirect(307, '/login');
 	}
+
 	return {
 		user: event.locals.user,
-		form: await superValidate(zod(passwordFormSchema))
+		form: await superValidate(zod(passwordFormSchema()))
 	};
 }
 
@@ -29,7 +30,7 @@ async function setPassword(event: RequestEvent) {
 		return redirect(307, '/login');
 	}
 
-	const passwordForm = await superValidate(event.request, zod(passwordFormSchema));
+	const passwordForm = await superValidate(event.request, zod(passwordFormSchema()));
 
 	const { password } = passwordForm.data;
 

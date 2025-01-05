@@ -35,13 +35,13 @@ export const load: PageServerLoad = async (event) => {
 		return redirect(307, '/account');
 	}
 	return {
-		form: await superValidate(zod(signInFormSchema))
+		form: await superValidate(zod(signInFormSchema()))
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event.request, zod(signInFormSchema));
+		const form = await superValidate(event.request, zod(signInFormSchema()));
 
 		if (await limiter.isLimited(event)) {
 			return message(form, {

@@ -19,7 +19,7 @@
 	export let resendFormData: SuperValidated<Infer<EmailFormSchema>>;
 
 	const verificationForm = superForm(verificationFormData, {
-		validators: zodClient(emailVerificationCodeFormSchema),
+		validators: zodClient(emailVerificationCodeFormSchema()),
 		validationMethod: 'auto',
 		onError(event) {
 			$verificationFormMessage = {
@@ -34,10 +34,15 @@
 		form: formData,
 		message: verificationFormMessage,
 		constraints,
+		delayed: verificationFormDelayed,
 		enhance
 	} = verificationForm;
 
-	const { message: resendFormMessage, enhance: enhanceResendForm } = superForm(resendFormData, {
+	const {
+		message: resendFormMessage,
+		delayed: resendFormDelayed,
+		enhance: enhanceResendForm
+	} = superForm(resendFormData, {
 		onError(event) {
 			$resendFormMessage = {
 				type: 'error',
@@ -61,7 +66,7 @@
 		<input name="email" type="hidden" bind:value={$formData.email} />
 
 		<div class="py-4">
-			<Form.Button class="w-full" size="lg">Submit</Form.Button>
+			<Form.Button delayed={$verificationFormDelayed} class="w-full" size="lg">Submit</Form.Button>
 		</div>
 
 		<!-- For debugging -->
@@ -75,7 +80,7 @@
 	<form method="POST" action="?/resend" use:enhanceResendForm>
 		<input type="hidden" name="email" value={$formData.email} />
 		<div class="py-4">
-			<Button type="submit" variant="outline">Send code again</Button>
+			<Button type="submit" delayed={$resendFormDelayed} variant="outline">Send code again</Button>
 		</div>
 	</form>
 </FormWrapper>

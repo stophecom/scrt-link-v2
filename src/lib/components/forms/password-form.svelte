@@ -13,7 +13,7 @@
 	export let form: SuperValidated<Infer<PasswordFormSchema>>;
 
 	const passwordForm = superForm(form, {
-		validators: zodClient(passwordFormSchema),
+		validators: zodClient(passwordFormSchema()),
 		validationMethod: 'auto',
 		onError(event) {
 			$message = {
@@ -24,7 +24,7 @@
 		}
 	});
 
-	const { form: formData, message, constraints, enhance } = passwordForm;
+	const { form: formData, message, delayed, constraints, enhance } = passwordForm;
 </script>
 
 <FormWrapper message={$message}>
@@ -43,7 +43,7 @@
 		</Form.Field>
 
 		<div class="py-4">
-			<Form.Button class="w-full" size="lg">Submit</Form.Button>
+			<Form.Button delayed={$delayed} class="w-full" size="lg">Submit</Form.Button>
 		</div>
 
 		<!-- For debugging -->

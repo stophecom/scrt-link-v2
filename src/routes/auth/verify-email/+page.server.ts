@@ -52,10 +52,10 @@ export async function load(event: RequestEvent) {
 	};
 
 	return {
-		verificationForm: await superValidate(defaultValues, zod(emailVerificationCodeFormSchema), {
+		verificationForm: await superValidate(defaultValues, zod(emailVerificationCodeFormSchema()), {
 			errors: false
 		}),
-		resendForm: await superValidate(defaultValues, zod(emailFormSchema), {
+		resendForm: await superValidate(defaultValues, zod(emailFormSchema()), {
 			errors: false,
 			id: 'resend-form'
 		})
@@ -68,7 +68,10 @@ export const actions: Actions = {
 };
 
 async function verifyCode(event: RequestEvent) {
-	const verificationForm = await superValidate(event.request, zod(emailVerificationCodeFormSchema));
+	const verificationForm = await superValidate(
+		event.request,
+		zod(emailVerificationCodeFormSchema())
+	);
 
 	if (await limiter.isLimited(event)) {
 		return message(verificationForm, {
@@ -143,7 +146,7 @@ async function verifyCode(event: RequestEvent) {
 
 async function resendCode(event: RequestEvent) {
 	console.log('Send code again');
-	const resendForm = await superValidate(event.request, zod(emailFormSchema), {
+	const resendForm = await superValidate(event.request, zod(emailFormSchema()), {
 		id: 'resend-form'
 	});
 

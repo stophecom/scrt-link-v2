@@ -8,6 +8,6 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<SingleFormPage title={m.front_fun_husky_pray()}>
+<SingleFormPage title={m.front_fun_husky_pray()} description="Choose a strong password.">
 	<PasswordForm form={data.form} />
 </SingleFormPage>

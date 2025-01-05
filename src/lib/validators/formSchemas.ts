@@ -1,42 +1,49 @@
 import { z } from 'zod';
 
-export const emailFormSchema = z.object({
-	email: z.string().email()
-});
+import * as m from '$lib/paraglide/messages.js';
 
-export const emailVerificationCodeFormSchema = z.object({
-	email: z.string().email(),
-	code: z.string().length(6)
-});
+// We return functions in order for translations to work as expected.
+export const emailFormSchema = () =>
+	z.object({
+		email: z.string().email(m.every_chunky_osprey_zip())
+	});
 
-export const passwordFormSchema = z.object({
-	password: z
-		.string()
-		.min(8)
-		.max(255)
-		.refine((password) => /[A-Z]/.test(password), {
-			message: 'Include at least one uppercase character.'
-		})
-		.refine((password) => /[a-z]/.test(password), {
-			message: 'Include at least one lowercase character.'
-		})
-		.refine((password) => /[0-9]/.test(password), {
-			message: 'Include at least one integer: 0-9'
-		})
-		.refine((password) => /[!@#$%^&*]/.test(password), {
-			message: 'Include at least one special character: !@#$%^&*'
-		})
-});
+export const emailVerificationCodeFormSchema = () =>
+	z.object({
+		email: z.string().email(),
+		code: z.string().length(6)
+	});
 
-export const signInFormSchema = z.object({
-	email: z.string().email(),
-	password: z.string().min(6).max(255)
-});
+export const passwordFormSchema = () =>
+	z.object({
+		password: z
+			.string()
+			.min(8, m.aloof_careful_trout_dine())
+			.max(255)
+			.refine((password) => /[A-Z]/.test(password), {
+				message: 'Include at least one uppercase character.'
+			})
+			.refine((password) => /[a-z]/.test(password), {
+				message: 'Include at least one lowercase character.'
+			})
+			.refine((password) => /[0-9]/.test(password), {
+				message: 'Include at least one integer: 0-9'
+			})
+			.refine((password) => /[!@#$%^&*]/.test(password), {
+				message: 'Include at least one special character: !@#$%^&*'
+			})
+	});
 
-export type SignInFormSchema = typeof signInFormSchema;
-export type EmailFormSchema = typeof emailFormSchema;
-export type CodeFormSchema = typeof emailVerificationCodeFormSchema;
-export type PasswordFormSchema = typeof passwordFormSchema;
+export const signInFormSchema = () =>
+	z.object({
+		email: z.string().email(),
+		password: z.string().min(6).max(255)
+	});
+
+export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
+export type EmailFormSchema = ReturnType<typeof emailFormSchema>;
+export type CodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
+export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 
 // export const RegisterUserZodSchema = createInsertSchema(usersTable, {
 // 	name: (schema) =>
