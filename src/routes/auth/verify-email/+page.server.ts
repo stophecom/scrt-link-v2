@@ -174,6 +174,6 @@ async function resendCode(event: RequestEvent) {
 	return message(resendForm, {
 		type: 'success',
 		title: 'Code sent',
-		description: 'We sent you a new code. Please check your email.'
+		description: 'We sent you a new code. Please check your email inbox.'
 	});
 }

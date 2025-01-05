@@ -13,13 +13,14 @@
 		--popover: 0 0% 100%;
 		--popover-foreground: 240 10% 3.9%;
 
-		--card: 0 0% 100%;
+		--card: 329 3% 96%;
 		--card-foreground: 240 10% 3.9%;
 
 		--border: 240 5.9% 90%;
 		--input: 240 5.9% 90%;
 
-		--primary: 329 100% 50%;
+		--primary-text: 329 100% 43%;
+		--primary: 329 100% 45%;
 		--primary-foreground: 0 0% 100%;
 
 		--secondary: 240 4.8% 95.9%;
@@ -49,13 +50,14 @@
 		--popover: 240 10% 3.9%;
 		--popover-foreground: 0 0% 98%;
 
-		--card: 240 10% 3.9%;
+		--card: 212 27% 10%;
 		--card-foreground: 0 0% 98%;
 
 		--border: 240 3.7% 35.9%;
 		--input: 240 3.7% 35.9%;
 
-		--primary: 329 100% 50%;
+		--primary-text: 329 100% 55%;
+		--primary: 329 100% 45%;
 		--primary-foreground: 0 0% 100%;
 
 		--secondary: 240 3.7% 15.9%;
