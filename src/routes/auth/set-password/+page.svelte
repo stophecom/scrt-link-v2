@@ -13,7 +13,4 @@
 	<Section>
 		<PasswordForm form={data.form} />
 	</Section>
-	<div class="container justify-center">
-		<div class="max-w-lg rounded border bg-slate-100 p-3 dark:bg-slate-900">Todo</div>
-	</div>
 </Page>
