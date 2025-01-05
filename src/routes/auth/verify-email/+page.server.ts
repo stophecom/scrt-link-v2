@@ -15,7 +15,7 @@ import {
 	deleteEmailVerificationRequests
 } from '$lib/server/email-verification';
 import { checkIfUserExists } from '$lib/server/helpers';
-import { codeFormSchema, emailFormSchema } from '$lib/validators/formSchemas';
+import { emailFormSchema, emailVerificationCodeFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, RequestEvent } from './$types';
 
@@ -52,7 +52,7 @@ export async function load(event: RequestEvent) {
 	};
 
 	return {
-		verificationForm: await superValidate(defaultValues, zod(codeFormSchema), {
+		verificationForm: await superValidate(defaultValues, zod(emailVerificationCodeFormSchema), {
 			errors: false
 		}),
 		resendForm: await superValidate(defaultValues, zod(emailFormSchema), {
@@ -68,7 +68,7 @@ export const actions: Actions = {
 };
 
 async function verifyCode(event: RequestEvent) {
-	const verificationForm = await superValidate(event.request, zod(codeFormSchema));
+	const verificationForm = await superValidate(event.request, zod(emailVerificationCodeFormSchema));
 
 	if (await limiter.isLimited(event)) {
 		return message(verificationForm, {
@@ -138,7 +138,7 @@ async function verifyCode(event: RequestEvent) {
 		error(500, 'Failed to register');
 	}
 
-	return redirect(303, '/signup/set-password');
+	return redirect(303, '/auth/set-password');
 }
 
 async function resendCode(event: RequestEvent) {

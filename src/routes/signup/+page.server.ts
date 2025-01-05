@@ -45,6 +45,6 @@ export const actions: Actions = {
 			path: '/'
 		});
 
-		return redirect(303, '/signup/verify-email');
+		return redirect(303, '/auth/verify-email');
 	}
 };

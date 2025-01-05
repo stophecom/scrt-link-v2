@@ -15,11 +15,11 @@
 
 	const form = superForm(data, {
 		validators: zodClient(signupFormSchema),
-		validationMethod: 'auto',
-		onError({ result }) {
-			// We use message for unexpected errors
-			$message = result.error.message || 'Unknown error';
-		}
+		validationMethod: 'auto'
+		// onError({ result }) {
+		// We use message for unexpected errors
+		// $message = result.error.message || 'Unknown error';
+		// }
 	});
 
 	const { form: formData, message, errors, constraints, enhance } = form;
@@ -41,7 +41,7 @@
 			<Input {...attrs} bind:value={$formData.password} {...$constraints.password} />
 			{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
 		</Form.Control>
-		<Form.Description>{m.front_fun_husky_pray()}</Form.Description>
+
 		<Form.FieldErrors />
 	</Form.Field>
 

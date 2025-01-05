@@ -15,7 +15,7 @@
 <header class="h-16">
 	<div class="fixed left-0 top-0 h-16 w-full bg-background">
 		<div class="container flex h-full items-center">
-			<a class="p-2 hover:text-primary" href="/">
+			<a class="p-2" href="/">
 				<Logo class="h-14 w-14" />
 			</a>
 			<a class="p-2 hover:text-primary" href="/text">Text</a>

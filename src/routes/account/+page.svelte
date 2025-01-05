@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Page from '$lib/components/layout/page.svelte';
+	import Section from '$lib/components/layout/section.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 
@@ -8,12 +10,20 @@
 	let { data }: { data: PageServerData } = $props();
 </script>
 
-<h1>{m.zany_jolly_cuckoo_scoop({ name: data.user.name || 'Foo' })}</h1>
-<p>Your user ID is {data.user.id}.</p>
-<img src={data.user.picture} alt={data.user.name} />
-<p>Your Google ID is {data.user.googleId}</p>
-<p>Your email is {data.user.email}.</p>
+<Page title={m.zany_jolly_cuckoo_scoop({ name: data.user.name || 'Foo' })}>
+	<Section>
+		<p>Your user ID is {data.user.id}.</p>
+		<img src={data.user.picture} alt={data.user.name} />
+		<p>Your Google ID is {data.user.googleId}</p>
+		<p>Your email is {data.user.email}.</p>
 
-<form method="post" action="?/logout" use:enhance>
-	<Button type="submit" variant="outline">Sign out</Button>
-</form>
+		<div class="grid gap-2">
+			<div>
+				<Button variant="outline" href="/auth/set-password">Change password</Button>
+			</div>
+			<form method="post" action="?/logout" use:enhance>
+				<Button type="submit" variant="outline">Sign out</Button>
+			</form>
+		</div>
+	</Section>
+</Page>

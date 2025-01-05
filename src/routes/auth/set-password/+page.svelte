@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CodeForm from '$lib/components/forms/email-verification-code-form.svelte';
+	import PasswordForm from '$lib/components/forms/password-form.svelte';
 	import Page from '$lib/components/layout/page.svelte';
 	import Section from '$lib/components/layout/section.svelte';
 	import * as m from '$lib/paraglide/messages.js';
@@ -9,8 +9,11 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title={m.orange_arable_sloth_cuddle()}>
+<Page title={m.smug_fair_larva_pride()}>
 	<Section>
-		<CodeForm verificationFormData={data.verificationForm} resendFormData={data.resendForm} />
+		<PasswordForm form={data.form} />
 	</Section>
+	<div class="container justify-center">
+		<div class="max-w-lg rounded border bg-slate-100 p-3 dark:bg-slate-900">Todo</div>
+	</div>
 </Page>

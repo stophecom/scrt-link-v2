@@ -8,8 +8,8 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import {
 		type CodeFormSchema,
-		codeFormSchema,
-		type EmailFormSchema
+		type EmailFormSchema,
+		emailVerificationCodeFormSchema
 	} from '$lib/validators/formSchemas';
 
 	import Button from '../ui/button/button.svelte';
@@ -19,7 +19,7 @@
 	export let resendFormData: SuperValidated<Infer<EmailFormSchema>>;
 
 	const verificationForm = superForm(verificationFormData, {
-		validators: zodClient(codeFormSchema),
+		validators: zodClient(emailVerificationCodeFormSchema),
 		validationMethod: 'auto',
 		onError(event) {
 			$verificationFormMessage = {

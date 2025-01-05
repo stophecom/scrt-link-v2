@@ -11,17 +11,32 @@ export const emailFormSchema = z.object({
 	email: z.string().email()
 });
 
-export const codeFormSchema = z.object({
+export const emailVerificationCodeFormSchema = z.object({
 	email: z.string().email(),
 	code: z.string().length(6)
 });
 
 export const passwordFormSchema = z.object({
-	password: z.string().min(8).max(255)
+	password: z
+		.string()
+		.min(8)
+		.max(255)
+		.refine((password) => /[A-Z]/.test(password), {
+			message: 'Include at least one uppercase character.'
+		})
+		.refine((password) => /[a-z]/.test(password), {
+			message: 'Include at least one lowercase character.'
+		})
+		.refine((password) => /[0-9]/.test(password), {
+			message: 'Include at least one integer: 0-9'
+		})
+		.refine((password) => /[!@#$%^&*]/.test(password), {
+			message: 'Include at least one special character: !@#$%^&*'
+		})
 });
 
 export type EmailFormSchema = typeof emailFormSchema;
-export type CodeFormSchema = typeof codeFormSchema;
+export type CodeFormSchema = typeof emailVerificationCodeFormSchema;
 export type PasswordFormSchema = typeof passwordFormSchema;
 
 // export const RegisterUserZodSchema = createInsertSchema(usersTable, {
