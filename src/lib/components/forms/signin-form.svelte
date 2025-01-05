@@ -30,12 +30,7 @@
 	const { form: formData, message, errors, constraints, enhance } = form;
 </script>
 
-<FormWrapper title={m.legal_weak_jay_bless()} message={$message}>
-	<Button variant="outline" href="/login/google">Sign in with Google</Button>
-	<div class="py-5">
-		<Separator />
-	</div>
-
+<FormWrapper message={$message}>
 	<form method="POST" use:enhance>
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
@@ -61,7 +56,7 @@
 		</Form.Field>
 
 		<div class="py-4">
-			<Form.Button size="lg">Sign in</Form.Button>
+			<Form.Button class="flex w-full" size="lg">Sign in</Form.Button>
 		</div>
 
 		<!-- For debugging -->
@@ -71,4 +66,10 @@
 			</div>
 		{/if}
 	</form>
+
+	<div class="py-5">
+		<Separator />
+	</div>
+
+	<Button class="w-full" variant="outline" href="/login/google">Sign in with Google</Button>
 </FormWrapper>

@@ -48,11 +48,7 @@
 	});
 </script>
 
-<FormWrapper
-	message={$verificationFormMessage || $resendFormMessage}
-	title={m.teary_soft_sparrow_believe()}
-	description={m.proud_key_toad_promise({ emailAddress: $formData.email })}
->
+<FormWrapper message={$verificationFormMessage || $resendFormMessage}>
 	<form method="POST" action="?/verifyCode" use:enhance>
 		<Form.Field form={verificationForm} name="code" class="py-4">
 			<Form.Control let:attrs>
@@ -65,7 +61,7 @@
 		<input name="email" type="hidden" bind:value={$formData.email} />
 
 		<div class="py-4">
-			<Form.Button size="lg">Submit</Form.Button>
+			<Form.Button class="w-full" size="lg">Submit</Form.Button>
 		</div>
 
 		<!-- For debugging -->

@@ -27,7 +27,7 @@
 	const { form: formData, message, constraints, enhance } = passwordForm;
 </script>
 
-<FormWrapper message={$message} title={m.front_fun_husky_pray()}>
+<FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/setPassword">
 		<Form.Field form={passwordForm} name="password" class="py-4">
 			<Form.Control let:attrs>
@@ -43,7 +43,7 @@
 		</Form.Field>
 
 		<div class="py-4">
-			<Form.Button size="lg">Submit</Form.Button>
+			<Form.Button class="w-full" size="lg">Submit</Form.Button>
 		</div>
 
 		<!-- For debugging -->

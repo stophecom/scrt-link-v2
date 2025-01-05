@@ -39,9 +39,9 @@
 
 <ParaglideJS {i18n}>
 	<Header user={data.user} />
-	<div class="py-8">
+	<main>
 		{@render children()}
-	</div>
+	</main>
 	<Footer />
 </ParaglideJS>
 <ModeWatcher />

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import PasswordForm from '$lib/components/forms/password-form.svelte';
-	import Page from '$lib/components/layout/page.svelte';
-	import Section from '$lib/components/layout/section.svelte';
+	import SingleFormPage from '$lib/components/layout/single-form-page.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
@@ -9,8 +8,6 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title={m.smug_fair_larva_pride()}>
-	<Section>
-		<PasswordForm form={data.form} />
-	</Section>
-</Page>
+<SingleFormPage title={m.front_fun_husky_pray()}>
+	<PasswordForm form={data.form} />
+</SingleFormPage>

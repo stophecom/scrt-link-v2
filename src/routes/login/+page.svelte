@@ -1,7 +1,6 @@
 <script lang="ts">
 	import SigninForm from '$lib/components/forms/signin-form.svelte';
-	import Page from '$lib/components/layout/page.svelte';
-	import Section from '$lib/components/layout/section.svelte';
+	import SingleFormPage from '$lib/components/layout/single-form-page.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
@@ -9,8 +8,6 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title={m.game_light_toucan_care()} lead="Welcome back">
-	<Section>
-		<SigninForm data={data.form} />
-	</Section>
-</Page>
+<SingleFormPage title={m.legal_weak_jay_bless()} description={m.ago_crazy_pelican_pray()}>
+	<SigninForm data={data.form} />
+</SingleFormPage>
