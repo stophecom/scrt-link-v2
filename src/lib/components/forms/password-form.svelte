@@ -43,7 +43,9 @@
 		</Form.Field>
 
 		<div class="py-4">
-			<Form.Button delayed={$delayed} class="w-full" size="lg">Submit</Form.Button>
+			<Form.Button delayed={$delayed} class="w-full" size="lg"
+				>{m.flat_moving_finch_assure()}</Form.Button
+			>
 		</div>
 
 		<!-- For debugging -->

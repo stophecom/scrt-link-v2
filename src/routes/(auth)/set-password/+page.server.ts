@@ -1,6 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { message, superValidate } from 'sveltekit-superforms';
+import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { hashPassword } from '$lib/crypo';
@@ -47,9 +47,5 @@ async function setPassword(event: RequestEvent) {
 		error(500, 'Failed to set password.');
 	}
 
-	return message(passwordForm, {
-		type: 'success',
-		title: 'New password',
-		description: 'You have successfully set a new password.'
-	});
+	return redirect(303, '/account');
 }

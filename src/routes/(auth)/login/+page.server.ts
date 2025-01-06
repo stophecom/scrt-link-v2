@@ -1,33 +1,18 @@
 import { redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { RateLimiter } from 'sveltekit-rate-limiter/server';
 import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { RATE_LIMIT_COOKIE_SECRET } from '$env/static/private';
 import { verifyPassword } from '$lib/crypo';
 import * as m from '$lib/paraglide/messages.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import { user } from '$lib/server/db/schema';
+import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '$lib/server/rate-limit';
 import { signInFormSchema } from '$lib/validators/formSchemas';
 
 // import { userInsertSchema } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
-
-const ALLOWED_REQUESTS_PER_MINUTE = 3;
-
-const limiter = new RateLimiter({
-	IP: [10, 'h'], // IP address limiter
-	IPUA: [5, 'm'], // IP + User Agent limiter
-	cookie: {
-		// Cookie limiter
-		name: 'limiterid', // Unique cookie name for this limiter
-		secret: RATE_LIMIT_COOKIE_SECRET, // Use $env/static/private
-		rate: [ALLOWED_REQUESTS_PER_MINUTE, 'm'],
-		preflight: true // Require preflight call (see load function)
-	}
-});
 
 export const load: PageServerLoad = async (event) => {
 	await limiter.cookieLimiter?.preflight(event);
@@ -82,8 +67,8 @@ export const actions: Actions = {
 
 			return message(form, {
 				type: 'error',
-				title: 'Login failed',
-				description: 'Incorrect login credentials. Please try again.'
+				title: m.livid_wild_crab_loop(),
+				description: m.petty_flaky_lynx_boil()
 			});
 		}
 

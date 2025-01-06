@@ -1,16 +1,17 @@
 import { redirect } from '@sveltejs/kit';
-import { fail, setError, superValidate } from 'sveltekit-superforms';
+import { fail, message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import * as m from '$lib/paraglide/messages.js';
 import { createEmailVerificationRequest } from '$lib/server/email-verification';
-import { checkIfUserExists, checkIsEmailVerified } from '$lib/server/helpers';
+import { checkIfUserExists } from '$lib/server/helpers';
+import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '$lib/server/rate-limit';
 import { emailFormSchema } from '$lib/validators/formSchemas';
 
-// import { userInsertSchema } from '$lib/server/db/schema';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
+	await limiter.cookieLimiter?.preflight(event);
 	if (event.locals.user) {
 		return redirect(307, '/account');
 	}
@@ -23,19 +24,24 @@ export const actions: Actions = {
 	default: async (event) => {
 		const form = await superValidate(event.request, zod(emailFormSchema()));
 
+		if (await limiter.isLimited(event)) {
+			return message(form, {
+				type: 'error',
+				title: m.nimble_fancy_pony_amuse(),
+				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
+			});
+		}
+
 		const { email } = form.data;
 
-		// Server side validation
-		// @todo check if additional DB Schema validation is necessary
-		// console.log(userInsertSchema.parse({ username }));
 		if (!form.valid) {
 			return fail(400, { form });
 		}
 
 		// Check existing email
-		if ((await checkIfUserExists(email)) && (await checkIsEmailVerified(email))) {
+		if (!(await checkIfUserExists(email))) {
 			// Technically we can use "return setError". For some reason this doesn't work with "use:enhance" enabled.
-			setError(form, 'email', m.agent_same_puma_achieve());
+			setError(form, 'email', m.funny_mushy_coyote_inspire());
 			return { form };
 		}
 

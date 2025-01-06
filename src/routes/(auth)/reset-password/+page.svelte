@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PasswordForm from '$lib/components/forms/password-form.svelte';
+	import EmailForm from '$lib/components/forms/email-form.svelte';
 	import SingleFormPage from '$lib/components/layout/single-form-page.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 
@@ -8,6 +8,6 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<SingleFormPage title={m.front_fun_husky_pray()} description={m.male_ornate_mantis_feel()}>
-	<PasswordForm form={data.form} />
+<SingleFormPage title={m.spicy_tough_larva_cry()} description={m.smart_aware_albatross_animate()}>
+	<EmailForm data={data.form} />
 </SingleFormPage>

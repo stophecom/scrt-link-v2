@@ -66,7 +66,9 @@
 		<input name="email" type="hidden" bind:value={$formData.email} />
 
 		<div class="py-4">
-			<Form.Button delayed={$verificationFormDelayed} class="w-full" size="lg">Submit</Form.Button>
+			<Form.Button delayed={$verificationFormDelayed} class="w-full" size="lg"
+				>{m.flat_moving_finch_assure()}</Form.Button
+			>
 		</div>
 
 		<!-- For debugging -->
@@ -80,7 +82,9 @@
 	<form method="POST" action="?/resend" use:enhanceResendForm>
 		<input type="hidden" name="email" value={$formData.email} />
 		<div class="py-4">
-			<Button type="submit" delayed={$resendFormDelayed} variant="outline">Send code again</Button>
+			<Button type="submit" delayed={$resendFormDelayed} variant="outline"
+				>{m.shy_dizzy_jay_embrace()}</Button
+			>
 		</div>
 	</form>
 </FormWrapper>

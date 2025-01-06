@@ -52,13 +52,19 @@
 					{...$constraints.password}
 				/>
 				{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
+				<Form.Description
+					><Link class="text-xs" href="/reset-password">{m.less_free_osprey_buzz()}</Link
+					></Form.Description
+				>
 			</Form.Control>
 
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<div class="py-4">
-			<Form.Button delayed={$delayed} class="flex w-full" size="lg">Sign in</Form.Button>
+			<Form.Button delayed={$delayed} class="flex w-full" size="lg"
+				>{m.legal_weak_jay_bless()}</Form.Button
+			>
 		</div>
 		<div class="px-5 text-center text-sm">
 			{m.warm_ideal_butterfly_radiate()}
@@ -78,6 +84,6 @@
 	</div>
 
 	<Button class="w-full" variant="outline" size="lg" href="/login/google"
-		><Google class="mr-3" />Sign in with Google</Button
+		><Google class="mr-3" />{m.major_noble_snake_drop()}</Button
 	>
 </FormWrapper>
