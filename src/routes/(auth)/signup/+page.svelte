@@ -23,15 +23,14 @@
 	</div>
 
 	<Button class="w-full" size="lg" variant="outline" href="/login/google"
-		><Google class="mr-3" />Sign up with Google</Button
+		><Google class="mr-3" />{m.gross_tiny_raven_read()}</Button
 	>
 
 	<div class="py-5">
 		<Separator />
 	</div>
 	<div class="muted px-5 text-center text-xs">
-		By creating a scrt.link account, you agree to our <Link href="/terms-of-service"
-			>terms and conditions</Link
-		>
+		{m.ornate_main_beaver_snip()}
+		<Link href="/terms-of-service">{m.green_sharp_parrot_smile()}</Link>
 	</div>
 </SingleFormPage>
