@@ -9,7 +9,7 @@
 	<div class="w-full max-w-md rounded border bg-card px-8 pb-8 pt-12 shadow-lg">
 		<h1 class="mb-4 text-3xl font-bold">{title}</h1>
 		{#if description}
-			<p class="mb-4 leading-normal">{description}</p>
+			<p class="mb-4 text-xl leading-normal">{description}</p>
 		{/if}
 
 		{@render children?.()}

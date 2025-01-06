@@ -3,12 +3,14 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
+	import Google from '$lib/assets/images/Google.svg?component';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SignInFormSchema, signInFormSchema } from '$lib/validators/formSchemas';
 
 	import Button from '../ui/button/button.svelte';
+	import Link from '../ui/link';
 	import Separator from '../ui/separator/separator.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
@@ -58,6 +60,10 @@
 		<div class="py-4">
 			<Form.Button delayed={$delayed} class="flex w-full" size="lg">Sign in</Form.Button>
 		</div>
+		<div class="px-5 text-center text-sm">
+			{m.warm_ideal_butterfly_radiate()}
+			<Link href="/signup">{m.grassy_sea_pug_gasp()}</Link>
+		</div>
 
 		<!-- For debugging -->
 		{#if dev}
@@ -71,5 +77,7 @@
 		<Separator />
 	</div>
 
-	<Button class="w-full" variant="outline" href="/login/google">Sign in with Google</Button>
+	<Button class="w-full" variant="outline" size="lg" href="/login/google"
+		><Google class="mr-3" />Sign in with Google</Button
+	>
 </FormWrapper>
