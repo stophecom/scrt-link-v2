@@ -19,6 +19,7 @@
 	const form = superForm(data, {
 		validators: zodClient(signInFormSchema()),
 		validationMethod: 'auto',
+		resetForm: false,
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
