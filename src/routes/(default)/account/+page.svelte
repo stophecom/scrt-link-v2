@@ -19,7 +19,7 @@
 
 		<div class="grid gap-2">
 			<div>
-				<Button variant="outline" href="/auth/set-password">Change password</Button>
+				<Button variant="outline" href="/set-password">Change password</Button>
 			</div>
 			<form method="post" action="?/logout" use:enhance>
 				<Button type="submit" variant="outline">Sign out</Button>

@@ -141,7 +141,7 @@ async function verifyCode(event: RequestEvent) {
 		error(500, 'Failed to register');
 	}
 
-	return redirect(303, '/auth/set-password');
+	return redirect(303, '/set-password');
 }
 
 async function resendCode(event: RequestEvent) {
