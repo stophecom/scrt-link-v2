@@ -3,6 +3,7 @@
 
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
+	import { emailSupport } from '$lib/data/constants';
 	import * as m from '$lib/paraglide/messages.js';
 
 	type Props = { title: string; lead?: string; markNotTranslated?: boolean; children: Snippet };
@@ -23,7 +24,7 @@
 			<div>
 				{m.grassy_due_crab_cook()}
 			</div>
-			<a href="support@scrt.link">support@scrt.link</a>
+			<a href="mailto:{emailSupport}">emailSupport</a>
 		</Alert>
 	{/if}
 	{@render children?.()}
