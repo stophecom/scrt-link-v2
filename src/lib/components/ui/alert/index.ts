@@ -10,7 +10,7 @@ export const alertVariants = tv({
 	variants: {
 		variant: {
 			default: 'bg-background text-foreground',
-			info: 'bg-info/5 border-info/50 text-forground-foreground [&>svg]:text-info',
+			info: 'bg-info/5 border-info/50 text-info-forground [&>svg]:text-info',
 			success: 'bg-success/5 border-success/50 text-success-foreground [&>svg]:text-success',
 			destructive:
 				'bg-destructive/5 border-destructive/50 text-destructive-foreground [&>svg]:text-destructive'

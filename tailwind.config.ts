@@ -17,6 +17,9 @@ const config: Config = {
 				'2xl': '800px'
 			}
 		},
+		fontFamily: {
+			sans: ['"IBM Plex Sans, sans-serif']
+		},
 		extend: {
 			colors: {
 				border: 'hsl(var(--border) / <alpha-value>)',

@@ -2,6 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import { imprintMenu } from '$lib/data/menu';
+	import { getSupportedLanguagesMap } from '$lib/data/supportedLocales';
 	import { i18n } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
 	import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
@@ -25,16 +27,29 @@
 		<div class="p-5 text-center">
 			{m.equal_tiny_wren_skip({ number: numberOfSecrets })}
 		</div>
-		<div class="max-w-screen-sm p-5 text-center text-sm">
+		<div class="max-w-screen-sm p-5 text-center text-sm text-muted-foreground">
 			{m.candid_red_lynx_offer()}
 		</div>
-		<div>
+
+		<div class="flex text-sm text-muted-foreground">
+			<span class="p-3">©{new Date().getFullYear()} SANTiHANS GmbH</span>
+			{#each imprintMenu() as menuItem}
+				<a class="p-3 underline" href={menuItem.href}>
+					{menuItem.label}
+				</a>
+			{/each}
+		</div>
+
+		<div class="py-5 text-sm text-primary">
 			{#each availableLanguageTags as tag}
 				<button
-					class={cn('p-5 uppercase hover:text-primary', languageTag() === tag && 'text-primary')}
+					class={cn(
+						'mx-5 inline-flex border-b border-b-primary/50 leading-none hover:border-b-primary',
+						languageTag() === tag && 'border-b-transparent'
+					)}
 					onclick={() => switchToLanguage(tag)}
 				>
-					{tag}
+					{getSupportedLanguagesMap(tag)}
 				</button>
 			{/each}
 		</div>
