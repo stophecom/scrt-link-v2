@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PasswordForm from '$lib/components/forms/password-form.svelte';
-	import SingleFormPage from '$lib/components/layout/single-form-page.svelte';
+	import SingleFormPage from '$lib/components/layout/page/single-form-page.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';

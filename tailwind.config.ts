@@ -12,9 +12,9 @@ const config: Config = {
 			center: true,
 			padding: '2rem',
 			screens: {
-				lg: '1024px',
-				xl: '1024px',
-				'2xl': '1024px'
+				lg: '800px',
+				xl: '800px',
+				'2xl': '800px'
 			}
 		},
 		extend: {
@@ -40,6 +40,10 @@ const config: Config = {
 				success: {
 					DEFAULT: 'hsl(var(--success) / <alpha-value>)',
 					foreground: 'hsl(var(--success-foreground) / <alpha-value>)'
+				},
+				info: {
+					DEFAULT: 'hsl(var(--info) / <alpha-value>)',
+					foreground: 'hsl(var(--info-foreground) / <alpha-value>)'
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted) / <alpha-value>)',
