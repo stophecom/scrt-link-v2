@@ -24,7 +24,7 @@
 			<div>
 				{m.grassy_due_crab_cook()}
 			</div>
-			<a href="mailto:{emailSupport}">emailSupport</a>
+			<a href="mailto:{emailSupport}">{emailSupport}</a>
 		</Alert>
 	{/if}
 	{@render children?.()}
