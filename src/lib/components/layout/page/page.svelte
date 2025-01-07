@@ -12,13 +12,14 @@
 
 <div class="container py-12">
 	<a class="p-2" href="/">
-		<Logo class="h-40 w-40" />
+		<Logo class="h-20 w-20 sm:h-32 sm:w-32 md:h-40 md:w-40" />
 	</a>
 	<h1 class="mb-5 text-4xl font-extrabold md:text-7xl">{title}</h1>
 
 	{#if lead}
-		<p class="mb-10 text-xl leading-normal md:text-4xl">{lead}</p>
+		<p class="mb-10 text-xl leading-snug md:text-3xl">{lead}</p>
 	{/if}
+
 	{#if markNotTranslated}
 		<Alert class="mb-5" title="Important" variant="info">
 			<div>
