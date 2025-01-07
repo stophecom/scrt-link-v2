@@ -4,12 +4,12 @@
 	let { title, lead, children }: { title?: string; lead?: string; children: Snippet } = $props();
 </script>
 
-<main class="container flex flex-col justify-center py-8">
+<section class="py-16">
 	{#if title}
-		<h2 class="text-4xl">{title}</h2>
+		<h2 class="mb-6 text-5xl font-bold">{title}</h2>
 	{/if}
 	{#if lead}
-		<p class="text-xl leading-normal">{lead}</p>
+		<p class="mb-8 text-2xl leading-normal">{lead}</p>
 	{/if}
 	{@render children?.()}
-</main>
+</section>

@@ -21,15 +21,16 @@
 	let numberOfSecrets = 124; // Make dynamic
 </script>
 
-<footer>
+<footer class="bg-muted">
 	<div class="container flex flex-col items-center justify-center">
-		<Separator />
 		<div class="p-5 text-center">
 			{m.equal_tiny_wren_skip({ number: numberOfSecrets })}
 		</div>
 		<div class="max-w-screen-sm p-5 text-center text-sm text-muted-foreground">
 			{m.candid_red_lynx_offer()}
 		</div>
+
+		<Separator />
 
 		<div class="flex text-sm text-muted-foreground">
 			<span class="p-3">©{new Date().getFullYear()} SANTiHANS GmbH</span>
