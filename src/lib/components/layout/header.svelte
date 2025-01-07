@@ -13,7 +13,7 @@
 </script>
 
 <header class="h-16">
-	<div class="fixed left-0 top-0 h-16 w-full bg-background">
+	<div class="fixed left-0 top-0 h-16 w-full bg-transparent">
 		<div class="container flex h-full items-center">
 			<a class="p-2" href="/">
 				<Logo class="h-14 w-14" />
