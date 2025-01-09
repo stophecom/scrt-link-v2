@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 
+	import SecretTextForm from '$lib/components/forms/secret-text-form.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Section from '$lib/components/layout/section.svelte';
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import { Button } from '$lib/components/ui/button';
-	import { generateBase64Token } from '$lib/crypo';
-	import { generateUuid } from '$lib/web-crypto';
+	import * as Tabs from '$lib/components/ui/tabs';
 
 	const items = [
 		{
@@ -24,31 +24,31 @@
 		}
 	];
 
-	let otp = $state('');
-	let randomOtp = $state('');
+	import Usps from '$lib/components/ui/usps';
 
-	let uuid = $state('');
-	let customToken = $state('');
+	import type { PageData } from './$types';
 
-	let updateOtp = () => {
-		uuid = generateUuid();
-		customToken = generateBase64Token();
-	};
+	let { data }: { data: PageData } = $props();
 </script>
 
 <Page title="Share a secret" lead="…with a link that only works one time and then self-destructs.">
-	<div class="border p-3">
-		<div>otp 6: {otp}</div>
-		<div>random otp {randomOtp}</div>
-
-		<div>UUID {uuid}</div>
-		<div>Custom Token {customToken}</div>
-		<div class="p-2">
-			<Button onclick={() => updateOtp()}>Generate random OTP</Button>
-		</div>
+	<div class="w-full rounded border bg-card px-8 pb-8 pt-4 shadow-lg">
+		<Tabs.Root value="text">
+			<Tabs.List>
+				<Tabs.Trigger value="text">Text</Tabs.Trigger>
+				<Tabs.Trigger value="file">File</Tabs.Trigger>
+				<Tabs.Trigger value="redirect">Redirect</Tabs.Trigger>
+				<Tabs.Trigger value="love-letter">Love Letter</Tabs.Trigger>
+			</Tabs.List>
+			<Tabs.Content value="text">
+				<SecretTextForm data={data.form} />
+			</Tabs.Content>
+			<Tabs.Content value="file">Change your password here.</Tabs.Content>
+			<Tabs.Content value="redirect">Change your password here.</Tabs.Content>
+			<Tabs.Content value="love-letter">Change your password here.</Tabs.Content>
+		</Tabs.Root>
 	</div>
-
-	<Button variant="secondary" href="/account">Account</Button>
+	<Usps />
 
 	<Section title="FAQ" lead="Frequently asked questions.">
 		<Accordion.Root class="mb-4 w-full" multiple>
