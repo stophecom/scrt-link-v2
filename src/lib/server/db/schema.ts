@@ -1,4 +1,4 @@
-import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 
 export const user = pgTable('user', {
@@ -26,8 +26,19 @@ export const emailVerificationRequest = pgTable('email_verification_request', {
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull()
 });
 
+export const secret = pgTable('secret', {
+	id: text('id').primaryKey(),
+	secretId: text('secret_id').notNull(),
+	publicKey: varchar('public_key', { length: 256 }).notNull(),
+	meta: text('meta').notNull(),
+	content: text('content').notNull(),
+	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
+	retrievedAt: timestamp('expires_at', { withTimezone: true, mode: 'date' })
+});
+
 export const userInsertSchema = createInsertSchema(user); // Not used atm
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;
+export type Secret = typeof secret.$inferSelect;
