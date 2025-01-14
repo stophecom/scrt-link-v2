@@ -2,7 +2,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 import { api, asyncPool } from '$lib/api';
-import { createHash, decryptData, encryptFile, signMessage } from '$lib/crypto';
+import { createHash, decryptData, encryptFile, signMessage } from '$lib/web-crypto';
 
 // If the request fails, we retry
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
