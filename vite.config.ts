@@ -11,9 +11,5 @@ export default defineConfig({
 			outdir: './src/lib/paraglide'
 		}),
 		svg()
-	],
-
-	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}']
-	}
+	]
 });

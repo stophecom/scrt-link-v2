@@ -3,9 +3,9 @@
 
 	import { cn } from '$lib/utils.js';
 
-	let { class: className, children, ...rest }: SvelteHTMLElements['a'] = $props();
+	let { class: className, children, href, ...rest }: SvelteHTMLElements['a'] = $props();
 </script>
 
-<a class={cn('text-primary-text underline', className)} {...rest}>
+<a class={cn('text-primary-text underline', className)} {href} {...rest}>
 	{@render children?.()}
 </a>
