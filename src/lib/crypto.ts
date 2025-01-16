@@ -48,64 +48,22 @@ export const generateOtp = (size: number = 6) => {
 // export const base64UrlEncode = () => {
 // 	const encoder = new TextEncoder();
 // };
-
 export const generateBase64Token = (byteLength = 32) => {
 	const array = new Uint8Array(byteLength);
 	crypto.getRandomValues(array);
 	return base64UrlSafeEncode(base64Encode(arrayBufferToString(array.buffer)));
 };
 
-// Function to manually encode binary string to Base64
-function base64Encode(str: string) {
-	const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-	let encoded = '';
-	let buffer;
-
-	for (let i = 0; i < str.length; i += 3) {
-		buffer = (str.charCodeAt(i) << 16) | (str.charCodeAt(i + 1) << 8) | str.charCodeAt(i + 2);
-		encoded += chars[(buffer >> 18) & 63];
-		encoded += chars[(buffer >> 12) & 63];
-		encoded += chars[(buffer >> 6) & 63];
-		encoded += chars[buffer & 63];
-	}
-
-	if (str.length % 3 === 1) {
-		encoded = encoded.slice(0, -2) + '==';
-	} else if (str.length % 3 === 2) {
-		encoded = encoded.slice(0, -1) + '=';
-	}
-
-	return encoded;
+// Function to encode string to Base64
+export function base64Encode(str: string) {
+	return Buffer.from(str, 'utf-8').toString('base64');
 }
 
-export function base64Decode(encodedStr: string) {
-	const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-	let decoded = '';
-	let buffer;
-
-	// Remove any Base64 padding ('=')
-	encodedStr = encodedStr.replace(/=/g, '');
-
-	for (let i = 0; i < encodedStr.length; i += 4) {
-		buffer =
-			(chars.indexOf(encodedStr.charAt(i)) << 18) |
-			(chars.indexOf(encodedStr.charAt(i + 1)) << 12) |
-			(chars.indexOf(encodedStr.charAt(i + 2)) << 6) |
-			chars.indexOf(encodedStr.charAt(i + 3));
-
-		decoded += String.fromCharCode((buffer >> 16) & 255);
-		decoded += String.fromCharCode((buffer >> 8) & 255);
-		decoded += String.fromCharCode(buffer & 255);
-	}
-
-	// Remove padding byte if exists
-	return decoded.slice(
-		0,
-		decoded.length - (encodedStr.endsWith('==') ? 2 : encodedStr.endsWith('=') ? 1 : 0)
-	);
+export function base64Decode(base64str: string) {
+	return Buffer.from(base64str, 'base64').toString(); // UFT-8
 }
 
-function base64UrlSafeEncode(base64string: string) {
+export function base64UrlSafeEncode(base64string: string) {
 	return base64string.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 

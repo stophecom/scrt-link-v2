@@ -1,3 +1,7 @@
+// Collection of crypto helper functions
+// These helpers only run in the Browser: crypto as in window.crypto
+// See crypto.ts for server tools
+
 export const generateUuid = () => crypto.randomUUID();
 
 export const createHash = async (message: string) => {

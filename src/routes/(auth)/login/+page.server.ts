@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { verifyPassword } from '$lib/crypo';
+import { verifyPassword } from '$lib/crypto';
 import * as m from '$lib/paraglide/messages.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';

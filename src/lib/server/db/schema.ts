@@ -1,4 +1,4 @@
-import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, smallint, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 
 export const user = pgTable('user', {
@@ -28,12 +28,14 @@ export const emailVerificationRequest = pgTable('email_verification_request', {
 
 export const secret = pgTable('secret', {
 	id: uuid('id').defaultRandom().primaryKey(),
-	secretIdHash: text('secret_id_hash').notNull(),
+	secretIdHash: text('secret_id_hash').notNull().unique(),
 	publicKey: text('public_key').notNull(),
 	meta: text('meta').notNull(),
 	content: text('content').notNull(),
+	passwordHash: text('password_hash'),
+	passwordAttempts: smallint('password_attempts'),
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
-	retrievedAt: timestamp('expires_at', { withTimezone: true, mode: 'date' })
+	retrievedAt: timestamp('retrieved_at', { withTimezone: true, mode: 'date' })
 });
 
 export const userInsertSchema = createInsertSchema(user); // Not used atm

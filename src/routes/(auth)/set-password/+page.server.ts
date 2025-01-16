@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { hashPassword } from '$lib/crypo';
+import { hashPassword } from '$lib/crypto';
 import { db } from '$lib/server/db';
 import { user } from '$lib/server/db/schema';
 import { passwordFormSchema } from '$lib/validators/formSchemas';

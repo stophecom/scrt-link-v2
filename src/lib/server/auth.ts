@@ -8,7 +8,7 @@ import {
 	VERCEL_PROJECT_PRODUCTION_URL
 } from '$env/static/private';
 import { PUBLIC_ENV } from '$env/static/public';
-import { generateBase64Token } from '$lib/crypo';
+import { generateBase64Token } from '$lib/crypto';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import { createHash } from '$lib/web-crypto';

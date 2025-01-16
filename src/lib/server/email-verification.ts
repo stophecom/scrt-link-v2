@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 
 import { type EmailVerificationRequest, emailVerificationRequest } from '$lib/server/db/schema';
 
-import { generateOtp, hashPassword } from '../crypo';
+import { generateOtp, hashPassword } from '../crypto';
 import { db } from './db';
 
 export async function createEmailVerificationRequest(
