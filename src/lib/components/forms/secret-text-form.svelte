@@ -13,6 +13,7 @@
 
 	let { data }: SuperValidated<Infer<SecretTextFormSchema>> = $props();
 
+	let masterKey = $state('');
 	const form = superForm(data, {
 		validators: zodClient(secretTextFormSchema()),
 		validationMethod: 'auto',
@@ -22,7 +23,7 @@
 			const { text, password } = $formData;
 
 			// Encrypt secret text before submitting
-			const masterKey = generateRandomUrlSafeString();
+			masterKey = generateRandomUrlSafeString();
 
 			let encryptedText = text;
 			if (password) {
@@ -54,6 +55,7 @@
 	const { form: formData, message, delayed, constraints, enhance } = form;
 </script>
 
+<h1>{masterKey}</h1>
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance>
 		<Form.Field {form} name="text" class="py-2">
