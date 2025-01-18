@@ -42,7 +42,11 @@ export const signInFormSchema = () =>
 
 export const secretTextFormSchema = (limit: number = 150) =>
 	z.object({
-		text: z.string().min(1).max(limit)
+		secretIdHash: z.string(),
+		publicKey: z.string().optional(),
+		meta: z.string(),
+		text: z.string().min(1).max(limit),
+		password: z.string().min(6).max(255).optional()
 	});
 
 export type SignInFormSchema = ReturnType<typeof signInFormSchema>;

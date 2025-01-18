@@ -29,7 +29,7 @@ export const emailVerificationRequest = pgTable('email_verification_request', {
 export const secret = pgTable('secret', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	secretIdHash: text('secret_id_hash').notNull().unique(),
-	publicKey: text('public_key').notNull(),
+	publicKey: text('public_key'),
 	meta: text('meta').notNull(),
 	content: text('content').notNull(),
 	passwordHash: text('password_hash'),

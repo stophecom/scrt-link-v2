@@ -1,47 +1,49 @@
-import { redirect } from '@sveltejs/kit';
-import { fail, setError, superValidate } from 'sveltekit-superforms';
+import { error } from '@sveltejs/kit';
+import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import * as m from '$lib/paraglide/messages.js';
-import { createEmailVerificationRequest } from '$lib/server/email-verification';
-import { checkIfUserExists, checkIsEmailVerified } from '$lib/server/helpers';
-import { emailFormSchema, secretTextFormSchema } from '$lib/validators/formSchemas';
+import { hashPassword } from '$lib/crypto';
+import { db } from '$lib/server/db';
+import { secret } from '$lib/server/db/schema';
+import { secretTextFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(secretTextFormSchema()))
+		form: await superValidate(zod(secretTextFormSchema(100_000))) // Limit needs to be bigger b/c of encryption.
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event.request, zod(emailFormSchema()));
+		const form = await superValidate(event.request, zod(secretTextFormSchema()));
 
-		const { email } = form.data;
+		const { text, password, secretIdHash, meta } = form.data;
+		let passwordHash;
 
-		// Server side validation
-		// @todo check if additional DB Schema validation is necessary
-		// console.log(userInsertSchema.parse({ username }));
 		if (!form.valid) {
 			return fail(400, { form });
 		}
 
-		// Check existing email
-		if ((await checkIfUserExists(email)) && (await checkIsEmailVerified(email))) {
-			// Technically we can use "return setError". For some reason this doesn't work with "use:enhance" enabled.
-			setError(form, 'email', m.agent_same_puma_achieve());
-			return { form };
+		const expiresAt = new Date(Date.now() + 1000 * 60 * 1); // 10 minutes
+
+		try {
+			if (password) {
+				passwordHash = await hashPassword(password);
+			}
+			await db.insert(secret).values({
+				secretIdHash,
+				meta,
+				content: text,
+				passwordHash,
+				expiresAt
+			});
+		} catch (e) {
+			console.error(e);
+			error(500, `Something went wrong. Couldn't save secret.`);
 		}
 
-		// User needs to verify his/her email
-		await createEmailVerificationRequest(email);
-
-		event.cookies.set('email_verification', email, {
-			path: '/'
-		});
-
-		return redirect(303, '/verify-email');
+		return { form };
 	}
 };
