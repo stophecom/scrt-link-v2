@@ -2,42 +2,8 @@
 // These helpers only run in the Browser: crypto as in window.crypto
 // See crypto.ts for server tools
 
-export const generateUuid = () => crypto.randomUUID();
-
-export const createHash = async (message: string) => {
-	const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(message));
-	return Array.prototype.map
-		.call(new Uint8Array(buffer), (x) => ('00' + x.toString(16)).slice(-2))
-		.join('');
-};
-
-export const arrayBufferToString = (buffer: ArrayBuffer) =>
-	String.fromCharCode(...new Uint8Array(buffer));
-
-export const stringToArrayBuffer = (str: string) => {
-	const uint8Array = Uint8Array.from(str, (c) => c.charCodeAt(0));
-	return uint8Array.buffer;
-};
-
-export const encodeText = (text: string) => {
-	const encoder = new TextEncoder();
-	return encoder.encode(text);
-};
-
-export const decodeText = (data: ArrayBuffer) => {
-	const decoder = new TextDecoder();
-	return decoder.decode(data);
-};
-
-export const binaryToBase64 = (arrayBuffer: ArrayBuffer) => {
-	return btoa(arrayBufferToString(arrayBuffer));
-};
-
-export const base64ToBinary = (base64: string) => {
-	const base64Decoded = atob(base64);
-
-	return stringToArrayBuffer(base64Decoded);
-};
+// Create random bytes for Salt, Initialization Vector (IV), etc.
+const getRandomBytes = (length = 16) => crypto.getRandomValues(new Uint8Array(length));
 
 const blobToBase64 = async (blob: Blob) => {
 	return new Promise<string>((resolve, reject) => {
@@ -53,117 +19,167 @@ const blobToBase64 = async (blob: Blob) => {
 	});
 };
 
-// Initialization Vector (IV)
-const createIv = () => crypto.getRandomValues(new Uint8Array(16));
-
-export const createIvAsString = () => {
-	const iv = createIv();
-	return binaryToBase64(iv.buffer);
+export const encodeText = (text: string) => {
+	const encoder = new TextEncoder();
+	return encoder.encode(text);
 };
 
-export const encryptData = async (data: ArrayBuffer, masterKey: string) => {
-	const iv = createIv();
-	const cryptoKey = await importMasterKey(masterKey);
+export const decodeText = (data: ArrayBuffer) => {
+	const decoder = new TextDecoder();
+	return decoder.decode(data);
+};
+
+export const generateUuid = () => crypto.randomUUID();
+
+export const generateRandomString = (length = 16) => {
+	const randomBytes = getRandomBytes(length);
+	return binaryToBase64(randomBytes.buffer);
+};
+
+export const generateRandomUrlSafeString = (length = 16) => {
+	const randomString = generateRandomString(length);
+	return randomString.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+};
+
+export const createHash = async (message: string) => {
+	const buffer = await crypto.subtle.digest('SHA-256', encodeText(message));
+	return Array.prototype.map
+		.call(new Uint8Array(buffer), (x) => ('00' + x.toString(16)).slice(-2))
+		.join('');
+};
+
+export const binaryToBase64 = (arrayBuffer: ArrayBuffer) => {
+	const arrayBufferToString = (buffer: ArrayBuffer) =>
+		String.fromCharCode(...new Uint8Array(buffer));
+
+	return btoa(arrayBufferToString(arrayBuffer));
+};
+
+export const base64ToBinary = (base64: string) => {
+	const base64Decoded = atob(base64);
+
+	const stringToArrayBuffer = (str: string) => {
+		const uint8Array = Uint8Array.from(str, (c) => c.charCodeAt(0));
+		return uint8Array.buffer;
+	};
+
+	return stringToArrayBuffer(base64Decoded);
+};
+
+export const encryptData = async (
+	data: ArrayBuffer,
+	cryptoKey: CryptoKey,
+	salt: Uint8Array<ArrayBuffer>
+) => {
+	const iv = getRandomBytes();
 	const result = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, cryptoKey, data);
 
-	const encryptedFile = new Blob([iv, result]); // Adding IV
-	return encryptedFile;
+	const encryptedBlob = new Blob([salt, iv, result]); // Adding IV
+	return encryptedBlob;
 };
 
-export const decryptData = async (data: Blob, masterKey: string) => {
-	const key = await importMasterKey(masterKey);
-
-	const [iv, body] = await Promise.all([
-		data.slice(0, 16).arrayBuffer(), // Extracting IV
-		data.slice(16).arrayBuffer() // The actual body. e.g. file content
+export const decryptData = async (data: Blob, password: string) => {
+	const [salt, iv, body] = await Promise.all([
+		data.slice(0, 16).arrayBuffer(), // Extracting Salt
+		data.slice(16, 32).arrayBuffer(), // Extracting IV
+		data.slice(32).arrayBuffer() // The actual body. e.g. file content
 	]);
+
+	// Derive the same key from the password and salt
+	const passwordKey = await crypto.subtle.importKey('raw', encodeText(password), 'PBKDF2', false, [
+		'deriveKey'
+	]);
+
+	const derivedKey = await crypto.subtle.deriveKey(
+		{
+			name: 'PBKDF2',
+			salt: salt,
+			iterations: 100000,
+			hash: 'SHA-256'
+		},
+		passwordKey,
+		{
+			name: 'AES-GCM',
+			length: 256
+		},
+		false,
+		['decrypt']
+	);
 
 	const decryptedData = await crypto.subtle.decrypt(
 		{
 			name: 'AES-GCM',
 			iv: iv
 		},
-		key,
+		derivedKey,
 		body
 	);
 	return decryptedData;
 };
 
-// Here we generate an AES-GCM master key for symmetric encryption and export as string
-export const generateMasterKey = async () => {
-	const key = await crypto.subtle.generateKey(
+// Generate derived key from a password
+export const generateKeyFromPassword = async (password: string) => {
+	const salt = getRandomBytes();
+	// Step 2: Derive a key from the password using PBKDF2
+	const passwordKey = await crypto.subtle.importKey('raw', encodeText(password), 'PBKDF2', false, [
+		'deriveKey'
+	]);
+
+	const cryptoKey = await crypto.subtle.deriveKey(
+		{
+			name: 'PBKDF2',
+			salt: salt,
+			iterations: 100000,
+			hash: 'SHA-256'
+		},
+		passwordKey,
 		{
 			name: 'AES-GCM',
 			length: 256
 		},
-		true,
-		['encrypt', 'decrypt']
-	);
-	const exportedKey = await crypto.subtle.exportKey('jwk', key);
-
-	if (!exportedKey.k) {
-		throw Error('Failed to generate encryption key.');
-	}
-
-	return exportedKey.k;
-};
-// Import AES-GCM master key that is stored as string
-const importMasterKey = async (key: string) =>
-	await crypto.subtle.importKey(
-		'jwk',
-		{
-			kty: 'oct',
-			k: key, // The encryption key
-			alg: 'A256GCM',
-			ext: true
-		},
-		{ name: 'AES-GCM' },
-		true,
-		['encrypt', 'decrypt']
+		false,
+		['encrypt']
 	);
 
-export const encryptFile = async (file: File | Blob, masterKey: string) => {
-	const data = await file.arrayBuffer();
-
-	return encryptData(data, masterKey);
+	return {
+		cryptoKey,
+		salt
+	};
 };
 
-// Not in use. Could be used to decrypt smaller files at once.
-export const decryptFile = async (file: Blob, masterKey: string, fileName: string) => {
-	const decryptedData = await decryptData(file, masterKey);
-
-	return new File([decryptedData], fileName);
-};
-
-export const encryptString = async (text: string, masterKey: string) => {
+export const encryptString = async (text: string, password: string) => {
 	const data = encodeText(text).buffer as ArrayBuffer;
 
-	const encryptedData = await encryptData(data, masterKey);
+	const { cryptoKey, salt } = await generateKeyFromPassword(password);
+	const encryptedData = await encryptData(data, cryptoKey, salt);
 
 	const encryptedDataBase64 = await blobToBase64(encryptedData);
 	return encryptedDataBase64;
 };
 
-export const decryptString = async (base64DataUrl: string, masterKey: string) => {
+export const encryptFile = async (file: File | Blob, password: string) => {
+	const data = await file.arrayBuffer();
+
+	const { cryptoKey, salt } = await generateKeyFromPassword(password);
+
+	return encryptData(data, cryptoKey, salt);
+};
+
+export const decryptString = async (base64DataUrl: string, password: string) => {
 	const base64Response = await fetch(base64DataUrl);
 	const blob = await base64Response.blob();
 
-	const decryptedData = await decryptData(blob, masterKey);
-
+	const decryptedData = await decryptData(blob, password);
 	const result = decodeText(decryptedData);
 
 	return result;
 };
 
-// Used to encrypt the alias. The IV is stored separately.
-export const encryptAndHash = async (message: string, ivAsString: string, masterKey: string) => {
-	const data = encodeText(message);
-	const iv = base64ToBinary(ivAsString);
-	const cryptoKey = await importMasterKey(masterKey);
-	const result = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, cryptoKey, data);
-	const decoded = decodeText(result);
+// Not in use. Could be used to decrypt smaller files at once.
+export const decryptFile = async (file: Blob, password: string, fileName: string) => {
+	const decryptedData = await decryptData(file, password);
 
-	return await createHash(decoded);
+	return new File([decryptedData], fileName);
 };
 
 // Digital signature

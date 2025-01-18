@@ -3,27 +3,27 @@ import { describe, expect, expectTypeOf, test } from 'vitest';
 import {
 	base64ToBinary,
 	binaryToBase64,
-	decodeText,
-	encodeText,
+	decryptString,
+	encryptString,
 	exportPublicKey,
 	generateKeyPair,
+	generateRandomUrlSafeString,
 	importPublicKey,
 	signMessage,
 	verifyMessageSignature
 } from './web-crypto';
 
-const key = await crypto.subtle.generateKey(
-	{
-		name: 'AES-GCM',
-		length: 256
-	},
-	true,
-	['encrypt', 'decrypt']
-);
-const iv = crypto.getRandomValues(new Uint8Array(16)); // Initialization Vector (IV)
 const keyPair = await generateKeyPair();
 
-describe('Crypto', () => {
+describe('Browser Crypto', () => {
+	test('Random URL save string', async () => {
+		const randomString = generateRandomUrlSafeString();
+
+		expectTypeOf(randomString).toMatchTypeOf<string>();
+		const forbiddenUrlCharacters = /[ "?#&/=%+]/; // Not allowed in URLs
+		expect(randomString).not.toMatch(forbiddenUrlCharacters);
+	});
+
 	test('Create public/private key pair', async () => {
 		expectTypeOf(keyPair.publicKey).toMatchTypeOf<CryptoKey>();
 	});
@@ -65,35 +65,15 @@ describe('Crypto', () => {
 		expect(equalBuffer(randomBinary, binaryKey)).toBe(true);
 	});
 
-	test('Test imported key', async () => {
+	test('Test password encryption', async () => {
 		const originalMessage = 'This is a secret';
-		const encryptedMessage = await crypto.subtle.encrypt(
-			{ name: 'AES-GCM', iv },
-			key,
-			encodeText(originalMessage)
-		);
+		const password = 'sdfl$#243😅';
 
-		const exportRawKey = await crypto.subtle.exportKey('raw', key);
-		const base64 = binaryToBase64(exportRawKey);
-		const binaryKey = base64ToBinary(base64);
+		const secret = await encryptString(originalMessage, password);
 
-		const extractedKey = await crypto.subtle.importKey('raw', binaryKey, 'AES-GCM', true, [
-			'encrypt',
-			'decrypt'
-		]);
+		expectTypeOf(secret).toMatchTypeOf<string>();
 
-		const decrypted = await crypto.subtle.decrypt(
-			{
-				name: 'AES-GCM',
-				iv: iv
-			},
-			extractedKey,
-			encryptedMessage
-		);
-
-		const decryptedMessage = decodeText(decrypted);
-
-		expectTypeOf(extractedKey).toMatchTypeOf<CryptoKey>();
+		const decryptedMessage = await decryptString(secret, password);
 
 		expect(originalMessage).equal(decryptedMessage);
 	});
