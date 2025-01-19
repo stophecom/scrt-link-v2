@@ -19,7 +19,7 @@
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
-				type: 'error',
+				status: 'error',
 				title: 'Unexpected error',
 				description: result.error.message || 'Some error'
 			};

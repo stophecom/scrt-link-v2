@@ -23,7 +23,7 @@
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
-				type: 'error',
+				status: 'error',
 				title: 'Unknown error',
 				description: result.error.message
 			};
@@ -48,6 +48,7 @@
 				<Form.Label>{m.tame_actual_raven_adapt()}</Form.Label>
 				<Input
 					type="password"
+					autocomplete="current-password"
 					{...attrs}
 					bind:value={$formData.password}
 					{...$constraints.password}
