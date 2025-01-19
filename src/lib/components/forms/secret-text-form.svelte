@@ -139,7 +139,7 @@
 				>
 			</div>
 		</form>
-		{#if !dev}
+		{#if dev}
 			<SuperDebug data={$formData} />
 		{/if}
 	</FormWrapper>
