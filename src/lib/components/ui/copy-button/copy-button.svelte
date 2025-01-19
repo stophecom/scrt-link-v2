@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CircleCheck from 'lucide-svelte/icons/circle-check';
+	import Check from 'lucide-svelte/icons/check';
 
 	import { copyText } from '$lib/utils';
 
@@ -30,6 +30,6 @@
 			? 'opacity-1 visible'
 			: 'invisible opacity-0'} tooltip absolute bottom-1/2 left-1/2 z-10 inline-block -translate-x-1/2 translate-y-1/2 rounded-lg bg-primary px-3 py-2 text-base font-medium uppercase text-white transition-all ease-in-out"
 	>
-		<CircleCheck class="h-4 w-4" />
+		<Check class="h-4 w-4" />
 	</div>
 </div>
