@@ -10,11 +10,13 @@
 	let { title, lead, markNotTranslated, children }: Props = $props();
 </script>
 
-<div class="container py-12">
-	<a class="p-2" href="/">
-		<Logo class="h-20 w-20 sm:h-32 sm:w-32 md:h-40 md:w-40" />
-	</a>
-	<h1 class="mb-5 text-4xl font-extrabold md:text-7xl">{title}</h1>
+<div class="container pb-6">
+	<div>
+		<a class="inline-flex" href="/">
+			<Logo class="h-20 w-20 sm:h-28 sm:w-28 md:h-32 md:w-32" />
+		</a>
+	</div>
+	<h1 class="mb-5 text-3xl font-extrabold md:text-6xl">{title}</h1>
 
 	{#if lead}
 		<p class="mb-10 text-xl leading-snug md:text-3xl">{lead}</p>

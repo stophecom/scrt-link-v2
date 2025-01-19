@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Reply from 'lucide-svelte/icons/reply';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
@@ -9,6 +10,7 @@
 
 	import type { LayoutData } from '../../../routes/$types';
 	import Alert from '../ui/alert/alert.svelte';
+	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import Input from '../ui/input/input.svelte';
 	import Textarea from '../ui/textarea/textarea.svelte';
@@ -70,10 +72,18 @@
 </script>
 
 {#if $message?.status === 'success'}
-	<Alert title="Success">
-		<p>{link}</p>
-		<CopyButton class={'shrink-0'} text={link} />
+	<Alert title="Your secret link:" variant="success" class="mb-2">
+		<div class="flex items-center">
+			<div>
+				<div class="font-light">{link}</div>
+				<small class="block text-muted-foreground">Expires: sdfsdf</small>
+			</div>
+			<CopyButton class="ml-auto shrink-0" text={link} />
+		</div>
 	</Alert>
+	<Button href="/" variant="secondary" size="sm"
+		><Reply class="mr-2 h-4 w-4" />Create another secret</Button
+	>
 {:else}
 	<FormWrapper message={$message}>
 		<form method="POST" use:enhance>

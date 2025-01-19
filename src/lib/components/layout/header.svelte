@@ -12,13 +12,15 @@
 	let { user }: { user: LayoutServerData['user'] } = $props();
 </script>
 
-<header class="h-16">
+<header class="relative z-10 h-16">
 	<div class="fixed left-0 top-0 h-16 w-full bg-transparent">
 		<div class="container flex h-full items-center">
-			<a class="p-2" href="/">
-				<Logo class="h-14 w-14" />
-			</a>
-			<a class="p-2 hover:text-primary" href="/text">Text</a>
+			<div class="invisible">
+				<a class="p-2" href="/">
+					<Logo class="h-14 w-14" />
+				</a>
+				<a class="p-2 hover:text-primary" href="/text">Text</a>
+			</div>
 			<div class="ml-auto grid grid-flow-col gap-2">
 				<Button on:click={toggleMode} variant="outline" size="icon">
 					<Sun
