@@ -1,8 +1,10 @@
 <script lang="ts">
+	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import Reply from 'lucide-svelte/icons/reply';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
+	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SecretTextFormSchema, secretTextFormSchema } from '$lib/validators/formSchemas';
@@ -14,6 +16,7 @@
 	import CopyButton from '../ui/copy-button';
 	import Input from '../ui/input/input.svelte';
 	import Textarea from '../ui/textarea/textarea.svelte';
+	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
@@ -69,6 +72,8 @@
 	const { form: formData, message, delayed, constraints, enhance } = form;
 
 	let charactersLeft = $derived(CHARACTER_LIMIT - $formData.text.length);
+
+	let isOptionsVisible = $state(false);
 </script>
 
 {#if $message?.status === 'success'}
@@ -87,7 +92,7 @@
 {:else}
 	<FormWrapper message={$message}>
 		<form method="POST" use:enhance>
-			<Form.Field {form} name="text" class="py-2">
+			<Form.Field {form} name="text" class="pt-2">
 				<Form.Control>
 					<Form.Label class="sr-only">{m.mellow_lime_squid_urge()}</Form.Label>
 					<div class="relative">
@@ -107,24 +112,35 @@
 				<Form.FieldErrors />
 			</Form.Field>
 
-			<Form.Field {form} name="password" class="py-4">
-				<Form.Control let:attrs>
-					<Form.Label>{m.yummy_fair_gazelle_link()}</Form.Label>
-					<Input
-						type="password"
-						autocomplete="new-password"
-						{...attrs}
-						bind:value={$formData.password}
-						{...$constraints.password}
-					/>
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
+			{#if isOptionsVisible}
+				<Form.Field {form} name="password" class="py-2">
+					<Form.Control let:attrs>
+						<Form.Label class="sr-only">{m.yummy_fair_gazelle_link()}</Form.Label>
+						<Input
+							type="password"
+							placeholder={m.yummy_fair_gazelle_link()}
+							autocomplete="new-password"
+							{...attrs}
+							bind:value={$formData.password}
+							{...$constraints.password}
+						/>
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+			{/if}
 
-			<div class="py-4">
-				<Form.Button delayed={$delayed} class="w-full" size="lg">Submit</Form.Button>
+			<div class="flex items-start py-2">
+				<Toggle size="sm" bind:pressed={isOptionsVisible} aria-label="Toggle options"
+					>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
+					<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
+				>
+				<Form.Button delayed={$delayed} class="ml-auto " size="lg"
+					>{m.lazy_mealy_vole_harbor()}</Form.Button
+				>
 			</div>
 		</form>
-		<SuperDebug data={$formData} />
+		{#if !dev}
+			<SuperDebug data={$formData} />
+		{/if}
 	</FormWrapper>
 {/if}
