@@ -15,7 +15,7 @@
 	<div class="py-3">
 		<Alert.Root
 			title={message.title}
-			variant={message.type === 'error' ? 'destructive' : 'success'}
+			variant={message.status === 'error' ? 'destructive' : 'success'}
 		>
 			{message.description}
 		</Alert.Root>

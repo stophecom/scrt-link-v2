@@ -26,7 +26,7 @@ export const actions: Actions = {
 
 		if (await limiter.isLimited(event)) {
 			return message(form, {
-				type: 'error',
+				status: 'error',
 				title: m.nimble_fancy_pony_amuse(),
 				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
 			});

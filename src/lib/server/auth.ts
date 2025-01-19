@@ -2,12 +2,8 @@ import type { RequestEvent } from '@sveltejs/kit';
 import { Google } from 'arctic';
 import { eq } from 'drizzle-orm';
 
-import {
-	GOOGLE_CLIENT_ID,
-	GOOGLE_CLIENT_SECRET,
-	VERCEL_PROJECT_PRODUCTION_URL
-} from '$env/static/private';
-import { PUBLIC_ENV } from '$env/static/public';
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
+import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
@@ -15,7 +11,6 @@ import { createHash } from '$lib/web-crypto';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
-const scheme = PUBLIC_ENV === 'development' ? 'http' : 'https';
 export const sessionCookieName = 'auth-session';
 
 export function generateSessionToken() {
@@ -98,5 +93,5 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
 export const google = new Google(
 	GOOGLE_CLIENT_ID,
 	GOOGLE_CLIENT_SECRET,
-	`${scheme}://${VERCEL_PROJECT_PRODUCTION_URL}/login/google/callback`
+	`${getBaseUrl()}/login/google/callback`
 );

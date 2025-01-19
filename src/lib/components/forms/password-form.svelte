@@ -17,7 +17,7 @@
 		validationMethod: 'auto',
 		onError(event) {
 			$message = {
-				type: 'error',
+				status: 'error',
 				title: `${event.result.status}`,
 				description: event.result.error.message
 			};
@@ -34,6 +34,7 @@
 				<Form.Label>{m.yummy_fair_gazelle_link()}</Form.Label>
 				<Input
 					type="password"
+					autocomplete="new-password"
 					{...attrs}
 					bind:value={$formData.password}
 					{...$constraints.password}

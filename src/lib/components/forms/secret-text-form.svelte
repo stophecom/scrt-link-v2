@@ -7,24 +7,36 @@
 	import { type SecretTextFormSchema, secretTextFormSchema } from '$lib/validators/formSchemas';
 	import { createHash, encryptString, generateRandomUrlSafeString } from '$lib/web-crypto';
 
+	import type { LayoutData } from '../../../routes/$types';
+	import Alert from '../ui/alert/alert.svelte';
+	import CopyButton from '../ui/copy-button';
 	import Input from '../ui/input/input.svelte';
 	import Textarea from '../ui/textarea/textarea.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
-	let { data }: SuperValidated<Infer<SecretTextFormSchema>> = $props();
+	type Props = {
+		form: SuperValidated<Infer<SecretTextFormSchema>>;
+		baseUrl: LayoutData['baseUrl'];
+	};
 
-	let masterKey = $state('');
-	const form = superForm(data, {
-		validators: zodClient(secretTextFormSchema()),
-		validationMethod: 'auto',
+	let { baseUrl, form: formProp }: Props = $props();
+
+	const CHARACTER_LIMIT = 150;
+
+	let link: string = $state('');
+
+	const form = superForm(formProp, {
+		validators: zodClient(secretTextFormSchema(CHARACTER_LIMIT)),
+		validationMethod: 'onblur',
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {
 			const { text, password } = $formData;
 
-			// Encrypt secret text before submitting
-			masterKey = generateRandomUrlSafeString();
+			const masterKey = generateRandomUrlSafeString();
+			link = `${baseUrl}/s#${masterKey}`;
 
+			// Encrypt secret text before submitting
 			let encryptedText = text;
 			if (password) {
 				encryptedText = await encryptString(encryptedText, password);
@@ -45,7 +57,7 @@
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
-				type: 'error',
+				status: 'error',
 				title: 'Unexpected error',
 				description: result.error.message || 'Some error'
 			};
@@ -53,43 +65,56 @@
 	});
 
 	const { form: formData, message, delayed, constraints, enhance } = form;
+
+	let charactersLeft = $derived(CHARACTER_LIMIT - $formData.text.length);
 </script>
 
-<h1>{masterKey}</h1>
-<FormWrapper message={$message}>
-	<form method="POST" use:enhance>
-		<Form.Field {form} name="text" class="py-2">
-			<Form.Control>
-				<Form.Label class="sr-only">{m.mellow_lime_squid_urge()}</Form.Label>
-				<div class="relative">
-					<Textarea
-						class="resize-none"
-						bind:value={$formData.text}
-						{...$constraints.text}
-						placeholder="What is your secret?"
+{#if $message?.status === 'success'}
+	<Alert title="Success">
+		<p>{link}</p>
+		<CopyButton class={'shrink-0'} text={link} />
+	</Alert>
+{:else}
+	<FormWrapper message={$message}>
+		<form method="POST" use:enhance>
+			<Form.Field {form} name="text" class="py-2">
+				<Form.Control>
+					<Form.Label class="sr-only">{m.mellow_lime_squid_urge()}</Form.Label>
+					<div class="relative">
+						<Textarea
+							class="resize-none"
+							bind:value={$formData.text}
+							{...$constraints.text}
+							placeholder="What is your secret?"
+						/>
+						<span
+							class="absolute bottom-1 right-1 text-xs {charactersLeft < 0
+								? 'text-destructive'
+								: 'text-muted-foreground'}">{charactersLeft}</span
+						>
+					</div>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+
+			<Form.Field {form} name="password" class="py-4">
+				<Form.Control let:attrs>
+					<Form.Label>{m.yummy_fair_gazelle_link()}</Form.Label>
+					<Input
+						type="password"
+						autocomplete="new-password"
+						{...attrs}
+						bind:value={$formData.password}
+						{...$constraints.password}
 					/>
-					<span class="absolute bottom-1 right-1 text-xs text-muted-foreground">123</span>
-				</div>
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
 
-		<Form.Field {form} name="password" class="py-4">
-			<Form.Control let:attrs>
-				<Form.Label>{m.yummy_fair_gazelle_link()}</Form.Label>
-				<Input
-					type="password"
-					{...attrs}
-					bind:value={$formData.password}
-					{...$constraints.password}
-				/>
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
-
-		<div class="py-4">
-			<Form.Button delayed={$delayed} class="w-full" size="lg">Submit</Form.Button>
-		</div>
-	</form>
-	<SuperDebug data={$formData} />
-</FormWrapper>
+			<div class="py-4">
+				<Form.Button delayed={$delayed} class="w-full" size="lg">Submit</Form.Button>
+			</div>
+		</form>
+		<SuperDebug data={$formData} />
+	</FormWrapper>
+{/if}

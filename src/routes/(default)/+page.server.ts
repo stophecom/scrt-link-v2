@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { fail, superValidate } from 'sveltekit-superforms';
+import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { hashPassword } from '$lib/crypto';
@@ -9,24 +9,26 @@ import { secretTextFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
 
+const CHARACTER_LIMIT = 100_000;
+
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(secretTextFormSchema(100_000))) // Limit needs to be bigger b/c of encryption.
+		form: await superValidate(zod(secretTextFormSchema(CHARACTER_LIMIT))) // Limit needs to be bigger b/c of encryption.
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event.request, zod(secretTextFormSchema()));
+		const form = await superValidate(event.request, zod(secretTextFormSchema(CHARACTER_LIMIT)));
 
 		const { text, password, secretIdHash, meta } = form.data;
-		let passwordHash;
 
 		if (!form.valid) {
 			return fail(400, { form });
 		}
 
 		const expiresAt = new Date(Date.now() + 1000 * 60 * 1); // 10 minutes
+		let passwordHash;
 
 		try {
 			if (password) {
@@ -39,11 +41,11 @@ export const actions: Actions = {
 				passwordHash,
 				expiresAt
 			});
+
+			return message(form, { status: 'success', title: 'All went well' });
 		} catch (e) {
 			console.error(e);
-			error(500, `Something went wrong. Couldn't save secret.`);
+			error(500, `Couldn't save secret.`);
 		}
-
-		return { form };
 	}
 };

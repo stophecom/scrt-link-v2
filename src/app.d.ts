@@ -10,7 +10,7 @@ declare global {
 
 		namespace Superforms {
 			type Message = {
-				type: 'error' | 'success';
+				status: 'error' | 'success';
 				title: string;
 				description?: string;
 			};

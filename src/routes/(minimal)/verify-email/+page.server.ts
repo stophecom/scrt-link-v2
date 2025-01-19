@@ -59,7 +59,7 @@ async function verifyCode(event: RequestEvent) {
 
 	if (await limiter.isLimited(event)) {
 		return message(verificationForm, {
-			type: 'error',
+			status: 'error',
 			title: m.nimble_fancy_pony_amuse(),
 			description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
 		});
@@ -76,7 +76,7 @@ async function verifyCode(event: RequestEvent) {
 
 		if (!result) {
 			return message(verificationForm, {
-				type: 'error',
+				status: 'error',
 				title: m.caring_royal_panther_race(),
 				description: m.honest_level_donkey_ask()
 			});
@@ -84,7 +84,7 @@ async function verifyCode(event: RequestEvent) {
 
 		if (!(await verifyPassword(code, result.codeHash))) {
 			return message(verificationForm, {
-				type: 'error',
+				status: 'error',
 				title: m.every_tired_canary_express(),
 				description: m.stout_front_pug_pout()
 			});
@@ -92,7 +92,7 @@ async function verifyCode(event: RequestEvent) {
 
 		if (result.expiresAt < new Date()) {
 			return message(verificationForm, {
-				type: 'error',
+				status: 'error',
 				title: m.upper_simple_sheep_grip(),
 				description: m.flat_plane_frog_tap()
 			});
@@ -132,7 +132,7 @@ async function resendCode(event: RequestEvent) {
 
 	if (await limiter.isLimited(event)) {
 		return message(resendForm, {
-			type: 'error',
+			status: 'error',
 			title: m.nimble_fancy_pony_amuse(),
 			description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
 		});
@@ -152,7 +152,7 @@ async function resendCode(event: RequestEvent) {
 	}
 
 	return message(resendForm, {
-		type: 'success',
+		status: 'success',
 		title: m.warm_male_shark_fade(),
 		description: m.mellow_wise_bobcat_hope()
 	});
