@@ -7,7 +7,7 @@ import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import { createHash } from '$lib/web-crypto';
+import { sha256Hash } from '$lib/web-crypto';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -18,7 +18,7 @@ export function generateSessionToken() {
 }
 
 export async function createSession(token: string, userId: string) {
-	const hash = await createHash(token);
+	const hash = await sha256Hash(token);
 	const sessionId = hash;
 	const session: table.Session = {
 		id: sessionId,
@@ -30,7 +30,7 @@ export async function createSession(token: string, userId: string) {
 }
 
 export async function validateSessionToken(token: string) {
-	const sessionId = await createHash(token);
+	const sessionId = await sha256Hash(token);
 	const [result] = await db
 		.select({
 			// Adjust user table here to tweak returned data

@@ -2,7 +2,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 import { api, asyncPool } from '$lib/api';
-import { createHash, decryptData, encryptFile, signMessage } from '$lib/web-crypto';
+import { decryptData, encryptFile, sha256Hash, signMessage } from '$lib/web-crypto';
 
 // If the request fails, we retry
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
@@ -75,7 +75,7 @@ export const handleFileEncryptionAndUpload = async ({
 		await uploadFileChunk({
 			bucket,
 			chunk: encryptedFile,
-			fileName: await createHash(fileName),
+			fileName: await sha256Hash(fileName),
 			size: chunkFileSize,
 			progressCallback: (p) => {
 				progressOfEachChunk[i] = p;
@@ -141,7 +141,7 @@ const chunkDownload = async ({
 	chunk
 }: Pick<SecretFile, 'alias' | 'bucket'> & { chunk: Chunk }) => {
 	const { key, signature } = chunk;
-	const keyHash = await createHash(key);
+	const keyHash = await sha256Hash(key);
 
 	const { url } = await api<SignedUrlGetResponse>(
 		`/files/${key}`,

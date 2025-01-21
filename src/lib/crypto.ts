@@ -5,11 +5,11 @@ import crypto from 'crypto';
 // See web-crypto.ts for browser tools
 
 // Function to hash a password using scrypt
-export async function hashPassword(password: string): Promise<string> {
+export async function scryptHash(str: string): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const salt = crypto.randomBytes(16); // Generate a random salt
 		const iterations = 64; // Number of iterations for derived key length
-		crypto.scrypt(password, salt, iterations, (err, derivedKey) => {
+		crypto.scrypt(str, salt, iterations, (err, derivedKey) => {
 			if (err) {
 				return reject(err);
 			}

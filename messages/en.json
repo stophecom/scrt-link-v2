@@ -59,5 +59,9 @@
 	"each_light_mare_bump": "You received a secret.",
 	"lazy_mealy_vole_harbor": "Create secret link",
 	"main_direct_salmon_savor": "More options",
-	"teal_wide_owl_arise": "Less options"
+	"teal_wide_owl_arise": "Less options",
+	"icy_heavy_toucan_harbor": "Please try again. You have {amount} attempts left.",
+	"same_gaudy_iguana_bend": "Reveal secret",
+	"vivid_vivid_peacock_slurp": "You tried too many times. Secret is being destroyed.",
+	"teary_main_bee_praise": "Password invalid."
 }

@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { hashPassword } from '$lib/crypto';
+import { scryptHash } from '$lib/crypto';
 import { db } from '$lib/server/db';
 import { secret } from '$lib/server/db/schema';
 import { secretTextFormSchema } from '$lib/validators/formSchemas';
@@ -32,7 +32,7 @@ export const actions: Actions = {
 
 		try {
 			if (password) {
-				passwordHash = await hashPassword(password);
+				passwordHash = await scryptHash(password);
 			}
 			await db.insert(secret).values({
 				secretIdHash,

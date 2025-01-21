@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { hashPassword } from '$lib/crypto';
+import { scryptHash } from '$lib/crypto';
 import { db } from '$lib/server/db';
 import { user } from '$lib/server/db/schema';
 import { passwordFormSchema } from '$lib/validators/formSchemas';
@@ -36,7 +36,7 @@ async function setPassword(event: RequestEvent) {
 
 	try {
 		// Update user
-		const hashedPassword = await hashPassword(password);
+		const hashedPassword = await scryptHash(password);
 
 		await db
 			.update(user)

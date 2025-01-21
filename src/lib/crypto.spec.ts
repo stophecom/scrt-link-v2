@@ -6,7 +6,7 @@ import {
 	base64UrlSafeDecode,
 	base64UrlSafeEncode,
 	generateOtp,
-	hashPassword,
+	scryptHash,
 	verifyPassword
 } from './crypto';
 
@@ -33,7 +33,7 @@ describe('Nodes.js Crypto', () => {
 	test('Password hashing and verification', async () => {
 		const password = 'foobar1234';
 
-		const hashedPassword = await hashPassword(password);
+		const hashedPassword = await scryptHash(password);
 
 		expect(hashedPassword).toHaveLength(164);
 

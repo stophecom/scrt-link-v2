@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '$lib/server/db';
 import { secret } from '$lib/server/db/schema';
 
-export const GET: RequestHandler = async ({ params }) => {
+export const POST: RequestHandler = async ({ params }) => {
 	const secretId = params.id;
 
 	if (!secretId) {
@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ params }) => {
 	const [result] = await db.select().from(secret).where(eq(secret.secretIdHash, secretId));
 
 	if (!result) {
-		error(400, `No secret for alias ${secretId}.`);
+		error(400, `No secret for id ${secretId}.`);
 	}
 
 	if (result?.retrievedAt) {
@@ -24,7 +24,7 @@ export const GET: RequestHandler = async ({ params }) => {
 		});
 	}
 
-	return json(result);
+	return json({ isPasswordProtected: !!result.passwordHash });
 };
 
 // export const DELETE: RequestHandler = async ({ params }) => {

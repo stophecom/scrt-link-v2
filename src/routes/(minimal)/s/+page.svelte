@@ -2,15 +2,22 @@
 	import { onMount } from 'svelte';
 
 	import { api } from '$lib/api';
+	import RevealSecretForm from '$lib/components/forms/reveal-secret-form.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import * as m from '$lib/paraglide/messages.js';
-	import type { Secret } from '$lib/server/db/schema';
-	import { createHash, decryptString } from '$lib/web-crypto';
+	import { sha256Hash } from '$lib/web-crypto';
 
-	let status: 'initial' | 'preloading' | 'preview' | 'downloading' | 'done' | 'error' = 'initial';
-	let error: string = '';
-	let secret: string = '';
+	import type { PageData } from './$types';
+	let status: 'initial' | 'preloading' | 'preview' | 'downloading' | 'done' | 'error' =
+		$state('initial');
+	let error: string = $state('');
+	let secret: string = $state('');
+
+	let { data }: { data: PageData } = $props();
+
+	let secretIdHash = $state('');
+	let showPasswordInput = $state(false);
 
 	onMount(async () => {
 		status = 'preloading';
@@ -22,10 +29,14 @@
 				throw new Error(`Invalid URL.`);
 			}
 
-			const secretIdReference = await createHash(masterKey);
-			const { content } = await api<Pick<Secret, 'content'>>(`/secrets/${secretIdReference}`);
+			secretIdHash = await sha256Hash(masterKey);
+			const { isPasswordProtected } = await api<{ isPasswordProtected: boolean }>(
+				`/secrets/${secretIdHash}`
+			);
 
-			secret = await decryptString(content, masterKey);
+			showPasswordInput = isPasswordProtected;
+
+			// secret = await decryptString(content, masterKey);
 		} catch (e) {
 			if (e instanceof Error) {
 				error = e?.message;
@@ -39,6 +50,8 @@
 	<div class="prose dark:prose-invert">
 		Secret: {secret}
 	</div>
+
+	<RevealSecretForm form={data.form} {secretIdHash} {showPasswordInput} />
 
 	<div>Status: {status}</div>
 

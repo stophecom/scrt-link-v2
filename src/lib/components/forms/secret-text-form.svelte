@@ -8,7 +8,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SecretTextFormSchema, secretTextFormSchema } from '$lib/validators/formSchemas';
-	import { createHash, encryptString, generateRandomUrlSafeString } from '$lib/web-crypto';
+	import { encryptString, generateRandomUrlSafeString, sha256Hash } from '$lib/web-crypto';
 
 	import type { LayoutData } from '../../../routes/$types';
 	import Alert from '../ui/alert/alert.svelte';
@@ -50,7 +50,7 @@
 
 			// Set data to be posted
 			const jsonPayload = {
-				secretIdHash: await createHash(masterKey),
+				secretIdHash: await sha256Hash(masterKey),
 				meta: 'type=text',
 				text: encryptedText,
 				password: $formData.password

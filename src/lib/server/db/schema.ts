@@ -33,7 +33,7 @@ export const secret = pgTable('secret', {
 	meta: text('meta').notNull(),
 	content: text('content').notNull(),
 	passwordHash: text('password_hash'),
-	passwordAttempts: smallint('password_attempts'),
+	passwordAttempts: smallint('password_attempts').notNull().default(0),
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
 	retrievedAt: timestamp('retrieved_at', { withTimezone: true, mode: 'date' })
 });

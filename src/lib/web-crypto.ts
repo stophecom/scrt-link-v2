@@ -41,7 +41,7 @@ export const generateRandomUrlSafeString = (length = 16) => {
 	return randomString.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 };
 
-export const createHash = async (message: string) => {
+export const sha256Hash = async (message: string) => {
 	const buffer = await crypto.subtle.digest('SHA-256', encodeText(message));
 	return Array.prototype.map
 		.call(new Uint8Array(buffer), (x) => ('00' + x.toString(16)).slice(-2))

@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 
 import { type EmailVerificationRequest, emailVerificationRequest } from '$lib/server/db/schema';
 
-import { generateOtp, hashPassword } from '../crypto';
+import { generateOtp, scryptHash } from '../crypto';
 import { db } from './db';
 
 export async function createEmailVerificationRequest(
@@ -13,7 +13,7 @@ export async function createEmailVerificationRequest(
 
 	const code = generateOtp();
 	try {
-		const hashedCode = await hashPassword(code);
+		const hashedCode = await scryptHash(code);
 		const [request] = await db
 			.insert(emailVerificationRequest)
 			.values({ codeHash: hashedCode, email, expiresAt })

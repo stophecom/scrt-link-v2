@@ -23,7 +23,7 @@
 		validationMethod: 'auto',
 		onError(event) {
 			$verificationFormMessage = {
-				type: 'error',
+				status: 'error',
 				title: `${event.result.status}`,
 				description: event.result.error.message
 			};
@@ -45,7 +45,7 @@
 	} = superForm(resendFormData, {
 		onError(event) {
 			$resendFormMessage = {
-				type: 'error',
+				status: 'error',
 				title: `${event.result.status}`,
 				description: event.result.error.message
 			};
