@@ -29,11 +29,15 @@ export const actions: Actions = {
 		const form = await superValidate(event.request, zod(signInFormSchema()));
 
 		if (await limiter.isLimited(event)) {
-			return message(form, {
-				status: 'error',
-				title: m.nimble_fancy_pony_amuse(),
-				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
-			});
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.nimble_fancy_pony_amuse(),
+					description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
+				},
+				{ status: 429 }
+			);
 		}
 
 		const { email, password } = form.data;
@@ -63,13 +67,17 @@ export const actions: Actions = {
 			const session = await auth.createSession(sessionToken, result.id);
 			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 
-			return message(form, {
-				status: 'error',
-				title: m.livid_wild_crab_loop(),
-				description: m.petty_flaky_lynx_boil()
-			});
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.livid_wild_crab_loop(),
+					description: m.petty_flaky_lynx_boil()
+				},
+				{ status: 401 }
+			);
 		}
 
 		return redirect(303, '/account');

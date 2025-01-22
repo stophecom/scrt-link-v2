@@ -25,11 +25,15 @@ export const actions: Actions = {
 		const form = await superValidate(event.request, zod(emailFormSchema()));
 
 		if (await limiter.isLimited(event)) {
-			return message(form, {
-				status: 'error',
-				title: m.nimble_fancy_pony_amuse(),
-				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
-			});
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.nimble_fancy_pony_amuse(),
+					description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
+				},
+				{ status: 429 }
+			);
 		}
 
 		const { email } = form.data;

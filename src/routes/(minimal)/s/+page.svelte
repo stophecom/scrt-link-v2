@@ -16,6 +16,7 @@
 
 	let { data }: { data: PageData } = $props();
 
+	let masterKey = $state('');
 	let secretIdHash = $state('');
 	let showPasswordInput = $state(false);
 
@@ -24,7 +25,7 @@
 
 		try {
 			// Extract fragment (Everything after #)
-			const masterKey = window.location.hash.substring(1);
+			masterKey = window.location.hash.substring(1);
 			if (!masterKey.length || masterKey.includes('?')) {
 				throw new Error(`Invalid URL.`);
 			}
@@ -51,7 +52,7 @@
 		Secret: {secret}
 	</div>
 
-	<RevealSecretForm form={data.form} {secretIdHash} {showPasswordInput} />
+	<RevealSecretForm form={data.form} {masterKey} {secretIdHash} {showPasswordInput} />
 
 	<div>Status: {status}</div>
 

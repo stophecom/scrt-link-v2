@@ -30,7 +30,7 @@
 		}
 	});
 
-	const { form: formData, message, errors, delayed, constraints, enhance } = form;
+	const { form: formData, message, delayed, constraints, enhance } = form;
 </script>
 
 <FormWrapper message={$message}>
@@ -53,14 +53,13 @@
 					bind:value={$formData.password}
 					{...$constraints.password}
 				/>
-				{#if $errors.password}<span class="invalid">{$errors.password}</span>{/if}
-				<Form.Description
-					><Link class="text-xs" href="/reset-password">{m.less_free_osprey_buzz()}</Link
-					></Form.Description
-				>
 			</Form.Control>
 
 			<Form.FieldErrors />
+			<Form.Description
+				><Link class="text-xs" href="/reset-password">{m.less_free_osprey_buzz()}</Link
+				></Form.Description
+			>
 		</Form.Field>
 
 		<div class="py-4">

@@ -7,22 +7,37 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
+	import { decryptString } from '$lib/web-crypto';
 
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
 		form: SuperValidated<Infer<RevealSecretFormSchema>>;
 		secretIdHash: string;
+		masterKey: string;
 		showPasswordInput: boolean;
 	};
-	const { form, secretIdHash, showPasswordInput }: Props = $props();
+	const { form, masterKey, secretIdHash, showPasswordInput }: Props = $props();
+	let secret = $state('');
 
 	const partialSchema = revealSecretFormSchema().omit({ password: true });
 
 	const revealSecretForm = superForm(form, {
 		validators: zodClient(showPasswordInput ? revealSecretFormSchema() : partialSchema),
 		validationMethod: 'auto',
+		onResult: async ({ result }) => {
+			if (result.type === 'success') {
+				if (result?.data?.content) {
+					secret = await decryptString(result.data.content, masterKey);
+
+					if ($formData.password) {
+						secret = await decryptString(secret, $formData.password);
+					}
+				}
+			}
+		},
 		onError(event) {
+			// Fallback
 			$message = {
 				status: 'error',
 				title: `${event.result.status}`,
@@ -66,3 +81,5 @@
 		{/if}
 	</form>
 </FormWrapper>
+
+{secret}

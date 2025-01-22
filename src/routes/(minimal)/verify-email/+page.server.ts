@@ -58,11 +58,15 @@ async function verifyCode(event: RequestEvent) {
 	);
 
 	if (await limiter.isLimited(event)) {
-		return message(verificationForm, {
-			status: 'error',
-			title: m.nimble_fancy_pony_amuse(),
-			description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
-		});
+		return message(
+			verificationForm,
+			{
+				status: 'error',
+				title: m.nimble_fancy_pony_amuse(),
+				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
+			},
+			{ status: 429 }
+		);
 	}
 
 	const { code, email } = verificationForm.data;
@@ -75,27 +79,45 @@ async function verifyCode(event: RequestEvent) {
 			.orderBy(desc(emailVerificationRequest.expiresAt));
 
 		if (!result) {
-			return message(verificationForm, {
-				status: 'error',
-				title: m.caring_royal_panther_race(),
-				description: m.honest_level_donkey_ask()
-			});
+			return message(
+				verificationForm,
+				{
+					status: 'error',
+					title: m.caring_royal_panther_race(),
+					description: m.honest_level_donkey_ask()
+				},
+				{
+					status: 401
+				}
+			);
 		}
 
 		if (!(await verifyPassword(code, result.codeHash))) {
-			return message(verificationForm, {
-				status: 'error',
-				title: m.every_tired_canary_express(),
-				description: m.stout_front_pug_pout()
-			});
+			return message(
+				verificationForm,
+				{
+					status: 'error',
+					title: m.every_tired_canary_express(),
+					description: m.stout_front_pug_pout()
+				},
+				{
+					status: 401
+				}
+			);
 		}
 
 		if (result.expiresAt < new Date()) {
-			return message(verificationForm, {
-				status: 'error',
-				title: m.upper_simple_sheep_grip(),
-				description: m.flat_plane_frog_tap()
-			});
+			return message(
+				verificationForm,
+				{
+					status: 'error',
+					title: m.upper_simple_sheep_grip(),
+					description: m.flat_plane_frog_tap()
+				},
+				{
+					status: 401
+				}
+			);
 		}
 
 		// All check passed. We create or update user and session.
@@ -131,11 +153,15 @@ async function resendCode(event: RequestEvent) {
 	});
 
 	if (await limiter.isLimited(event)) {
-		return message(resendForm, {
-			status: 'error',
-			title: m.nimble_fancy_pony_amuse(),
-			description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
-		});
+		return message(
+			resendForm,
+			{
+				status: 'error',
+				title: m.nimble_fancy_pony_amuse(),
+				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
+			},
+			{ status: 429 }
+		);
 	}
 
 	const { email } = resendForm.data;

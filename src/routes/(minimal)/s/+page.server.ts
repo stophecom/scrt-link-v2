@@ -28,7 +28,6 @@ export const actions: Actions = {
 		const { password, secretIdHash } = form.data;
 
 		if (!form.valid) {
-			console.log('foo');
 			return fail(400, { form });
 		}
 
@@ -41,11 +40,17 @@ export const actions: Actions = {
 		const { passwordHash, passwordAttempts, content } = result;
 
 		if (passwordAttempts + 1 >= MAX_PASSWORD_ATTEMPTS) {
-			return message(form, {
-				status: 'error',
-				title: m.teary_main_bee_praise(),
-				description: m.vivid_vivid_peacock_slurp()
-			});
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.teary_main_bee_praise(),
+					description: m.vivid_vivid_peacock_slurp()
+				},
+				{
+					status: 401
+				}
+			);
 		}
 
 		if (password && passwordHash) {
@@ -59,15 +64,21 @@ export const actions: Actions = {
 					.where(eq(secret.secretIdHash, secretIdHash))
 					.returning();
 
-				return message(form, {
-					status: 'error',
-					title: 'Wrong password!',
-					description: m.icy_heavy_toucan_harbor({
-						amount: MAX_PASSWORD_ATTEMPTS - result.passwordAttempts
-					})
-				});
+				return message(
+					form,
+					{
+						status: 'error',
+						title: 'Wrong password!',
+						description: m.icy_heavy_toucan_harbor({
+							amount: MAX_PASSWORD_ATTEMPTS - result.passwordAttempts
+						})
+					},
+					{
+						status: 401
+					}
+				);
 			}
 		}
-		return message(form, { status: 'success', title: 'Secret', description: content });
+		return { form, content };
 	}
 };
