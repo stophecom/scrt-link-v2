@@ -5,14 +5,13 @@
 	import RevealSecretForm from '$lib/components/forms/reveal-secret-form.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
+	import Spinner from '$lib/components/ui/spinner';
 	import * as m from '$lib/paraglide/messages.js';
 	import { sha256Hash } from '$lib/web-crypto';
 
 	import type { PageData } from './$types';
-	let status: 'initial' | 'preloading' | 'preview' | 'downloading' | 'done' | 'error' =
-		$state('initial');
+	let isLoading = $state(true);
 	let error: string = $state('');
-	let secret: string = $state('');
 
 	let { data }: { data: PageData } = $props();
 
@@ -21,8 +20,6 @@
 	let showPasswordInput = $state(false);
 
 	onMount(async () => {
-		status = 'preloading';
-
 		try {
 			// Extract fragment (Everything after #)
 			masterKey = window.location.hash.substring(1);
@@ -42,21 +39,18 @@
 			if (e instanceof Error) {
 				error = e?.message;
 			}
+		} finally {
+			isLoading = false;
 		}
-		status = 'preview';
 	});
 </script>
 
-<Page title="Shhh" lead={m.each_light_mare_bump()}>
-	<div class="prose dark:prose-invert">
-		Secret: {secret}
-	</div>
-
-	<RevealSecretForm form={data.form} {masterKey} {secretIdHash} {showPasswordInput} />
-
-	<div>Status: {status}</div>
-
-	{#if error}
+<Page title={m.each_light_mare_bump()} lead="You received a secret.">
+	{#if isLoading}
+		<Spinner />
+	{:else if error}
 		<Alert class="my-6" title="Error" variant="destructive">{error}</Alert>
+	{:else}
+		<RevealSecretForm form={data.form} {masterKey} {secretIdHash} {showPasswordInput} />
 	{/if}
 </Page>

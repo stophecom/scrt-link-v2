@@ -56,12 +56,16 @@
 	"petty_strong_owl_fond": "Terms Of Service",
 	"basic_cool_fish_conquer": "Imprint",
 	"mellow_lime_squid_urge": "Secret",
-	"each_light_mare_bump": "You received a secret.",
+	"each_light_mare_bump": "Knock knock",
 	"lazy_mealy_vole_harbor": "Create secret link",
 	"main_direct_salmon_savor": "More options",
 	"teal_wide_owl_arise": "Less options",
 	"icy_heavy_toucan_harbor": "Please try again. You have {amount} attempts left.",
 	"same_gaudy_iguana_bend": "Reveal secret",
 	"vivid_vivid_peacock_slurp": "You tried too many times. Secret is being destroyed.",
-	"teary_main_bee_praise": "Password invalid."
+	"teary_main_bee_praise": "Password invalid.",
+	"left_cool_raven_zap": "Destroy secret",
+	"alive_new_blackbird_stop": "Enter password to decrypt your secret. The following secret can only be accessed one time.",
+	"short_known_mule_play": "Be aware! The following secret can only be accessed one time.",
+	"low_tame_lark_amaze": "Password required"
 }

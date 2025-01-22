@@ -9,6 +9,8 @@
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 	import { decryptString } from '$lib/web-crypto';
 
+	import Button from '../ui/button/button.svelte';
+	import CopyButton from '../ui/copy-button';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
@@ -34,6 +36,7 @@
 						secret = await decryptString(secret, $formData.password);
 					}
 				}
+				history.replaceState(null, 'Secret destroyed', '#🔥');
 			}
 		},
 		onError(event) {
@@ -49,37 +52,58 @@
 	const { form: formData, message, delayed, constraints, enhance } = revealSecretForm;
 </script>
 
-<FormWrapper message={$message}>
-	<form method="POST" use:enhance>
-		{#if showPasswordInput}
-			<Form.Field form={revealSecretForm} name="password" class="py-4">
-				<Form.Control let:attrs>
-					<Form.Label>{m.yummy_fair_gazelle_link()}</Form.Label>
-					<Input
-						type="password"
-						{...attrs}
-						bind:value={$formData.password}
-						{...$constraints.password}
-					/>
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-		{/if}
-		<input type="hidden" name="secretIdHash" value={secretIdHash} />
-
-		<div class="py-4">
-			<Form.Button delayed={$delayed} class="w-full" size="lg"
-				>{m.same_gaudy_iguana_bend()}</Form.Button
+<div class="w-full rounded border bg-card px-8 pb-8 pt-12 shadow-lg">
+	{#if secret}
+		{secret}
+		<div class="flex justify-end pt-2">
+			<Button data-sveltekit-reload href="/" class="mr-2" size="lg" variant="secondary"
+				>{m.left_cool_raven_zap()}</Button
 			>
+			<CopyButton text={secret} />
 		</div>
-
-		<!-- For debugging -->
-		{#if dev}
-			<div class="py-3">
-				<SuperDebug data={$formData} />
-			</div>
+	{:else}
+		{#if showPasswordInput}
+			<h2 class="mb-4 text-3xl font-bold">{m.low_tame_lark_amaze()}</h2>
+			<p class="mb-4 text-xl leading-normal">
+				{m.alive_new_blackbird_stop()}
+			</p>
+		{:else}
+			<p class="mb-4 text-xl leading-normal">
+				{m.short_known_mule_play()}
+			</p>
 		{/if}
-	</form>
-</FormWrapper>
+		<FormWrapper message={$message}>
+			<form method="POST" use:enhance>
+				{#if showPasswordInput}
+					<Form.Field form={revealSecretForm} name="password" class="py-4">
+						<Form.Control let:attrs>
+							<Form.Label class="sr-only">{m.yummy_fair_gazelle_link()}</Form.Label>
+							<Input
+								type="password"
+								placeholder="Password*"
+								{...attrs}
+								bind:value={$formData.password}
+								{...$constraints.password}
+							/>
+						</Form.Control>
+						<Form.FieldErrors />
+					</Form.Field>
+				{/if}
+				<input type="hidden" name="secretIdHash" value={secretIdHash} />
 
-{secret}
+				<div class="py-4">
+					<Form.Button delayed={$delayed} class="w-full" size="lg"
+						>{m.same_gaudy_iguana_bend()}</Form.Button
+					>
+				</div>
+
+				<!-- For debugging -->
+				{#if dev}
+					<div class="py-3">
+						<SuperDebug data={$formData} />
+					</div>
+				{/if}
+			</form>
+		</FormWrapper>
+	{/if}
+</div>
