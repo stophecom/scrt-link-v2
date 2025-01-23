@@ -44,16 +44,16 @@
 	}
 
 	.dark {
-		--background: 212 26% 14%;
+		--background: 212 26% 8%;
 		--foreground: 0 0% 87%;
 
-		--muted: 212 26% 11%;
+		--muted: 212 26% 13%;
 		--muted-foreground: 240 5% 64.9%;
 
-		--popover: 240 10% 3.9%;
-		--popover-foreground: 0 0% 98%;
+		/* --popover: 240 10% 3.9%;
+		--popover-foreground: 0 0% 98%; */
 
-		--card: 212 27% 10%;
+		--card: 212 27% 6%;
 		--card-foreground: 0 0% 98%;
 
 		--border: 240 3.7% 35.9%;
@@ -91,6 +91,6 @@
 
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		background-image: radial-gradient(circle, hsl(var(--background)) 46%, hsl(var(--card)));
+		background-image: radial-gradient(circle, hsl(var(--background)) 46%, hsl(var(--muted)));
 	}
 }
