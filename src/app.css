@@ -94,3 +94,7 @@
 		background-image: radial-gradient(circle, hsl(var(--background)) 46%, hsl(var(--muted)));
 	}
 }
+
+:root {
+	interpolate-size: allow-keywords;
+}

@@ -1,6 +1,14 @@
 import { z } from 'zod';
 
+import { expiresAtOptions } from '$lib/data/secretSettings';
 import * as m from '$lib/paraglide/messages.js';
+
+const options = expiresAtOptions();
+type Property = (typeof options)[number]['value'];
+const expiresAtEnum: [Property, ...Property[]] = [
+	options[0].value,
+	...options.slice(1).map((p) => p.value)
+];
 
 // We return functions in order for translations to work as expected.
 export const emailFormSchema = () =>
@@ -46,7 +54,8 @@ export const secretTextFormSchema = (limit: number = 150) =>
 		publicKey: z.string().optional(),
 		meta: z.string(),
 		text: z.string().min(1).max(limit),
-		password: z.string().min(6).max(255).optional()
+		password: z.string().min(6).max(255).optional(),
+		expiresAt: z.enum(expiresAtEnum).default(expiresAtEnum[expiresAtEnum.length - 1])
 	});
 
 export const revealSecretFormSchema = () =>

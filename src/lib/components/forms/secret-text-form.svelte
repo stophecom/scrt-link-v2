@@ -6,6 +6,8 @@
 
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
+	import * as RadioGroup from '$lib/components/ui/radio-group';
+	import { expiresAtOptions } from '$lib/data/secretSettings';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SecretTextFormSchema, secretTextFormSchema } from '$lib/validators/formSchemas';
 	import { encryptString, generateRandomUrlSafeString, sha256Hash } from '$lib/web-crypto';
@@ -73,7 +75,7 @@
 
 	let charactersLeft = $derived(CHARACTER_LIMIT - $formData.text.length);
 
-	let isOptionsVisible = $state(false);
+	let isOptionsVisible = $state(true);
 </script>
 
 {#if $message?.status === 'success'}
@@ -81,7 +83,7 @@
 		<div class="flex items-center">
 			<div>
 				<div class="font-light">{link}</div>
-				<small class="block text-muted-foreground">Expires: sdfsdf</small>
+				<small class="block text-muted-foreground">Expires: 123.</small>
 			</div>
 			<CopyButton class="ml-auto shrink-0" text={link} />
 		</div>
@@ -112,7 +114,11 @@
 				<Form.FieldErrors />
 			</Form.Field>
 
-			{#if isOptionsVisible}
+			<div
+				class="overflow-y-clip transition-all duration-300 ease-in-out {isOptionsVisible
+					? 'visible h-[calc(auto)] opacity-100'
+					: 'invisible h-0 opacity-0'}"
+			>
 				<Form.Field {form} name="password" class="py-2">
 					<Form.Control let:attrs>
 						<Form.Label class="sr-only">{m.yummy_fair_gazelle_link()}</Form.Label>
@@ -127,7 +133,26 @@
 					</Form.Control>
 					<Form.FieldErrors />
 				</Form.Field>
-			{/if}
+
+				<div class="px-1 py-4">
+					<Form.Fieldset {form} name="expiresAt" class="py-2">
+						<Form.Legend>Link expiration</Form.Legend>
+						<RadioGroup.Root bind:value={$formData.expiresAt} orientation="horizontal" class="flex">
+							{#each expiresAtOptions() as option}
+								<div class="flex items-center pe-3">
+									<Form.Control let:attrs>
+										<RadioGroup.Item value={option.value} {...attrs} />
+										<Form.Label class="ml-0 cursor-pointer pl-2 font-normal"
+											>{option.label}</Form.Label
+										>
+									</Form.Control>
+								</div>
+							{/each}
+						</RadioGroup.Root>
+						<Form.FieldErrors />
+					</Form.Fieldset>
+				</div>
+			</div>
 
 			<div class="flex items-start py-2">
 				<Toggle size="sm" bind:pressed={isOptionsVisible} aria-label="Toggle options"
