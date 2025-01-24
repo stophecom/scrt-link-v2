@@ -67,5 +67,8 @@
 	"left_cool_raven_zap": "Destroy secret",
 	"alive_new_blackbird_stop": "Enter password to decrypt your secret. The following secret can only be accessed one time.",
 	"short_known_mule_play": "Be aware! The following secret can only be accessed one time.",
-	"low_tame_lark_amaze": "Password required"
+	"low_tame_lark_amaze": "Password required",
+	"trite_fun_starfish_ripple": "Create another secret",
+	"real_actual_cockroach_type": "Link expires in {time}",
+	"knotty_fuzzy_scallop_fall": "Copy"
 }

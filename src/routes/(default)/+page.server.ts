@@ -50,7 +50,9 @@ export const actions: Actions = {
 				expiresAt
 			});
 
-			return message(form, { status: 'success', title: 'All went well' });
+			return message(form, {
+				status: 'success'
+			});
 		} catch (e) {
 			console.error(e);
 			error(500, `Couldn't save secret.`);

@@ -11,7 +11,7 @@ declare global {
 		namespace Superforms {
 			type Message = {
 				status: 'error' | 'success';
-				title: string;
+				title?: string;
 				description?: string;
 			};
 		}

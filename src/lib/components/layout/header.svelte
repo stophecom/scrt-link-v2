@@ -10,10 +10,10 @@
 	import type { LayoutServerData } from '../../../routes/$types';
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
 
-	let { user }: { user: LayoutServerData['user'] } = $props();
+	let { user, minimal }: { user: LayoutServerData['user']; minimal: boolean } = $props();
 </script>
 
-<IntersectionObserver let:intersecting bottom={100}>
+<IntersectionObserver let:intersecting bottom={minimal ? 0 : 100}>
 	<header class="relative z-10 h-16">
 		<div
 			class="fixed left-0 top-0 h-16 w-full transition duration-300 ease-in-out {intersecting
@@ -22,14 +22,15 @@
 		>
 			<div class="container flex h-full items-center">
 				<a
-					class="flex items-center p-2 transition duration-150 ease-in-out {intersecting
+					class="flex items-center p-2 transition duration-150 ease-in-out {intersecting && !minimal
 						? 'translate-x-4 scale-150 opacity-0'
 						: 'scale-100 opacity-100'}"
 					href="/"
 				>
 					<Logo class="h-10 w-10" />
 					<span
-						class="p-2 text-lg font-semibold transition delay-100 duration-150 ease-in-out {intersecting
+						class="p-2 text-lg font-semibold transition delay-100 duration-150 ease-in-out {intersecting &&
+						!minimal
 							? 'translate-x-4 scale-150 opacity-0'
 							: 'translate-x-0 scale-100 opacity-100'}">scrt.link</span
 					>

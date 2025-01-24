@@ -32,7 +32,7 @@
 </script>
 
 <Page title="Share a secret" lead="…with a link that only works one time and then self-destructs.">
-	<div class="w-full rounded border bg-card px-8 pb-8 pt-4 shadow-lg">
+	<div class="w-full rounded border bg-card px-4 pb-8 pt-4 shadow-lg md:px-8">
 		<Tabs.Root value="text">
 			<Tabs.List>
 				<Tabs.Trigger value="text">Text</Tabs.Trigger>

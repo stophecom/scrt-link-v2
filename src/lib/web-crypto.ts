@@ -31,14 +31,14 @@ export const decodeText = (data: ArrayBuffer) => {
 
 export const generateUuid = () => crypto.randomUUID();
 
-export const generateRandomString = (length = 16) => {
-	const randomBytes = getRandomBytes(length);
-	return binaryToBase64(randomBytes.buffer);
-};
+export const generateRandomUrlSafeString = (length = 36) => {
+	const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	const numbers = '0123456789';
+	const specialCharacters = '$~-_.'; // Technically more characters are allowed in the fragment identifier part of the URL.
+	const charset = [...letters, ...numbers, ...specialCharacters];
 
-export const generateRandomUrlSafeString = (length = 16) => {
-	const randomString = generateRandomString(length);
-	return randomString.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+	const values = getRandomBytes(length);
+	return Array.from(values, (v) => charset[v % charset.length]).join('');
 };
 
 export const sha256Hash = async (message: string) => {

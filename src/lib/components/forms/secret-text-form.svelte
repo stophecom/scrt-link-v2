@@ -38,7 +38,7 @@
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {
-			const { text, password } = $formData;
+			const { text, password, expiresAt } = $formData;
 
 			const masterKey = generateRandomUrlSafeString();
 			link = `${baseUrl}/s#${masterKey}`;
@@ -55,6 +55,7 @@
 				secretIdHash: await sha256Hash(masterKey),
 				meta: 'type=text',
 				text: encryptedText,
+				expiresAt,
 				password: $formData.password
 			};
 
@@ -75,21 +76,25 @@
 
 	let charactersLeft = $derived(CHARACTER_LIMIT - $formData.text.length);
 
-	let isOptionsVisible = $state(true);
+	let isOptionsVisible = $state(false);
 </script>
 
 {#if $message?.status === 'success'}
 	<Alert title="Your secret link:" variant="success" class="mb-2">
 		<div class="flex items-center">
-			<div>
-				<div class="font-light">{link}</div>
-				<small class="block text-muted-foreground">Expires: 123.</small>
+			<div class="flex-shrink overflow-hidden pe-2">
+				<div class="truncate whitespace-pre font-normal">{link}</div>
+				<small class="block opacity-90"
+					>{m.real_actual_cockroach_type({
+						time: expiresAtOptions().find((item) => item.value === $formData.expiresAt)?.label || ''
+					})}</small
+				>
 			</div>
 			<CopyButton class="ml-auto shrink-0" text={link} />
 		</div>
 	</Alert>
 	<Button href="/" variant="secondary" size="sm"
-		><Reply class="mr-2 h-4 w-4" />Create another secret</Button
+		><Reply class="mr-2 h-4 w-4" />{m.trite_fun_starfish_ripple()}</Button
 	>
 {:else}
 	<FormWrapper message={$message}>
@@ -137,9 +142,9 @@
 				<div class="px-1 py-4">
 					<Form.Fieldset {form} name="expiresAt" class="py-2">
 						<Form.Legend>Link expiration</Form.Legend>
-						<RadioGroup.Root bind:value={$formData.expiresAt} orientation="horizontal" class="flex">
+						<RadioGroup.Root bind:value={$formData.expiresAt} class="md:flex">
 							{#each expiresAtOptions() as option}
-								<div class="flex items-center pe-3">
+								<div class="flex items-center py-1 pe-3">
 									<Form.Control let:attrs>
 										<RadioGroup.Item value={option.value} {...attrs} />
 										<Form.Label class="ml-0 cursor-pointer pl-2 font-normal"
