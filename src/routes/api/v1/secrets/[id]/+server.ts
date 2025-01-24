@@ -2,6 +2,7 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { error, json } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
+import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret } from '$lib/server/db/schema';
 
@@ -19,6 +20,10 @@ export const POST: RequestHandler = async ({ params }) => {
 			throw Error(`No secret for id ${secretId}.`);
 		}
 
+		if (result?.expiresAt < new Date()) {
+			throw Error(`This secret has expired.`);
+		}
+
 		if (result?.retrievedAt) {
 			throw Error(`This secret has already been accessed and therefore no longer exists.`);
 		}
@@ -26,9 +31,6 @@ export const POST: RequestHandler = async ({ params }) => {
 	} catch (e) {
 		console.error(e);
 
-		error(
-			400,
-			`Unable to find the secret you're looking for. The secret might have been accessed and therefore does no longer exist.`
-		);
+		error(400, m.pretty_swift_parrot_ask());
 	}
 };

@@ -37,7 +37,21 @@ export const actions: Actions = {
 			error(400, `No secret for id ${secretIdHash}.`);
 		}
 
-		const { passwordHash, passwordAttempts, content } = result;
+		const { passwordHash, passwordAttempts, content, expiresAt } = result;
+
+		if (expiresAt < new Date()) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: 'Secret expired',
+					description: 'The secret is no longer available.'
+				},
+				{
+					status: 401
+				}
+			);
+		}
 
 		if (passwordAttempts + 1 >= MAX_PASSWORD_ATTEMPTS) {
 			return message(
