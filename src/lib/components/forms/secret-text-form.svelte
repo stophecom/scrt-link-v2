@@ -12,11 +12,12 @@
 	import { type SecretTextFormSchema, secretTextFormSchema } from '$lib/validators/formSchemas';
 	import { encryptString, generateRandomUrlSafeString, sha256Hash } from '$lib/web-crypto';
 
-	import type { LayoutData } from '../../../routes/$types';
+	import type { LayoutData, LayoutServerData } from '../../../routes/$types';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import Input from '../ui/input/input.svelte';
+	import Switch from '../ui/switch/switch.svelte';
 	import Textarea from '../ui/textarea/textarea.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
@@ -24,9 +25,10 @@
 	type Props = {
 		form: SuperValidated<Infer<SecretTextFormSchema>>;
 		baseUrl: LayoutData['baseUrl'];
+		user: LayoutServerData['user'];
 	};
 
-	let { baseUrl, form: formProp }: Props = $props();
+	let { baseUrl, form: formProp, user }: Props = $props();
 
 	const CHARACTER_LIMIT = 150;
 
@@ -56,7 +58,8 @@
 				meta: 'type=text',
 				text: encryptedText,
 				expiresAt,
-				password: $formData.password
+				password: $formData.password,
+				withReadReceipt: $formData.withReadReceipt
 			};
 
 			jsonData(jsonPayload);
@@ -139,9 +142,9 @@
 					<Form.FieldErrors />
 				</Form.Field>
 
-				<div class="px-1 py-4">
+				<div class="px-1 pb-2 pt-4">
 					<Form.Fieldset {form} name="expiresAt" class="py-2">
-						<Form.Legend>Link expiration</Form.Legend>
+						<Form.Legend>{m.noble_whole_hornet_evoke()}</Form.Legend>
 						<RadioGroup.Root bind:value={$formData.expiresAt} class="md:flex">
 							{#each expiresAtOptions() as option}
 								<div class="flex items-center py-1 pe-3">
@@ -156,6 +159,26 @@
 						</RadioGroup.Root>
 						<Form.FieldErrors />
 					</Form.Fieldset>
+				</div>
+
+				<div class="px-1 pt-2">
+					<Form.Field {form} name="withReadReceipt" class="py-2">
+						<Form.Legend>Read receipt</Form.Legend>
+						<Form.Control let:attrs>
+							<div class="flex items-center space-x-2 py-2">
+								<Switch
+									includeInput
+									{...attrs}
+									bind:checked={$formData.withReadReceipt}
+									disabled={!user}
+								/>
+								<Form.Label class="cursor-pointer font-normal"
+									>Get notified after secret has been accessed.</Form.Label
+								>
+							</div>
+						</Form.Control>
+						<Form.FieldErrors />
+					</Form.Field>
 				</div>
 			</div>
 

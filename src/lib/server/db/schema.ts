@@ -38,9 +38,19 @@ export const secret = pgTable('secret', {
 	retrievedAt: timestamp('retrieved_at', { withTimezone: true, mode: 'date' })
 });
 
+export const readReceipt = pgTable('readReceipt', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	email: text('email'),
+	ntfy: text('ntfy'),
+	secretId: uuid('secret_id')
+		.notNull()
+		.references(() => secret.id)
+});
+
 export const userInsertSchema = createInsertSchema(user); // Not used atm
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;
 export type Secret = typeof secret.$inferSelect;
+export type ReadReceipt = typeof readReceipt.$inferSelect;

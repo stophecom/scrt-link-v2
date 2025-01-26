@@ -5,7 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { scryptHash } from '$lib/crypto';
 import { expiresAtOptions } from '$lib/data/secretSettings';
 import { db } from '$lib/server/db';
-import { secret } from '$lib/server/db/schema';
+import { readReceipt, secret } from '$lib/server/db/schema';
 import { secretTextFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -22,7 +22,14 @@ export const actions: Actions = {
 	default: async (event) => {
 		const form = await superValidate(event.request, zod(secretTextFormSchema(CHARACTER_LIMIT)));
 
-		const { text, password, secretIdHash, meta, expiresAt: expiration } = form.data;
+		const {
+			text,
+			password,
+			secretIdHash,
+			meta,
+			expiresAt: expiration,
+			withReadReceipt
+		} = form.data;
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -42,13 +49,38 @@ export const actions: Actions = {
 			if (password) {
 				passwordHash = await scryptHash(password);
 			}
-			await db.insert(secret).values({
-				secretIdHash,
-				meta,
-				content: text,
-				passwordHash,
-				expiresAt
-			});
+			const [result] = await db
+				.insert(secret)
+				.values({
+					secretIdHash,
+					meta,
+					content: text,
+					passwordHash,
+					expiresAt
+				})
+				.returning();
+
+			// Add read receipt
+			const user = event.locals.user;
+			if (withReadReceipt && !user) {
+				console.log('user', user);
+				return message(
+					form,
+					{
+						status: 'error',
+						title: 'Not allowed',
+						description: 'You need a user account to use read receipts.'
+					},
+					{ status: 403 }
+				);
+			}
+
+			if (withReadReceipt && user) {
+				await db.insert(readReceipt).values({
+					email: user.email,
+					secretId: result.id
+				});
+			}
 
 			return message(form, {
 				status: 'success'

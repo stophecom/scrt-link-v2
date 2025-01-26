@@ -41,7 +41,7 @@
 				<Tabs.Trigger value="love-letter">Love Letter</Tabs.Trigger>
 			</Tabs.List>
 			<Tabs.Content value="text">
-				<SecretTextForm form={data.form} baseUrl={data.baseUrl} />
+				<SecretTextForm form={data.form} baseUrl={data.baseUrl} user={data.user} />
 			</Tabs.Content>
 			<Tabs.Content value="file">Change your password here.</Tabs.Content>
 			<Tabs.Content value="redirect">Change your password here.</Tabs.Content>

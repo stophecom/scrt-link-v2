@@ -55,7 +55,8 @@ export const secretTextFormSchema = (limit: number = 150) =>
 		meta: z.string(),
 		text: z.string().min(1).max(limit),
 		password: z.string().min(6).max(255).optional(),
-		expiresAt: z.enum(expiresAtEnum).default(expiresAtEnum[expiresAtEnum.length - 2])
+		expiresAt: z.enum(expiresAtEnum).default(expiresAtEnum[expiresAtEnum.length - 2]),
+		withReadReceipt: z.boolean().default(false)
 	});
 
 export const revealSecretFormSchema = () =>

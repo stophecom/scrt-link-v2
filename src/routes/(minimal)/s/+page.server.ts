@@ -6,7 +6,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { verifyPassword } from '$lib/crypto';
 import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
-import { secret } from '$lib/server/db/schema';
+import { readReceipt as readReceiptSchema, secret as secretSchema } from '$lib/server/db/schema';
 import { revealSecretFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -31,14 +31,19 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const [result] = await db.select().from(secret).where(eq(secret.secretIdHash, secretIdHash));
+		const [result] = await db
+			.select()
+			.from(secretSchema)
+			.leftJoin(readReceiptSchema, eq(readReceiptSchema.secretId, secretSchema.id))
+			.where(eq(secretSchema.secretIdHash, secretIdHash));
 
 		if (!result) {
 			error(400, `No secret for id ${secretIdHash}.`);
 		}
 
-		const { passwordHash, passwordAttempts, content, expiresAt } = result;
+		const { passwordHash, passwordAttempts, content, expiresAt } = result.secret;
 
+		// Secret has expired.
 		if (expiresAt < new Date()) {
 			return message(
 				form,
@@ -53,6 +58,7 @@ export const actions: Actions = {
 			);
 		}
 
+		// Too many password attepmts
 		if (passwordAttempts + 1 >= MAX_PASSWORD_ATTEMPTS) {
 			return message(
 				form,
@@ -67,15 +73,16 @@ export const actions: Actions = {
 			);
 		}
 
+		// Password verification
 		if (password && passwordHash) {
 			const isPasswordValid = await verifyPassword(password, passwordHash);
 			if (!isPasswordValid) {
 				const [result] = await db
-					.update(secret)
+					.update(secretSchema)
 					.set({
-						passwordAttempts: sql`${secret.passwordAttempts} + 1`
+						passwordAttempts: sql`${secretSchema.passwordAttempts} + 1`
 					})
-					.where(eq(secret.secretIdHash, secretIdHash))
+					.where(eq(secretSchema.secretIdHash, secretIdHash))
 					.returning();
 
 				return message(
@@ -93,6 +100,22 @@ export const actions: Actions = {
 				);
 			}
 		}
+
+		// Read receipts
+		if (result.readReceipt) {
+			const { email, ntfy } = result.readReceipt;
+
+			// Send receipt via email
+			if (email) {
+				console.log(`Send read receipt to ${email}.`);
+			}
+
+			// Send receipt via nfty
+			if (ntfy) {
+				console.log(`Send read receipt to ${ntfy} endpoint.`);
+			}
+		}
+
 		return { form, content };
 	}
 };

@@ -65,11 +65,12 @@
 	"vivid_vivid_peacock_slurp": "You tried too many times. Secret is being destroyed.",
 	"teary_main_bee_praise": "Password invalid.",
 	"left_cool_raven_zap": "Destroy secret",
-	"alive_new_blackbird_stop": "Enter password to decrypt your secret. The following secret can only be accessed one time.",
+	"alive_new_blackbird_stop": "The following secret can only be accessed one time. Enter password to decrypt your secret.",
 	"short_known_mule_play": "Be aware! The following secret can only be accessed one time.",
 	"low_tame_lark_amaze": "Password required",
 	"trite_fun_starfish_ripple": "Create another secret",
 	"real_actual_cockroach_type": "Link expires in {time}",
 	"knotty_fuzzy_scallop_fall": "Copy",
-	"pretty_swift_parrot_ask": "The secret you are trying to access no longer exists. It may have expired or been accessed already."
+	"pretty_swift_parrot_ask": "The secret you are trying to access no longer exists. It may have expired or been accessed already.",
+	"noble_whole_hornet_evoke": "Link expiration"
 }
