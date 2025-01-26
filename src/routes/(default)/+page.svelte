@@ -43,9 +43,9 @@
 			<Tabs.Content value="text">
 				<SecretTextForm form={data.form} baseUrl={data.baseUrl} user={data.user} />
 			</Tabs.Content>
-			<Tabs.Content value="file">Change your password here.</Tabs.Content>
-			<Tabs.Content value="redirect">Change your password here.</Tabs.Content>
-			<Tabs.Content value="love-letter">Change your password here.</Tabs.Content>
+			<Tabs.Content value="file">File</Tabs.Content>
+			<Tabs.Content value="redirect">Redirect</Tabs.Content>
+			<Tabs.Content value="love-letter">Something else</Tabs.Content>
 		</Tabs.Root>
 	</div>
 	<Usps />
