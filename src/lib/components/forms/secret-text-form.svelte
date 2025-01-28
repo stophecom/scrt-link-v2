@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
+	import Gem from 'lucide-svelte/icons/gem';
 	import Reply from 'lucide-svelte/icons/reply';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -127,59 +128,60 @@
 					? 'visible h-[calc(auto)] opacity-100'
 					: 'invisible h-0 opacity-0'}"
 			>
-				<Form.Field {form} name="password" class="py-2">
-					<Form.Control let:attrs>
-						<Form.Label class="sr-only">{m.yummy_fair_gazelle_link()}</Form.Label>
-						<Input
-							type="password"
-							placeholder={m.yummy_fair_gazelle_link()}
-							autocomplete="new-password"
-							{...attrs}
-							bind:value={$formData.password}
-							{...$constraints.password}
-						/>
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
-
-				<div class="px-1 pb-2 pt-4">
-					<Form.Fieldset {form} name="expiresAt" class="py-2">
-						<Form.Legend>{m.noble_whole_hornet_evoke()}</Form.Legend>
-						<RadioGroup.Root bind:value={$formData.expiresAt} class="md:flex">
-							{#each expiresAtOptions() as option}
-								<div class="flex items-center py-1 pe-3">
-									<Form.Control let:attrs>
-										<RadioGroup.Item value={option.value} {...attrs} />
-										<Form.Label class="ml-0 cursor-pointer pl-2 font-normal"
-											>{option.label}</Form.Label
-										>
-									</Form.Control>
-								</div>
-							{/each}
-						</RadioGroup.Root>
-						<Form.FieldErrors />
-					</Form.Fieldset>
-				</div>
-
-				<div class="px-1 pt-2">
-					<Form.Field {form} name="withReadReceipt" class="py-2">
-						<Form.Legend>Read receipt</Form.Legend>
+				{#if user}
+					<Form.Field {form} name="password" class="py-2">
 						<Form.Control let:attrs>
-							<div class="flex items-center space-x-2 py-2">
-								<Switch
-									includeInput
-									{...attrs}
-									bind:checked={$formData.withReadReceipt}
-									disabled={!user}
-								/>
-								<Form.Label class="cursor-pointer font-normal"
-									>Get notified after secret has been accessed.</Form.Label
-								>
-							</div>
+							<Form.Label class="sr-only">{m.yummy_fair_gazelle_link()}</Form.Label>
+							<Input
+								type="password"
+								placeholder={m.yummy_fair_gazelle_link()}
+								autocomplete="new-password"
+								{...attrs}
+								bind:value={$formData.password}
+								{...$constraints.password}
+							/>
 						</Form.Control>
 						<Form.FieldErrors />
 					</Form.Field>
-				</div>
+
+					<div class="px-1 pb-2 pt-4">
+						<Form.Fieldset {form} name="expiresAt" class="py-2">
+							<Form.Legend>{m.noble_whole_hornet_evoke()}</Form.Legend>
+							<RadioGroup.Root bind:value={$formData.expiresAt} class="md:flex">
+								{#each expiresAtOptions() as option}
+									<div class="flex items-center py-1 pe-3">
+										<Form.Control let:attrs>
+											<RadioGroup.Item value={option.value} {...attrs} />
+											<Form.Label class="ml-0 cursor-pointer pl-2 font-normal"
+												>{option.label}</Form.Label
+											>
+										</Form.Control>
+									</div>
+								{/each}
+							</RadioGroup.Root>
+							<Form.FieldErrors />
+						</Form.Fieldset>
+					</div>
+
+					<div class="px-1 pt-2">
+						<Form.Field {form} name="withReadReceipt" class="py-2">
+							<Form.Legend>Read receipt</Form.Legend>
+							<Form.Control let:attrs>
+								<div class="flex items-center space-x-2 py-2">
+									<Switch includeInput {...attrs} bind:checked={$formData.withReadReceipt} />
+									<Form.Label class="cursor-pointer font-normal"
+										>Get notified after secret has been accessed.</Form.Label
+									>
+								</div>
+							</Form.Control>
+							<Form.FieldErrors />
+						</Form.Field>
+					</div>
+				{:else}
+					<div class="pt-4">
+						<Alert Icon={Gem} variant="info" title="Sign up for more">foff</Alert>
+					</div>
+				{/if}
 			</div>
 
 			<div class="flex items-start py-2">
