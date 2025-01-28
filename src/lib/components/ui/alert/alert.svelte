@@ -20,7 +20,7 @@
 	let className: $$Props['class'] = undefined;
 	export let variant: $$Props['variant'] = 'default';
 	export let title: $$Props['title'] = undefined;
-	export let Icon: $$Props['icon'] = undefined;
+	export let Icon: $$Props['Icon'] = undefined;
 	export { className as class };
 
 	$: SvelteIcon = Icon
