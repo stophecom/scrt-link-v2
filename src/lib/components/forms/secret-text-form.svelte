@@ -150,7 +150,7 @@
 				{/if}
 			</div>
 
-			<div class="flex items-start py-2">
+			<div class="flex items-start">
 				<Toggle size="sm" bind:pressed={isOptionsVisible} aria-label="Toggle options"
 					>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 					<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
@@ -161,7 +161,9 @@
 			</div>
 		</form>
 		{#if dev}
-			<SuperDebug data={$formData} />
+			<div class="py-4">
+				<SuperDebug data={$formData} />
+			</div>
 		{/if}
 	</FormWrapper>
 {/if}
