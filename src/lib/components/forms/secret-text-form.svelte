@@ -14,10 +14,10 @@
 	import { encryptString, generateRandomUrlSafeString, sha256Hash } from '$lib/web-crypto';
 
 	import type { LayoutData, LayoutServerData } from '../../../routes/$types';
+	import Password from '../form-fields/password.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
-	import Input from '../ui/input/input.svelte';
 	import Textarea from '../ui/textarea/textarea.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
@@ -129,18 +129,11 @@
 			>
 				{#if user}
 					<Form.Field {form} name="password">
-						<Form.Control let:attrs>
-							<Form.Label class="sr-only">{m.yummy_fair_gazelle_link()}</Form.Label>
-							<Input
-								type="password"
-								placeholder={m.yummy_fair_gazelle_link()}
-								autocomplete="new-password"
-								{...attrs}
-								bind:value={$formData.password}
-								{...$constraints.password}
-							/>
-						</Form.Control>
-						<Form.FieldErrors />
+						<Password
+							bind:value={$formData.password}
+							autocomplete="new-password"
+							{...$constraints.password}
+						/>
 					</Form.Field>
 
 					<Form.Fieldset {form} name="expiresAt">
