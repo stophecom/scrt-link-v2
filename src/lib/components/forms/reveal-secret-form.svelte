@@ -4,11 +4,11 @@
 
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
-	import { Input } from '$lib/components/ui/input';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 	import { decryptString } from '$lib/web-crypto';
 
+	import Password from '../form-fields/password.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import FormWrapper from './form-wrapper.svelte';
@@ -76,17 +76,11 @@
 			<form method="POST" use:enhance>
 				{#if showPasswordInput}
 					<Form.Field form={revealSecretForm} name="password" class="py-4">
-						<Form.Control let:attrs>
-							<Form.Label class="sr-only">{m.yummy_fair_gazelle_link()}</Form.Label>
-							<Input
-								type="password"
-								placeholder="Password*"
-								{...attrs}
-								bind:value={$formData.password}
-								{...$constraints.password}
-							/>
-						</Form.Control>
-						<Form.FieldErrors />
+						<Password
+							bind:value={$formData.password}
+							{...$constraints.password}
+							placeholder="Password*"
+						/>
 					</Form.Field>
 				{/if}
 				<input type="hidden" name="secretIdHash" value={secretIdHash} />

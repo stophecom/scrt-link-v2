@@ -5,5 +5,5 @@
 </script>
 
 <Page title="Acceptable Use Policy" lead="Tl;dr: Play fair." markNotTranslated={true}>
-	<Markdown markdown={markdownDocument} />
+	<Markdown markdown={markdownDocument} format />
 </Page>

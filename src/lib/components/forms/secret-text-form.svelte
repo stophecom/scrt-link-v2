@@ -7,7 +7,6 @@
 
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
-	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import { getExpiresAtOptions } from '$lib/data/secretSettings';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SecretTextFormSchema, secretTextFormSchema } from '$lib/validators/formSchemas';
@@ -15,6 +14,7 @@
 
 	import type { LayoutData, LayoutServerData } from '../../../routes/$types';
 	import Password from '../form-fields/password.svelte';
+	import RadioGroup from '../form-fields/radio-group.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
@@ -137,20 +137,11 @@
 					</Form.Field>
 
 					<Form.Fieldset {form} name="expiresAt">
-						<Form.Legend>{m.noble_whole_hornet_evoke()}</Form.Legend>
-						<RadioGroup.Root bind:value={$formData.expiresAt} class="md:flex">
-							{#each getExpiresAtOptions() as option}
-								<div class="flex items-center py-1 pe-3">
-									<Form.Control let:attrs>
-										<RadioGroup.Item value={option.value} {...attrs} />
-										<Form.Label class="ml-0 cursor-pointer pl-2 font-normal"
-											>{option.label}</Form.Label
-										>
-									</Form.Control>
-								</div>
-							{/each}
-						</RadioGroup.Root>
-						<Form.FieldErrors />
+						<RadioGroup
+							options={getExpiresAtOptions()}
+							bind:value={$formData.expiresAt}
+							label={m.noble_whole_hornet_evoke()}
+						/>
 					</Form.Fieldset>
 				{:else}
 					<div class="pt-4">

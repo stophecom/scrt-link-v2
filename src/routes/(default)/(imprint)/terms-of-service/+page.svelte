@@ -5,5 +5,5 @@
 </script>
 
 <Page title="Terms Of Service" lead="Tl;dr: Pretty much standard." markNotTranslated={true}>
-	<Markdown markdown={TOS} />
+	<Markdown markdown={TOS} format />
 </Page>

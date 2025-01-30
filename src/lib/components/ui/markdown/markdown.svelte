@@ -3,10 +3,11 @@
 
 	type Props = {
 		markdown: string;
+		format?: boolean;
 	};
-	let { markdown }: Props = $props();
+	let { markdown, format = false }: Props = $props();
 </script>
 
-<span class="prose dark:prose-invert">
+<span class={format ? 'prose dark:prose-invert' : '[&_a]:underline [&_a]:hover:text-primary'}>
 	<SvelteMarkdown md={markdown} />
 </span>

@@ -5,5 +5,5 @@
 </script>
 
 <Page title="Cookie Policy" lead="Tl;dr: only essentials, no tracking." markNotTranslated={true}>
-	<Markdown markdown={markdownDocument} />
+	<Markdown markdown={markdownDocument} format />
 </Page>

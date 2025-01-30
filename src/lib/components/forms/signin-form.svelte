@@ -9,6 +9,7 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SignInFormSchema, signInFormSchema } from '$lib/validators/formSchemas';
 
+	import Password from '../form-fields/password.svelte';
 	import Button from '../ui/button/button.svelte';
 	import Link from '../ui/link';
 	import Separator from '../ui/separator/separator.svelte';
@@ -44,18 +45,12 @@
 		</Form.Field>
 
 		<Form.Field {form} name="password" class="py-4">
-			<Form.Control let:attrs>
-				<Form.Label>{m.tame_actual_raven_adapt()}</Form.Label>
-				<Input
-					type="password"
-					autocomplete="current-password"
-					{...attrs}
-					bind:value={$formData.password}
-					{...$constraints.password}
-				/>
-			</Form.Control>
+			<Password
+				bind:value={$formData.password}
+				{...$constraints.password}
+				autocomplete="current-password"
+			/>
 
-			<Form.FieldErrors />
 			<Form.Description
 				><Link class="text-xs" href="/reset-password">{m.less_free_osprey_buzz()}</Link
 				></Form.Description

@@ -5,5 +5,5 @@
 </script>
 
 <Page title="Privacy Policy" lead="Tl;dr: Privacy matters." markNotTranslated={true}>
-	<Markdown markdown={markdownDocument} />
+	<Markdown markdown={markdownDocument} format />
 </Page>
