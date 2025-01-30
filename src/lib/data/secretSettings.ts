@@ -1,7 +1,7 @@
 const MIN = 1000 * 60;
 const DAY = 24 * 60 * MIN;
 
-export const expiresAtOptions = () => [
+export const getExpiresAtOptions = () => [
 	{
 		value: '10m',
 		label: '10 minutes',
@@ -26,5 +26,20 @@ export const expiresAtOptions = () => [
 		value: '30d',
 		label: '30 days',
 		ms: 30 * DAY
+	}
+];
+
+export const getReadReceiptOptions = () => [
+	{
+		value: 'none',
+		label: 'None'
+	},
+	{
+		value: 'email',
+		label: 'Email'
+	},
+	{
+		value: 'ntfy',
+		label: 'Ntfy*'
 	}
 ];

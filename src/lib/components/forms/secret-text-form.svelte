@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
-	import Gem from 'lucide-svelte/icons/gem';
+	import LockKeyhole from 'lucide-svelte/icons/lock-keyhole';
 	import Reply from 'lucide-svelte/icons/reply';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -8,7 +8,7 @@
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
-	import { expiresAtOptions } from '$lib/data/secretSettings';
+	import { getExpiresAtOptions } from '$lib/data/secretSettings';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SecretTextFormSchema, secretTextFormSchema } from '$lib/validators/formSchemas';
 	import { encryptString, generateRandomUrlSafeString, sha256Hash } from '$lib/web-crypto';
@@ -18,7 +18,6 @@
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import Input from '../ui/input/input.svelte';
-	import Switch from '../ui/switch/switch.svelte';
 	import Textarea from '../ui/textarea/textarea.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
@@ -59,8 +58,7 @@
 				meta: 'type=text',
 				text: encryptedText,
 				expiresAt,
-				password: $formData.password,
-				withReadReceipt: $formData.withReadReceipt
+				password: $formData.password
 			};
 
 			jsonData(jsonPayload);
@@ -90,7 +88,8 @@
 				<div class="truncate whitespace-pre font-normal">{link}</div>
 				<small class="block opacity-90"
 					>{m.real_actual_cockroach_type({
-						time: expiresAtOptions().find((item) => item.value === $formData.expiresAt)?.label || ''
+						time:
+							getExpiresAtOptions().find((item) => item.value === $formData.expiresAt)?.label || ''
 					})}</small
 				>
 			</div>
@@ -129,7 +128,7 @@
 					: 'invisible h-0 opacity-0'}"
 			>
 				{#if user}
-					<Form.Field {form} name="password" class="py-2">
+					<Form.Field {form} name="password">
 						<Form.Control let:attrs>
 							<Form.Label class="sr-only">{m.yummy_fair_gazelle_link()}</Form.Label>
 							<Input
@@ -144,42 +143,25 @@
 						<Form.FieldErrors />
 					</Form.Field>
 
-					<div class="px-1 pb-2 pt-4">
-						<Form.Fieldset {form} name="expiresAt" class="py-2">
-							<Form.Legend>{m.noble_whole_hornet_evoke()}</Form.Legend>
-							<RadioGroup.Root bind:value={$formData.expiresAt} class="md:flex">
-								{#each expiresAtOptions() as option}
-									<div class="flex items-center py-1 pe-3">
-										<Form.Control let:attrs>
-											<RadioGroup.Item value={option.value} {...attrs} />
-											<Form.Label class="ml-0 cursor-pointer pl-2 font-normal"
-												>{option.label}</Form.Label
-											>
-										</Form.Control>
-									</div>
-								{/each}
-							</RadioGroup.Root>
-							<Form.FieldErrors />
-						</Form.Fieldset>
-					</div>
-
-					<div class="px-1 pt-2">
-						<Form.Field {form} name="withReadReceipt" class="py-2">
-							<Form.Legend>Read receipt</Form.Legend>
-							<Form.Control let:attrs>
-								<div class="flex items-center space-x-2 py-2">
-									<Switch includeInput {...attrs} bind:checked={$formData.withReadReceipt} />
-									<Form.Label class="cursor-pointer font-normal"
-										>Get notified after secret has been accessed.</Form.Label
-									>
+					<Form.Fieldset {form} name="expiresAt">
+						<Form.Legend>{m.noble_whole_hornet_evoke()}</Form.Legend>
+						<RadioGroup.Root bind:value={$formData.expiresAt} class="md:flex">
+							{#each getExpiresAtOptions() as option}
+								<div class="flex items-center py-1 pe-3">
+									<Form.Control let:attrs>
+										<RadioGroup.Item value={option.value} {...attrs} />
+										<Form.Label class="ml-0 cursor-pointer pl-2 font-normal"
+											>{option.label}</Form.Label
+										>
+									</Form.Control>
 								</div>
-							</Form.Control>
-							<Form.FieldErrors />
-						</Form.Field>
-					</div>
+							{/each}
+						</RadioGroup.Root>
+						<Form.FieldErrors />
+					</Form.Fieldset>
 				{:else}
 					<div class="pt-4">
-						<Alert Icon={Gem} variant="info" title="Sign up for more">foff</Alert>
+						<Alert Icon={LockKeyhole} variant="info" title="Sign up for more">foff</Alert>
 					</div>
 				{/if}
 			</div>

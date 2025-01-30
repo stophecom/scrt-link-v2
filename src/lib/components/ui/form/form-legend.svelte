@@ -11,7 +11,7 @@
 
 <FormPrimitive.Legend
 	{...$$restProps}
-	class={cn('text-sm font-medium leading-none data-[fs-error]:text-destructive', className)}
+	class={cn('pt-4 text-sm font-medium leading-none data-[fs-error]:text-destructive', className)}
 	let:legendAttrs
 >
 	<slot {legendAttrs} />

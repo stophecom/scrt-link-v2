@@ -1,13 +1,21 @@
 import { z } from 'zod';
 
-import { expiresAtOptions } from '$lib/data/secretSettings';
+import { getExpiresAtOptions, getReadReceiptOptions } from '$lib/data/secretSettings';
 import * as m from '$lib/paraglide/messages.js';
 
-const options = expiresAtOptions();
-type Property = (typeof options)[number]['value'];
+// Typescript
+const expiresAtOptions = getExpiresAtOptions();
+type Property = (typeof expiresAtOptions)[number]['value'];
 const expiresAtEnum: [Property, ...Property[]] = [
-	options[0].value,
-	...options.slice(1).map((p) => p.value)
+	expiresAtOptions[0].value,
+	...expiresAtOptions.slice(1).map((p) => p.value)
+];
+
+const readReceiptOptions = getReadReceiptOptions();
+type ReadReceiptProperty = (typeof readReceiptOptions)[number]['value'];
+const readReceiptEnum: [ReadReceiptProperty, ...ReadReceiptProperty[]] = [
+	readReceiptOptions[0].value,
+	...readReceiptOptions.slice(1).map((p) => p.value)
 ];
 
 // We return functions in order for translations to work as expected.
@@ -55,8 +63,14 @@ export const secretTextFormSchema = (limit: number = 150) =>
 		meta: z.string(),
 		text: z.string().min(1).max(limit),
 		password: z.string().min(6).max(255).optional(),
-		expiresAt: z.enum(expiresAtEnum).default(expiresAtEnum[expiresAtEnum.length - 2]),
-		withReadReceipt: z.boolean().default(false)
+		expiresAt: z.enum(expiresAtEnum).default(expiresAtEnum[expiresAtEnum.length - 2])
+	});
+
+export const settingsFormSchema = () =>
+	z.object({
+		name: z.string(),
+		readReceiptOptions: z.enum(readReceiptEnum).default(readReceiptEnum[0]),
+		ntfyEndpoint: z.string()
 	});
 
 export const revealSecretFormSchema = () =>
@@ -70,6 +84,7 @@ export type EmailFormSchema = ReturnType<typeof emailFormSchema>;
 export type CodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type SecretTextFormSchema = ReturnType<typeof secretTextFormSchema>;
+export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type RevealSecretFormSchema = ReturnType<typeof revealSecretFormSchema>;
 
 // export const RegisterUserZodSchema = createInsertSchema(usersTable, {
