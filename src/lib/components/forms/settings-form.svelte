@@ -51,15 +51,17 @@
 			/>
 		</Form.Fieldset>
 
-		<Form.Field {form} name="ntfyEndpoint">
-			<Text
-				label="Ntfy Endpoint"
-				bind:value={$formData.ntfyEndpoint}
-				{...$constraints.ntfyEndpoint}
-				description="*Unique endpoint that is used to send you notifications to your ntfy app. For more info
+		{#if $formData.readReceiptOptions === 'ntfy'}
+			<Form.Field {form} name="ntfyEndpoint">
+				<Text
+					label="Ntfy Endpoint"
+					bind:value={$formData.ntfyEndpoint}
+					{...$constraints.ntfyEndpoint}
+					description="*Unique endpoint that is used to send you notifications to your ntfy app. For more info
 					visit [https://ntfy.sh](https://ntfy.sh)"
-			/>
-		</Form.Field>
+				/>
+			</Form.Field>
+		{/if}
 
 		<Form.Button delayed={$delayed} class="ml-auto " size="lg">Save</Form.Button>
 	</form>

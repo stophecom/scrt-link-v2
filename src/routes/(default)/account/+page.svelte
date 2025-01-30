@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Card from '$lib/components/ui/card';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { PageServerData } from './$types';
@@ -16,6 +18,10 @@
 	<p>Your email is {data.user.email}.</p>
 
 	<div class="grid gap-2">
+		<Card title="Settings" class="py-6">
+			<SettingsForm form={data.form} user={data.user} />
+		</Card>
+
 		<div>
 			<Button variant="outline" href="/set-password">Change password</Button>
 		</div>

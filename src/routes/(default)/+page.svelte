@@ -24,6 +24,7 @@
 		}
 	];
 
+	import Card from '$lib/components/ui/card';
 	import Usps from '$lib/components/ui/usps';
 
 	import type { PageData } from './$types';
@@ -32,7 +33,7 @@
 </script>
 
 <Page title="Share a secret" lead="…with a link that only works one time and then self-destructs.">
-	<div class="w-full rounded border bg-card px-4 pb-8 pt-4 shadow-lg md:px-8">
+	<Card>
 		<Tabs.Root value="text">
 			<Tabs.List>
 				<Tabs.Trigger value="text">Text</Tabs.Trigger>
@@ -47,7 +48,7 @@
 			<Tabs.Content value="redirect">Redirect</Tabs.Content>
 			<Tabs.Content value="love-letter">Something else</Tabs.Content>
 		</Tabs.Root>
-	</div>
+	</Card>
 	<Usps />
 
 	<Section title="FAQ" lead="Frequently asked questions.">
