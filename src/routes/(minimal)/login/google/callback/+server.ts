@@ -73,8 +73,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 		} else {
-			console.log('create user');
-
+			// Create user
 			const [userResult] = await db
 				.insert(table.user)
 				.values({

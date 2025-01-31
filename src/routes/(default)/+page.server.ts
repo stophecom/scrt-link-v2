@@ -20,7 +20,7 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	default: async (event) => {
+	postSecret: async (event) => {
 		const form = await superValidate(event.request, zod(secretTextFormSchema(CHARACTER_LIMIT)));
 
 		const { text, password, secretIdHash, meta, expiresAt: expiration } = form.data;

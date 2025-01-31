@@ -102,7 +102,7 @@
 	>
 {:else}
 	<FormWrapper message={$message}>
-		<form method="POST" use:enhance>
+		<form method="POST" use:enhance action="?/postSecret">
 			<Form.Field {form} name="text" class="pt-2">
 				<Form.Control>
 					<Form.Label class="sr-only">{m.mellow_lime_squid_urge()}</Form.Label>

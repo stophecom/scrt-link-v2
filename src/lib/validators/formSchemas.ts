@@ -67,12 +67,35 @@ export const secretTextFormSchema = (limit: number = 150) =>
 	});
 
 export const settingsFormSchema = () =>
-	z.object({
-		name: z.string(),
-		readReceiptOptions: z.enum(readReceiptEnum).default(readReceiptEnum[0]),
-		email: z.string().email(),
-		ntfyEndpoint: z.string()
-	});
+	z
+		.object({
+			readReceiptOption: z.enum(readReceiptEnum),
+			email: z.string().email().optional().or(z.literal('')), // https://github.com/colinhacks/zod/issues/310#issuecomment-794533682
+			ntfyEndpoint: z.string().optional()
+		})
+		.refine(
+			(data) => {
+				return (
+					data.readReceiptOption !== 'email' || (data.readReceiptOption === 'email' && data.email)
+				);
+			},
+			{
+				message: m.least_heavy_panda_create(),
+				path: ['email'] // Target
+			}
+		)
+		.refine(
+			(data) => {
+				return (
+					data.readReceiptOption !== 'ntfy' ||
+					(data.readReceiptOption === 'ntfy' && data.ntfyEndpoint)
+				);
+			},
+			{
+				message: m.least_heavy_panda_create(),
+				path: ['ntfyEndpoint'] // Target
+			}
+		);
 
 export const revealSecretFormSchema = () =>
 	z.object({

@@ -18,17 +18,21 @@
 		user: LayoutServerData['user'];
 	};
 
-	let { form: formProp, user }: Props = $props();
+	let { form: formProp }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zodClient(settingsFormSchema()),
 
+		// We prioritize data returned from the load function
+		// https://superforms.rocks/concepts/enhance#optimistic-updates
+		invalidateAll: 'force',
+		dataType: 'json',
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
 				status: 'error',
 				title: 'Unexpected error',
-				description: result.error.message || 'Some error'
+				description: result.error.message || 'No further information available.'
 			};
 		}
 	});
@@ -37,27 +41,22 @@
 </script>
 
 <FormWrapper message={$message}>
-	Hello {user?.name}
-	<form method="POST" use:enhance>
-		<Form.Field {form} name="name">
-			<Text label="Name" bind:value={$formData.name} {...$constraints.name} />
-		</Form.Field>
-
-		<Form.Fieldset {form} name="readReceiptOptions">
+	<form method="POST" use:enhance action="?/saveSettings">
+		<Form.Fieldset {form} name="readReceiptOption">
 			<RadioGroup
 				options={getReadReceiptOptions()}
 				label={m.slimy_broad_dachshund_lock()}
-				bind:value={$formData.readReceiptOptions}
+				bind:value={$formData.readReceiptOption}
 			/>
 		</Form.Fieldset>
 
-		{#if $formData.readReceiptOptions === 'email'}
+		{#if $formData.readReceiptOption === 'email'}
 			<Form.Field {form} name="email">
 				<Text label="Email" bind:value={$formData.email} {...$constraints.email} type="email" />
 			</Form.Field>
 		{/if}
 
-		{#if $formData.readReceiptOptions === 'ntfy'}
+		{#if $formData.readReceiptOption === 'ntfy'}
 			<Form.Field {form} name="ntfyEndpoint">
 				<Text
 					label="Ntfy Endpoint"
@@ -72,6 +71,8 @@
 		<Form.Button delayed={$delayed} class="ml-auto " size="lg">Save</Form.Button>
 	</form>
 	{#if dev}
-		<SuperDebug data={$formData} />
+		<div class="py-4">
+			<SuperDebug data={$formData} />
+		</div>
 	{/if}
 </FormWrapper>

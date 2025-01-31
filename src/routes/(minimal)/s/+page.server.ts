@@ -123,7 +123,7 @@ export const actions: Actions = {
 					console.log(`Send read receipt to ${email}.`);
 				}
 
-				// Send receipt via nfty
+				// Send receipt via ntfy
 				if (readReceipt === 'ntfy') {
 					if (!ntfyEndpoint) {
 						throw Error('No ntfyEndpoint for read receipt.');
