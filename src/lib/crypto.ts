@@ -45,6 +45,15 @@ export const generateOtp = (size: number = 6) => {
 	return sixDigitCode.toString().padStart(size, '0');
 };
 
+export const generateRandomUrlSafeString = (length = 36) => {
+	const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	const numbers = '0123456789';
+	const charset = [...letters, ...numbers];
+
+	const values = crypto.randomBytes(length);
+	return Array.from(values, (v) => charset[v % charset.length]).join('');
+};
+
 // export const base64UrlEncode = () => {
 // 	const encoder = new TextEncoder();
 // };

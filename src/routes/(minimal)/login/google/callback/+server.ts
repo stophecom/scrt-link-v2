@@ -85,6 +85,11 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				})
 				.returning();
 
+			await db.insert(table.userSettings).values({
+				userId: userResult.id,
+				email: userResult.email
+			});
+
 			const sessionToken = auth.generateSessionToken();
 			const session = await auth.createSession(sessionToken, userResult.id);
 			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);

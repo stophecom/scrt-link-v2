@@ -7,7 +7,7 @@ import { verifyPassword } from '$lib/crypto';
 import * as m from '$lib/paraglide/messages.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
-import { emailVerificationRequest, user } from '$lib/server/db/schema';
+import { emailVerificationRequest, user, userSettings } from '$lib/server/db/schema';
 import {
 	createEmailVerificationRequest,
 	deleteEmailVerificationRequests
@@ -129,6 +129,11 @@ async function verifyCode(event: RequestEvent) {
 				set: { emailVerified: true }
 			})
 			.returning();
+
+		await db.insert(userSettings).values({
+			userId: userResult.id,
+			email: userResult.email
+		});
 
 		// Create session
 		const sessionToken = auth.generateSessionToken();

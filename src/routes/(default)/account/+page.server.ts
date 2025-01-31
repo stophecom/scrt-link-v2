@@ -11,7 +11,14 @@ export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
 		return redirect(307, '/signup');
 	}
-	return { user: event.locals.user, form: await superValidate(zod(settingsFormSchema())) };
+	const user = event.locals.user;
+	return {
+		user: event.locals.user,
+		form: await superValidate(
+			{ name: user.name || '', email: user.email },
+			zod(settingsFormSchema())
+		)
+	};
 };
 
 export const actions: Actions = {

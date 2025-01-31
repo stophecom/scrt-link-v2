@@ -18,6 +18,7 @@
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
+	import Link from '../ui/link';
 	import Textarea from '../ui/textarea/textarea.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
@@ -145,7 +146,12 @@
 					</Form.Fieldset>
 				{:else}
 					<div class="pt-4">
-						<Alert Icon={LockKeyhole} variant="info" title="Sign up for more">foff</Alert>
+						<Alert Icon={LockKeyhole} variant="info" title="There is more">
+							<p>
+								Add a password, set expiration date and more. <Link href="/signup">Sign up now</Link
+								>
+							</p>
+						</Alert>
 					</div>
 				{/if}
 			</div>

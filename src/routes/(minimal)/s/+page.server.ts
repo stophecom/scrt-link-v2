@@ -6,7 +6,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { verifyPassword } from '$lib/crypto';
 import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
-import { readReceipt as readReceiptSchema, secret as secretSchema } from '$lib/server/db/schema';
+import { secret as secretSchema, user as userSchema, userSettings } from '$lib/server/db/schema';
 import { revealSecretFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -34,14 +34,14 @@ export const actions: Actions = {
 		const [result] = await db
 			.select()
 			.from(secretSchema)
-			.leftJoin(readReceiptSchema, eq(readReceiptSchema.secretId, secretSchema.id))
+			.leftJoin(userSchema, eq(userSchema.id, secretSchema.userId))
 			.where(eq(secretSchema.secretIdHash, secretIdHash));
 
 		if (!result) {
 			error(400, `No secret for id ${secretIdHash}.`);
 		}
 
-		const { passwordHash, passwordAttempts, content, expiresAt } = result.secret;
+		const { passwordHash, passwordAttempts, content, expiresAt, userId } = result.secret;
 
 		// Secret has expired.
 		if (expiresAt < new Date()) {
@@ -102,17 +102,37 @@ export const actions: Actions = {
 		}
 
 		// Read receipts
-		if (result.readReceipt) {
-			const { email, ntfy } = result.readReceipt;
+		if (userId) {
+			try {
+				const [userWithSettings] = await db
+					.select()
+					.from(userSettings)
+					.where(eq(userSettings.userId, userId));
 
-			// Send receipt via email
-			if (email) {
-				console.log(`Send read receipt to ${email}.`);
-			}
+				if (!userWithSettings) {
+					throw Error('User has no settings.');
+				}
 
-			// Send receipt via nfty
-			if (ntfy) {
-				console.log(`Send read receipt to ${ntfy} endpoint.`);
+				const { readReceipt, ntfyEndpoint, email } = userWithSettings;
+
+				// Send receipt via email
+				if (readReceipt === 'email') {
+					if (!email) {
+						throw Error('No email for read receipt.');
+					}
+					console.log(`Send read receipt to ${email}.`);
+				}
+
+				// Send receipt via nfty
+				if (readReceipt === 'ntfy') {
+					if (!ntfyEndpoint) {
+						throw Error('No ntfyEndpoint for read receipt.');
+					}
+					console.log(`Send read receipt to ${ntfyEndpoint} endpoint.`);
+				}
+			} catch (e) {
+				// We catch errors since it is not critical for the recipient
+				console.error(e);
 			}
 		}
 

@@ -1,5 +1,7 @@
-import { boolean, pgTable, smallint, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { boolean, pgEnum, pgTable, smallint, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
+
+import { getReadReceiptOptions } from '../../data/secretSettings';
 
 export const user = pgTable('user', {
 	id: uuid('id').defaultRandom().primaryKey(),
@@ -29,22 +31,35 @@ export const emailVerificationRequest = pgTable('email_verification_request', {
 export const secret = pgTable('secret', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	secretIdHash: text('secret_id_hash').notNull().unique(),
+	receiptId: text('receipt_id'),
 	publicKey: text('public_key'),
 	meta: text('meta').notNull(),
 	content: text('content').notNull(),
 	passwordHash: text('password_hash'),
 	passwordAttempts: smallint('password_attempts').notNull().default(0),
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
-	retrievedAt: timestamp('retrieved_at', { withTimezone: true, mode: 'date' })
+	retrievedAt: timestamp('retrieved_at', { withTimezone: true, mode: 'date' }),
+	userId: uuid('user_id').references(() => user.id)
 });
 
-export const readReceipt = pgTable('readReceipt', {
+// Extract Enum type
+const readReceiptOptions = getReadReceiptOptions();
+type ReadReceiptProperty = (typeof readReceiptOptions)[number]['value'];
+const readReceiptEnum: [ReadReceiptProperty, ...ReadReceiptProperty[]] = [
+	readReceiptOptions[0].value,
+	...readReceiptOptions.slice(1).map((p) => p.value)
+];
+
+export const readReceipt = pgEnum('read_receipt', readReceiptEnum);
+
+export const userSettings = pgTable('user_settings', {
 	id: uuid('id').defaultRandom().primaryKey(),
+	ntfyEndpoint: text('ntfy_endpoint'),
 	email: text('email'),
-	ntfy: text('ntfy'),
-	secretId: uuid('secret_id')
+	readReceipt: readReceipt().default(readReceiptEnum[0]),
+	userId: uuid('user_id')
 		.notNull()
-		.references(() => secret.id)
+		.references(() => user.id)
 });
 
 export const userInsertSchema = createInsertSchema(user); // Not used atm
@@ -53,4 +68,4 @@ export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;
 export type Secret = typeof secret.$inferSelect;
-export type ReadReceipt = typeof readReceipt.$inferSelect;
+export type UserSettings = typeof userSettings.$inferSelect;

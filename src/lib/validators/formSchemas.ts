@@ -70,6 +70,7 @@ export const settingsFormSchema = () =>
 	z.object({
 		name: z.string(),
 		readReceiptOptions: z.enum(readReceiptEnum).default(readReceiptEnum[0]),
+		email: z.string().email(),
 		ntfyEndpoint: z.string()
 	});
 

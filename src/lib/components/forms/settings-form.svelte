@@ -51,6 +51,12 @@
 			/>
 		</Form.Fieldset>
 
+		{#if $formData.readReceiptOptions === 'email'}
+			<Form.Field {form} name="email">
+				<Text label="Email" bind:value={$formData.email} {...$constraints.email} type="email" />
+			</Form.Field>
+		{/if}
+
 		{#if $formData.readReceiptOptions === 'ntfy'}
 			<Form.Field {form} name="ntfyEndpoint">
 				<Text

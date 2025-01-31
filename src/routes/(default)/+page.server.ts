@@ -3,9 +3,10 @@ import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { scryptHash } from '$lib/crypto';
+import { generateRandomUrlSafeString } from '$lib/crypto';
 import { getExpiresAtOptions } from '$lib/data/secretSettings';
 import { db } from '$lib/server/db';
-import { readReceipt, secret } from '$lib/server/db/schema';
+import { secret } from '$lib/server/db/schema';
 import { secretTextFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -42,6 +43,10 @@ export const actions: Actions = {
 			if (password) {
 				passwordHash = await scryptHash(password);
 			}
+
+			// Attach user to secret, if exists
+			const user = event.locals.user;
+
 			const [result] = await db
 				.insert(secret)
 				.values({
@@ -49,22 +54,15 @@ export const actions: Actions = {
 					meta,
 					content: text,
 					passwordHash,
-					expiresAt
+					expiresAt,
+					receiptId: generateRandomUrlSafeString(8),
+					userId: user?.id
 				})
 				.returning();
 
-			// Add read receipt
-			const user = event.locals.user;
-
-			if (user) {
-				await db.insert(readReceipt).values({
-					email: user.email,
-					secretId: result.id
-				});
-			}
-
 			return message(form, {
-				status: 'success'
+				status: 'success',
+				description: `${result.receiptId}`
 			});
 		} catch (e) {
 			console.error(e);
