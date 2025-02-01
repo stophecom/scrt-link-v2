@@ -19,6 +19,7 @@
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import Link from '../ui/link';
+	import Markdown from '../ui/markdown';
 	import Textarea from '../ui/textarea/textarea.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
@@ -86,13 +87,8 @@
 	<Alert title="Your secret link:" variant="success" class="mb-2">
 		<div class="flex items-center">
 			<div class="flex-shrink overflow-hidden pe-2">
-				<div class="truncate whitespace-pre font-normal">{link}</div>
-				<small class="block opacity-90"
-					>{m.real_actual_cockroach_type({
-						time:
-							getExpiresAtOptions().find((item) => item.value === $formData.expiresAt)?.label || ''
-					})}</small
-				>
+				<div class="mb-1 truncate whitespace-pre font-normal">{link}</div>
+				<small class="block opacity-90"><Markdown markdown={$message.description || ''} /></small>
 			</div>
 			<CopyButton class="ml-auto shrink-0" text={link} />
 		</div>

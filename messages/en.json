@@ -69,7 +69,7 @@
 	"short_known_mule_play": "Be aware! The following secret can only be accessed one time.",
 	"low_tame_lark_amaze": "Password required",
 	"trite_fun_starfish_ripple": "Create another secret",
-	"real_actual_cockroach_type": "Link expires in {time}",
+	"real_actual_cockroach_type": "Link expires in {time}.",
 	"knotty_fuzzy_scallop_fall": "Copy",
 	"pretty_swift_parrot_ask": "The secret you are trying to access no longer exists. It may have expired or been accessed already.",
 	"noble_whole_hornet_evoke": "Link expiration",
@@ -83,5 +83,6 @@
 	"soft_frail_wolf_fear": "he following secret has been delivered:",
 	"ideal_aloof_mayfly_thrive": "The secret has now been deleted and is no longer available.",
 	"quiet_long_beaver_scold": "Stranger",
-	"spry_bald_guppy_cry": "Read receipt"
+	"spry_bald_guppy_cry": "Read receipt",
+	"deft_lucky_quail_pause": "Your receipt code is: **{receiptId}**"
 }

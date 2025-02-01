@@ -5,6 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { scryptHash } from '$lib/crypto';
 import { generateRandomUrlSafeString } from '$lib/crypto';
 import { getExpiresAtOptions } from '$lib/data/secretSettings';
+import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret } from '$lib/server/db/schema';
 import { secretTextFormSchema } from '$lib/validators/formSchemas';
@@ -46,8 +47,9 @@ export const actions: Actions = {
 
 			// Attach user to secret, if exists
 			const user = event.locals.user;
+			const receiptId = generateRandomUrlSafeString(8);
 
-			const [result] = await db
+			await db
 				.insert(secret)
 				.values({
 					secretIdHash,
@@ -55,14 +57,20 @@ export const actions: Actions = {
 					content: text,
 					passwordHash,
 					expiresAt,
-					receiptId: generateRandomUrlSafeString(8),
+					receiptId,
 					userId: user?.id
 				})
 				.returning();
 
+			const expirationMessage = m.real_actual_cockroach_type({
+				time: getExpiresAtOptions().find((item) => item.value === expiration)?.label || ''
+			});
+
+			const readReceiptMessage = m.deft_lucky_quail_pause({ receiptId });
+
 			return message(form, {
 				status: 'success',
-				description: `${result.receiptId}`
+				description: [expirationMessage, ...(user ? [readReceiptMessage] : [])].join(' ')
 			});
 		} catch (e) {
 			console.error(e);
