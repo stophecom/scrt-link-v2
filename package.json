@@ -73,6 +73,7 @@
 		"mode-watcher": "^0.5.0",
 		"postgres": "^3.4.5",
 		"resend": "^4.1.1",
+		"svelte-email-tailwind": "^2.0.1",
 		"svelte-exmarkdown": "^4.0.2"
 	}
 }

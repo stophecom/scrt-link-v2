@@ -1,9 +1,11 @@
 import { error } from '@sveltejs/kit';
 import { eq, sql } from 'drizzle-orm';
+import { render } from 'svelte/server';
 import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { verifyPassword } from '$lib/crypto';
+import EmailReadReceipt from '$lib/emails/email-read-receipt.svelte';
 import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret as secretSchema, user as userSchema, userSettings } from '$lib/server/db/schema';
@@ -42,7 +44,7 @@ export const actions: Actions = {
 			error(400, `No secret for id ${secretIdHash}.`);
 		}
 
-		const { passwordHash, passwordAttempts, content, expiresAt, userId } = result.secret;
+		const { passwordHash, passwordAttempts, content, expiresAt, userId, receiptId } = result.secret;
 
 		// Secret has expired.
 		if (expiresAt < new Date()) {
@@ -117,14 +119,16 @@ export const actions: Actions = {
 				const { readReceipt, ntfyEndpoint, email } = userWithSettings;
 
 				// Send receipt via email
-				if (readReceipt === 'email') {
+				if (readReceipt === 'email' && receiptId) {
 					if (!email) {
 						throw Error('No email for read receipt.');
 					}
+
+					const { html } = render(EmailReadReceipt, { props: { receiptId } });
 					await sendTransactionalEmail({
+						subject: m.sunny_this_falcon_coax(),
 						to: email,
-						subject: 'Read receipt',
-						html: '<strong>foo</strong>'
+						html: html
 					});
 					console.log(`Send read receipt to ${email}.`);
 				}

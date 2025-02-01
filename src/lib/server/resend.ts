@@ -5,19 +5,19 @@ import { appName, emailSupport } from '$lib/data/app';
 
 const resend = new Resend(RESEND_API);
 
-const transactionalEmail = async (options: Pick<CreateEmailOptions, 'to' | 'subject' | 'html'>) => {
-	const { data, error } = await resend.emails.send({
+const sendTransactionalEmail = async ({
+	html,
+	...options
+}: Omit<CreateEmailOptions, 'html' | 'from'> & { html: string }) => {
+	const { error } = await resend.emails.send({
 		from: `${appName} <${emailSupport}>`,
-		// subject: 'Hello World',
-		html: '<strong>It works!</strong>',
+		html: html,
 		...options
 	});
 
 	if (error) {
 		return console.error({ error });
 	}
-
-	console.log({ data });
 };
 
-export default transactionalEmail;
+export default sendTransactionalEmail;
