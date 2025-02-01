@@ -1,6 +1,6 @@
 # scrt-link-v2
 
-Version 2 - built with Svelte: [`sv`](https://github.com/sveltejs/cli).
+Version 2 - built with [Svelte](https://github.com/sveltejs/cli).
 
 > [!WARNING]  
 > This is work-in-progress.
@@ -54,16 +54,35 @@ pnpm inlang:editor # Opens visual editor
 
 ## Authentication
 
-Following examples from [Lucia](https://v2.lucia-auth.com/database-adapters/postgres/)
+Implementation based on [Lucia](https://v2.lucia-auth.com/database-adapters/postgres/)
 
 The following login methods are available:
 
-- Email & Password
+- Email & Password (with email verification & password reset)
 - OAuth with Google
 
 ### Google OAuth Client
 
 Redirect URI: `/login/google/callback`
+
+## Transactional Emails
+
+- Delivered via [resend](https://resend.com/)
+- Email templates with [svelte-email-tailwind](https://github.com/steveninety/svelte-email-tailwind)
+- Structure:
+
+```bash
+📦 Project
+├── 📂 src
+│ └── 📂 lib
+│   └── 📂 emails # Email templates
+│
+├── 📂 routes
+│ └── 📂 admin
+│   └── 📂 email-previews # Preview emails (Only works on localhost )
+│
+└── 📜 vite.config.ts # Tailwind setup
+```
 
 ## Stack
 
@@ -71,11 +90,13 @@ Redirect URI: `/login/google/callback`
 - Tailwind CSS
 - PostgreSQL (Database)
 - Drizzle (ORM)
+- Inlang/Paraglide (i18n)
 
 ## Infrastructure
 
-- Website and Postgres on [Vercel](https://vercel.com/)
+- Website and Postgres on [Vercel](https://vercel.com)
 - S3 Object Storage with [flow.swiss](https://flow.swiss)
+- Emails with [Resend](https://resend.com)
 
 ## License
 
