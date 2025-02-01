@@ -36,8 +36,6 @@
 					>
 				</a>
 
-				<!-- <a class="p-2 hover:text-primary" href="/text">Text</a> -->
-
 				<div class="ml-auto grid grid-flow-col gap-2">
 					<Button on:click={toggleMode} variant="outline" size="icon">
 						<Sun
@@ -52,7 +50,9 @@
 						<a class="flex items-center" href="/account">
 							<Avatar.Root class="mr-2">
 								<Avatar.Image src={user.picture} alt={user.name} />
-								<Avatar.Fallback class="uppercase">{Array.from(user.email)[0]}</Avatar.Fallback>
+								<Avatar.Fallback class="border bg-background uppercase"
+									>{Array.from(user.email)[0]}</Avatar.Fallback
+								>
 							</Avatar.Root>
 							<span class="font-medium">{user.name}</span>
 						</a>

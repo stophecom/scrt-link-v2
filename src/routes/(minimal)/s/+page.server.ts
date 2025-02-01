@@ -126,7 +126,7 @@ export const actions: Actions = {
 
 					const { html } = render(EmailReadReceipt, { props: { receiptId } });
 					await sendTransactionalEmail({
-						subject: m.sunny_this_falcon_coax(),
+						subject: m.spry_bald_guppy_cry(),
 						to: email,
 						html: html
 					});

@@ -11,7 +11,7 @@
 	let { data }: { data: PageServerData } = $props();
 </script>
 
-<Page title={m.zany_jolly_cuckoo_scoop({ name: data.user.name || 'Foo' })}>
+<Page title={m.zany_jolly_cuckoo_scoop({ name: data.user.name || m.quiet_long_beaver_scold() })}>
 	<p>Your user ID is {data.user.id}.</p>
 	<img src={data.user.picture} alt={data.user.name} />
 	<p>Your Google ID is {data.user.googleId}</p>
