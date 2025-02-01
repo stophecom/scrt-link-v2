@@ -6,13 +6,14 @@
 	import type { Snippet } from 'svelte';
 
 	import { PUBLIC_ENV } from '$env/static/public';
+	import { appName } from '$lib/data/app';
 	import { i18n } from '$lib/i18n';
 
 	import type { LayoutData } from './$types';
 
 	let { children }: { data: LayoutData; children: Snippet } = $props();
 
-	let title = 'Scrt.link';
+	let title = appName;
 	let description =
 		'Share a one-time secret. With scrt.link you can transmit passwords, credit card information, private keys or other sensitive data in a secure way: End-to-end encrypted. One time.';
 	let keywords =

@@ -7,6 +7,7 @@ import { verifyPassword } from '$lib/crypto';
 import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret as secretSchema, user as userSchema, userSettings } from '$lib/server/db/schema';
+import sendTransactionalEmail from '$lib/server/resend';
 import { revealSecretFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -120,6 +121,11 @@ export const actions: Actions = {
 					if (!email) {
 						throw Error('No email for read receipt.');
 					}
+					await sendTransactionalEmail({
+						to: email,
+						subject: 'Read receipt',
+						html: '<strong>foo</strong>'
+					});
 					console.log(`Send read receipt to ${email}.`);
 				}
 

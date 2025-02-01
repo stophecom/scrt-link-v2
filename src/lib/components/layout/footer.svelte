@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { uptimerobotUrl } from '$lib/data/constants';
+	import { uptimerobotUrl } from '$lib/data/app';
 	import { imprintMenu } from '$lib/data/menu';
 	import { getSupportedLanguagesMap } from '$lib/data/supportedLocales';
 	import { i18n } from '$lib/i18n';
