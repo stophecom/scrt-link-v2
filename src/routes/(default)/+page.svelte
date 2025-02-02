@@ -6,26 +6,11 @@
 	import Section from '$lib/components/layout/section.svelte';
 	import * as Accordion from '$lib/components/ui/accordion/index.js';
 	import { Button } from '$lib/components/ui/button';
-	import * as Tabs from '$lib/components/ui/tabs';
-
-	const items = [
-		{
-			title: 'What is the meaning of life?',
-			content:
-				'To become a better person, to help others, and to leave the world a better place than you found it.'
-		},
-		{
-			title: 'How do I become a better person?',
-			content: 'Read books, listen to podcasts, and surround yourself with people who inspire you.'
-		},
-		{
-			title: 'What is the best way to help others?',
-			content: 'Give them your time, attention, and love.'
-		}
-	];
-
 	import Card from '$lib/components/ui/card';
+	import Markdown from '$lib/components/ui/markdown';
+	import * as Tabs from '$lib/components/ui/tabs';
 	import Usps from '$lib/components/ui/usps';
+	import { shortFaq } from '$lib/data/faq';
 
 	import type { PageData } from './$types';
 
@@ -53,12 +38,12 @@
 
 	<Section title="FAQ" lead="Frequently asked questions.">
 		<Accordion.Root class="mb-4 w-full" multiple>
-			{#each items as item, i}
+			{#each shortFaq() as item, i}
 				<Accordion.Item value="${i}" class="border-dark-10 group border-b px-1.5">
 					<Accordion.Trigger
 						class="flex w-full flex-1 items-center justify-between py-5 text-[15px] font-medium transition-all [&[data-state=open]>span>svg]:rotate-180 "
 					>
-						{item.title}
+						{item.heading}
 					</Accordion.Trigger>
 
 					<Accordion.Content
@@ -66,7 +51,7 @@
 						transitionConfig={{ duration: 200 }}
 						class="pb-[25px] text-sm tracking-[-0.01em]"
 					>
-						{item.content}
+						<Markdown markdown={item.body} />
 					</Accordion.Content>
 				</Accordion.Item>
 			{/each}
