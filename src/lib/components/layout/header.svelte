@@ -10,7 +10,7 @@
 	import type { LayoutServerData } from '../../../routes/$types';
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
 
-	let { user, minimal }: { user: LayoutServerData['user']; minimal: boolean } = $props();
+	let { user, minimal }: { user: LayoutServerData['user']; minimal?: boolean } = $props();
 </script>
 
 <IntersectionObserver let:intersecting bottom={minimal ? 0 : 100}>

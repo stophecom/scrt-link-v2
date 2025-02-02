@@ -141,7 +141,7 @@
 						/>
 					</Form.Fieldset>
 				{:else}
-					<div class="pt-4">
+					<div class="py-4">
 						<Alert Icon={LockKeyhole} variant="info" title="There is more">
 							<p>
 								Add a password, set expiration date and more. <Link href="/signup">Sign up now</Link

@@ -1,10 +1,19 @@
-import { boolean, pgEnum, pgTable, smallint, text, timestamp, uuid } from 'drizzle-orm/pg-core';
-import { createInsertSchema } from 'drizzle-zod';
+import {
+	boolean,
+	integer,
+	pgEnum,
+	pgTable,
+	serial,
+	smallint,
+	text,
+	timestamp,
+	uuid
+} from 'drizzle-orm/pg-core';
 
 import { getReadReceiptOptions } from '../../data/secretSettings';
 
 export const user = pgTable('user', {
-	id: uuid('id').defaultRandom().primaryKey(),
+	id: uuid('id').defaultRandom().primaryKey().unique(),
 	email: text('email').notNull().unique(),
 	passwordHash: text('password_hash'),
 	name: text('name'),
@@ -62,10 +71,19 @@ export const userSettings = pgTable('user_settings', {
 		.references(() => user.id)
 });
 
-export const userInsertSchema = createInsertSchema(user); // Not used atm
+export const scope = pgEnum('scope', ['global', 'user']);
+export const stats = pgTable('stats', {
+	id: serial('id').primaryKey().unique(),
+	scope: scope(),
+	totalSecrets: integer().default(1),
+	userId: uuid('user_id')
+		.unique()
+		.references(() => user.id)
+});
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;
 export type Secret = typeof secret.$inferSelect;
 export type UserSettings = typeof userSettings.$inferSelect;
+export type Stats = typeof stats.$inferSelect;

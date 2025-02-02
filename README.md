@@ -8,18 +8,35 @@ Version 2 - built with [Svelte](https://github.com/sveltejs/cli).
 ## Developing
 
 ```bash
+
+# 1. Install dependencies
+pnpm install
+
+# 2. Start DB (via Docker)
+pnpm run db:start
+
+# 3. Start sveltekit
 pnpm run dev
 
-# drizzle (ORM, DB):
+# Run tests (unit and e2e)
+pnpm test
+```
+
+## Database
+
+Using Drizzle with Postgres.
+Runs in Docker locally.
+
+```bash
 # You will need to set POSTGRES_URL in your production environment
+# Reminder to myself: Using 5433 as port to not have conflict with local Postgres: https://stackoverflow.com/a/76448218
+
 pnpm run db:start  # Start the docker container
 pnpm run db:push # Update your database schema
 
 # Local DB with Docker
 docker compose up
 
-# Run tests (unit and e2e)
-pnpm test
 ```
 
 ## Building

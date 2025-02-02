@@ -5,6 +5,7 @@
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import { emailSupport } from '$lib/data/app';
 	import * as m from '$lib/paraglide/messages.js';
+	import { languageTag } from '$lib/paraglide/runtime';
 
 	type Props = { title: string; lead?: string; markNotTranslated?: boolean; children: Snippet };
 	let { title, lead, markNotTranslated, children }: Props = $props();
@@ -22,7 +23,7 @@
 		<p class="mb-10 text-xl leading-snug md:text-3xl">{lead}</p>
 	{/if}
 
-	{#if markNotTranslated}
+	{#if markNotTranslated && languageTag() !== 'en'}
 		<Alert class="mb-5" title="Important" variant="info">
 			<div>
 				{m.grassy_due_crab_cook()}

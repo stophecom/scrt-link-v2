@@ -13,4 +13,4 @@
 <main>
 	{@render children()}
 </main>
-<Footer />
+<Footer totalSecrets={data.totalSecrets} />

@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { sql } from 'drizzle-orm';
 import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
@@ -7,7 +8,7 @@ import { generateRandomUrlSafeString } from '$lib/crypto';
 import { getExpiresAtOptions } from '$lib/data/secretSettings';
 import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
-import { secret } from '$lib/server/db/schema';
+import { secret, stats } from '$lib/server/db/schema';
 import { secretTextFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -49,19 +50,38 @@ export const actions: Actions = {
 			const user = event.locals.user;
 			const receiptId = generateRandomUrlSafeString(8);
 
-			await db
-				.insert(secret)
-				.values({
-					secretIdHash,
-					meta,
-					content: text,
-					passwordHash,
-					expiresAt,
-					receiptId,
-					userId: user?.id
-				})
-				.returning();
+			await db.insert(secret).values({
+				secretIdHash,
+				meta,
+				content: text,
+				passwordHash,
+				expiresAt,
+				receiptId,
+				userId: user?.id
+			});
 
+			// Global stats
+			await db
+				.insert(stats)
+				.values({ id: 1, scope: 'global' })
+				.onConflictDoUpdate({
+					target: stats.id,
+					set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
+				});
+
+			// Individual user stats
+			if (user) {
+				await db
+					.insert(stats)
+					.values({
+						userId: user.id,
+						scope: 'user'
+					})
+					.onConflictDoUpdate({
+						target: stats.userId,
+						set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
+					});
+			}
 			const expirationMessage = m.real_actual_cockroach_type({
 				time: getExpiresAtOptions().find((item) => item.value === expiration)?.label || ''
 			});
