@@ -26,7 +26,7 @@
 
 			<Hr class="mt-8 border-border" />
 
-			<Text class="text text-muted">
+			<Text class="text-xs text-muted">
 				©{new Date().getFullYear()} scrt.link -
 				<Link class="text-muted" href="{getBaseUrl()}/privacy-policy">Privacy Policy</Link>
 			</Text>
