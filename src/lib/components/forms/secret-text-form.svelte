@@ -121,7 +121,7 @@
 
 			<div
 				class="overflow-y-clip transition-all duration-300 ease-in-out {isOptionsVisible
-					? 'visible h-[calc(auto)] opacity-100'
+					? 'visible h-[calc(auto)] pb-4 opacity-100'
 					: 'invisible h-0 opacity-0'}"
 			>
 				{#if user}
@@ -141,10 +141,11 @@
 						/>
 					</Form.Fieldset>
 				{:else}
-					<div class="py-4">
-						<Alert Icon={LockKeyhole} variant="info" title="There is more">
+					<div class="py-2">
+						<Alert Icon={LockKeyhole} variant="info" title="Please sign up">
 							<p>
-								Add a password, set expiration date and more. <Link href="/signup">Sign up now</Link
+								Add a password, set expiration date, get read receipts and more. <Link
+									href="/signup">Sign up now</Link
 								>
 							</p>
 						</Alert>
