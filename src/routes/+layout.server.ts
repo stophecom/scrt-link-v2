@@ -12,6 +12,6 @@ export const load: LayoutServerLoad = async (event) => {
 	return {
 		user: event.locals.user,
 		baseUrl: getBaseUrl(),
-		totalSecrets: result.totalSecrets
+		totalSecrets: result?.totalSecrets || 0
 	};
 };
