@@ -134,10 +134,22 @@ export const actions: Actions = {
 				}
 
 				// Send receipt via ntfy
-				if (readReceipt === 'ntfy') {
+				if (readReceipt === 'ntfy' && receiptId) {
 					if (!ntfyEndpoint) {
 						throw Error('No ntfyEndpoint for read receipt.');
 					}
+					const body = m.vexed_early_lemming_engage();
+
+					await fetch(`https://ntfy.sh/${ntfyEndpoint}`, {
+						method: 'POST', // PUT works too
+						body: `${body} ${receiptId}`,
+						headers: {
+							Title: m.spry_bald_guppy_cry(),
+							Priority: 'urgent',
+							Tags: 'fire'
+						}
+					});
+
 					console.log(`Send read receipt to ${ntfyEndpoint} endpoint.`);
 				}
 			} catch (e) {
