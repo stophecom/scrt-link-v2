@@ -62,7 +62,7 @@
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.726.1",
-		"@inlang/paraglide-sveltekit": "^0.11.5",
+		"@inlang/paraglide-sveltekit": "^0.15.5",
 		"@tailwindcss/typography": "^0.5.15",
 		"arctic": "^2.3.3",
 		"axios": "^1.7.9",
