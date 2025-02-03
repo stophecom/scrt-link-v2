@@ -8,6 +8,7 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import Usps from '$lib/components/ui/usps';
 	import { shortFaq } from '$lib/data/faq';
+	import { privacyUsps } from '$lib/data/usps';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
@@ -15,7 +16,7 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title="Share a secret" lead="…with a link that only works one time and then self-destructs.">
+<Page title={m.lucky_warm_mayfly_engage()} lead={m.aloof_quaint_snail_pave()}>
 	<Card>
 		<Tabs.Root value="text">
 			<Tabs.List>
@@ -32,7 +33,7 @@
 			<Tabs.Content value="love-letter">Something else</Tabs.Content>
 		</Tabs.Root>
 	</Card>
-	<Usps />
+	<Usps items={privacyUsps} />
 
 	<Section title="FAQ" lead={m.stock_keen_marten_commend()}>
 		<Accordion items={shortFaq()} />
