@@ -15,12 +15,12 @@
 	import type { LayoutData, LayoutServerData } from '../../../routes/$types';
 	import Password from '../form-fields/password.svelte';
 	import RadioGroup from '../form-fields/radio-group.svelte';
+	import Textarea from '../form-fields/textarea.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import Link from '../ui/link';
 	import Markdown from '../ui/markdown';
-	import Textarea from '../ui/textarea/textarea.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
@@ -100,23 +100,14 @@
 	<FormWrapper message={$message}>
 		<form method="POST" use:enhance action="?/postSecret">
 			<Form.Field {form} name="text" class="pt-2">
-				<Form.Control>
-					<Form.Label class="sr-only">{m.mellow_lime_squid_urge()}</Form.Label>
-					<div class="relative">
-						<Textarea
-							class="resize-none"
-							bind:value={$formData.text}
-							{...$constraints.text}
-							placeholder="What is your secret?"
-						/>
-						<span
-							class="absolute bottom-1 right-1 text-xs {charactersLeft < 0
-								? 'text-destructive'
-								: 'text-muted-foreground'}">{charactersLeft}</span
-						>
-					</div>
-				</Form.Control>
-				<Form.FieldErrors />
+				<Textarea
+					bind:value={$formData.text}
+					label={m.mellow_lime_squid_urge()}
+					placeholder={m.tiny_mean_marmot_cheer()}
+					hideLabel
+					{charactersLeft}
+					{...$constraints.text}
+				/>
 			</Form.Field>
 
 			<div
