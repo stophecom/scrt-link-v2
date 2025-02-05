@@ -7,7 +7,7 @@
 
 <Page title="FAQ" lead={m.stock_keen_marten_commend()}>
 	{#each faqCategories() as item}
-		<h2 class="md:text-3xl mb-2 mt-20 text-2xl font-bold leading-snug">{item.title}</h2>
+		<h2 class="mb-2 mt-20 text-2xl font-bold leading-snug md:text-3xl">{item.title}</h2>
 
 		{@const categoryFaq = faq().filter(({ category }) => category === item.id)}
 		<Accordion items={categoryFaq} />
