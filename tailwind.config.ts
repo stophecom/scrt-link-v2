@@ -72,6 +72,9 @@ const config: Config = {
 			},
 			fontFamily: {
 				sans: [...fontFamily.sans]
+			},
+			screens: {
+				dz: { raw: '(hover: hover) and (pointer: fine)' } // For dropzone vs button
 			}
 		}
 	}

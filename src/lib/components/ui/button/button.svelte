@@ -3,6 +3,7 @@
 
 	import { cn } from '$lib/utils.js';
 
+	import Spinner from '../spinner/spinner.svelte';
 	import { buttonVariants, type Events, type Props } from './index.js';
 
 	type $$Props = Props;
@@ -26,9 +27,7 @@
 	on:keydown
 >
 	{#if delayed}
-		<span
-			class="mr-3 block h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent"
-		></span>
+		<Spinner class="mr-3" />
 	{/if}
 	<slot />
 </ButtonPrimitive.Root>

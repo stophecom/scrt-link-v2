@@ -2,6 +2,8 @@
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import LockKeyhole from 'lucide-svelte/icons/lock-keyhole';
 	import Reply from 'lucide-svelte/icons/reply';
+	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
@@ -9,10 +11,17 @@
 	import * as Form from '$lib/components/ui/form';
 	import { getExpiresAtOptions } from '$lib/data/secretSettings';
 	import * as m from '$lib/paraglide/messages.js';
-	import { type SecretTextFormSchema, secretTextFormSchema } from '$lib/validators/formSchemas';
-	import { encryptString, generateRandomUrlSafeString, sha256Hash } from '$lib/web-crypto';
+	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
+	import {
+		encryptString,
+		exportPublicKey,
+		generateKeyPair,
+		generateRandomUrlSafeString,
+		sha256Hash
+	} from '$lib/web-crypto';
 
 	import type { LayoutData, LayoutServerData } from '../../../routes/$types';
+	import FileUpload from '../form-fields/file-upload.svelte';
 	import Password from '../form-fields/password.svelte';
 	import RadioGroup from '../form-fields/radio-group.svelte';
 	import Textarea from '../form-fields/textarea.svelte';
@@ -24,41 +33,59 @@
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
+	export type SecretType = 'text' | 'file' | 'redirect';
+
 	type Props = {
 		form: SuperValidated<Infer<SecretTextFormSchema>>;
 		baseUrl: LayoutData['baseUrl'];
 		user: LayoutServerData['user'];
+		secretType: SecretType;
 	};
 
-	let { baseUrl, form: formProp, user }: Props = $props();
-
-	const CHARACTER_LIMIT = 150;
+	let { baseUrl, form: formProp, user, secretType }: Props = $props();
 
 	let link: string = $state('');
 
+	const CHARACTER_LIMIT = 150; // TBD
+	const masterPassword = generateRandomUrlSafeString();
+
+	let privateKey: CryptoKey | undefined = $state();
+	let publicKeyRaw: string;
+
+	onMount(async () => {
+		const keyPair = await generateKeyPair();
+		privateKey = keyPair.privateKey;
+		publicKeyRaw = await exportPublicKey(keyPair.publicKey);
+	});
+
 	const form = superForm(formProp, {
-		validators: zodClient(secretTextFormSchema(CHARACTER_LIMIT)),
+		validators: zodClient(secretFormSchema(CHARACTER_LIMIT)),
 		validationMethod: 'onblur',
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {
-			const { text, password, expiresAt } = $formData;
+			const { content, password, expiresAt } = $formData;
 
-			const masterKey = generateRandomUrlSafeString();
-			link = `${baseUrl}/s#${masterKey}`;
+			if (secretType === 'file') {
+				isUploading = true;
+				console.log('file upload', $formData);
+			}
+
+			link = `${baseUrl}/s#${masterPassword}`;
 
 			// Encrypt secret text before submitting
-			let encryptedText = text;
+			let encryptedContent = content;
 			if (password) {
-				encryptedText = await encryptString(encryptedText, password);
+				encryptedContent = await encryptString(encryptedContent, password);
 			}
-			encryptedText = await encryptString(encryptedText, masterKey);
+			encryptedContent = await encryptString(encryptedContent, masterPassword);
 
 			// Set data to be posted
-			const jsonPayload = {
-				secretIdHash: await sha256Hash(masterKey),
+			const jsonPayload: Infer<SecretTextFormSchema> = {
+				secretIdHash: await sha256Hash(masterPassword),
 				meta: 'type=text',
-				text: encryptedText,
+				content: encryptedContent,
+				publicKey: publicKeyRaw,
 				expiresAt,
 				password: $formData.password
 			};
@@ -78,9 +105,10 @@
 
 	const { form: formData, message, delayed, constraints, enhance } = form;
 
-	let charactersLeft = $derived(CHARACTER_LIMIT - $formData.text.length);
+	let charactersLeft = $derived(CHARACTER_LIMIT - $formData.content.length);
 
 	let isOptionsVisible = $state(false);
+	let isUploading = $state(false);
 </script>
 
 {#if $message?.status === 'success'}
@@ -99,16 +127,34 @@
 {:else}
 	<FormWrapper message={$message}>
 		<form method="POST" use:enhance action="?/postSecret">
-			<Form.Field {form} name="text" class="pt-2">
-				<Textarea
-					bind:value={$formData.text}
-					label={m.mellow_lime_squid_urge()}
-					placeholder={m.tiny_mean_marmot_cheer()}
-					hideLabel
-					{charactersLeft}
-					{...$constraints.text}
-				/>
-			</Form.Field>
+			{#if secretType === 'file' && privateKey}
+				<div in:fade class="py-2 pb-4">
+					<FileUpload
+						onUploadSuccess={({ meta, content }) => {
+							$formData.meta = meta;
+							$formData.content = content;
+						}}
+						{masterPassword}
+						{privateKey}
+						{isUploading}
+					/>
+				</div>
+			{/if}
+
+			{#if secretType === 'text'}
+				<div in:fade>
+					<Form.Field {form} name="content" class="pt-2">
+						<Textarea
+							bind:value={$formData.content}
+							label={m.mellow_lime_squid_urge()}
+							placeholder={m.tiny_mean_marmot_cheer()}
+							hideLabel
+							{charactersLeft}
+							{...$constraints.content}
+						/>
+					</Form.Field>
+				</div>
+			{/if}
 
 			<div
 				class="overflow-y-clip transition-all duration-300 ease-in-out {isOptionsVisible

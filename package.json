@@ -47,7 +47,7 @@
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.2",
 		"prettier-plugin-tailwindcss": "^0.6.9",
-		"svelte": "^5.18.0",
+		"svelte": "^5.19.7",
 		"svelte-check": "^4.1.1",
 		"sveltekit-rate-limiter": "^0.6.1",
 		"sveltekit-superforms": "^2.22.1",
@@ -61,7 +61,9 @@
 		"zod": "^3.24.1"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.726.1",
+		"@aws-sdk/client-s3": "^3.741.0",
+		"@aws-sdk/s3-presigned-post": "^3.741.0",
+		"@aws-sdk/s3-request-presigner": "^3.741.0",
 		"@inlang/paraglide-sveltekit": "^0.15.5",
 		"@tailwindcss/typography": "^0.5.15",
 		"arctic": "^2.3.3",

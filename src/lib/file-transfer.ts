@@ -30,7 +30,7 @@ export type FileReference = {
 };
 
 export interface SecretFile extends FileMeta, FileReference {
-	alias: string;
+	secretIdHash: string;
 	decryptionKey: string;
 	progress: number;
 }
@@ -38,7 +38,7 @@ export interface SecretFile extends FileMeta, FileReference {
 type HandleFileEncryptionAndUpload = {
 	file: File;
 	bucket: string;
-	masterKey: string;
+	masterPassword: string;
 	privateKey: CryptoKey;
 	chunkSize: number;
 	progressCallback: (progress: number) => void;
@@ -46,7 +46,7 @@ type HandleFileEncryptionAndUpload = {
 export const handleFileEncryptionAndUpload = async ({
 	file,
 	bucket,
-	masterKey,
+	masterPassword,
 	privateKey,
 	chunkSize,
 	progressCallback
@@ -66,7 +66,7 @@ export const handleFileEncryptionAndUpload = async ({
 		const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize;
 		const chunk = file.slice(start, end);
 
-		const encryptedFile = await encryptFile(chunk, masterKey);
+		const encryptedFile = await encryptFile(chunk, masterPassword);
 
 		const chunkFileSize = encryptedFile.size;
 		const fileName = crypto.randomUUID();
@@ -136,17 +136,17 @@ const uploadFileChunk = async ({
 };
 
 const chunkDownload = async ({
-	alias,
+	secretIdHash,
 	bucket,
 	chunk
-}: Pick<SecretFile, 'alias' | 'bucket'> & { chunk: Chunk }) => {
+}: Pick<SecretFile, 'secretIdHash' | 'bucket'> & { chunk: Chunk }) => {
 	const { key, signature } = chunk;
 	const keyHash = await sha256Hash(key);
 
 	const { url } = await api<SignedUrlGetResponse>(
 		`/files/${key}`,
 		{ method: 'POST' },
-		{ alias, bucket, keyHash, signature }
+		{ secretIdHash, bucket, keyHash, signature }
 	);
 	const response = await fetch(url);
 
@@ -158,7 +158,7 @@ const chunkDownload = async ({
 
 // Function runs in Service Worker, which means no access to DOM, etc.
 export const handleFileChunksDownload = (file: SecretFile) => {
-	const { alias, chunks, bucket, decryptionKey } = file;
+	const { secretIdHash, chunks, bucket, decryptionKey } = file;
 
 	let loaded = 0;
 	const totalSize = chunks.map((o) => o['size']).reduce((a, b) => a + b);
@@ -168,7 +168,7 @@ export const handleFileChunksDownload = (file: SecretFile) => {
 			// We download the chunks in sequence.
 			// We could do concurrent fetching but the order of the chunks in the stream is important.
 			for (const chunk of chunks) {
-				const response = await chunkDownload({ alias, bucket, chunk });
+				const response = await chunkDownload({ secretIdHash, bucket, chunk });
 
 				// This stream is for reading the download progress
 				const res = new Response(

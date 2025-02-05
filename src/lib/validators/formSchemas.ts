@@ -56,12 +56,12 @@ export const signInFormSchema = () =>
 		password: z.string().min(6).max(255)
 	});
 
-export const secretTextFormSchema = (limit: number = 150) =>
+export const secretFormSchema = (limit: number = 150) =>
 	z.object({
 		secretIdHash: z.string(),
 		publicKey: z.string().optional(),
 		meta: z.string(),
-		text: z.string().min(1).max(limit),
+		content: z.string().min(1).max(limit),
 		password: z.string().min(6).max(255).optional(),
 		expiresAt: z.enum(expiresAtEnum).default(expiresAtEnum[expiresAtEnum.length - 2])
 	});
@@ -107,7 +107,7 @@ export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = ReturnType<typeof emailFormSchema>;
 export type CodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
-export type SecretTextFormSchema = ReturnType<typeof secretTextFormSchema>;
+export type SecretTextFormSchema = ReturnType<typeof secretFormSchema>;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type RevealSecretFormSchema = ReturnType<typeof revealSecretFormSchema>;
 

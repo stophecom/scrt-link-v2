@@ -1,7 +1,6 @@
 import * as m from '$lib/paraglide/messages.js';
 
-const MIN = 1000 * 60;
-const DAY = 24 * 60 * MIN;
+import { DAY, MIN } from './units';
 
 export const getExpiresAtOptions = () => [
 	{

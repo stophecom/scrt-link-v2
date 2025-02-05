@@ -41,7 +41,7 @@ export const secret = pgTable('secret', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	secretIdHash: text('secret_id_hash').notNull().unique(),
 	receiptId: text('receipt_id'),
-	publicKey: text('public_key'),
+	publicKey: text('public_key').notNull(),
 	meta: text('meta').notNull(),
 	content: text('content').notNull(),
 	passwordHash: text('password_hash'),

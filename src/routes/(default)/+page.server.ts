@@ -9,7 +9,7 @@ import { getExpiresAtOptions } from '$lib/data/secretSettings';
 import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret, stats } from '$lib/server/db/schema';
-import { secretTextFormSchema } from '$lib/validators/formSchemas';
+import { secretFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -17,15 +17,15 @@ const CHARACTER_LIMIT = 100_000;
 
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(secretTextFormSchema(CHARACTER_LIMIT))) // Limit needs to be bigger b/c of encryption.
+		form: await superValidate(zod(secretFormSchema(CHARACTER_LIMIT))) // Limit needs to be bigger b/c of encryption.
 	};
 };
 
 export const actions: Actions = {
 	postSecret: async (event) => {
-		const form = await superValidate(event.request, zod(secretTextFormSchema(CHARACTER_LIMIT)));
+		const form = await superValidate(event.request, zod(secretFormSchema(CHARACTER_LIMIT)));
 
-		const { text, password, secretIdHash, meta, expiresAt: expiration } = form.data;
+		const { content, password, secretIdHash, meta, expiresAt: expiration } = form.data;
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -53,7 +53,7 @@ export const actions: Actions = {
 			await db.insert(secret).values({
 				secretIdHash,
 				meta,
-				content: text,
+				content,
 				passwordHash,
 				expiresAt,
 				receiptId,
