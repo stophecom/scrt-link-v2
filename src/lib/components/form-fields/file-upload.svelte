@@ -28,7 +28,7 @@
 
 	const chunkSize = 100 * MB;
 
-	async function postSecret(file: File) {
+	const postSecret = async (file: File) => {
 		const bucket = PUBLIC_S3_BUCKET;
 
 		const chunks = await handleFileEncryptionAndUpload({
@@ -58,7 +58,7 @@
 		const content = await encryptString(JSON.stringify({ bucket, chunks }), masterPassword);
 
 		onUploadSuccess({ meta, content });
-	}
+	};
 
 	const onDrop = (files: File[]) => {
 		selectedFile = files[0]; // We only accept one file
