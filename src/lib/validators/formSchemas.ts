@@ -32,22 +32,7 @@ export const emailVerificationCodeFormSchema = () =>
 
 export const passwordFormSchema = () =>
 	z.object({
-		password: z
-			.string()
-			.min(8, m.aloof_careful_trout_dine())
-			.max(255)
-			.refine((password) => /[A-Z]/.test(password), {
-				message: 'Include at least one uppercase character.'
-			})
-			.refine((password) => /[a-z]/.test(password), {
-				message: 'Include at least one lowercase character.'
-			})
-			.refine((password) => /[0-9]/.test(password), {
-				message: 'Include at least one integer: 0-9'
-			})
-			.refine((password) => /[!@#$%^&*]/.test(password), {
-				message: 'Include at least one special character: !@#$%^&*'
-			})
+		password: z.string().min(8, m.aloof_careful_trout_dine()).max(255)
 	});
 
 export const signInFormSchema = () =>
@@ -56,10 +41,10 @@ export const signInFormSchema = () =>
 		password: z.string().min(6).max(255)
 	});
 
-export const secretFormSchema = (limit: number = 150) =>
+export const secretFormSchema = (limit: number = 100_000) =>
 	z.object({
 		secretIdHash: z.string(),
-		publicKey: z.string().optional(),
+		publicKey: z.string(),
 		meta: z.string(),
 		content: z.string().min(1).max(limit),
 		password: z.string().min(6).max(255).optional(),

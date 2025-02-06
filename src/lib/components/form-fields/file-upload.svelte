@@ -1,34 +1,43 @@
 <script lang="ts">
-	import Paperclip from 'lucide-svelte/icons/paperclip';
+	import Check from 'lucide-svelte/icons/check';
 	import Trash from 'lucide-svelte/icons/trash';
+	import IconX from 'lucide-svelte/icons/x';
 	import { onDestroy } from 'svelte';
 
 	import { PUBLIC_S3_BUCKET } from '$env/static/public';
 	import { MB } from '$lib/data/units';
 	import { handleFileEncryptionAndUpload } from '$lib/file-transfer';
-	import { encryptString } from '$lib/web-crypto';
 
 	import Button from '../ui/button/button.svelte';
 	import DropZone from '../ui/drop-zone/drop-zone.svelte';
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
+	import { UploadSpinner } from '../ui/spinner';
+
+	type Props = {
+		masterPassword: string;
+		privateKey: CryptoKey;
+		content: string;
+		meta: string;
+		loading: boolean;
+	};
+	let {
+		masterPassword,
+		privateKey,
+		content = $bindable(),
+		meta = $bindable(),
+		loading = $bindable()
+	}: Props = $props();
 
 	let selectedFile: File | null = $state(null);
 	let progress = $state(0);
 	let error = $state('');
 
-	type OnUploadSuccess = ({ content, meta }: { content: string; meta: string }) => void;
-
-	type Props = {
-		masterPassword: string;
-		privateKey: CryptoKey;
-		isUploading: boolean;
-		onUploadSuccess: OnUploadSuccess;
-	};
-	let { masterPassword, privateKey, isUploading, onUploadSuccess }: Props = $props();
+	let done = $derived(progress === 100);
 
 	const chunkSize = 100 * MB;
 
 	const postSecret = async (file: File) => {
+		loading = true;
 		const bucket = PUBLIC_S3_BUCKET;
 
 		const chunks = await handleFileEncryptionAndUpload({
@@ -38,37 +47,37 @@
 			privateKey,
 			chunkSize,
 			progressCallback: (p) => {
-				console.log(p);
-				// progress = p;
+				progress = p;
 			}
 		});
 
 		const { name, size, type } = file;
 
-		const meta = await encryptString(
-			JSON.stringify({
-				secretType: 'file',
-				name,
-				size,
-				mimeType: type,
-				isSingleChunk: chunks.length === 1
-			}),
-			masterPassword
-		);
-		const content = await encryptString(JSON.stringify({ bucket, chunks }), masterPassword);
+		meta = JSON.stringify({
+			secretType: 'file',
+			name,
+			size,
+			mimeType: type,
+			isSingleChunk: chunks.length === 1
+		});
 
-		onUploadSuccess({ meta, content });
+		content = JSON.stringify({ bucket, chunks });
+
+		loading = false;
 	};
 
 	const onDrop = (files: File[]) => {
 		selectedFile = files[0]; // We only accept one file
+		postSecret(selectedFile);
 	};
 
 	const reset = () => {
 		selectedFile = null;
+		meta = '';
+		content = '';
 	};
 
-	onDestroy(async () => {
+	onDestroy(() => {
 		reset();
 	});
 </script>
@@ -77,27 +86,51 @@
 	{@const fileName = selectedFile.name}
 
 	<div
-		class="relative flex items-center justify-center rounded border border-foreground bg-background p-4"
+		class="relative flex min-h-24 items-center justify-center rounded border border-foreground bg-background p-4"
 	>
 		<div
 			class="absolute left-0 h-full rounded bg-muted"
 			style="min-width: 0%; width: {progress}%"
 		></div>
-		<Paperclip
-			class="absolute left-0 mr-2 h-9 w-9 -translate-x-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
-		/>
-		<div class="mr-2 truncate">{fileName}</div>
-		<Button size="icon" variant="ghost" aria-label="Delete" on:click={reset}
-			><Trash class="h-4 w-4 text-destructive" /> <span class="sr-only">Trash</span></Button
-		>
-	</div>
 
-	{#if isUploading}
-		{#await postSecret(selectedFile)}
-			<ProgressBar {progress} />
-		{:catch e}
-			{(error = e?.message)}
-		{/await}
+		{#if done}
+			<Button
+				class="absolute right-0 translate-x-1/2 rounded-full"
+				size="icon"
+				variant="outline"
+				aria-label="Delete"
+				on:click={reset}
+			>
+				<Trash class="h-4 w-4 text-destructive" /> <span class="sr-only">Trash</span>
+			</Button>
+		{:else}
+			<div
+				class="absolute right-0 translate-x-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
+			>
+				<UploadSpinner />
+			</div>
+		{/if}
+		<div class="relative flex items-center">
+			<div class="mr-2 truncate">{fileName}</div>
+			{#if done}
+				<Check class="h-4 w-4 text-success" />
+			{:else}
+				<Button
+					size="icon"
+					class="border-foreground"
+					variant="ghost"
+					aria-label="Delete"
+					on:click={reset}
+				>
+					{#if !done}
+						<IconX class="h-4 w-4 text-destructive" /> <span class="sr-only">Trash</span>
+					{/if}
+				</Button>
+			{/if}
+		</div>
+	</div>
+	{#if !done}
+		<ProgressBar {progress} />
 	{/if}
 {:else}
 	<DropZone

@@ -13,7 +13,7 @@
 
 <div class="container pb-6">
 	<div>
-		<a class="inline-flex" href="/">
+		<a data-sveltekit-reload class="inline-flex" href="/">
 			<Logo class="h-20 w-20 sm:h-28 sm:w-28 md:h-32 md:w-32" />
 		</a>
 	</div>

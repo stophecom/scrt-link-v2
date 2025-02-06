@@ -25,7 +25,7 @@ export const actions: Actions = {
 	postSecret: async (event) => {
 		const form = await superValidate(event.request, zod(secretFormSchema(CHARACTER_LIMIT)));
 
-		const { content, password, secretIdHash, meta, expiresAt: expiration } = form.data;
+		const { content, password, secretIdHash, meta, expiresAt: expiration, publicKey } = form.data;
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -56,6 +56,7 @@ export const actions: Actions = {
 				content,
 				passwordHash,
 				expiresAt,
+				publicKey,
 				receiptId,
 				userId: user?.id
 			});

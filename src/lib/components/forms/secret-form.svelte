@@ -33,6 +33,8 @@
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
+	const CHARACTER_LIMIT = 150; // TBD
+
 	export type SecretType = 'text' | 'file' | 'redirect';
 
 	type Props = {
@@ -41,49 +43,30 @@
 		user: LayoutServerData['user'];
 		secretType: SecretType;
 	};
-
 	let { baseUrl, form: formProp, user, secretType }: Props = $props();
 
-	let link: string = $state('');
-
-	const CHARACTER_LIMIT = 150; // TBD
-	const masterPassword = generateRandomUrlSafeString();
-
-	let privateKey: CryptoKey | undefined = $state();
-	let publicKeyRaw: string;
-
-	onMount(async () => {
-		const keyPair = await generateKeyPair();
-		privateKey = keyPair.privateKey;
-		publicKeyRaw = await exportPublicKey(keyPair.publicKey);
-	});
-
 	const form = superForm(formProp, {
-		validators: zodClient(secretFormSchema(CHARACTER_LIMIT)),
+		validators: zodClient(secretFormSchema()),
 		validationMethod: 'onblur',
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {
-			const { content, password, expiresAt } = $formData;
+			const { content, password, expiresAt, meta } = $formData;
 
-			if (secretType === 'file') {
-				isUploading = true;
-				console.log('file upload', $formData);
-			}
-
-			link = `${baseUrl}/s#${masterPassword}`;
-
-			// Encrypt secret text before submitting
+			// Encrypt secret before submitting
+			let encryptedMeta = meta;
 			let encryptedContent = content;
 			if (password) {
+				encryptedMeta = await encryptString(encryptedMeta, password);
 				encryptedContent = await encryptString(encryptedContent, password);
 			}
+			encryptedMeta = await encryptString(encryptedMeta, masterPassword);
 			encryptedContent = await encryptString(encryptedContent, masterPassword);
 
 			// Set data to be posted
 			const jsonPayload: Infer<SecretTextFormSchema> = {
 				secretIdHash: await sha256Hash(masterPassword),
-				meta: 'type=text',
+				meta: encryptedMeta,
 				content: encryptedContent,
 				publicKey: publicKeyRaw,
 				expiresAt,
@@ -105,10 +88,25 @@
 
 	const { form: formData, message, delayed, constraints, enhance } = form;
 
+	let privateKey: CryptoKey | undefined = $state();
+	let publicKeyRaw: string;
+	let masterPassword: string = $state('');
+	let isOptionsVisible = $state(false);
+	let isFileUploading = $state(false);
+
+	let link: string = $derived(`${baseUrl}/s#${masterPassword}`);
 	let charactersLeft = $derived(CHARACTER_LIMIT - $formData.content.length);
 
-	let isOptionsVisible = $state(false);
-	let isUploading = $state(false);
+	const setCryptoKeys = async () => {
+		masterPassword = generateRandomUrlSafeString();
+		const keyPair = await generateKeyPair();
+		privateKey = keyPair.privateKey;
+		publicKeyRaw = await exportPublicKey(keyPair.publicKey);
+	};
+
+	onMount(async () => {
+		await setCryptoKeys();
+	});
 </script>
 
 {#if $message?.status === 'success'}
@@ -121,29 +119,26 @@
 			<CopyButton class="ml-auto shrink-0" text={link} />
 		</div>
 	</Alert>
-	<Button href="/" variant="secondary" size="sm"
+	<Button href="/" on:click={setCryptoKeys} variant="secondary" size="sm"
 		><Reply class="mr-2 h-4 w-4" />{m.trite_fun_starfish_ripple()}</Button
 	>
 {:else}
 	<FormWrapper message={$message}>
 		<form method="POST" use:enhance action="?/postSecret">
 			{#if secretType === 'file' && privateKey}
-				<div in:fade class="py-2 pb-4">
+				<div in:fade class="py-2">
 					<FileUpload
-						onUploadSuccess={({ meta, content }) => {
-							$formData.meta = meta;
-							$formData.content = content;
-						}}
+						bind:content={$formData.content}
+						bind:meta={$formData.meta}
 						{masterPassword}
 						{privateKey}
-						{isUploading}
+						bind:loading={isFileUploading}
 					/>
 				</div>
 			{/if}
-
 			{#if secretType === 'text'}
-				<div in:fade>
-					<Form.Field {form} name="content" class="pt-2">
+				<Form.Field {form} name="content" class="pt-2">
+					<div in:fade>
 						<Textarea
 							bind:value={$formData.content}
 							label={m.mellow_lime_squid_urge()}
@@ -152,8 +147,8 @@
 							{charactersLeft}
 							{...$constraints.content}
 						/>
-					</Form.Field>
-				</div>
+					</div>
+				</Form.Field>
 			{/if}
 
 			<div
@@ -195,7 +190,7 @@
 					>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 					<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
 				>
-				<Form.Button delayed={$delayed} class="ml-auto " size="lg"
+				<Form.Button delayed={$delayed} class="ml-auto " size="lg" disabled={isFileUploading}
 					>{m.lazy_mealy_vole_harbor()}</Form.Button
 				>
 			</div>
