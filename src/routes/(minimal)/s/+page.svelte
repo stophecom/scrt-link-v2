@@ -5,7 +5,7 @@
 	import RevealSecretForm from '$lib/components/forms/reveal-secret-form.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
-	import Spinner from '$lib/components/ui/spinner';
+	import { Spinner } from '$lib/components/ui/spinner';
 	import * as m from '$lib/paraglide/messages.js';
 	import { sha256Hash } from '$lib/web-crypto';
 

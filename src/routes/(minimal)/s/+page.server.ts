@@ -44,7 +44,8 @@ export const actions: Actions = {
 			error(400, `No secret for id ${secretIdHash}.`);
 		}
 
-		const { passwordHash, passwordAttempts, content, expiresAt, userId, receiptId } = result.secret;
+		const { passwordHash, passwordAttempts, meta, content, expiresAt, userId, receiptId } =
+			result.secret;
 
 		// Secret has expired.
 		if (expiresAt < new Date()) {
@@ -158,6 +159,6 @@ export const actions: Actions = {
 			}
 		}
 
-		return { form, content };
+		return { form, meta, content };
 	}
 };
