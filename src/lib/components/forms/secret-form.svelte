@@ -10,6 +10,7 @@
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
 	import { getExpiresAtOptions } from '$lib/data/secretSettings';
+	import type { FileMeta } from '$lib/file-transfer';
 	import * as m from '$lib/paraglide/messages.js';
 	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
 	import {
@@ -36,6 +37,9 @@
 	const CHARACTER_LIMIT = 150; // TBD
 
 	export type SecretType = 'text' | 'file' | 'redirect';
+	export type Meta = Partial<FileMeta> & {
+		secretType: SecretType;
+	};
 
 	type Props = {
 		form: SuperValidated<Infer<SecretTextFormSchema>>;
@@ -54,7 +58,11 @@
 			const { content, password, expiresAt, meta } = $formData;
 
 			// Encrypt secret before submitting
-			let encryptedMeta = meta;
+			let encryptedMeta =
+				meta ||
+				JSON.stringify({
+					secretType: secretType
+				});
 			let encryptedContent = content;
 			if (password) {
 				encryptedMeta = await encryptString(encryptedMeta, password);

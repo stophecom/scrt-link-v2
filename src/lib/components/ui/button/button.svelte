@@ -27,7 +27,7 @@
 	on:keydown
 >
 	{#if delayed}
-		<Spinner class="mr-3" />
+		<Spinner class="mr-3 h-5 w-5" />
 	{/if}
 	<slot />
 </ButtonPrimitive.Root>

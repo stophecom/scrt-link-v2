@@ -45,9 +45,11 @@
 	});
 </script>
 
-<Page title={m.each_light_mare_bump()} lead="You received a secret.">
+<Page typeWriterEffect={true} title={m.each_light_mare_bump()} lead="You received a secret.">
 	{#if isLoading}
-		<Spinner />
+		<div class="flex min-h-48 items-center justify-center">
+			<Spinner />
+		</div>
 	{:else if error}
 		<Alert class="my-6" title="Error" variant="destructive">{error}</Alert>
 	{:else}
