@@ -2,7 +2,6 @@
 	import type { Snippet } from 'svelte';
 
 	import Logo from '$lib/assets/images/logo.svg?component';
-	import Typewriter from '$lib/components/helpers/typewriter.svelte';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import { emailSupport } from '$lib/data/app';
 	import * as m from '$lib/paraglide/messages.js';
@@ -11,11 +10,10 @@
 	type Props = {
 		title: string;
 		lead?: string;
-		typeWriterEffect?: boolean;
 		markNotTranslated?: boolean;
 		children: Snippet;
 	};
-	let { title, lead, typeWriterEffect, markNotTranslated, children }: Props = $props();
+	let { title, lead, markNotTranslated, children }: Props = $props();
 </script>
 
 <div class="container pb-6">
@@ -26,20 +24,12 @@
 	</div>
 
 	<h1 class="mb-5 text-3xl font-extrabold md:text-6xl">
-		{#if typeWriterEffect}
-			<Typewriter message={title}></Typewriter>
-		{:else}
-			{title}
-		{/if}
+		{title}
 	</h1>
 
 	{#if lead}
 		<p class="mb-10 text-xl leading-snug md:text-3xl">
-			{#if typeWriterEffect}
-				<Typewriter message={lead}></Typewriter>
-			{:else}
-				{lead}
-			{/if}
+			{lead}
 		</p>
 	{/if}
 
