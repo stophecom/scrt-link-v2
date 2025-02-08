@@ -149,9 +149,7 @@
 						accept={secretType === 'snap' ? 'image/*' : undefined}
 					/>
 					{#if secretType === 'snap'}
-						<span class="p-1 text-sm text-muted-foreground"
-							>For sharing snaps (images) for a short period.</span
-						>
+						<span class="p-1 text-sm text-muted-foreground">{m.tired_inner_cougar_push()}</span>
 					{/if}
 				</div>
 			{/if}
@@ -206,11 +204,10 @@
 					</Form.Fieldset>
 				{:else}
 					<div class="py-2">
-						<Alert Icon={LockKeyhole} variant="info" title="Please sign up">
+						<Alert Icon={LockKeyhole} variant="info" title={m.fair_red_warbler_bake()}>
 							<p>
-								Add a password, set expiration date, get read receipts and more. <Link
-									href="/signup">Sign up now</Link
-								>
+								{m.cool_spicy_gopher_earn()}
+								<Link href="/signup">{m.mild_tangy_elk_scoop()}</Link>
 							</p>
 						</Alert>
 					</div>
