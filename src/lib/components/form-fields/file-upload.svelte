@@ -34,7 +34,7 @@
 
 	let done = $derived(progress === 100);
 
-	const chunkSize = 1 * MB;
+	const chunkSize = 64 * MB;
 
 	const postSecret = async (file: File) => {
 		loading = true;
