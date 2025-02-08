@@ -8,19 +8,24 @@
 	import { MB } from '$lib/data/units';
 	import { handleFileEncryptionAndUpload } from '$lib/file-transfer';
 
+	import type { SecretType } from '../forms/secret-form.svelte';
 	import Button from '../ui/button/button.svelte';
 	import DropZone from '../ui/drop-zone/drop-zone.svelte';
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
 	import { UploadSpinner } from '../ui/spinner';
 
 	type Props = {
+		secretType: SecretType;
 		masterPassword: string;
 		privateKey: CryptoKey;
 		content: string;
 		meta: string;
 		loading: boolean;
+		accept?: string;
 	};
 	let {
+		accept,
+		secretType,
 		masterPassword,
 		privateKey,
 		content = $bindable(),
@@ -56,7 +61,7 @@
 		const { name, size, type } = file;
 
 		meta = JSON.stringify({
-			secretType: 'file',
+			secretType,
 			name,
 			size,
 			mimeType: type,
@@ -132,6 +137,7 @@
 {:else}
 	<DropZone
 		{onDrop}
+		{accept}
 		onError={(e) => {
 			error = e;
 		}}

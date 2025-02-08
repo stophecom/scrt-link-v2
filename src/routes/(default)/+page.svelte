@@ -24,7 +24,8 @@
 				<Tabs.Trigger value="text">{m.happy_dizzy_angelfish_stir()}</Tabs.Trigger>
 				<Tabs.Trigger value="file">{m.nice_male_zebra_stop()}</Tabs.Trigger>
 				<Tabs.Trigger value="redirect">{m.bad_royal_kudu_nudge()}</Tabs.Trigger>
-				<Tabs.Trigger value="love-letter">Love Letter</Tabs.Trigger>
+				<Tabs.Trigger value="snap">Snap</Tabs.Trigger>
+				<!-- <Tabs.Trigger value="love-letter">Love Letter</Tabs.Trigger> -->
 			</Tabs.List>
 			<Tabs.Content value={secretType}>
 				<SecretForm form={data.form} baseUrl={data.baseUrl} user={data.user} {secretType} />

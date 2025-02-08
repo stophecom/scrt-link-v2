@@ -37,7 +37,7 @@
 
 	const CHARACTER_LIMIT = 150; // TBD
 
-	export type SecretType = 'text' | 'file' | 'redirect';
+	export type SecretType = 'text' | 'file' | 'redirect' | 'snap';
 	export type Meta = Partial<FileMeta> & {
 		secretType: SecretType;
 	};
@@ -137,15 +137,22 @@
 {:else}
 	<FormWrapper message={$message}>
 		<form method="POST" use:enhance action="?/postSecret">
-			{#if secretType === 'file' && privateKey}
+			{#if ['file', 'snap'].includes(secretType) && privateKey}
 				<div in:fade class="py-2">
 					<FileUpload
+						{secretType}
 						bind:content={$formData.content}
 						bind:meta={$formData.meta}
 						{masterPassword}
 						{privateKey}
 						bind:loading={isFileUploading}
+						accept={secretType === 'snap' ? 'image/*' : undefined}
 					/>
+					{#if secretType === 'snap'}
+						<span class="p-1 text-sm text-muted-foreground"
+							>For sharing snaps (images) for a short period.</span
+						>
+					{/if}
 				</div>
 			{/if}
 			{#if secretType === 'text'}

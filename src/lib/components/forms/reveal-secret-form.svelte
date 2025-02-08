@@ -35,16 +35,19 @@
 	let meta: string = $state('');
 	let metaParsed: Meta | undefined = $state();
 	let content = $state('');
+	let imageUrl: string | undefined = $state();
 	let contentParsed: FileReference | undefined = $state();
 
 	let progress = $state(0);
-	// let isDownloading = $state(false);
 	let error: string = $state('');
 
-	let isSecretFile = $derived(metaParsed?.secretType === 'file');
+	let isSecretFileOrSnap = $derived(
+		metaParsed?.secretType === 'file' || metaParsed?.secretType === 'snap'
+	);
+	let isSnap = $derived(metaParsed?.secretType === 'snap');
 	let isSecretRedirect = $derived(metaParsed?.secretType === 'redirect');
-	let fileMeta = $derived(isSecretFile ? metaParsed : undefined) as FileMeta;
-	let fileReference = $derived(isSecretFile ? contentParsed : undefined) as FileReference;
+	let fileMeta = $derived(isSecretFileOrSnap ? metaParsed : undefined) as FileMeta;
+	let fileReference = $derived(isSecretFileOrSnap ? contentParsed : undefined) as FileReference;
 	let isDownloading = $derived(progress < 1);
 
 	const partialSchema = revealSecretFormSchema().omit({ password: true });
@@ -77,7 +80,7 @@
 					window.location.replace(content);
 				}
 
-				if (isSecretFile) {
+				if (isSecretFileOrSnap) {
 					// We saved fileReference as content
 					contentParsed = JSON.parse(content);
 
@@ -86,10 +89,10 @@
 							'Your browser is not supported: Service worker not available. Try a different device or browser.'
 						);
 					}
-					fetchSecretFile();
+					imageUrl = await fetchSecretFile();
 				}
 
-				history.replaceState(null, 'Secret destroyed', '#🔥');
+				// history.replaceState(null, 'Secret destroyed', '#🔥');
 			}
 		},
 		onError(event) {
@@ -163,7 +166,9 @@
 					const url = window.URL.createObjectURL(decryptedFile);
 					createDownloadLinkAndClick(url, fileMeta.name);
 
-					return Promise.resolve('File saved!');
+					console.log('single image', url);
+
+					return Promise.resolve(url);
 				}
 
 				await downloadFileAsStream(secretIdHash, fileMeta, fileReference, masterKey);
@@ -190,54 +195,63 @@
 {/if}
 
 {#if !isSecretRedirect}
-	<div class="w-full rounded border bg-card px-8 pb-8 pt-12 shadow-lg">
+	<div class="w-full rounded border bg-card p-8 shadow-lg">
 		{#if content}
-			{#if isSecretFile}
-				<h3 class="mb-2 text-2xl font-semibold">{m.house_warm_fox_transform()}</h3>
-				<p class="mb-3">
-					{m.helpful_mean_salmon_slurp()}
-				</p>
-				<div class="relative min-h-24 rounded border border-foreground bg-background p-4">
-					<div
-						class="absolute left-0 top-0 h-full rounded bg-muted"
-						style="min-width: 0%; width: {progress * 100}%"
-					></div>
+			{#if isSecretFileOrSnap}
+				{#if isSnap}
+					{#if imageUrl}
+						<img src={imageUrl} alt="Preview" />
+					{:else}
+						<UploadSpinner class="rotate-180" />
+					{/if}
+				{:else}
+					<h3 class="mb-2 pt-4 text-2xl font-semibold">{m.house_warm_fox_transform()}</h3>
+					<p class="mb-3">
+						{m.helpful_mean_salmon_slurp()}
+					</p>
 
-					<div class="relative grid grid-cols-[min-content_1fr] gap-4">
-						<div class="flex items-center">
-							<FileLock class="h-10 w-10 text-primary" />
+					<div class="relative min-h-24 rounded border border-foreground bg-background p-4">
+						<div
+							class="absolute left-0 top-0 h-full rounded bg-muted"
+							style="min-width: 0%; width: {progress * 100}%"
+						></div>
+
+						<div class="relative grid grid-cols-[min-content_1fr] gap-4">
+							<div class="flex items-center">
+								<FileLock class="h-10 w-10 text-primary" />
+							</div>
+
+							<div>
+								<div class="flex truncate">
+									<strong class="mr-1">{m.suave_level_squirrel_hope()}</strong>
+									<Typewriter message={fileMeta?.name} />
+								</div>
+
+								<div class="flex truncate">
+									<strong class="mr-1">{m.smug_smart_giraffe_borrow()}</strong>
+									<Typewriter message={prettyBytes(fileMeta?.size || 0)} />
+								</div>
+								<div class="flex truncate">
+									<strong class="mr-1">{m.slow_free_lynx_spur()}</strong>
+									<Typewriter message={fileMeta?.mimeType} />
+								</div>
+							</div>
 						</div>
 
-						<div>
-							<div class="flex truncate">
-								<strong class="mr-1">{m.suave_level_squirrel_hope()}</strong>
-								<Typewriter message={fileMeta?.name} />
-							</div>
-
-							<div class="flex truncate">
-								<strong class="mr-1">{m.smug_smart_giraffe_borrow()}</strong>
-								<Typewriter message={prettyBytes(fileMeta?.size || 0)} />
-							</div>
-							<div class="flex truncate">
-								<strong class="mr-1">{m.slow_free_lynx_spur()}</strong>
-								<Typewriter message={fileMeta?.mimeType} />
-							</div>
+						<div
+							class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
+						>
+							{#if isDownloading}
+								<UploadSpinner class="rotate-180" />
+							{:else}
+								<Check class="text-success" />
+							{/if}
 						</div>
 					</div>
-
-					<div
-						class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
-					>
-						{#if isDownloading}
-							<UploadSpinner class="rotate-180" />
-						{:else}
-							<Check class="text-success" />
-						{/if}
+					<div class="h-5 pt-1 text-muted-foreground">
+						<ProgressBar label={m.every_awful_guppy_fear()} progress={progress * 100} />
 					</div>
-				</div>
-				<div class="h-5 pt-1 text-muted-foreground">
-					<ProgressBar label={m.every_awful_guppy_fear()} progress={progress * 100} />
-				</div>
+				{/if}
 			{:else}
 				<!-- Secret Type: Text -->
 				<Typewriter message={content} />
