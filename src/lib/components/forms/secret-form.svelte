@@ -117,8 +117,8 @@
 	};
 	const webShare = async (link: string) => {
 		const shareData = {
-			title: 'A secret',
-			text: 'Learn web development on MDN!',
+			title: 'scrt.link',
+			text: m.giant_home_dachshund_feast(),
 			url: link
 		};
 		await navigator.share(shareData);
