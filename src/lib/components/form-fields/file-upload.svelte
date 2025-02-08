@@ -93,44 +93,36 @@
 			style="min-width: 0%; width: {progress}%"
 		></div>
 
-		{#if done}
+		<div
+			class="absolute right-0 translate-x-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
+		>
+			{#if done}
+				<Check class="text-success" />
+			{:else}
+				<UploadSpinner />
+			{/if}
+		</div>
+		<div class="relative flex items-center">
+			<div class="mr-2 truncate text-wrap">{fileName}</div>
 			<Button
-				class="absolute right-0 translate-x-1/2 rounded-full"
 				size="icon"
-				variant="outline"
+				class="border-foreground"
+				variant="ghost"
 				aria-label="Delete"
 				on:click={reset}
 			>
-				<Trash class="h-4 w-4 text-destructive" /> <span class="sr-only">Trash</span>
+				{#if done}
+					<Trash class="h-4 w-4 text-destructive" /> <span class="sr-only">Trash</span>
+				{:else}
+					<IconX class="h-5 w-5 text-destructive" />
+				{/if}
 			</Button>
-		{:else}
-			<div
-				class="absolute right-0 translate-x-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
-			>
-				<UploadSpinner />
-			</div>
-		{/if}
-		<div class="relative flex items-center">
-			<div class="mr-2 truncate">{fileName}</div>
-			{#if done}
-				<Check class="h-4 w-4 text-success" />
-			{:else}
-				<Button
-					size="icon"
-					class="border-foreground"
-					variant="ghost"
-					aria-label="Delete"
-					on:click={reset}
-				>
-					{#if !done}
-						<IconX class="h-4 w-4 text-destructive" /> <span class="sr-only">Trash</span>
-					{/if}
-				</Button>
-			{/if}
 		</div>
 	</div>
 	{#if !done}
-		<ProgressBar {progress} />
+		<div class="pt-1 text-muted-foreground">
+			<ProgressBar {progress} />
+		</div>
 	{/if}
 {:else}
 	<DropZone
