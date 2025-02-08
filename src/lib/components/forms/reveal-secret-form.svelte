@@ -196,12 +196,12 @@
 					style="min-width: 0%; width: {progress * 100}%"
 				></div>
 
-				<div class="grid grid-cols-[min-content_1fr] gap-4">
+				<div class="relative grid grid-cols-[min-content_1fr] gap-4">
 					<div class="flex items-center">
 						<FileLock class="h-10 w-10 text-primary" />
 					</div>
 
-					<div class="relative">
+					<div>
 						<div class="flex truncate">
 							<strong class="mr-1">{m.suave_level_squirrel_hope()}</strong>
 							<Typewriter message={fileMeta?.name} />
@@ -229,9 +229,7 @@
 				</div>
 			</div>
 			<div class="h-5 pt-1 text-muted-foreground">
-				{#if isDownloading}
-					<ProgressBar label={m.every_awful_guppy_fear()} progress={progress * 100} />
-				{/if}
+				<ProgressBar label={m.every_awful_guppy_fear()} progress={progress * 100} />
 			</div>
 		{:else}
 			<!-- Secret Type: Text -->

@@ -6,6 +6,7 @@
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
@@ -45,21 +46,21 @@
 						<Moon
 							class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
 						/>
-						<span class="sr-only">Toggle theme</span>
+						<span class="sr-only">{m.hour_lofty_warthog_wish()}</span>
 					</Button>
 					{#if user}
 						<a class="flex items-center" href="/account">
 							<Avatar.Root class="mr-2">
 								<Avatar.Image src={user.picture} alt={user.name} />
-								<Avatar.Fallback class="border bg-background uppercase"
+								<Avatar.Fallback
+									class="border border-foreground bg-foreground uppercase text-background"
 									>{Array.from(user.email)[0]}</Avatar.Fallback
 								>
 							</Avatar.Root>
-							<span class="font-medium">{user.name}</span>
 						</a>
 					{:else}
-						<Button variant="outline" href="/login">Login</Button>
-						<Button href="/signup">Sign up free</Button>
+						<Button variant="outline" href="/login">{m.simple_dry_boar_dazzle()}</Button>
+						<Button href="/signup">{m.large_smart_badger_beam()}</Button>
 					{/if}
 				</div>
 			</div>
