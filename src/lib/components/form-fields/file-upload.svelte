@@ -35,12 +35,14 @@
 	let done = $derived(progress === 100);
 
 	const chunkSize = 64 * MB;
+	let controllers = new Map<number, AbortController>(); // Track each request's AbortController
 
 	const postSecret = async (file: File) => {
 		loading = true;
 		const bucket = PUBLIC_S3_BUCKET;
 
 		const chunks = await handleFileEncryptionAndUpload({
+			controllers,
 			file,
 			bucket,
 			masterPassword,
@@ -75,6 +77,9 @@
 		selectedFile = null;
 		meta = '';
 		content = '';
+
+		controllers.forEach((controller) => controller.abort()); // Abort all requests
+		controllers.clear();
 	};
 
 	onDestroy(() => {

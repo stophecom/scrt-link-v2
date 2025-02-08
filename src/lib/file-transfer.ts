@@ -36,6 +36,7 @@ export interface SecretFile extends FileMeta, FileReference {
 }
 
 type HandleFileEncryptionAndUpload = {
+	controllers: Map<number, AbortController>;
 	file: File;
 	bucket: string;
 	masterPassword: string;
@@ -44,6 +45,7 @@ type HandleFileEncryptionAndUpload = {
 	progressCallback: (progress: number) => void;
 };
 export const handleFileEncryptionAndUpload = async ({
+	controllers,
 	file,
 	bucket,
 	masterPassword,
@@ -62,6 +64,10 @@ export const handleFileEncryptionAndUpload = async ({
 	}
 
 	return asyncPool(concurrentUploads, [...new Array(numberOfChunks).keys()], async (i: number) => {
+		const controller = new AbortController();
+		const signal = controller.signal;
+		controllers.set(i, controller); // Store the controller
+
 		const start = i * chunkSize;
 		const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize;
 		const chunk = file.slice(start, end);
@@ -73,6 +79,7 @@ export const handleFileEncryptionAndUpload = async ({
 		const signature = await signMessage(fileName, privateKey);
 
 		await uploadFileChunk({
+			signal,
 			bucket,
 			chunk: encryptedFile,
 			fileName: await sha256Hash(fileName),
@@ -82,6 +89,8 @@ export const handleFileEncryptionAndUpload = async ({
 				const sum = (progressOfEachChunk.reduce((a, b) => a + b, 0) / numberOfChunks) * 100;
 				progressCallback(sum);
 			}
+		}).then(() => {
+			controllers.delete(i); // Remove controller after completion
 		});
 
 		return {
@@ -93,6 +102,7 @@ export const handleFileEncryptionAndUpload = async ({
 };
 
 type UploadFileChunkParams = {
+	signal: AbortSignal;
 	bucket: string;
 	chunk: Blob;
 	fileName: string;
@@ -101,6 +111,7 @@ type UploadFileChunkParams = {
 };
 
 const uploadFileChunk = async ({
+	signal,
 	bucket,
 	chunk,
 	size,
@@ -126,6 +137,7 @@ const uploadFileChunk = async ({
 	// @todo Unclear why we have to append bucket here.
 	// Using axios b/c of built-in progress callback
 	await axios.request({
+		signal,
 		method: 'POST',
 		url: `${url}/${bucket}`,
 		data: formData,
