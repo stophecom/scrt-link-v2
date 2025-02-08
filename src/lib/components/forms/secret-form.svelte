@@ -2,6 +2,7 @@
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import LockKeyhole from 'lucide-svelte/icons/lock-keyhole';
 	import Reply from 'lucide-svelte/icons/reply';
+	import Share from 'lucide-svelte/icons/share-2';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
@@ -114,6 +115,14 @@
 		privateKey = keyPair.privateKey;
 		publicKeyRaw = await exportPublicKey(keyPair.publicKey);
 	};
+	const webShare = async (link: string) => {
+		const shareData = {
+			title: 'A secret',
+			text: 'Learn web development on MDN!',
+			url: link
+		};
+		await navigator.share(shareData);
+	};
 
 	onMount(async () => {
 		await setCryptoKeys();
@@ -122,15 +131,20 @@
 
 {#if $message?.status === 'success'}
 	<Alert title="Your secret link:" variant="success" class="mb-2">
-		<div class="flex items-center">
+		<div class="items-center pt-2">
 			<div class="flex-shrink overflow-hidden pe-2">
-				<div class="mb-1 truncate whitespace-pre font-normal">{link}</div>
+				<div class="mb-1 truncate whitespace-pre text-lg font-normal">{link}</div>
 				<small class="block opacity-90"><Markdown markdown={$message.description || ''} /></small>
 			</div>
-			<CopyButton class="ml-auto shrink-0" text={link} />
+			<div class="flex items-center justify-end pt-4">
+				<Button variant="ghost" class="mr-2 shrink-0" on:click={() => webShare(link)}
+					><Share class="mr-2 h-4 w-4" />{m.careful_bald_frog_harbor()}</Button
+				>
+				<CopyButton class="shrink-0" text={link} />
+			</div>
 		</div>
 	</Alert>
-	<Button href="/" on:click={setCryptoKeys} variant="secondary" size="sm"
+	<Button href="/" on:click={setCryptoKeys} variant="ghost" size="sm"
 		><Reply class="mr-2 h-4 w-4" />{m.trite_fun_starfish_ripple()}</Button
 	>
 {:else}

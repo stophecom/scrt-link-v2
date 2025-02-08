@@ -58,13 +58,13 @@
 	"mellow_lime_squid_urge": "Secret",
 	"each_light_mare_bump": "Knock knock",
 	"lazy_mealy_vole_harbor": "Create secret link",
-	"main_direct_salmon_savor": "Privacy options",
+	"main_direct_salmon_savor": "More options",
 	"teal_wide_owl_arise": "Less options",
 	"icy_heavy_toucan_harbor": "Please try again. You have {amount} attempts left.",
 	"same_gaudy_iguana_bend": "Reveal secret",
 	"vivid_vivid_peacock_slurp": "You tried too many times. Secret is being destroyed.",
 	"teary_main_bee_praise": "Password invalid.",
-	"left_cool_raven_zap": "Destroy secret",
+	"left_cool_raven_zap": "Destroy",
 	"alive_new_blackbird_stop": "The following secret can only be accessed one time. Enter password to decrypt your secret.",
 	"short_known_mule_play": "The following secret can only be accessed one time!",
 	"low_tame_lark_amaze": "Password required",
@@ -164,5 +164,7 @@
 	"tired_inner_cougar_push": "Share an image that is visible for a short period of time.",
 	"fair_red_warbler_bake": "Locked",
 	"cool_spicy_gopher_earn": "Add a password, set expiration date, get read receipts and more.",
-	"mild_tangy_elk_scoop": "Sign up now"
+	"mild_tangy_elk_scoop": "Sign up now",
+	"hour_tense_gecko_succeed": "Download complete",
+	"careful_bald_frog_harbor": "Share"
 }

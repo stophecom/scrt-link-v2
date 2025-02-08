@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Check from 'lucide-svelte/icons/check';
 	import FileLock from 'lucide-svelte/icons/file-lock';
+	import Flame from 'lucide-svelte/icons/flame';
 	import Reply from 'lucide-svelte/icons/reply';
 	import prettyBytes from 'pretty-bytes';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
@@ -249,15 +250,19 @@
 						</div>
 					</div>
 					<div class="h-5 pt-1 text-muted-foreground">
-						<ProgressBar label={m.every_awful_guppy_fear()} progress={progress * 100} />
+						<ProgressBar
+							labelInProgress={m.every_awful_guppy_fear()}
+							labelComplete={m.hour_tense_gecko_succeed()}
+							progress={progress * 100}
+						/>
 					</div>
 				{/if}
 			{:else}
 				<!-- Secret Type: Text -->
 				<Typewriter message={content} />
-				<div class="flex justify-end pt-2">
-					<Button data-sveltekit-reload href="/" class="mr-2" size="lg" variant="secondary"
-						>{m.left_cool_raven_zap()}</Button
+				<div class="flex items-center justify-end pt-2">
+					<Button data-sveltekit-reload href="/" class="mr-2" size="sm" variant="ghost">
+						<Flame class="mr-2 h-4 w-4" /> {m.left_cool_raven_zap()}</Button
 					>
 
 					<CopyButton text={content} />
@@ -305,8 +310,8 @@
 	</div>
 
 	{#if content}
-		<div class="pt-5">
-			<Button data-sveltekit-reload href="/" class="mr-2" size="lg" variant="secondary"
+		<div class="pt-2">
+			<Button data-sveltekit-reload href="/" variant="ghost"
 				><Reply class="mr-2 h-4 w-4" />{m.giant_smug_lobster_clasp()}</Button
 			>
 		</div>

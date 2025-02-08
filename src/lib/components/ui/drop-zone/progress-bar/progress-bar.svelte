@@ -5,13 +5,19 @@
 
 	type Props = {
 		progress: number;
-		label?: string;
+		labelInProgress?: string;
+		labelComplete?: string;
 		class?: ClassValue;
 	};
 
-	let { label = m.due_lazy_bat_dance(), progress = 0, ...rest }: Props = $props();
+	let {
+		labelInProgress = m.due_lazy_bat_dance(),
+		labelComplete = m.fancy_flaky_leopard_fade(),
+		progress = 0,
+		...rest
+	}: Props = $props();
 
-	let derivedLabel = $derived(progress === 100 ? m.fancy_flaky_leopard_fade() : label);
+	let derivedLabel = $derived(progress === 100 ? labelComplete : labelInProgress);
 </script>
 
 <div class={['flex justify-between', rest.class]}>

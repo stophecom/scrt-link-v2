@@ -3,11 +3,11 @@ import { tv, type VariantProps } from 'tailwind-variants';
 import Root from './toggle.svelte';
 
 export const toggleVariants = tv({
-	base: 'hyphens-auto ring-offset-background hover:bg-muted hover:text-accent-foreground focus-visible:ring-ring data-[state=on]:bg-accent data-[state=on]:text-accent-foreground inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+	base: 'hyphens-auto ring-offset-background hover:bg-muted focus-visible:ring-ring data-[state=on]:bg-muted data-[state=on]:text-foreground inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
 	variants: {
 		variant: {
 			default: 'bg-transparent',
-			outline: 'border-input hover:bg-accent hover:text-accent-foreground border bg-transparent'
+			outline: 'border-input hover:bg-background border bg-transparent'
 		},
 		size: {
 			default: 'h-10 px-3',

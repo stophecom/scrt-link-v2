@@ -17,7 +17,7 @@
 </script>
 
 <Form.Legend>{label}</Form.Legend>
-<RadioGroup.Root bind:value class="md:flex">
+<RadioGroup.Root bind:value class="px-1 md:flex">
 	{#each options as option}
 		<div class="flex items-center py-1 pe-3">
 			<Form.Control let:attrs>
