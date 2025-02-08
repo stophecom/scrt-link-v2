@@ -25,6 +25,7 @@
 	import FileUpload from '../form-fields/file-upload.svelte';
 	import Password from '../form-fields/password.svelte';
 	import RadioGroup from '../form-fields/radio-group.svelte';
+	import Text from '../form-fields/text.svelte';
 	import Textarea from '../form-fields/textarea.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
@@ -63,7 +64,9 @@
 				JSON.stringify({
 					secretType: secretType
 				});
+
 			let encryptedContent = content;
+
 			if (password) {
 				encryptedMeta = await encryptString(encryptedMeta, password);
 				encryptedContent = await encryptString(encryptedContent, password);
@@ -75,6 +78,7 @@
 			const jsonPayload: Infer<SecretTextFormSchema> = {
 				secretIdHash: await sha256Hash(masterPassword),
 				meta: encryptedMeta,
+
 				content: encryptedContent,
 				publicKey: publicKeyRaw,
 				expiresAt,
@@ -154,6 +158,19 @@
 							hideLabel
 							{charactersLeft}
 							{...$constraints.content}
+						/>
+					</div>
+				</Form.Field>
+			{/if}
+			{#if secretType === 'redirect'}
+				<Form.Field {form} name="content" class="pt-2">
+					<div in:fade>
+						<Text
+							bind:value={$formData.content}
+							label="URL"
+							placeholder="https://example.com"
+							description="The URL to get redirected to (one time)."
+							type="url"
 						/>
 					</div>
 				</Form.Field>

@@ -95,19 +95,3 @@ export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type SecretTextFormSchema = ReturnType<typeof secretFormSchema>;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type RevealSecretFormSchema = ReturnType<typeof revealSecretFormSchema>;
-
-// export const RegisterUserZodSchema = createInsertSchema(usersTable, {
-// 	name: (schema) =>
-// 		schema.name
-// 			.min(MIN_NAME_LENGTH, NAME_MIN_ERROR_MESSAGE)
-// 			.max(MAX_NAME_LENGTH, NAME_MAX_ERROR_MESSAGE),
-
-// 	email: (schema) => schema.email.email().max(MAX_EMAIL_LENGTH, EMAIL_MAX_ERROR_MESSAGE),
-
-// 	password: (schema) =>
-// 		schema.password
-// 			.min(MIN_PASSWORD_LENGTH, PASSWORD_MIN_ERROR_MESSAGE)
-// 			.max(MAX_PASSWORD_LENGTH, PASSWORD_MAX_ERROR_MESSAGE)
-// });
-
-// export const UserLoginZodSchema = RegisterUserZodSchema.pick({ email: true, password: true });

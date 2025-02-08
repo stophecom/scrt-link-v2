@@ -106,7 +106,7 @@
 />
 
 <div
-	class="hover:shadow-black-200/50 relative rounded-2xl border border-foreground text-foreground shadow-lg shadow-foreground/30 transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-none hover:border-solid dz:rounded-lg dz:border-dashed dz:bg-background/70 dz:text-foreground dz:shadow-none dz:hover:shadow-lg"
+	class="hover:shadow-black-200/50 relative rounded-2xl border border-foreground bg-background/70 text-foreground transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-none hover:border-solid dz:rounded-lg dz:border-dashed dz:text-foreground dz:shadow-none dz:hover:shadow-lg"
 >
 	<div class="flex flex-col items-center justify-center p-2 sm:p-4">
 		<div class="mb-2 flex pt-2">
@@ -126,7 +126,7 @@
 		<div
 			class="absolute w-full bg-gradient-to-b from-transparent to-black p-12 pb-16 text-center text-6xl font-bold uppercase text-white md:text-8xl"
 		>
-			OnDrop it like it's hot
+			Drop it like it's hot
 		</div>
 	</div>
 	<label class="sr-only" for="dropzone">{m.gross_nice_gecko_compose()}</label>
