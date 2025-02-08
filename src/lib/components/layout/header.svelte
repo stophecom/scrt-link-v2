@@ -24,7 +24,8 @@
 			<div class="container flex h-full items-center">
 				<a
 					data-sveltekit-reload
-					class="flex items-center p-2 transition duration-150 ease-in-out {intersecting && !minimal
+					class="flex items-center py-2 transition duration-150 ease-in-out {intersecting &&
+					!minimal
 						? 'translate-x-4 scale-150 opacity-0'
 						: 'scale-100 opacity-100'}"
 					href="/"

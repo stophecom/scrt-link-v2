@@ -10,10 +10,10 @@
 	let { items }: Props = $props();
 </script>
 
-<div class="text-sm text-muted-foreground">
+<div class="py-2 text-muted-foreground">
 	{#each items as item}
-		<div class="inline-flex items-center p-2">
-			<item.icon class="mr-2 h-4 w-4 text-sm" />{item.text}
+		<div class="inline-flex items-center px-2 py-1 text-sm">
+			<item.icon class="mr-2 h-3 w-3  sm:h-4 sm:w-4" />{item.text}
 		</div>
 	{/each}
 </div>

@@ -4,10 +4,9 @@
 	import Reply from 'lucide-svelte/icons/reply';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
 	import { getExpiresAtOptions } from '$lib/data/secretSettings';
 	import type { FileMeta } from '$lib/file-transfer';
@@ -214,20 +213,15 @@
 				{/if}
 			</div>
 
-			<div class="flex items-start">
-				<Toggle size="sm" bind:pressed={isOptionsVisible} aria-label="Toggle options"
+			<div class="flex flex-col items-stretch sm:flex-row">
+				<Toggle class="mb-1" bind:pressed={isOptionsVisible} aria-label="Toggle options"
 					>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 					<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
 				>
-				<Form.Button delayed={$delayed} class="ml-auto " size="lg" disabled={isFileUploading}
+				<Form.Button delayed={$delayed} class="sm:ml-auto " size="lg" disabled={isFileUploading}
 					>{m.lazy_mealy_vole_harbor()}</Form.Button
 				>
 			</div>
 		</form>
-		{#if dev}
-			<div class="py-4">
-				<SuperDebug data={$formData} />
-			</div>
-		{/if}
 	</FormWrapper>
 {/if}

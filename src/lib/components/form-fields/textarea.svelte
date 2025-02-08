@@ -24,7 +24,7 @@
 	<div class="relative">
 		<Textarea class="resize-none" {...attrs} bind:value {...rest} />
 		<span
-			class="absolute bottom-1 right-1 text-xs {charactersLeft < 0
+			class="absolute bottom-2 right-2 text-xs {charactersLeft < 0
 				? 'text-destructive'
 				: 'text-muted-foreground'}"
 			>{charactersLeft}
