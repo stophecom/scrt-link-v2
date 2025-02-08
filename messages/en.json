@@ -66,7 +66,7 @@
 	"teary_main_bee_praise": "Password invalid.",
 	"left_cool_raven_zap": "Destroy secret",
 	"alive_new_blackbird_stop": "The following secret can only be accessed one time. Enter password to decrypt your secret.",
-	"short_known_mule_play": "Be aware! The following secret can only be accessed one time.",
+	"short_known_mule_play": "The following secret can only be accessed one time!",
 	"low_tame_lark_amaze": "Password required",
 	"trite_fun_starfish_ripple": "Create another secret",
 	"real_actual_cockroach_type": "Link expires in {time}.",
@@ -150,5 +150,11 @@
 	"gross_nice_gecko_compose": "Choose a file to encrypt and share",
 	"due_lazy_bat_dance": "Uploading…",
 	"fancy_flaky_leopard_fade": "Done",
-	"every_awful_guppy_fear": "Download & Decrypt…"
+	"every_awful_guppy_fear": "Download and decrypt…",
+	"suave_level_squirrel_hope": "Name:",
+	"smug_smart_giraffe_borrow": "Size:",
+	"slow_free_lynx_spur": "Type:",
+	"helpful_mean_salmon_slurp": "Important: We have absolutely no knowledge about the contents of the file. Be sure to trust\n\t\t\t\tthe sender!",
+	"house_warm_fox_transform": "Secret file",
+	"giant_smug_lobster_clasp": "Reply with a secret"
 }

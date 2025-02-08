@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Check from 'lucide-svelte/icons/check';
-	import Paperclip from 'lucide-svelte/icons/paperclip';
+	import FileLock from 'lucide-svelte/icons/file-lock';
+	import Reply from 'lucide-svelte/icons/reply';
 	import prettyBytes from 'pretty-bytes';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -37,13 +38,13 @@
 	let contentParsed: FileReference | undefined = $state();
 
 	let progress = $state(0);
-	let isDownloading = $state(true);
+	// let isDownloading = $state(false);
 	let error: string = $state('');
 
 	let isSecretFile = $derived(metaParsed?.secretType === 'file');
 	let fileMeta = $derived(isSecretFile ? metaParsed : undefined) as FileMeta;
 	let fileReference = $derived(isSecretFile ? contentParsed : undefined) as FileReference;
-	let done = $derived(progress === 1);
+	let isDownloading = $derived(progress < 1);
 
 	const partialSchema = revealSecretFormSchema().omit({ password: true });
 
@@ -70,8 +71,8 @@
 					}
 				}
 
-				// @todo move this
 				if (isSecretFile) {
+					// We saved fileReference as content
 					contentParsed = JSON.parse(content);
 
 					if (!('serviceWorker' in navigator) && metaParsed && !metaParsed.isSingleChunk) {
@@ -79,11 +80,10 @@
 							'Your browser is not supported: Service worker not available. Try a different device or browser.'
 						);
 					}
-
 					fetchSecretFile();
 				}
 
-				// history.replaceState(null, 'Secret destroyed', '#🔥');
+				history.replaceState(null, 'Secret destroyed', '#🔥');
 			}
 		},
 		onError(event) {
@@ -139,8 +139,6 @@
 
 	const fetchSecretFile = async () => {
 		try {
-			isDownloading = true;
-
 			if (fileMeta && fileReference) {
 				// If only one chunk, we download immediately.
 				if (fileMeta.isSingleChunk && fileReference.chunks.length === 1) {
@@ -170,8 +168,6 @@
 						data: { secretIdHash: secretIdHash }
 					})
 				);
-
-				isDownloading = false;
 			}
 		} catch (e) {
 			if (e instanceof Error) {
@@ -190,48 +186,61 @@
 <div class="w-full rounded border bg-card px-8 pb-8 pt-12 shadow-lg">
 	{#if content}
 		{#if isSecretFile}
+			<h3 class="mb-2 text-2xl font-semibold">{m.house_warm_fox_transform()}</h3>
+			<p class="mb-3">
+				{m.helpful_mean_salmon_slurp()}
+			</p>
 			<div class="relative min-h-24 rounded border border-foreground bg-background p-4">
 				<div
 					class="absolute left-0 top-0 h-full rounded bg-muted"
 					style="min-width: 0%; width: {progress * 100}%"
 				></div>
 
-				<div class="relative grid grid-cols-[min-content_1fr] gap-1">
-					<strong class="text-right">Name:</strong>
-					<div class="truncate">
-						<Typewriter message={fileMeta?.name} />
+				<div class="grid grid-cols-[min-content_1fr] gap-4">
+					<div class="flex items-center">
+						<FileLock class="h-10 w-10 text-primary" />
 					</div>
 
-					<strong class="text-right">Size:</strong>
-					<div>
-						<Typewriter message={prettyBytes(fileMeta?.size || 0)} />
-					</div>
+					<div class="relative">
+						<div class="flex truncate">
+							<strong class="mr-1">{m.suave_level_squirrel_hope()}</strong>
+							<Typewriter message={fileMeta?.name} />
+						</div>
 
-					<strong class="text-right">Type:</strong>
-					<Typewriter message={fileMeta?.mimeType} />
+						<div class="flex truncate">
+							<strong class="mr-1">{m.smug_smart_giraffe_borrow()}</strong>
+							<Typewriter message={prettyBytes(fileMeta?.size || 0)} />
+						</div>
+						<div class="flex truncate">
+							<strong class="mr-1">{m.slow_free_lynx_spur()}</strong>
+							<Typewriter message={fileMeta?.mimeType} />
+						</div>
+					</div>
 				</div>
 
 				<div
 					class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
 				>
-					{#if !isDownloading}
+					{#if isDownloading}
 						<UploadSpinner class="rotate-180" />
-					{:else if done}
-						<Check class="text-success" />
 					{:else}
-						<Paperclip />
+						<Check class="text-success" />
 					{/if}
 				</div>
 			</div>
-			{#if isDownloading}
-				<ProgressBar label={m.every_awful_guppy_fear()} progress={progress * 100} />
-			{/if}
+			<div class="h-5 pt-1 text-muted-foreground">
+				{#if isDownloading}
+					<ProgressBar label={m.every_awful_guppy_fear()} progress={progress * 100} />
+				{/if}
+			</div>
 		{:else}
+			<!-- Secret Type: Text -->
 			<Typewriter message={content} />
 			<div class="flex justify-end pt-2">
 				<Button data-sveltekit-reload href="/" class="mr-2" size="lg" variant="secondary"
 					>{m.left_cool_raven_zap()}</Button
 				>
+
 				<CopyButton text={content} />
 			</div>
 		{/if}
@@ -275,3 +284,11 @@
 		</FormWrapper>
 	{/if}
 </div>
+
+{#if content}
+	<div class="pt-5">
+		<Button data-sveltekit-reload href="/" class="mr-2" size="lg" variant="secondary"
+			><Reply class="mr-2 h-4 w-4" />{m.giant_smug_lobster_clasp()}</Button
+		>
+	</div>
+{/if}

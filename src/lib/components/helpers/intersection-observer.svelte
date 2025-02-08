@@ -7,7 +7,7 @@
 	export let left = 0;
 	export let right = 0;
 
-	let intersecting = false;
+	let intersecting = true;
 	let container: HTMLElement;
 
 	onMount(() => {
