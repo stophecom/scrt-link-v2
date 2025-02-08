@@ -123,7 +123,7 @@
 			...fileMeta,
 			...fileReference,
 			decryptionKey,
-			url: `/api/v1/service-worker-file-download/${secretIdHash}`
+			url: `/service-worker-file-download#${secretIdHash}`
 		};
 
 		// Ensure that you're not passing anything that could be non-clonable

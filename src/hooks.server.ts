@@ -26,4 +26,5 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 };
 
 const handleParaglide: Handle = i18n.handle();
+
 export const handle: Handle = sequence(handleAuth, handleParaglide);

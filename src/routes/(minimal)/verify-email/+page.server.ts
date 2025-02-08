@@ -152,7 +152,6 @@ async function verifyCode(event: RequestEvent) {
 }
 
 async function resendCode(event: RequestEvent) {
-	console.log('Send code again');
 	const resendForm = await superValidate(event.request, zod(emailFormSchema()), {
 		id: 'resend-form'
 	});

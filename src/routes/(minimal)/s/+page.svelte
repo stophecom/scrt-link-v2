@@ -33,8 +33,6 @@
 			);
 
 			showPasswordInput = isPasswordProtected;
-
-			// secret = await decryptString(content, masterKey);
 		} catch (e) {
 			if (e instanceof Error) {
 				error = e?.message;

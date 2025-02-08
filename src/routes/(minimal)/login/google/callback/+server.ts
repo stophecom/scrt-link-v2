@@ -41,7 +41,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			}
 		});
 		const googleUser: UserInfoResponse = await response.json();
-		console.log('google user', googleUser);
 
 		// Check if user exists.
 		const [existingUser] = await db
@@ -50,11 +49,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			.where(eq(table.user.email, googleUser.email))
 			.limit(1);
 
-		console.log('existing user', existingUser);
-
 		if (existingUser) {
-			console.log('existing user -> login');
-
 			// Add GoogleID and complete/overwrite user based on Google Account
 			if (!existingUser.googleId) {
 				await db
