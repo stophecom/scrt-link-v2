@@ -5,11 +5,11 @@
 	import Share from 'lucide-svelte/icons/share-2';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
-	import { getExpiresAtOptions } from '$lib/data/secretSettings';
+	import { getExpiresInOptions } from '$lib/data/secretSettings';
 	import type { FileMeta } from '$lib/file-transfer';
 	import * as m from '$lib/paraglide/messages.js';
 	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
@@ -56,7 +56,7 @@
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {
-			const { content, password, expiresAt, meta } = $formData;
+			const { content, password, expiresIn, meta } = $formData;
 
 			// Encrypt secret before submitting
 			let encryptedMeta =
@@ -78,10 +78,9 @@
 			const jsonPayload: Infer<SecretTextFormSchema> = {
 				secretIdHash: await sha256Hash(masterPassword),
 				meta: encryptedMeta,
-
 				content: encryptedContent,
 				publicKey: publicKeyRaw,
-				expiresAt,
+				expiresIn: expiresIn,
 				password: $formData.password
 			};
 
@@ -99,6 +98,13 @@
 	});
 
 	const { form: formData, message, delayed, constraints, enhance } = form;
+
+	// We need to convert number (expiration timeout) to string, since radio input only supports string.
+	const expiresInOptions = getExpiresInOptions().map((option) => ({
+		...option,
+		value: String(option.value)
+	}));
+	const expiresInProxy = intProxy(form, 'expiresIn'); // Cast string to number
 
 	let privateKey: CryptoKey | undefined = $state();
 	let publicKeyRaw: string;
@@ -208,10 +214,10 @@
 						/>
 					</Form.Field>
 
-					<Form.Fieldset {form} name="expiresAt">
+					<Form.Fieldset {form} name="expiresIn">
 						<RadioGroup
-							options={getExpiresAtOptions()}
-							bind:value={$formData.expiresAt}
+							options={expiresInOptions}
+							bind:value={$expiresInProxy}
 							label={m.noble_whole_hornet_evoke()}
 						/>
 					</Form.Fieldset>

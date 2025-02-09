@@ -1,16 +1,8 @@
 import { z } from 'zod';
 
 import { ReadReceiptOptions } from '$lib/data/schemaEnums';
-import { getExpiresAtOptions } from '$lib/data/secretSettings';
+import { getExpiresInOptions } from '$lib/data/secretSettings';
 import * as m from '$lib/paraglide/messages.js';
-
-// Typescript
-const expiresAtOptions = getExpiresAtOptions();
-type Property = (typeof expiresAtOptions)[number]['value'];
-const expiresAtEnum: [Property, ...Property[]] = [
-	expiresAtOptions[0].value,
-	...expiresAtOptions.slice(1).map((p) => p.value)
-];
 
 // We return functions in order for translations to work as expected.
 export const emailFormSchema = () =>
@@ -35,6 +27,9 @@ export const signInFormSchema = () =>
 		password: z.string().min(6).max(512)
 	});
 
+// Set default value for expiresIn to the "medium" option.
+const expiresInOptions = getExpiresInOptions();
+const defaultExpiresInValue = expiresInOptions[(expiresInOptions.length / 2) | 0];
 export const secretFormSchema = () =>
 	z.object({
 		secretIdHash: z.string().max(512),
@@ -42,7 +37,7 @@ export const secretFormSchema = () =>
 		meta: z.string().max(100_000),
 		content: z.string().min(1).max(100_000),
 		password: z.string().min(6).max(512).optional(),
-		expiresAt: z.enum(expiresAtEnum).default(expiresAtEnum[expiresAtEnum.length - 2])
+		expiresIn: z.number().default(defaultExpiresInValue.value)
 	});
 
 export const settingsFormSchema = () =>

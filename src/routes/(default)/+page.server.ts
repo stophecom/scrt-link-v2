@@ -5,7 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { scryptHash } from '$lib/crypto';
 import { generateRandomUrlSafeString } from '$lib/crypto';
-import { getExpiresAtOptions } from '$lib/data/secretSettings';
+import { getExpiresInOptions } from '$lib/data/secretSettings';
 import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret, stats } from '$lib/server/db/schema';
@@ -23,19 +23,11 @@ export const actions: Actions = {
 	postSecret: async (event) => {
 		const form = await superValidate(event.request, zod(secretFormSchema()));
 
-		const { content, password, secretIdHash, meta, expiresAt: expiration, publicKey } = form.data;
+		const { content, password, secretIdHash, meta, expiresIn, publicKey } = form.data;
 
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-
-		// Map expiration date
-		const match = getExpiresAtOptions().find((item) => item.value === expiration);
-		if (!match?.ms) {
-			throw Error('No expiration time found.');
-		}
-
-		const expiresAt = new Date(Date.now() + match.ms);
 
 		let passwordHash;
 
@@ -53,7 +45,7 @@ export const actions: Actions = {
 				meta,
 				content,
 				passwordHash,
-				expiresAt,
+				expiresAt: new Date(Date.now() + expiresIn),
 				publicKey,
 				receiptId,
 				userId: user?.id
@@ -82,7 +74,7 @@ export const actions: Actions = {
 					});
 			}
 			const expirationMessage = m.real_actual_cockroach_type({
-				time: getExpiresAtOptions().find((item) => item.value === expiration)?.label || ''
+				time: getExpiresInOptions().find((item) => item.value === expiresIn)?.label || ''
 			});
 
 			const readReceiptMessage = m.deft_lucky_quail_pause({ receiptId });

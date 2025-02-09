@@ -84,7 +84,7 @@
 	"ideal_aloof_mayfly_thrive": "Das Geheimnis wurde nun gelöscht und ist nicht mehr verfügbar.",
 	"quiet_long_beaver_scold": "Fremder",
 	"spry_bald_guppy_cry": "Empfangsbestätigung",
-	"deft_lucky_quail_pause": "Ihr Empfangsbestätigungscode lautet: ** {receiptId} **",
+	"deft_lucky_quail_pause": "Ihr Empfangsbestätigungscode lautet: **{receiptId}**",
 	"vexed_early_lemming_engage": "Das folgende Geheimnis wurde eingesehen und vernichtet:",
 	"fuzzy_funny_eel_kiss": "Wer ist der Zahlungsanbieter?",
 	"away_hour_herring_jest": "Wir arbeiten mit {paymentProcessor} als unserem Zahlungsanbieter. Wir speichern keinerlei zahlungsbezogene Informationen.",
