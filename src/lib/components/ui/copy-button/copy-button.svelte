@@ -25,8 +25,8 @@
 </script>
 
 <div {...$$restProps} class="relative inline-flex {$$restProps?.class}">
-	<Button data-testid="copy-link" size="lg" class="uppercase" on:click={copy}
-		><Copy class="mr-2 h-[1.2rem] w-[1.2rem]" />{m.knotty_fuzzy_scallop_fall()}</Button
+	<Button data-testid="copy-link" size="lg" on:click={copy}
+		><Copy class="mr-2 h-4 w-4" />{m.knotty_fuzzy_scallop_fall()}</Button
 	>
 	<div
 		role="tooltip"

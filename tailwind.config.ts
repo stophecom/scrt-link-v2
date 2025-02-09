@@ -10,17 +10,12 @@ const config: Config = {
 	theme: {
 		container: {
 			center: true,
+
 			padding: {
-				DEFAULT: '1rem',
-				sm: '2rem',
-				lg: '4rem',
-				xl: '5rem',
-				'2xl': '6rem'
+				DEFAULT: '1.2rem'
 			},
 			screens: {
-				lg: '800px',
-				xl: '800px',
-				'2xl': '800px'
+				lg: '760px'
 			}
 		},
 		fontFamily: {
@@ -77,6 +72,7 @@ const config: Config = {
 				sans: [...fontFamily.sans]
 			},
 			screens: {
+				xs: '460px',
 				dz: { raw: '(hover: hover) and (pointer: fine)' } // For dropzone vs button
 			}
 		}
