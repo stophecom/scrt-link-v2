@@ -109,8 +109,8 @@
 	class="hover:shadow-black-200/50 relative rounded-2xl border border-foreground bg-background/70 text-foreground transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-none hover:border-solid dz:rounded-lg dz:border-dashed dz:text-foreground dz:shadow-none dz:hover:shadow-lg"
 >
 	<div class="flex flex-col items-center justify-center p-2 sm:p-4">
-		<div class="mb-2 flex pt-2">
-			<ArrowUpFromLine class="h-6 w-6" />
+		<div class="mb-1 flex pt-1">
+			<ArrowUpFromLine class="h-5 w-5" />
 		</div>
 		<!-- We show a simple button on smaller screens, and a drag/onDrop area on larger screens. -->
 		<span class="hidden text-center dz:inline">{m.ideal_jumpy_lionfish_scold()}</span>

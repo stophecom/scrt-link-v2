@@ -8,12 +8,12 @@
 
 	type Props = {
 		charactersLeft: number;
-		hideLabel?: boolean;
+		isHiddenLabel?: boolean;
 		label: string;
 	};
 	let {
 		value = $bindable(),
-		hideLabel = false,
+		isHiddenLabel = false,
 		charactersLeft,
 		label,
 		...rest
@@ -31,7 +31,7 @@
 </script>
 
 <Form.Control let:attrs>
-	<Form.Label class={hideLabel ? 'sr-only' : ''}>{label}</Form.Label>
+	<Form.Label class={isHiddenLabel ? 'sr-only' : ''}>{label}</Form.Label>
 	<div class="relative">
 		<Textarea class="resize-none pb-5" {...attrs} bind:value {...rest} on:keyup={scrollToBottom} />
 		<span

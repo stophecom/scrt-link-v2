@@ -96,7 +96,7 @@
 	{@const fileName = selectedFile.name}
 
 	<div
-		class="relative flex min-h-24 items-center justify-center rounded border border-foreground bg-background p-4"
+		class="relative flex h-full items-center justify-center rounded border border-foreground bg-background p-4"
 	>
 		<div
 			class="absolute left-0 h-full rounded bg-muted"

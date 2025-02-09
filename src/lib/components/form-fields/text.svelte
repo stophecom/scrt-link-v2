@@ -9,13 +9,20 @@
 	type Props = {
 		label: string;
 		description?: string;
+		isHiddenLabel?: boolean;
 	};
 
-	let { value = $bindable(), label, description, ...rest }: Props & HTMLInputAttributes = $props();
+	let {
+		value = $bindable(),
+		label,
+		isHiddenLabel,
+		description,
+		...rest
+	}: Props & HTMLInputAttributes = $props();
 </script>
 
 <Form.Control let:attrs>
-	<Form.Label>{label}</Form.Label>
+	<Form.Label class={isHiddenLabel ? 'sr-only' : ''}>{label}</Form.Label>
 	<Input {...attrs} bind:value {...rest} />
 	{#if description}
 		<Form.Description><Markdown markdown={description} /></Form.Description>

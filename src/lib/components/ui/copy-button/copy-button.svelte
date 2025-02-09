@@ -25,7 +25,7 @@
 </script>
 
 <div {...$$restProps} class="relative inline-flex {$$restProps?.class}">
-	<Button data-testid="copy-link" size="lg" on:click={copy}
+	<Button data-testid="copy-link" on:click={copy}
 		><Copy class="mr-2 h-4 w-4" />{m.knotty_fuzzy_scallop_fall()}</Button
 	>
 	<div

@@ -40,3 +40,22 @@ export const getReadReceiptOptions = () => [
 		label: 'Ntfy*'
 	}
 ];
+
+export const getSecretTypes = () => [
+	{
+		value: 'text',
+		label: m.happy_dizzy_angelfish_stir()
+	},
+	{
+		value: 'file',
+		label: m.nice_male_zebra_stop()
+	},
+	{
+		value: 'redirect',
+		label: m.bad_royal_kudu_nudge()
+	},
+	{
+		value: 'snap',
+		label: 'Snap'
+	}
+];

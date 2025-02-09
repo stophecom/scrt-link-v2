@@ -7,13 +7,17 @@
 	import Input from '../ui/input/input.svelte';
 
 	type Props = {
-		hideLabel?: boolean;
+		isHiddenLabel?: boolean;
 	};
-	let { value = $bindable(), hideLabel = false, ...rest }: Props & HTMLInputAttributes = $props();
+	let {
+		value = $bindable(),
+		isHiddenLabel = false,
+		...rest
+	}: Props & HTMLInputAttributes = $props();
 </script>
 
 <Form.Control let:attrs>
-	<Form.Label class={hideLabel ? 'sr-only' : ''}>{m.yummy_fair_gazelle_link()}</Form.Label>
+	<Form.Label class={isHiddenLabel ? 'sr-only' : ''}>{m.yummy_fair_gazelle_link()}</Form.Label>
 	<Input
 		type="password"
 		placeholder={m.yummy_fair_gazelle_link()}

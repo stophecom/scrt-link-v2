@@ -81,7 +81,7 @@ export const actions: Actions = {
 
 			return message(form, {
 				status: 'success',
-				description: [expirationMessage, ...(user ? [readReceiptMessage] : [])].join(' ')
+				description: [expirationMessage, ...(user ? [readReceiptMessage] : [])].join('\n\n')
 			});
 		} catch (e) {
 			console.error(e);
