@@ -11,7 +11,7 @@
 </script>
 
 <div
-	class="xs:flex-row flex flex-col items-center justify-center py-2 text-muted-foreground sm:justify-start"
+	class="flex flex-col items-center justify-center py-2 text-muted-foreground sm:justify-start xs:flex-row"
 >
 	{#each items as item}
 		<div class="inline-flex items-center px-2 py-1 text-sm">
