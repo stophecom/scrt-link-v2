@@ -1,24 +1,12 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { uptimerobotUrl } from '$lib/data/app';
 	import { imprintMenu } from '$lib/data/menu';
-	import { getSupportedLanguagesMap } from '$lib/data/supportedLocales';
-	import { i18n } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
-	import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
-	import { availableLanguageTags } from '$lib/paraglide/runtime';
 	import { languageTag } from '$lib/paraglide/runtime';
-	import { cn } from '$lib/utils';
 
 	import type { LayoutData } from '../../../routes/$types';
-
-	function switchToLanguage(newLanguage: AvailableLanguageTag) {
-		const canonicalPath = i18n.route(page.url.pathname);
-		const localizedPath = i18n.resolveRoute(canonicalPath, newLanguage);
-		goto(localizedPath);
-	}
+	import LanguageSwitcher from '../ui/language-switcher/language-switcher.svelte';
 
 	let { totalSecrets }: Pick<LayoutData, 'totalSecrets'> = $props();
 	let secretsCount = $derived(new Intl.NumberFormat(languageTag()).format(totalSecrets || 0));
@@ -37,31 +25,21 @@
 
 		<Separator />
 
-		<div class="flex items-center text-sm text-muted-foreground">
-			<span class="p-3">©{new Date().getFullYear()} SANTiHANS GmbH</span>
+		<div class="flex flex-wrap items-center text-sm text-muted-foreground">
+			<span class="p-2 pe-4">©{new Date().getFullYear()} SANTiHANS GmbH</span>
 			{#each imprintMenu() as menuItem}
-				<a class="p-3 underline" href={menuItem.href}>
+				<a class="p-2 underline" href={menuItem.href}>
 					{menuItem.label}
 				</a>
 			{/each}
 			<span>
-				<a class="p-3 pe-0 underline" target="_blank" href={uptimerobotUrl}>Status</a>
+				<a class="py-2 pe-0 ps-2 underline" target="_blank" href={uptimerobotUrl}>Status</a>
 				<span class="ps-1 text-xs text-success">●</span>
 			</span>
 		</div>
 
-		<div class="py-5 text-sm text-primary">
-			{#each availableLanguageTags as tag}
-				<button
-					class={cn(
-						'mx-5 inline-flex border-b border-b-primary/50 leading-none hover:border-b-primary',
-						languageTag() === tag && 'border-b-transparent'
-					)}
-					onclick={() => switchToLanguage(tag)}
-				>
-					{getSupportedLanguagesMap(tag)}
-				</button>
-			{/each}
+		<div class="py-5">
+			<LanguageSwitcher />
 		</div>
 	</div>
 </footer>

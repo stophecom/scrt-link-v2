@@ -1,5 +1,6 @@
 import * as m from '$lib/paraglide/messages.js';
 
+import { ReadReceiptOptions } from './schemaEnums';
 import { DAY, MIN } from './units';
 
 export const getExpiresAtOptions = () => [
@@ -32,15 +33,15 @@ export const getExpiresAtOptions = () => [
 
 export const getReadReceiptOptions = () => [
 	{
-		value: 'none',
-		label: 'None'
+		value: ReadReceiptOptions.NONE,
+		label: m.vivid_super_husky_mend()
 	},
 	{
-		value: 'email',
-		label: 'Email'
+		value: ReadReceiptOptions.EMAIL,
+		label: m.neat_nice_shad_engage()
 	},
 	{
-		value: 'ntfy',
+		value: ReadReceiptOptions.NTFY,
 		label: 'Ntfy*'
 	}
 ];

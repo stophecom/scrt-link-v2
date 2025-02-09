@@ -10,6 +10,8 @@ import {
 	uuid
 } from 'drizzle-orm/pg-core';
 
+import { ReadReceiptOptions } from '../../data/schemaEnums';
+
 export const user = pgTable('user', {
 	id: uuid('id').defaultRandom().primaryKey().unique(),
 	email: text('email').notNull().unique(),
@@ -50,13 +52,17 @@ export const secret = pgTable('secret', {
 });
 
 // Check secretSettings for reference
-export const readReceipt = pgEnum('read_receipt', ['none', 'email', 'ntfy']);
+export const readReceipt = pgEnum('read_receipt', [
+	ReadReceiptOptions.NONE,
+	ReadReceiptOptions.EMAIL,
+	ReadReceiptOptions.NTFY
+]);
 
 export const userSettings = pgTable('user_settings', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	ntfyEndpoint: text('ntfy_endpoint'),
 	email: text('email'),
-	readReceipt: readReceipt().default('none'),
+	readReceipt: readReceipt().default(ReadReceiptOptions.NONE),
 	userId: uuid('user_id')
 		.notNull()
 		.references(() => user.id)

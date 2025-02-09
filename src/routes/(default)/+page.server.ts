@@ -13,17 +13,15 @@ import { secretFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
 
-const CHARACTER_LIMIT = 100_000;
-
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(secretFormSchema(CHARACTER_LIMIT))) // Limit needs to be bigger b/c of encryption.
+		form: await superValidate(zod(secretFormSchema())) // Limit needs to be bigger b/c of encryption.
 	};
 };
 
 export const actions: Actions = {
 	postSecret: async (event) => {
-		const form = await superValidate(event.request, zod(secretFormSchema(CHARACTER_LIMIT)));
+		const form = await superValidate(event.request, zod(secretFormSchema()));
 
 		const { content, password, secretIdHash, meta, expiresAt: expiration, publicKey } = form.data;
 

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-import { getExpiresAtOptions, getReadReceiptOptions } from '$lib/data/secretSettings';
+import { ReadReceiptOptions } from '$lib/data/schemaEnums';
+import { getExpiresAtOptions } from '$lib/data/secretSettings';
 import * as m from '$lib/paraglide/messages.js';
 
 // Typescript
@@ -9,13 +10,6 @@ type Property = (typeof expiresAtOptions)[number]['value'];
 const expiresAtEnum: [Property, ...Property[]] = [
 	expiresAtOptions[0].value,
 	...expiresAtOptions.slice(1).map((p) => p.value)
-];
-
-const readReceiptOptions = getReadReceiptOptions();
-type ReadReceiptProperty = (typeof readReceiptOptions)[number]['value'];
-const readReceiptEnum: [ReadReceiptProperty, ...ReadReceiptProperty[]] = [
-	readReceiptOptions[0].value,
-	...readReceiptOptions.slice(1).map((p) => p.value)
 ];
 
 // We return functions in order for translations to work as expected.
@@ -54,7 +48,7 @@ export const secretFormSchema = () =>
 export const settingsFormSchema = () =>
 	z
 		.object({
-			readReceiptOption: z.enum(readReceiptEnum),
+			readReceiptOption: z.nativeEnum(ReadReceiptOptions),
 			email: z.string().email().optional().or(z.literal('')), // https://github.com/colinhacks/zod/issues/310#issuecomment-794533682
 			ntfyEndpoint: z.string().optional()
 		})
