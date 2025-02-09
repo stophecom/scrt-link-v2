@@ -3,7 +3,7 @@ import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
 import { twMerge } from 'tailwind-merge';
 
-// Shadcn Utils
+// Shadcn utils
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }

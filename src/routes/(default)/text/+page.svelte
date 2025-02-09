@@ -1,14 +1,19 @@
 <script lang="ts">
-	import Typewriter from 'svelte-typewriter';
-
+	import SecretForm from '$lib/components/forms/secret-form.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
-	import Markdown from '$lib/components/ui/markdown';
+	import Card from '$lib/components/ui/card';
+	import Usps from '$lib/components/ui/usps';
+	import { privacyUsps } from '$lib/data/usps';
 	import * as m from '$lib/paraglide/messages.js';
 
-	const markdown = m.inner_clear_duck_bend();
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title="TEST">
-	<Markdown {markdown} format />
-	<Typewriter delay={1212}><h2>Hallo Hallo Hallod</h2></Typewriter>
+<Page title={m.light_these_quail_sing()} lead={m.swift_small_gecko_drum()}>
+	<Card>
+		<SecretForm form={data.form} baseUrl={data.baseUrl} user={data.user} secretType={'text'} />
+	</Card>
+	<Usps items={privacyUsps} />
 </Page>

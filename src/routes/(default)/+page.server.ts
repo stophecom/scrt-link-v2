@@ -15,7 +15,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(secretFormSchema())) // Limit needs to be bigger b/c of encryption.
+		form: await superValidate(zod(secretFormSchema()))
 	};
 };
 
