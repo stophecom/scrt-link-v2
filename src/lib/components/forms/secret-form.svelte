@@ -35,7 +35,7 @@
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
-	const CHARACTER_LIMIT = 150; // TBD
+	const CHARACTER_LIMIT = 100_000;
 
 	export type SecretType = 'text' | 'file' | 'redirect' | 'snap';
 	export type Meta = Partial<FileMeta> & {

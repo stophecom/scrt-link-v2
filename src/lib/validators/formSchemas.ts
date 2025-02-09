@@ -38,16 +38,16 @@ export const passwordFormSchema = () =>
 export const signInFormSchema = () =>
 	z.object({
 		email: z.string().email(),
-		password: z.string().min(6).max(255)
+		password: z.string().min(6).max(512)
 	});
 
-export const secretFormSchema = (limit: number = 100_000) =>
+export const secretFormSchema = () =>
 	z.object({
-		secretIdHash: z.string(),
-		publicKey: z.string(),
-		meta: z.string(),
-		content: z.string().min(1).max(limit),
-		password: z.string().min(6).max(255).optional(),
+		secretIdHash: z.string().max(512),
+		publicKey: z.string().max(512),
+		meta: z.string().max(100_000),
+		content: z.string().min(1).max(100_000),
+		password: z.string().min(6).max(512).optional(),
 		expiresAt: z.enum(expiresAtEnum).default(expiresAtEnum[expiresAtEnum.length - 2])
 	});
 
