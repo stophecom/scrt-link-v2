@@ -21,6 +21,7 @@
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
+	import Spinner from '../ui/spinner/spinner.svelte';
 	import UploadSpinner from '../ui/spinner/upload-spinner.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 	import type { Meta } from './secret-form.svelte';
@@ -90,10 +91,10 @@
 							'Your browser is not supported: Service worker not available. Try a different device or browser.'
 						);
 					}
-					imageUrl = await fetchSecretFile();
+					imageUrl = await fetchSecretFile(isSnap);
 				}
 
-				// history.replaceState(null, 'Secret destroyed', '#🔥');
+				history.replaceState(null, 'Secret destroyed', '#🔥');
 			}
 		},
 		onError(event) {
@@ -147,7 +148,7 @@
 		createDownloadLinkAndClick(fileInfo.url);
 	};
 
-	const fetchSecretFile = async () => {
+	const fetchSecretFile = async (skipDownload: boolean) => {
 		try {
 			if (fileMeta && fileReference) {
 				// If only one chunk, we download immediately.
@@ -165,11 +166,12 @@
 					const blob = await res.blob();
 					const decryptedFile = new File([blob], fileMeta.name);
 					const url = window.URL.createObjectURL(decryptedFile);
+
+					if (skipDownload) {
+						return Promise.resolve(url);
+					}
+
 					createDownloadLinkAndClick(url, fileMeta.name);
-
-					console.log('single image', url);
-
-					return Promise.resolve(url);
 				}
 
 				await downloadFileAsStream(secretIdHash, fileMeta, fileReference, masterKey);
@@ -203,7 +205,7 @@
 					{#if imageUrl}
 						<img src={imageUrl} alt="Preview" />
 					{:else}
-						<UploadSpinner class="rotate-180" />
+						<Spinner />
 					{/if}
 				{:else}
 					<h3 class="mb-2 pt-4 text-2xl font-semibold">{m.house_warm_fox_transform()}</h3>

@@ -2,6 +2,7 @@
 	import Check from 'lucide-svelte/icons/circle-check-big';
 	import Reply from 'lucide-svelte/icons/reply';
 	import Share from 'lucide-svelte/icons/share-2';
+	import { fade } from 'svelte/transition';
 
 	import SecretForm, {
 		type SecretFormProps,
@@ -21,8 +22,9 @@
 
 	type Props = {
 		data: { form: SecretFormProps['form'] } & LayoutServerData;
+		secretType: SecretFormProps['secretType'];
 	};
-	let { data }: Props = $props();
+	let { data, secretType }: Props = $props();
 
 	let masterPassword = $state('');
 	let successMessage = $state('');
@@ -40,11 +42,12 @@
 
 {#if successMessage}
 	<div
-		class="relative mb-2 flex min-h-[290px] w-full flex-col items-stretch rounded border border-foreground bg-card px-4 py-6 shadow-lg md:p-8"
+		in:fade
+		class="relative mb-2 flex min-h-[290px] w-full flex-col items-stretch rounded border border-primary bg-card px-4 py-6 shadow-lg md:p-8"
 	>
-		<Check class="absolute right-6 top-6 h-8 w-8 text-primary" />
-		<div class="pt-6">
-			<h3 class="mb-2 text-xl font-semibold text-primary sm:text-2xl">
+		<Check class="absolute right-6 top-6 h-8 w-8 text-primary sm:right-8 sm:top-8" />
+		<div>
+			<h3 class="mb-7 text-2xl font-semibold text-primary sm:text-3xl">
 				{m.fluffy_vivid_mare_flow()}
 			</h3>
 			<div class="flex-shrink overflow-hidden pe-2">
@@ -61,28 +64,38 @@
 			<CopyButton class="shrink-0" text={link} />
 		</div>
 	</div>
-	<Button data-sveltekit-reload href="/" variant="ghost" size="sm"
+	<Button on:click={() => window.location.reload()} variant="ghost" size="sm"
 		><Reply class="mr-2 h-4 w-4" />{m.trite_fun_starfish_ripple()}</Button
 	>
 {:else}
 	<Card>
-		<Tabs.Root value="text" let:value>
-			{@const secretType = value as SecretType}
-			<Tabs.List>
-				{#each getSecretTypes() as secretTypeItem}
-					<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
-				{/each}
-			</Tabs.List>
-			<Tabs.Content {value}>
-				<SecretForm
-					form={data.form}
-					user={data.user}
-					{secretType}
-					bind:masterPassword
-					bind:successMessage
-				/>
-			</Tabs.Content>
-		</Tabs.Root>
+		{#if secretType}
+			<SecretForm
+				form={data.form}
+				user={data.user}
+				{secretType}
+				bind:masterPassword
+				bind:successMessage
+			/>
+		{:else}
+			<Tabs.Root value="text" let:value>
+				{@const secretType = value as SecretType}
+				<Tabs.List>
+					{#each getSecretTypes() as secretTypeItem}
+						<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
+					{/each}
+				</Tabs.List>
+				<Tabs.Content {value}>
+					<SecretForm
+						form={data.form}
+						user={data.user}
+						{secretType}
+						bind:masterPassword
+						bind:successMessage
+					/>
+				</Tabs.Content>
+			</Tabs.Root>
+		{/if}
 	</Card>
 	<Usps items={privacyUsps} />
 {/if}

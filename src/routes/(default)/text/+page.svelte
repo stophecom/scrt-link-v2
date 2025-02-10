@@ -1,9 +1,6 @@
 <script lang="ts">
-	import SecretForm from '$lib/components/forms/secret-form.svelte';
+	import CreateSecret from '$lib/components/layout/create-secret.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
-	import Card from '$lib/components/ui/card';
-	import Usps from '$lib/components/ui/usps';
-	import { privacyUsps } from '$lib/data/usps';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
@@ -12,8 +9,5 @@
 </script>
 
 <Page title={m.light_these_quail_sing()} lead={m.swift_small_gecko_drum()}>
-	<Card>
-		<SecretForm form={data.form} baseUrl={data.baseUrl} user={data.user} secretType={'text'} />
-	</Card>
-	<Usps items={privacyUsps} />
+	<CreateSecret {data} secretType={'text'} />
 </Page>
