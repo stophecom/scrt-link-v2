@@ -20,6 +20,7 @@
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
+	import CountDown from '../ui/count-down';
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
 	import Spinner from '../ui/spinner/spinner.svelte';
 	import UploadSpinner from '../ui/spinner/upload-spinner.svelte';
@@ -198,11 +199,18 @@
 {/if}
 
 {#if !isSecretRedirect}
-	<div class="w-full rounded border bg-card p-8 shadow-lg">
+	<div class="w-full rounded border bg-card p-6 shadow-lg sm:p-8">
 		{#if content}
 			{#if isSecretFileOrSnap}
 				{#if isSnap}
 					{#if imageUrl}
+						<div class="pb-2">
+							<CountDown
+								onComplete={() => {
+									window.location.reload();
+								}}
+							/>
+						</div>
 						<img src={imageUrl} alt="Preview" />
 					{:else}
 						<Spinner />

@@ -160,8 +160,11 @@
 						bind:loading={isFileUploading}
 						accept={secretType === 'snap' ? 'image/*' : undefined}
 					/>
-					{#if secretType === 'snap'}
-						<span class="p-1 text-xs text-muted-foreground">{m.tired_inner_cougar_push()}</span>
+
+					{#if secretType === 'snap' && !isFileUploading && !$formData.content}
+						<div class="p-1 text-center text-xs text-muted-foreground">
+							{m.tired_inner_cougar_push()}
+						</div>
 					{/if}
 				</div>
 			</div>

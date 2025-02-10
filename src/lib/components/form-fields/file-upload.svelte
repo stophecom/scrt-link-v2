@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Check from 'lucide-svelte/icons/check';
 	import Trash from 'lucide-svelte/icons/trash';
 	import IconX from 'lucide-svelte/icons/x';
 	import { onDestroy } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	import { PUBLIC_S3_BUCKET } from '$env/static/public';
 	import { MB } from '$lib/data/units';
@@ -103,16 +103,15 @@
 			style="min-width: 0%; width: {progress}%"
 		></div>
 
-		<div
-			class="absolute right-0 translate-x-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
-		>
-			{#if done}
-				<Check class="text-success" />
-			{:else}
+		{#if !done}
+			<div
+				transition:fade
+				class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
+			>
 				<UploadSpinner />
-			{/if}
-		</div>
-		<div class="relative flex items-center">
+			</div>
+		{/if}
+		<div class="relative flex max-w-full items-center">
 			<div class="mr-2 truncate text-wrap">{fileName}</div>
 			<Button
 				size="icon"
