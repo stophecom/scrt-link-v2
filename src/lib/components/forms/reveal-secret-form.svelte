@@ -4,6 +4,7 @@
 	import Flame from 'lucide-svelte/icons/flame';
 	import Reply from 'lucide-svelte/icons/reply';
 	import prettyBytes from 'pretty-bytes';
+	import { tick } from 'svelte';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
@@ -76,6 +77,7 @@
 					if ($formData.password) {
 						content = await decryptString(content, $formData.password);
 					}
+					await tick();
 				}
 
 				if (isSecretRedirect) {
@@ -269,7 +271,7 @@
 				{/if}
 			{:else}
 				<!-- Secret Type: Text -->
-				<Typewriter message={content} />
+				{content}
 				<div class="flex items-center justify-end pt-2">
 					<Button data-sveltekit-reload href="/" class="mr-2" size="sm" variant="ghost">
 						<Flame class="mr-2 h-4 w-4" /> {m.left_cool_raven_zap()}</Button
