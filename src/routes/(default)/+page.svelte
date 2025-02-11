@@ -13,8 +13,9 @@
 </script>
 
 <Page title={m.lucky_warm_mayfly_engage()} lead={m.aloof_quaint_snail_pave()}>
-	<CreateSecret {data} />
-
+	<div class="mb-12">
+		<CreateSecret {data} />
+	</div>
 	<Section title="FAQ" lead={m.stock_keen_marten_commend()}>
 		<Accordion items={shortFaq()} />
 

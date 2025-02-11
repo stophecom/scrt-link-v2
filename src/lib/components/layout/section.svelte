@@ -4,7 +4,7 @@
 	let { title, lead, children }: { title?: string; lead?: string; children: Snippet } = $props();
 </script>
 
-<section class="py-32">
+<section class="py-16">
 	{#if title}
 		<h2 class="mb-4 text-4xl font-bold md:text-5xl">{title}</h2>
 	{/if}

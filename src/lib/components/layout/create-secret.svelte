@@ -22,7 +22,7 @@
 
 	type Props = {
 		data: { form: SecretFormProps['form'] } & LayoutServerData;
-		secretType: SecretFormProps['secretType'];
+		secretType?: SecretFormProps['secretType'];
 	};
 	let { data, secretType }: Props = $props();
 
