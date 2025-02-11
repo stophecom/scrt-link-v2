@@ -12,20 +12,20 @@
 	let secretsCount = $derived(new Intl.NumberFormat(languageTag()).format(totalSecrets || 0));
 </script>
 
-<footer class="border-t bg-background pt-14 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
+<footer class="border-border bg-background border-t pt-14 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
 	<div class="container flex flex-col items-center justify-center">
 		<div class="p-5 text-center text-sm font-bold">
 			{m.equal_tiny_wren_skip({
 				number: secretsCount
 			})}
 		</div>
-		<div class="max-w-screen-sm p-5 text-center text-sm text-muted-foreground">
+		<div class="text-muted-contrast max-w-(--breakpoint-sm) p-5 text-center text-sm">
 			{m.candid_red_lynx_offer()}
 		</div>
 
 		<Separator />
 
-		<div class="flex flex-wrap items-center text-sm text-muted-foreground">
+		<div class="text-muted-contrast flex flex-wrap items-center text-sm">
 			<span class="p-2 pe-4">©{new Date().getFullYear()} SANTiHANS GmbH</span>
 			{#each imprintMenu() as menuItem}
 				<a class="p-2 underline" href={menuItem.href}>
@@ -33,8 +33,8 @@
 				</a>
 			{/each}
 			<span>
-				<a class="py-2 pe-0 ps-2 underline" target="_blank" href={uptimerobotUrl}>Status</a>
-				<span class="ps-1 text-xs text-success">●</span>
+				<a class="py-2 ps-2 pe-0 underline" target="_blank" href={uptimerobotUrl}>Status</a>
+				<span class="text-success ps-1 text-xs">●</span>
 			</span>
 		</div>
 

@@ -35,10 +35,10 @@
 	<div class="relative">
 		<Textarea class="resize-none pb-5" {...attrs} bind:value {...rest} on:keyup={scrollToBottom} />
 		<span
-			class="absolute bottom-[1px] right-[1px] rounded-tl bg-background p-1 text-xs {charactersLeft <
+			class="bg-background absolute right-[1px] bottom-[1px] rounded-tl p-1 text-xs {charactersLeft <
 			0
 				? 'text-destructive'
-				: 'text-muted-foreground'}"
+				: 'text-muted-contrast'}"
 			>{formattedCount}
 		</span>
 	</div>

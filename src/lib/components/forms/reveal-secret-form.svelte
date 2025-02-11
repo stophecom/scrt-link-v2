@@ -195,13 +195,13 @@
 </script>
 
 {#if error}
-	<Alert data-testid="download-error" class="mb-4 mt-4" variant="destructive">
+	<Alert data-testid="download-error" class="mt-4 mb-4" variant="destructive">
 		{error}
 	</Alert>
 {/if}
 
 {#if !isSecretRedirect}
-	<div class="w-full rounded border bg-card p-6 shadow-lg sm:p-8">
+	<div class="bg-card w-full rounded border p-6 shadow-lg sm:p-8">
 		{#if content}
 			{#if isSecretFileOrSnap}
 				{#if isSnap}
@@ -223,15 +223,15 @@
 						{m.helpful_mean_salmon_slurp()}
 					</p>
 
-					<div class="relative min-h-24 rounded border border-foreground bg-background p-4">
+					<div class="border-foreground bg-background relative min-h-24 rounded border p-4">
 						<div
-							class="absolute left-0 top-0 h-full rounded bg-muted"
+							class="bg-muted absolute top-0 left-0 h-full rounded"
 							style="min-width: 0%; width: {progress * 100}%"
 						></div>
 
 						<div class="relative grid grid-cols-[min-content_1fr] gap-4">
 							<div class="flex items-center">
-								<FileLock class="h-10 w-10 text-primary" />
+								<FileLock class="text-primary h-10 w-10" />
 							</div>
 
 							<div>
@@ -252,7 +252,7 @@
 						</div>
 
 						<div
-							class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
+							class="border-foreground bg-background text-muted-contrast absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 rounded-full border p-2"
 						>
 							{#if isDownloading}
 								<UploadSpinner class="rotate-180" />
@@ -261,7 +261,7 @@
 							{/if}
 						</div>
 					</div>
-					<div class="h-5 pt-1 text-muted-foreground">
+					<div class="text-muted-contrast h-5 pt-1">
 						<ProgressBar
 							labelInProgress={m.every_awful_guppy_fear()}
 							labelComplete={m.hour_tense_gecko_succeed()}

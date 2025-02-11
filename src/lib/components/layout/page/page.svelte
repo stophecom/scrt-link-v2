@@ -16,14 +16,14 @@
 	let { title, lead, markNotTranslated, children }: Props = $props();
 </script>
 
-<div class="container min-h-screen pb-6 pt-8">
+<div class="container min-h-screen pt-8 pb-6">
 	<div>
 		<a data-sveltekit-reload class="inline-flex" href="/">
 			<Logo class="h-28 w-28 md:h-32 md:w-32" />
 		</a>
 	</div>
 
-	<h1 class="mb-5 text-5xl font-extrabold leading-tight md:text-6xl">
+	<h1 class="font-display mb-1 text-5xl leading-tight font-extrabold md:text-6xl">
 		{title}
 	</h1>
 

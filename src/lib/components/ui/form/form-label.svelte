@@ -15,7 +15,7 @@
 
 <Label
 	{...$labelAttrs}
-	class={cn('p-1 data-[fs-error]:text-destructive', className)}
+	class={cn('p-1 data-fs-error:text-destructive', className)}
 	{...$$restProps}
 >
 	<slot {labelAttrs} />

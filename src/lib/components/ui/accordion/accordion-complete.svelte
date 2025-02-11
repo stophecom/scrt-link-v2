@@ -19,7 +19,7 @@
 
 <AccordionPrimitive.Root class="mb-4 w-full" multiple>
 	{#each items as item, i}
-		<Item value="${i}" class="border-dark-10 group border-b px-1.5">
+		<Item value="${i}" class="border-dark-10 group border-border border-b  px-1.5">
 			<Trigger>
 				{item.heading}
 			</Trigger>

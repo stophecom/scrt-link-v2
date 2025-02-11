@@ -11,9 +11,9 @@
 </script>
 
 <div {...rest}>
-	<div class="w-full rounded border bg-card px-4 py-6 shadow-lg md:p-8">
+	<div class="border-border bg-card w-full rounded border px-4 py-6 shadow-lg md:p-8">
 		{#if title}
-			<h2 class="mb-4 mt-6 text-2xl font-bold md:text-3xl">{title}</h2>
+			<h2 class="mt-6 mb-4 text-2xl font-bold md:text-3xl">{title}</h2>
 		{/if}
 		{#if description}
 			<p class="mb-4 text-xl leading-normal">{description}</p>

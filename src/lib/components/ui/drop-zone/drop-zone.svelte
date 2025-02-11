@@ -106,7 +106,7 @@
 />
 
 <div
-	class="hover:shadow-black-200/50 relative rounded-2xl border border-foreground bg-background/70 text-foreground transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-none hover:border-solid dz:rounded-lg dz:border-dashed dz:text-foreground dz:shadow-none dz:hover:shadow-lg"
+	class="hover:shadow-black-200/50 relative rounded-2xl border border-foreground bg-background/70 text-foreground transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-hidden hover:border-solid dz:rounded-lg dz:border-dashed dz:text-foreground dz:shadow-none dz:hover:shadow-lg"
 >
 	<div class="flex flex-col items-center justify-center p-2 sm:p-4">
 		<div class="mb-1 flex pt-1">
@@ -124,7 +124,7 @@
 	>
 		<img class="absolute h-full w-full object-cover" alt="Snoop Dogg" src={gif} />
 		<div
-			class="absolute w-full bg-gradient-to-b from-transparent to-black p-12 pb-16 text-center text-6xl font-bold uppercase text-white md:text-8xl"
+			class="absolute w-full bg-linear-to-b from-transparent to-black p-12 pb-16 text-center text-6xl font-bold uppercase text-white md:text-8xl"
 		>
 			Drop it like it's hot
 		</div>

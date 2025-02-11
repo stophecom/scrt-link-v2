@@ -10,7 +10,7 @@
 </script>
 
 <FormPrimitive.Description
-	class={cn('p-1 text-xs text-muted-foreground', className)}
+	class={cn('text-muted-contrast p-1 text-xs', className)}
 	{...$$restProps}
 	let:descriptionAttrs
 >

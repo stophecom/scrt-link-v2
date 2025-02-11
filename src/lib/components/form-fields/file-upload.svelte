@@ -96,17 +96,17 @@
 	{@const fileName = selectedFile.name}
 
 	<div
-		class="relative flex h-full items-center justify-center rounded border border-foreground bg-background p-4"
+		class="border-foreground bg-background relative flex h-full items-center justify-center rounded border p-4"
 	>
 		<div
-			class="absolute left-0 h-full rounded bg-muted"
+			class="bg-muted absolute left-0 h-full rounded"
 			style="min-width: 0%; width: {progress}%"
 		></div>
 
 		{#if !done}
 			<div
 				transition:fade
-				class="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border border-foreground bg-background p-2 text-muted-foreground"
+				class="border-foreground bg-background text-muted-contrast absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border p-2"
 			>
 				<UploadSpinner />
 			</div>
@@ -121,15 +121,15 @@
 				on:click={reset}
 			>
 				{#if done}
-					<Trash class="h-4 w-4 text-destructive" /> <span class="sr-only">Trash</span>
+					<Trash class="text-destructive h-4 w-4" /> <span class="sr-only">Trash</span>
 				{:else}
-					<IconX class="h-5 w-5 text-destructive" />
+					<IconX class="text-destructive h-5 w-5" />
 				{/if}
 			</Button>
 		</div>
 	</div>
 	{#if !done}
-		<div class="pt-1 text-muted-foreground">
+		<div class="text-muted-contrast pt-1">
 			<ProgressBar {progress} />
 		</div>
 	{/if}
@@ -144,7 +144,7 @@
 {/if}
 
 {#if error}
-	<div class="p-1 text-sm text-destructive">
+	<div class="text-destructive p-1 text-sm">
 		{error}
 	</div>
 {/if}

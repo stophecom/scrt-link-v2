@@ -1,6 +1,7 @@
 import { paraglide } from '@inlang/paraglide-sveltekit/vite';
 import svg from '@poppanator/sveltekit-svg';
 import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite';
 import svelteEmailTailwind from 'svelte-email-tailwind/vite';
 import { defineConfig } from 'vitest/config';
 
@@ -33,6 +34,7 @@ export default defineConfig({
 			project: './project.inlang',
 			outdir: './src/lib/paraglide'
 		}),
-		svg()
+		svg(),
+		tailwindcss()
 	]
 });

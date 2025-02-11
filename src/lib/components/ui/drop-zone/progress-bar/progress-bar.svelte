@@ -24,5 +24,5 @@
 	<div class="flex max-w-full flex-wrap items-baseline truncate text-base">
 		<span class="mr-2 text-sm font-medium">{derivedLabel}</span>
 	</div>
-	<span class="ml-2 w-14 flex-shrink-0 text-right text-sm font-medium">{progress.toFixed(2)}%</span>
+	<span class="ml-2 w-14 shrink-0 text-right text-sm font-medium">{progress.toFixed(2)}%</span>
 </div>

@@ -19,7 +19,7 @@
 		<div
 			class="fixed left-0 top-0 h-16 w-full transition duration-300 ease-in-out {intersecting
 				? 'bg-transparent'
-				: 'bg-background shadow'}"
+				: 'bg-background shadow-sm'}"
 		>
 			<div class="container flex h-full items-center">
 				<a

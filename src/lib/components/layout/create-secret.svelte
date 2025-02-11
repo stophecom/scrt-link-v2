@@ -43,16 +43,16 @@
 {#if successMessage}
 	<div
 		in:fade
-		class="relative mb-2 flex min-h-[290px] w-full flex-col items-stretch rounded border border-primary bg-card px-4 py-6 shadow-lg md:p-8"
+		class="border-primary bg-card relative mb-2 flex min-h-[290px] w-full flex-col items-stretch rounded border px-4 py-6 shadow-lg md:p-8"
 	>
-		<Check class="absolute right-6 top-6 h-8 w-8 text-primary sm:right-8 sm:top-8" />
+		<Check class="text-primary absolute top-6 right-6 h-8 w-8 sm:top-8 sm:right-8" />
 		<div>
-			<h3 class="mb-7 text-2xl font-semibold text-primary sm:text-3xl">
+			<h3 class="text-primary mb-7 text-2xl font-semibold sm:text-3xl">
 				{m.fluffy_vivid_mare_flow()}
 			</h3>
-			<div class="flex-shrink overflow-hidden pe-2">
-				<div class="mb-2 truncate whitespace-pre text-xl font-normal">{link}</div>
-				<div class="block text-sm text-muted-foreground">
+			<div class="shrink overflow-hidden pe-2">
+				<div class="mb-2 truncate text-xl font-normal whitespace-pre">{link}</div>
+				<div class="text-muted-contrast block text-sm">
 					<Markdown markdown={successMessage} />
 				</div>
 			</div>

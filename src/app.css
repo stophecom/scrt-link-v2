@@ -1,39 +1,41 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
 	:root {
+		interpolate-size: allow-keywords;
+
 		--background: 0 0% 100%;
 		--foreground: 240 10% 20%;
 
 		--muted: 0 0% 92%;
-		--muted-foreground: 0 0% 36%;
+		--muted-contrast: 0 0% 36%;
 
 		--popover: 0 0% 100%;
-		--popover-foreground: 240 10% 3.9%;
+		--popover-contrast: 240 10% 3.9%;
 
 		--card: 329 3% 96%;
-		--card-foreground: 240 10% 3.9%;
+		--card-contrast: 240 10% 3.9%;
 
 		--border: 240 6% 84%;
 		--input: 240 6% 84%;
 
-		--primary-text: 329 100% 43%;
 		--primary: 329 100% 45%;
-		--primary-foreground: 0 0% 100%;
+		--primary-contrast: 0 0% 100%;
 
 		--secondary: 240 4.8% 91%;
-		--secondary-foreground: 240 7% 10%;
+		--secondary-contrast: 240 7% 10%;
 
 		--destructive: 0 72% 40%;
-		--destructive-foreground: 0 72% 40%;
+		--destructive-contrast: 0 72% 40%;
 
 		--success: 123 38% 37%;
-		--success-foreground: 123 38% 30%;
+		--success-contrast: 123 38% 30%;
 
 		--info: 199 92% 36%;
-		--info-foreground: 199 92% 56%;
+		--info-contrast: 199 92% 56%;
 
 		--ring: 240 10% 3.9%;
 
@@ -45,38 +47,37 @@
 		--foreground: 0 0% 87%;
 
 		--muted: 212 26% 18%;
-		--muted-foreground: 240 5% 64.9%;
+		--muted-contrast: 240 5% 64.9%;
 
 		--card: 212 27% 12%;
-		--card-foreground: 0 0% 98%;
+		--card-contrast: 0 0% 98%;
 
 		--border: 240 3.7% 30%;
 		--input: 240 3.7% 30%;
 
-		--primary-text: 329 100% 55%;
 		--primary: 329 100% 45%;
-		--primary-foreground: 0 0% 100%;
+		--primary-contrast: 0 0% 100%;
 
 		--secondary: 240 3.7% 15.9%;
-		--secondary-foreground: 0 0% 98%;
+		--secondary-contrast: 0 0% 98%;
 
 		--destructive: 0 62% 60%;
-		--destructive-foreground: 0 82% 90%;
+		--destructive-contrast: 0 82% 90%;
 
 		--success: 123 38% 57%;
-		--success-foreground: 123 38% 88%;
+		--success-contrast: 123 38% 88%;
 
 		--info: 199 92% 56%;
-		--info-foreground: 199 92% 56%;
+		--info-contrast: 199 92% 56%;
 
 		--ring: 240 4.9% 83.9%;
 	}
-}
 
-@layer base {
-	* {
-		@apply border-border;
+	button:not(:disabled),
+	[role='button']:not(:disabled) {
+		cursor: pointer;
 	}
+
 	body {
 		@apply bg-background text-foreground;
 
@@ -86,6 +87,61 @@
 	}
 }
 
-:root {
-	interpolate-size: allow-keywords;
+@utility container {
+	margin-inline: auto;
+	padding-inline: 1.2rem;
+
+	@media (width >= theme(--breakpoint-xs)) {
+		padding-inline: 2rem;
+		max-width: 100%;
+	}
+
+	@media (width >= theme(--breakpoint-md)) {
+		max-width: var(--breakpoint-md);
+	}
+}
+
+/* Detect touch device. Used for dropzone vs button */
+@custom-variant dz (@media (hover: hover) and (pointer: fine));
+
+@theme {
+	--font-display: 'Poppins', 'sans-serif';
+	--font-sans: 'IBM Plex Sans', 'sans-serif';
+
+	--breakpoint-xs: 30rem;
+
+	--breakpoint-lg: initial;
+	--breakpoint-xl: initial;
+	--breakpoint-2xl: initial;
+
+	--color-border: hsl(var(--border));
+	--color-input: hsl(var(--input));
+	--color-ring: hsl(var(--ring));
+
+	--color-background: hsl(var(--background));
+	--color-foreground: hsl(var(--foreground));
+
+	--color-primary: hsl(var(--primary));
+	--color-primary-contrast: hsl(var(--primary-contrast));
+
+	--color-secondary: hsl(var(--secondary));
+	--color-secondary-contrast: hsl(var(--secondary-contrast));
+
+	--color-destructive: hsl(var(--destructive));
+	--color-destructive-contrast: hsl(var(--destructive-contrast));
+
+	--color-success: hsl(var(--success));
+	--color-success-contrast: hsl(var(--success-contrast));
+
+	--color-info: hsl(var(--info));
+	--color-info-contrast: hsl(var(--info-contrast));
+
+	--color-muted: hsl(var(--muted));
+	--color-muted-contrast: hsl(var(--muted-contrast));
+
+	--color-popover: hsl(var(--popover));
+	--color-popover-contrast: hsl(var(--popover-contrast));
+
+	--color-card: hsl(var(--card));
+	--color-card-contrast: hsl(var(--card-contrast));
 }
