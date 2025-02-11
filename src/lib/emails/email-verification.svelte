@@ -17,13 +17,13 @@
 	<Container class="bg-background py-12">
 		<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />
 
-		<Heading class="text-4xl text-primary ">{m.watery_awful_puffin_nourish()}</Heading>
+		<Heading class="text-primary text-4xl ">{m.watery_awful_puffin_nourish()}</Heading>
 
 		<Text class="mb-10 text-xl leading-snug"><code>{code}</code></Text>
 
-		<Text class="text-lg text-muted">{m.trite_only_bee_love()}</Text>
+		<Text class="text-muted text-lg">{m.trite_only_bee_love()}</Text>
 
-		<Hr class="mt-8 border-border" />
+		<Hr class="border-border mt-8" />
 
 		<Text class="text text-muted">
 			©{new Date().getFullYear()} SANTiHANS GmbH -

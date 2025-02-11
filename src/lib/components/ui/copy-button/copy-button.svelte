@@ -31,8 +31,8 @@
 	<div
 		role="tooltip"
 		class="{visible
-			? 'opacity-1 visible'
-			: 'invisible opacity-0'} absolute left-0 top-0 flex h-full w-full items-center justify-center rounded-lg bg-primary px-3 py-2 text-white transition-all ease-in-out"
+			? 'visible opacity-1'
+			: 'invisible opacity-0'} bg-primary absolute top-0 left-0 flex h-full w-full items-center justify-center rounded-lg px-3 py-2 text-white transition-all ease-in-out"
 	>
 		<Check />
 	</div>

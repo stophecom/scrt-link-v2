@@ -17,7 +17,7 @@
 <IntersectionObserver let:intersecting bottom={minimal ? 0 : 100}>
 	<header class="relative z-10 h-16">
 		<div
-			class="fixed left-0 top-0 h-16 w-full transition duration-300 ease-in-out {intersecting
+			class="fixed top-0 left-0 h-16 w-full transition duration-300 ease-in-out {intersecting
 				? 'bg-transparent'
 				: 'bg-background shadow-sm'}"
 		>
@@ -42,10 +42,10 @@
 				<div class="ml-auto grid grid-flow-col gap-2">
 					<Button on:click={toggleMode} variant="outline" size="icon">
 						<Sun
-							class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+							class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
 						/>
 						<Moon
-							class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+							class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
 						/>
 						<span class="sr-only">{m.hour_lofty_warthog_wish()}</span>
 					</Button>
@@ -54,7 +54,7 @@
 							<Avatar.Root class="mr-2">
 								<Avatar.Image src={user.picture} alt={user.name} />
 								<Avatar.Fallback
-									class="border border-foreground bg-foreground uppercase text-background"
+									class="border-foreground bg-foreground text-background border uppercase"
 									>{Array.from(user.email)[0]}</Avatar.Fallback
 								>
 							</Avatar.Root>

@@ -30,7 +30,7 @@
 
 <div class="flex items-center">
 	<div class="relative h-1 w-full" style="--duration: {duration}s">
-		<div class="progress-bar absolute left-0 top-0 h-full bg-primary"></div>
+		<div class="progress-bar bg-primary absolute top-0 left-0 h-full"></div>
 	</div>
 	{#if showTimer}
 		<span class={cn('text-sm', className)}>{timeLeft}</span>

@@ -18,15 +18,15 @@
 		<Container class="py-12">
 			<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />
 
-			<Heading class="text-4xl text-primary ">{m.watery_awful_puffin_nourish()}</Heading>
+			<Heading class="text-primary text-4xl ">{m.watery_awful_puffin_nourish()}</Heading>
 
 			<Text class="mb-10 text-xl leading-snug"><code>{code}</code></Text>
 
 			<Text class="text-muted">{m.trite_only_bee_love()}</Text>
 
-			<Hr class="mt-8 border-border" />
+			<Hr class="border-border mt-8" />
 
-			<Text class="text-xs text-muted">
+			<Text class="text-muted text-xs">
 				©{new Date().getFullYear()} scrt.link -
 				<Link class="text-muted" href="{getBaseUrl()}/privacy-policy">Privacy Policy</Link>
 			</Text>

@@ -106,25 +106,25 @@
 />
 
 <div
-	class="hover:shadow-black-200/50 relative rounded-2xl border border-foreground bg-background/70 text-foreground transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-hidden hover:border-solid dz:rounded-lg dz:border-dashed dz:text-foreground dz:shadow-none dz:hover:shadow-lg"
+	class="hover:shadow-black-200/50 border-foreground bg-background/70 text-foreground dz:rounded-lg dz:border-dashed dz:text-foreground dz:shadow-none dz:hover:shadow-lg relative rounded-2xl border transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-hidden hover:border-solid"
 >
 	<div class="flex flex-col items-center justify-center p-2 sm:p-4">
 		<div class="mb-1 flex pt-1">
 			<ArrowUpFromLine class="h-5 w-5" />
 		</div>
 		<!-- We show a simple button on smaller screens, and a drag/onDrop area on larger screens. -->
-		<span class="hidden text-center dz:inline">{m.ideal_jumpy_lionfish_scold()}</span>
-		<span class="text-center text-lg dz:hidden">{m.gray_free_manatee_buy()}</span>
+		<span class="dz:inline hidden text-center">{m.ideal_jumpy_lionfish_scold()}</span>
+		<span class="dz:hidden text-center text-lg">{m.gray_free_manatee_buy()}</span>
 	</div>
 
 	<div
 		id="overlay"
-		class="pointer-events-none fixed left-0 top-0 flex h-full w-full items-end justify-center rounded-lg bg-black opacity-0"
+		class="pointer-events-none fixed top-0 left-0 flex h-full w-full items-end justify-center rounded-lg bg-black opacity-0"
 		style={isOver ? 'opacity: 1;' : ''}
 	>
 		<img class="absolute h-full w-full object-cover" alt="Snoop Dogg" src={gif} />
 		<div
-			class="absolute w-full bg-linear-to-b from-transparent to-black p-12 pb-16 text-center text-6xl font-bold uppercase text-white md:text-8xl"
+			class="absolute w-full bg-linear-to-b from-transparent to-black p-12 pb-16 text-center text-6xl font-bold text-white uppercase md:text-8xl"
 		>
 			Drop it like it's hot
 		</div>
@@ -132,7 +132,7 @@
 	<label class="sr-only" for="dropzone">{m.gross_nice_gecko_compose()}</label>
 	<input
 		id="dropzone"
-		class="absolute left-0 top-0 h-full w-full cursor-pointer opacity-0"
+		class="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0"
 		type="file"
 		{multiple}
 		{accept}
