@@ -2,6 +2,8 @@
 
 Version 2 - built with [Svelte](https://github.com/sveltejs/cli).
 
+Live: [v2.scrt.link](v2.scrt.link)
+
 > [!WARNING]  
 > This is work-in-progress.
 
