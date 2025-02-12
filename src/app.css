@@ -14,7 +14,7 @@
 		--muted-contrast: 0 0% 36%;
 
 		--popover: 0 0% 100%;
-		--popover-contrast: 240 10% 3.9%;
+		--popover-contrast: 240 10% 5%;
 
 		--card: 329 3% 96%;
 		--card-contrast: 240 10% 3.9%;
@@ -46,10 +46,13 @@
 		--background: 212 26% 8%;
 		--foreground: 0 0% 87%;
 
-		--muted: 212 26% 18%;
+		--muted: 212 12% 27%;
 		--muted-contrast: 240 5% 64.9%;
 
-		--card: 212 27% 12%;
+		--popover: 0 0% 5%;
+		--popover-contrast: 240 10% 85%;
+
+		--card: 212 19% 15%;
 		--card-contrast: 0 0% 98%;
 
 		--border: 240 3.7% 30%;
@@ -61,7 +64,7 @@
 		--secondary: 240 3.7% 15.9%;
 		--secondary-contrast: 0 0% 98%;
 
-		--destructive: 0 62% 60%;
+		--destructive: 0 90% 68%;
 		--destructive-contrast: 0 82% 90%;
 
 		--success: 123 38% 57%;
