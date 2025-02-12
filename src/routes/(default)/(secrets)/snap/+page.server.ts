@@ -11,4 +11,4 @@ export const load: PageServerLoad = async () => {
 	};
 };
 
-export { actions } from '../+page.server';
+export { actions } from '../../+page.server';
