@@ -105,9 +105,6 @@
 @custom-variant dz (@media (hover: hover) and (pointer: fine));
 
 @theme {
-	--font-display: 'Poppins', 'sans-serif';
-	--font-sans: 'IBM Plex Sans', 'sans-serif';
-
 	--breakpoint-xs: 30rem;
 
 	--breakpoint-lg: initial;
