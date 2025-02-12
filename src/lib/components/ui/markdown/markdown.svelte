@@ -8,6 +8,6 @@
 	let { markdown, format = false }: Props = $props();
 </script>
 
-<span class={format ? 'prose dark:prose-invert' : 'hover:[&_a]:text-primary [&_a]:underline'}>
+<span class={format ? 'prose' : 'hover:[&_a]:text-primary [&_a]:underline'}>
 	<SvelteMarkdown md={markdown} />
 </span>

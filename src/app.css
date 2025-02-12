@@ -142,3 +142,24 @@
 	--color-card: hsl(var(--card));
 	--color-card-contrast: hsl(var(--card-contrast));
 }
+
+@utility prose {
+	--tw-prose-body: hsl(var(--foreground));
+	--tw-prose-headings: hsl(var(--foreground));
+	--tw-prose-lead: hsl(var(--foreground));
+	--tw-prose-links: hsl(var(--foreground));
+
+	--tw-prose-bold: hsl(var(--foreground));
+	--tw-prose-counters: hsl(var(--foreground));
+	--tw-prose-bullets: hsl(var(--border));
+	--tw-prose-hr: hsl(var(--border));
+	--tw-prose-quotes: hsl(var(--muted-contrast));
+	--tw-prose-quote-borders: hsl(var(--border));
+	--tw-prose-captions: hsl(var(--muted-contrast));
+
+	--tw-prose-code: hsl(var(--foreground));
+	--tw-prose-pre-code: hsl(var(--foreground));
+	--tw-prose-pre-bg: hsl(var(--muted));
+	--tw-prose-th-borders: hsl(var(--border));
+	--tw-prose-td-borders: hsl(var(--border));
+}
