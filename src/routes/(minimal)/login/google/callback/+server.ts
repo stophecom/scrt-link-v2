@@ -1,5 +1,5 @@
 import type { RequestEvent } from '@sveltejs/kit';
-import { ArcticFetchError, OAuth2RequestError, OAuth2Tokens } from 'arctic';
+import { ArcticFetchError, OAuth2RequestError, type OAuth2Tokens } from 'arctic';
 import { eq } from 'drizzle-orm';
 import { jwtDecode } from 'jwt-decode';
 
