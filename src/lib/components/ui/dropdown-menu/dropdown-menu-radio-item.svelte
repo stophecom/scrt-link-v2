@@ -15,7 +15,7 @@
 
 <DropdownMenuPrimitive.RadioItem
 	class={cn(
-		'data-highlighted:text-accent-foreground data-highlighted:bg-muted relative flex cursor-pointer items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
+		'data-highlighted:text-accent-foreground data-highlighted:bg-muted relative flex cursor-pointer items-center rounded-sm py-3 pr-2 pl-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
 		className
 	)}
 	{value}
