@@ -20,7 +20,7 @@
 
 			<Heading class="text-primary text-4xl ">{m.novel_cool_moth_dazzle()} 🔥</Heading>
 
-			<Text class="mb-4 text-xl leading-snug ">T{m.soft_frail_wolf_fear()}</Text>
+			<Text class="mb-4 text-xl leading-snug ">{m.soft_frail_wolf_fear()}</Text>
 			<Text class="mb-10 text-xl leading-snug"><code>{receiptId}</code></Text>
 
 			<Text class="text-muted">{m.ideal_aloof_mayfly_thrive()}</Text>

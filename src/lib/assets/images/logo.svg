@@ -6,7 +6,7 @@
 	<defs>
 		<style>
 			.cls-1 {
-				fill: #ff0083;
+				fill: var(--color-primary);
 			}
 			.cls-2 {
 				fill: currentColor;
