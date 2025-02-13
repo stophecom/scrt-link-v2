@@ -32,7 +32,7 @@
 
 		<Separator class="mb-2" />
 
-		<div class="md:flex">
+		<div class="pb-8 md:flex">
 			<div class="text-muted-contrast flex flex-wrap items-center text-sm">
 				<span class="py-2 pe-4">©{new Date().getFullYear()} SANTiHANS GmbH</span>
 				{#each imprintMenu() as menuItem}
