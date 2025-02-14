@@ -44,8 +44,21 @@ export const actions: Actions = {
 			error(400, `No secret for id ${secretIdHash}.`);
 		}
 
-		const { passwordHash, passwordAttempts, meta, content, expiresAt, userId, receiptId } =
-			result.secret;
+		const {
+			passwordHash,
+			passwordAttempts,
+			meta,
+			content,
+			expiresAt,
+			userId,
+			receiptId,
+			retrievedAt
+		} = result.secret;
+
+		// Secret has been accessed.
+		if (retrievedAt !== null) {
+			error(400, `Secret expired: ${secretIdHash}.`);
+		}
 
 		// Secret has expired.
 		if (expiresAt < new Date()) {
@@ -158,6 +171,13 @@ export const actions: Actions = {
 				console.error(e);
 			}
 		}
+
+		// We set the retrievedAt date instead of instantly deleting the entry since we rely on some of the date for file downloads.
+		// A cron job is cleaning up the DB and files
+		await db
+			.update(secretSchema)
+			.set({ retrievedAt: new Date() })
+			.where(eq(secretSchema.secretIdHash, secretIdHash));
 
 		return { form, meta, content };
 	}
