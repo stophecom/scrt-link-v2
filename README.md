@@ -49,6 +49,20 @@ To create a production version of your app:
 pnpm run build
 ```
 
+## Cron
+
+We use Vercel Cron to cleanup secrets and files.
+See `src/routes/api/v1/cron/+server.ts` for more info.
+
+You can trigger the cron job locally with:
+
+```bash
+curl --request POST \
+     --url 'http://localhost:5173/api/v1/cron' \
+     --header 'Authorization: Bearer API_SECRET_KEY'
+
+```
+
 ## UI / Components
 
 https://www.shadcn-svelte.com/
