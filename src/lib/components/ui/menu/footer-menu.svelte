@@ -10,7 +10,7 @@
 </script>
 
 <div class={cn(className)}>
-	<h5 class="text-primary p-1 font-semibold">{title}</h5>
+	<h5 class="p-1 font-semibold">{title}</h5>
 	<ul class="">
 		{#each menu as menuItem}
 			<li>

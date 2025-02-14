@@ -106,7 +106,7 @@
 		{#if !done}
 			<div
 				transition:fade
-				class="border-foreground bg-background text-muted-contrast absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border p-2"
+				class="border-foreground bg-background text-muted-foreground absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border p-2"
 			>
 				<UploadSpinner />
 			</div>
@@ -129,7 +129,7 @@
 		</div>
 	</div>
 	{#if !done}
-		<div class="text-muted-contrast pt-1">
+		<div class="text-muted-foreground pt-1">
 			<ProgressBar {progress} />
 		</div>
 	{/if}

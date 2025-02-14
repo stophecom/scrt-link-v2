@@ -38,7 +38,7 @@
 			class="bg-background absolute right-[1px] bottom-[1px] rounded-tl p-1 text-xs {charactersLeft <
 			0
 				? 'text-destructive'
-				: 'text-muted-contrast'}"
+				: 'text-muted-foreground'}"
 			>{formattedCount}
 		</span>
 	</div>

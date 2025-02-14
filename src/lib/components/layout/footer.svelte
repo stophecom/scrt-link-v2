@@ -5,8 +5,9 @@
 	import { aboutMenu, helpMenu, imprintMenu, secretMenu } from '$lib/data/menu';
 	import * as m from '$lib/paraglide/messages.js';
 
-	import LanguageSwitcher from '../ui/language-switcher/language-switcher.svelte';
+	import LanguageSwitcher from '../ui/language-switcher';
 	import FooterMenu from '../ui/menu';
+	import ThemeSwitcher from '../ui/theme-switcher';
 </script>
 
 <footer class="border-border bg-background border-t pt-14 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
@@ -20,31 +21,29 @@
 			</div>
 
 			<div class="mb-4 grid w-full grid-cols-2 items-start gap-4 pt-1 md:grid-cols-3">
-				<FooterMenu title="Secrets" menu={secretMenu()} />
-				<FooterMenu title="Information" menu={aboutMenu()} />
-				<FooterMenu title="Help" menu={helpMenu()} />
+				<FooterMenu title={m.funny_swift_jay_promise()} menu={secretMenu()} />
+				<FooterMenu title={m.mellow_lucky_bee_jolt()} menu={aboutMenu()} />
+				<FooterMenu title={m.equal_away_frog_aim()} menu={helpMenu()} />
 			</div>
 		</div>
 
-		<div class="text-muted-contrast py-5 text-sm">
+		<div class="text-muted-foreground py-5 text-sm">
 			{m.candid_red_lynx_offer()}
 		</div>
 
 		<Separator class="mb-2" />
 
 		<div class="pb-8 md:flex">
-			<div class="text-muted-contrast flex flex-wrap items-center text-sm">
+			<div class="text-muted-foreground flex flex-wrap items-center text-sm">
 				<span class="py-2 pe-4">©{new Date().getFullYear()} SANTiHANS GmbH</span>
 				{#each imprintMenu() as menuItem}
-					<a class="hover:text-foreground p-2 underline" href={menuItem.href}>
+					<a class="hover:text-foreground pe-4 underline" href={menuItem.href}>
 						{menuItem.label}
 					</a>
 				{/each}
 				<span class="text-nowrap">
-					<a
-						class="hover:text-foreground py-2 ps-2 pe-0 underline"
-						target="_blank"
-						href={uptimerobotUrl}>Status</a
+					<a class="hover:text-foreground py-2 pe-0 underline" target="_blank" href={uptimerobotUrl}
+						>Status</a
 					>
 					<span class="text-success ps-1 text-[0.7rem]">●</span>
 				</span>
@@ -52,6 +51,9 @@
 
 			<div class="ms-auto flex justify-center py-5 md:py-2">
 				<LanguageSwitcher />
+				<div class="ml-2">
+					<ThemeSwitcher />
+				</div>
 			</div>
 		</div>
 	</div>

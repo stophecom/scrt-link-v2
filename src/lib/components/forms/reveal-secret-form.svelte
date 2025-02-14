@@ -252,7 +252,7 @@
 						</div>
 
 						<div
-							class="border-foreground bg-background text-muted-contrast absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 rounded-full border p-2"
+							class="border-foreground bg-background text-muted-foreground absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 rounded-full border p-2"
 						>
 							{#if isDownloading}
 								<UploadSpinner class="rotate-180" />
@@ -261,7 +261,7 @@
 							{/if}
 						</div>
 					</div>
-					<div class="text-muted-contrast h-5 pt-1">
+					<div class="text-muted-foreground h-5 pt-1">
 						<ProgressBar
 							labelInProgress={m.every_awful_guppy_fear()}
 							labelComplete={m.hour_tense_gecko_succeed()}

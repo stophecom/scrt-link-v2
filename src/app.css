@@ -11,31 +11,31 @@
 		--foreground: 240 10% 20%;
 
 		--muted: 0 0% 92%;
-		--muted-contrast: 0 0% 36%;
+		--muted-foreground: 0 0% 36%;
 
 		--popover: 0 0% 100%;
-		--popover-contrast: 240 10% 5%;
+		--popover-foreground: 240 10% 5%;
 
 		--card: 329 3% 96%;
-		--card-contrast: 240 10% 3.9%;
+		--card-foreground: 240 10% 3.9%;
 
 		--border: 240 6% 84%;
 		--input: 240 6% 84%;
 
 		--primary: 329 100% 45%;
-		--primary-contrast: 0 0% 100%;
+		--primary-foreground: 0 0% 100%;
 
 		--secondary: 240 4.8% 91%;
-		--secondary-contrast: 240 7% 10%;
+		--secondary-foreground: 240 7% 10%;
 
 		--destructive: 0 72% 40%;
-		--destructive-contrast: 0 72% 40%;
+		--destructive-foreground: 0 72% 40%;
 
 		--success: 123 38% 37%;
-		--success-contrast: 123 38% 30%;
+		--success-foreground: 123 38% 30%;
 
 		--info: 199 92% 36%;
-		--info-contrast: 199 92% 56%;
+		--info-foreground: 199 92% 56%;
 
 		--ring: 240 10% 3.9%;
 
@@ -47,31 +47,31 @@
 		--foreground: 0 0% 87%;
 
 		--muted: 212 12% 27%;
-		--muted-contrast: 240 5% 64.9%;
+		--muted-foreground: 240 5% 64.9%;
 
 		--popover: 0 0% 5%;
-		--popover-contrast: 240 10% 85%;
+		--popover-foreground: 240 10% 85%;
 
 		--card: 212 19% 15%;
-		--card-contrast: 0 0% 98%;
+		--card-foreground: 0 0% 98%;
 
 		--border: 240 3.7% 30%;
 		--input: 240 3.7% 30%;
 
 		--primary: 329 100% 45%;
-		--primary-contrast: 0 0% 100%;
+		--primary-foreground: 0 0% 100%;
 
 		--secondary: 240 3.7% 15.9%;
-		--secondary-contrast: 0 0% 98%;
+		--secondary-foreground: 0 0% 98%;
 
 		--destructive: 0 90% 68%;
-		--destructive-contrast: 0 82% 90%;
+		--destructive-foreground: 0 82% 90%;
 
 		--success: 123 38% 57%;
-		--success-contrast: 123 38% 88%;
+		--success-foreground: 123 38% 88%;
 
 		--info: 199 92% 56%;
-		--info-contrast: 199 92% 56%;
+		--info-foreground: 199 92% 56%;
 
 		--ring: 240 4.9% 83.9%;
 	}
@@ -122,28 +122,28 @@
 	--color-foreground: hsl(var(--foreground));
 
 	--color-primary: hsl(var(--primary));
-	--color-primary-contrast: hsl(var(--primary-contrast));
+	--color-primary-foreground: hsl(var(--primary-foreground));
 
 	--color-secondary: hsl(var(--secondary));
-	--color-secondary-contrast: hsl(var(--secondary-contrast));
+	--color-secondary-foreground: hsl(var(--secondary-foreground));
 
 	--color-destructive: hsl(var(--destructive));
-	--color-destructive-contrast: hsl(var(--destructive-contrast));
+	--color-destructive-foreground: hsl(var(--destructive-foreground));
 
 	--color-success: hsl(var(--success));
-	--color-success-contrast: hsl(var(--success-contrast));
+	--color-success-foreground: hsl(var(--success-foreground));
 
 	--color-info: hsl(var(--info));
-	--color-info-contrast: hsl(var(--info-contrast));
+	--color-info-foreground: hsl(var(--info-foreground));
 
 	--color-muted: hsl(var(--muted));
-	--color-muted-contrast: hsl(var(--muted-contrast));
+	--color-muted-foreground: hsl(var(--muted-foreground));
 
 	--color-popover: hsl(var(--popover));
-	--color-popover-contrast: hsl(var(--popover-contrast));
+	--color-popover-foreground: hsl(var(--popover-foreground));
 
 	--color-card: hsl(var(--card));
-	--color-card-contrast: hsl(var(--card-contrast));
+	--color-card-foreground: hsl(var(--card-foreground));
 }
 
 @utility prose {
@@ -156,9 +156,9 @@
 	--tw-prose-counters: hsl(var(--foreground));
 	--tw-prose-bullets: hsl(var(--border));
 	--tw-prose-hr: hsl(var(--border));
-	--tw-prose-quotes: hsl(var(--muted-contrast));
+	--tw-prose-quotes: hsl(var(--muted-foreground));
 	--tw-prose-quote-borders: hsl(var(--border));
-	--tw-prose-captions: hsl(var(--muted-contrast));
+	--tw-prose-captions: hsl(var(--muted-foreground));
 
 	--tw-prose-code: hsl(var(--foreground));
 	--tw-prose-pre-code: hsl(var(--foreground));
