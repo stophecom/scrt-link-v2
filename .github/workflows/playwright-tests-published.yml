@@ -1,0 +1,40 @@
+name: Playwright Tests Published
+
+on:
+  deployment_status:
+
+jobs:
+  run-e2e-published:
+    name: Run end-to-end tests on published site
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 8
+      - name: Install dependencies
+        run: pnpm install && npx playwright install --with-deps
+      - name: Run tests on preview PR
+        if: github.event.deployment_status.environment != 'Production'
+        run: npx playwright test
+        env:
+          PUBLIC_ENV: preview
+          VERCEL_URL: ${{ github.event.deployment_status.target_url }}
+          DEBUG: pw:api
+      - name: Run tests on production PR
+        if: github.event.deployment_status.environment == 'Production'
+        run: npx playwright test
+        env:
+          PUBLIC_ENV: production
+          VERCEL_URL: https://v2.scrt.link
+          DEBUG: pw:api
+      - name: Create folder for artifacts
+        if: always()
+        run: mkdir -p test-results
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-published
+          path: test-results
