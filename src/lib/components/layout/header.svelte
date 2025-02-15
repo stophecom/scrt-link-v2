@@ -40,7 +40,7 @@
 				</a>
 
 				<div class="ml-auto grid grid-flow-col gap-2">
-					<Button on:click={toggleMode} variant="ghost" size="icon">
+					<Button onclick={toggleMode} variant="ghost" size="icon">
 						<Sun
 							class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
 						/>
