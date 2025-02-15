@@ -117,6 +117,11 @@ Redirect URI: `/login/google/callback`
 └── 📜 vite.config.ts # Tailwind setup
 ```
 
+## Workflows / E2E Testing
+
+In order to ship with confidence we run a set of tests during and after the deployment.
+See `playwright-tests-published.yml` for more info.
+
 ## Stack
 
 - SvelteKit
