@@ -68,7 +68,7 @@
 			</Form.Field>
 		{/if}
 
-		<Form.Button delayed={$delayed} class="ml-auto " size="lg">Save</Form.Button>
+		<Form.Button delayed={$delayed} class="ml-auto ">{m.caring_light_tiger_taste()}</Form.Button>
 	</form>
 	{#if dev}
 		<div class="py-4">

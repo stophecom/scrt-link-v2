@@ -201,7 +201,7 @@
 {/if}
 
 {#if !isSecretRedirect}
-	<div class="bg-card w-full rounded border p-6 shadow-lg sm:p-8">
+	<div class="bg-card border-border w-full rounded border p-6 shadow-lg sm:p-8">
 		{#if content}
 			{#if isSecretFileOrSnap}
 				{#if isSnap}
@@ -231,7 +231,7 @@
 
 						<div class="relative grid grid-cols-[min-content_1fr] gap-4">
 							<div class="flex items-center">
-								<FileLock class="text-primary h-10 w-10" />
+								<FileLock class="text-primary h-10 w-10 stroke-1" />
 							</div>
 
 							<div>
