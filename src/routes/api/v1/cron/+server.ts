@@ -46,6 +46,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			}).filter(Boolean) as ObjectList;
 
 			if (s3ObjectsToDelete.length) {
+				console.log(`Cron: Start deleting files...`);
 				const bucketParams = { Bucket: BucketName, Delete: { Objects: s3ObjectsToDelete } };
 				await client.send(new DeleteObjectsCommand(bucketParams));
 				console.log(`Cron: Deleted ${s3ObjectsToDelete.length} files from S3.`);
