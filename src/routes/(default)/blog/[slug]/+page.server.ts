@@ -1,8 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { render } from 'svelte/server';
 
-export const prerender = true;
-
 export async function load({ params }) {
 	try {
 		const post = await import(`$lib/data/blog/${params.slug}.md`);
