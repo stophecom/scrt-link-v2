@@ -6,9 +6,9 @@
 	import type { Snippet } from 'svelte';
 
 	import { PUBLIC_ENV } from '$env/static/public';
-	import { appName } from '$lib/data/app';
 	import { i18n } from '$lib/i18n';
 
+	import { appName } from '../lib/data/app';
 	import type { LayoutData } from './$types';
 
 	let { children }: { data: LayoutData; children: Snippet } = $props();

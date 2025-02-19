@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Page from '$lib/components/layout/page/page.svelte';
-	import { legalMenu } from '$lib/data/menu';
+
+	import { legalMenu } from '../../../../lib/data/menu';
 </script>
 
 <Page title="Imprint" lead="Tl;dr: Limited liability.">

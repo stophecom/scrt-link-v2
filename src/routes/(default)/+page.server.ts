@@ -5,12 +5,12 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { scryptHash } from '$lib/crypto';
 import { generateRandomUrlSafeString } from '$lib/crypto';
-import { getExpiresInOptions } from '$lib/data/secretSettings';
 import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret, stats } from '$lib/server/db/schema';
 import { secretFormSchema } from '$lib/validators/formSchemas';
 
+import { getExpiresInOptions } from '../../lib/data/secretSettings';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {

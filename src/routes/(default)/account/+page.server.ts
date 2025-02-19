@@ -3,12 +3,12 @@ import { eq } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { ReadReceiptOptions } from '$lib/data/schemaEnums';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import { userSettings } from '$lib/server/db/schema';
 import { settingsFormSchema } from '$lib/validators/formSchemas';
 
+import { ReadReceiptOptions } from '../../../lib/data/schemaEnums';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {

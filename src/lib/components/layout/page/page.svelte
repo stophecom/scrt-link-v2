@@ -3,9 +3,10 @@
 
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
-	import { emailSupport } from '$lib/data/app';
 	import * as m from '$lib/paraglide/messages.js';
 	import { languageTag } from '$lib/paraglide/runtime';
+
+	import { emailSupport } from '../../../data/app';
 
 	type Props = {
 		title: string;

@@ -7,7 +7,6 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
-	import { getExpiresInOptions } from '$lib/data/secretSettings';
 	import type { FileMeta } from '$lib/file-transfer';
 	import * as m from '$lib/paraglide/messages.js';
 	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
@@ -20,6 +19,7 @@
 	} from '$lib/web-crypto';
 
 	import type { LayoutServerData } from '../../../routes/$types';
+	import { getExpiresInOptions } from '../../data/secretSettings';
 	import FileUpload from '../form-fields/file-upload.svelte';
 	import Password from '../form-fields/password.svelte';
 	import RadioGroup from '../form-fields/radio-group.svelte';

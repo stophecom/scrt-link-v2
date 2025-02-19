@@ -2,8 +2,9 @@
 	import ArrowUpFromLine from 'lucide-svelte/icons/arrow-up-from-line';
 
 	import gif from '$lib/assets/images/snoop.webp';
-	import { GB } from '$lib/data/units';
 	import * as m from '$lib/paraglide/messages.js';
+
+	import { GB } from '../../../data/units';
 
 	const MAX_FILE_SIZE = 1 * GB; // @todo make dynamic
 

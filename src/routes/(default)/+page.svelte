@@ -4,9 +4,9 @@
 	import Section from '$lib/components/layout/section.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import { Button } from '$lib/components/ui/button';
-	import { shortFaq } from '$lib/data/faq';
 	import * as m from '$lib/paraglide/messages.js';
 
+	import { shortFaq } from '../../lib/data/faq';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();

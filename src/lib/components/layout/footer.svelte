@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { uptimerobotUrl } from '$lib/data/app';
-	import { aboutMenu, helpMenu, imprintMenu, secretMenu } from '$lib/data/menu';
 	import * as m from '$lib/paraglide/messages.js';
 
+	import { uptimerobotUrl } from '../../data/app';
+	import { aboutMenu, helpMenu, imprintMenu, secretMenu } from '../../data/menu';
 	import LanguageSwitcher from '../ui/language-switcher';
 	import FooterMenu from '../ui/menu';
 	import ThemeSwitcher from '../ui/theme-switcher';

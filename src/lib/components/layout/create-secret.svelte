@@ -11,11 +11,11 @@
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import Usps from '$lib/components/ui/usps';
-	import { getSecretTypes } from '$lib/data/secretSettings';
-	import { privacyUsps } from '$lib/data/usps';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { LayoutServerData } from '../../../routes/$types';
+	import { getSecretTypes } from '../../data/secretSettings';
+	import { privacyUsps } from '../../data/usps';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import Markdown from '../ui/markdown';

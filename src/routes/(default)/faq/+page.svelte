@@ -1,8 +1,9 @@
 <script lang="ts">
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
-	import { faq, faqCategories } from '$lib/data/faq';
 	import * as m from '$lib/paraglide/messages.js';
+
+	import { faq, faqCategories } from '../../../lib/data/faq';
 </script>
 
 <Page title="FAQ" lead={m.stock_keen_marten_commend()}>

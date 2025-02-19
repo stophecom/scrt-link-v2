@@ -4,11 +4,11 @@
 
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
-	import { getReadReceiptOptions } from '$lib/data/secretSettings';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SettingsFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
 
 	import type { LayoutServerData } from '../../../routes/$types';
+	import { getReadReceiptOptions } from '../../data/secretSettings';
 	import RadioGroup from '../form-fields/radio-group.svelte';
 	import Text from '../form-fields/text.svelte';
 	import FormWrapper from './form-wrapper.svelte';

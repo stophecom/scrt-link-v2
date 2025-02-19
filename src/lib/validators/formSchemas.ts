@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
-import { ReadReceiptOptions } from '$lib/data/schemaEnums';
-import { getExpiresInOptions } from '$lib/data/secretSettings';
 import * as m from '$lib/paraglide/messages.js';
+
+import { ReadReceiptOptions } from '../data/schemaEnums';
+import { getExpiresInOptions } from '../data/secretSettings';
 
 // We return functions in order for translations to work as expected.
 export const emailFormSchema = () =>

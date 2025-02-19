@@ -5,12 +5,13 @@
 	import { page } from '$app/state';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import { getSupportedLanguagesMap } from '$lib/data/supportedLocales';
 	import { i18n } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
 	import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
 	import { availableLanguageTags } from '$lib/paraglide/runtime';
 	import { languageTag } from '$lib/paraglide/runtime';
+
+	import { getSupportedLanguagesMap } from '../../../data/supportedLocales';
 
 	const switchToLanguage = (newLanguage: AvailableLanguageTag) => {
 		const canonicalPath = i18n.route(page.url.pathname);

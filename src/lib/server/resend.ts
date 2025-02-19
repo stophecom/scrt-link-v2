@@ -1,7 +1,8 @@
 import { type CreateEmailOptions, Resend } from 'resend';
 
 import { RESEND_API } from '$env/static/private';
-import { appName, emailSupport } from '$lib/data/app';
+
+import { appName, emailSupport } from '../data/app';
 
 const resend = new Resend(RESEND_API);
 

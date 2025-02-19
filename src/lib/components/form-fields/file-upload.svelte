@@ -5,9 +5,9 @@
 	import { fade } from 'svelte/transition';
 
 	import { PUBLIC_S3_BUCKET } from '$env/static/public';
-	import { MB } from '$lib/data/units';
 	import { handleFileEncryptionAndUpload } from '$lib/file-transfer';
 
+	import { MB } from '../../data/units';
 	import type { SecretType } from '../forms/secret-form.svelte';
 	import Button from '../ui/button/button.svelte';
 	import DropZone from '../ui/drop-zone/drop-zone.svelte';
