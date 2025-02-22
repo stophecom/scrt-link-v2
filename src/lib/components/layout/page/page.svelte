@@ -6,16 +6,35 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import { languageTag } from '$lib/paraglide/runtime';
 
-	import { emailSupport } from '../../../data/app';
+	import { appName, emailSupport } from '../../../data/app';
 
 	type Props = {
 		title: string;
 		lead?: string;
+		metaTitle?: string;
+		metaDescription?: string;
+		metaKeywords?: string;
 		markNotTranslated?: boolean;
 		children: Snippet;
 	};
-	let { title, lead, markNotTranslated, children }: Props = $props();
+
+	let {
+		title,
+		lead,
+		metaTitle,
+		metaDescription = m.elegant_muddy_wren_value(),
+		metaKeywords = m.wise_honest_otter_jump(),
+		markNotTranslated,
+		children
+	}: Props = $props();
 </script>
+
+<svelte:head>
+	<title>{metaTitle || title} - {appName}</title>
+	<meta property="og:title" content="{title} - {appName}" />
+	<meta name="description" content={metaDescription} />
+	<meta name="keywords" content={metaKeywords} />
+</svelte:head>
 
 <div class="container min-h-screen pt-8 pb-16">
 	<div>
