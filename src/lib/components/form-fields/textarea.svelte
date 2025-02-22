@@ -7,7 +7,7 @@
 	import Textarea from '../ui/textarea/textarea.svelte';
 
 	type Props = {
-		charactersLeft: number;
+		charactersLeft?: number;
 		isHiddenLabel?: boolean;
 		label: string;
 	};
@@ -34,13 +34,15 @@
 	<Form.Label class={isHiddenLabel ? 'sr-only' : ''}>{label}</Form.Label>
 	<div class="relative">
 		<Textarea class="resize-none pb-5" {...attrs} bind:value {...rest} on:keyup={scrollToBottom} />
-		<span
-			class="bg-background absolute right-[1px] bottom-[1px] rounded-tl p-1 text-xs {charactersLeft <
-			0
-				? 'text-destructive'
-				: 'text-muted-foreground'}"
-			>{formattedCount}
-		</span>
+		{#if charactersLeft}
+			<span
+				class="bg-background absolute right-[1px] bottom-[1px] rounded-tl p-1 text-xs {charactersLeft <
+				0
+					? 'text-destructive'
+					: 'text-muted-foreground'}"
+				>{formattedCount}
+			</span>
+		{/if}
 	</div>
 </Form.Control>
 <Form.FieldErrors />

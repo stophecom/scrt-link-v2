@@ -31,6 +31,7 @@
 		"@sveltejs/kit": "^2.16.1",
 		"@sveltejs/vite-plugin-svelte": "^4.0.4",
 		"@tailwindcss/postcss": "^4.0.0",
+		"@types/grecaptcha": "^3.0.9",
 		"@vitest/browser": "^3.0.1",
 		"bits-ui": "^0.22.0",
 		"clsx": "^2.1.1",

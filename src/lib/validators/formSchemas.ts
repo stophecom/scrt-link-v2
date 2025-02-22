@@ -78,6 +78,13 @@ export const revealSecretFormSchema = () =>
 		password: z.string().min(6).max(255)
 	});
 
+export const contactFormSchema = () =>
+	z.object({
+		email: z.string().email(m.every_chunky_osprey_zip()),
+		content: z.string().min(3),
+		recaptchaToken: z.string()
+	});
+
 export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = ReturnType<typeof emailFormSchema>;
 export type CodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
@@ -85,3 +92,4 @@ export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type SecretTextFormSchema = ReturnType<typeof secretFormSchema>;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type RevealSecretFormSchema = ReturnType<typeof revealSecretFormSchema>;
+export type ContactFormSchema = ReturnType<typeof contactFormSchema>;

@@ -1,6 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { superValidate } from 'sveltekit-superforms';
+import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { scryptHash } from '$lib/crypto';
@@ -31,6 +31,10 @@ async function setPassword(event: RequestEvent) {
 	}
 
 	const passwordForm = await superValidate(event.request, zod(passwordFormSchema()));
+
+	if (!passwordForm.valid) {
+		return fail(400, { form: passwordForm });
+	}
 
 	const { password } = passwordForm.data;
 

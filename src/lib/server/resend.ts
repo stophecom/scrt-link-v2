@@ -11,9 +11,9 @@ const sendTransactionalEmail = async ({
 	...options
 }: Omit<CreateEmailOptions, 'html' | 'from'> & { html: string }) => {
 	const { error } = await resend.emails.send({
-		from: `${appName} <${emailSupport}>`,
+		...options,
 		html: html,
-		...options
+		from: `${appName} <${emailSupport}>`
 	});
 
 	if (error) {
