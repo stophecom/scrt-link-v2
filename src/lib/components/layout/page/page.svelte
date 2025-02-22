@@ -86,21 +86,18 @@
 			--color-2: var(--_color-2-to);
 		}
 		100% {
-			--color-1: var(--color-primary);
-			--color-2: var(--color-primary);
+			--color-1: var(--color-foreground);
+			--color-2: var(--color-foreground);
 		}
 	}
 
 	.gradient-text {
 		--_space: ;
 
-		/* light mode */
-		--_color-1-from: var(--color-primary);
-		--_color-1-to: var(--color-foreground);
-		--_color-2-from: var(--color-foreground);
-		--_color-2-to: var(--color-primary);
-
-		/* dark mode */
+		--_color-1-from: var(--color-foreground);
+		--_color-1-to: var(--color-primary);
+		--_color-2-from: var(--color-primary);
+		--_color-2-to: var(--color-foreground);
 
 		--color-1: var(--_color-1-from);
 		--color-2: var(--_color-2-from);
