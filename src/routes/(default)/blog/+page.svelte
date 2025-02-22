@@ -2,13 +2,14 @@
 	import { ArrowRight } from 'lucide-svelte';
 
 	import Page from '$lib/components/layout/page/page.svelte';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import BlogMeta from './blog-meta.svelte';
 
 	let { data } = $props();
 </script>
 
-<Page title="Blog" lead="Product updates, privacy and the web." markNotTranslated>
+<Page title={m.crazy_tired_racoon_offer()} lead={m.candid_sleek_jackal_reside()} markNotTranslated>
 	<section>
 		<ul class="grid gap-4">
 			{#each data.posts as post}

@@ -68,6 +68,7 @@
 			<Textarea
 				bind:value={$formData.content}
 				label={m.calm_low_turkey_explore()}
+				placeholder={m.grand_male_jackal_persist()}
 				{...$constraints.content}
 			/>
 		</Form.Field>
