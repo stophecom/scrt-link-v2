@@ -1,9 +1,9 @@
 import { json } from '@sveltejs/kit';
 
-import type { BlogPost } from '$lib/types';
+import type { BlogPostMeta } from '$lib/types';
 
 async function getPosts() {
-	let posts: BlogPost[] = [];
+	let posts: BlogPostMeta[] = [];
 
 	const paths = import.meta.glob('$lib/data/blog/*.md', { eager: true });
 
@@ -12,8 +12,8 @@ async function getPosts() {
 		const slug = path.split('/').at(-1)?.replace('.md', '');
 
 		if (file && typeof file === 'object' && 'metadata' in file && slug) {
-			const metadata = file.metadata as Omit<BlogPost, 'slug'>;
-			const post = { ...metadata, slug } satisfies BlogPost;
+			const metadata = file.metadata as Omit<BlogPostMeta, 'slug'>;
+			const post = { ...metadata, slug } satisfies BlogPostMeta;
 			if (post.published) {
 				posts.push(post);
 			}

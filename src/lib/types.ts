@@ -1,8 +1,10 @@
-export type BlogCategory = 'sveltekit' | 'svelte';
+export type BlogCategory = 'product' | 'tech' | 'privacy';
 
-export type BlogPost = {
+export type BlogPostMeta = {
 	title: string;
+	lead: string;
 	slug: string;
+	ogImage: string;
 	description: string;
 	date: string;
 	categories: BlogCategory[];

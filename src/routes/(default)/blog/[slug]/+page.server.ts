@@ -1,13 +1,15 @@
 import { error } from '@sveltejs/kit';
 import { render } from 'svelte/server';
 
+import type { BlogPostMeta } from '$lib/types.js';
+
 export async function load({ params }) {
 	try {
 		const post = await import(`$lib/data/blog/${params.slug}.md`);
 
 		return {
 			content: render(post.default),
-			meta: post.metadata
+			meta: post.metadata as BlogPostMeta
 		};
 	} catch (e) {
 		console.error(e);

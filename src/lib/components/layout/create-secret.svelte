@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Check from 'lucide-svelte/icons/circle-check-big';
 	import Reply from 'lucide-svelte/icons/reply';
-	import Share from 'lucide-svelte/icons/share-2';
 	import { fade } from 'svelte/transition';
 
 	import SecretForm, {
@@ -19,6 +18,7 @@
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import Markdown from '../ui/markdown';
+	import ShareButton from '../ui/share-button';
 
 	type Props = {
 		data: { form: SecretFormProps['form'] } & LayoutServerData;
@@ -29,15 +29,6 @@
 	let masterPassword = $state('');
 	let successMessage = $state('');
 	let link: string = $derived(`${data.baseUrl}/s#${masterPassword}`);
-
-	const webShare = async (link: string) => {
-		const shareData = {
-			title: 'scrt.link',
-			text: m.giant_home_dachshund_feast(),
-			url: link
-		};
-		await navigator.share(shareData);
-	};
 </script>
 
 {#if successMessage}
@@ -58,9 +49,7 @@
 			</div>
 		</div>
 		<div class="mt-auto flex items-center justify-end pt-6">
-			<Button variant="ghost" class="mr-2 shrink-0" on:click={() => webShare(link)}
-				><Share class="mr-2 h-4 w-4" />{m.careful_bald_frog_harbor()}</Button
-			>
+			<ShareButton class="mr-2 shrink-0" url={link} text={m.giant_home_dachshund_feast()} />
 			<CopyButton class="shrink-0" text={link} />
 		</div>
 	</div>
