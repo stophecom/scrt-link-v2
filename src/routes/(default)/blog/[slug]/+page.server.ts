@@ -9,7 +9,7 @@ export async function load({ params }) {
 
 		return {
 			content: render(post.default),
-			meta: post.metadata as BlogPostMeta
+			meta: { ...post.metadata, slug: params.slug } as BlogPostMeta
 		};
 	} catch (e) {
 		console.error(e);

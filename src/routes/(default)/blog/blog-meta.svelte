@@ -3,6 +3,7 @@
 
 	import { languageTag } from '$lib/paraglide/runtime';
 	import type { BlogCategory } from '$lib/types';
+	import { cn } from '$lib/utils';
 	let {
 		date,
 		categories,
@@ -10,12 +11,18 @@
 	}: { date: string; categories: BlogCategory[] } & SvelteHTMLElements['div'] = $props();
 </script>
 
-<div class="text-muted-foreground text-sm" {...rest}>
-	{new Intl.DateTimeFormat(languageTag()).format(new Date(date))}
-	&bull;
+<div class={cn('text-muted-foreground flex items-center', rest.class)} {...rest}>
+	<span class="me-3">
+		{new Intl.DateTimeFormat(languageTag(), {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric'
+		}).format(new Date(date))}
+	</span>
 	{#each categories as category}
-		<span class="me-2">
-			#{category}
+		<span class="bg-muted me-2 rounded-full px-2 py-1 text-xs">
+			<span class="text-muted-foreground">#</span>
+			{category}
 		</span>
 	{/each}
 </div>

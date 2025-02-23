@@ -22,7 +22,7 @@
 
 <Page title={data.meta.title} lead={data.meta.lead} markNotTranslated={true}>
 	<article class="mb-12">
-		<div class="border-border my-4 flex items-center justify-between border-t py-2">
+		<div class=" my-4 flex items-center justify-between py-2">
 			<BlogMeta date={data.meta.date} categories={data.meta.categories} />
 		</div>
 		<div class="prose">
@@ -33,7 +33,7 @@
 	<ShareButton
 		label={m.fluffy_gaudy_turkey_yell()}
 		variant="outline"
-		url={document.location.href}
+		url={`${data.baseUrl}/blog/${data.meta.slug}`}
 		text={data.meta.title}
 	/>
 	<Separator class="my-6" />

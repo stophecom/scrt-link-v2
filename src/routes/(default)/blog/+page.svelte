@@ -15,7 +15,7 @@
 			{#each data.posts as post}
 				<li>
 					<a
-						class="group bg-background border-border flex w-full rounded border-b transition-all"
+						class="group border-border flex w-full rounded border-b transition-all"
 						href="/blog/{post.slug}"
 					>
 						<div class="rounded py-5 md:py-6">
