@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
+		"postbuild": "npx svelte-sitemap --out-dir .vercel/output/static --domain https://scrt.link",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -50,6 +51,7 @@
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"svelte": "^5.19.7",
 		"svelte-check": "^4.1.1",
+		"svelte-sitemap": "^2.7.0",
 		"sveltekit-rate-limiter": "^0.6.1",
 		"sveltekit-superforms": "^2.22.1",
 		"tailwind-merge": "^2.6.0",
