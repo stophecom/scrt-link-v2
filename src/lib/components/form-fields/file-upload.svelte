@@ -6,6 +6,7 @@
 
 	import { PUBLIC_S3_BUCKET } from '$env/static/public';
 	import { handleFileEncryptionAndUpload } from '$lib/file-transfer';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import { MB } from '../../data/units';
 	import type { SecretType } from '../forms/secret-form.svelte';
@@ -121,7 +122,8 @@
 				on:click={reset}
 			>
 				{#if done}
-					<Trash class="text-destructive h-4 w-4" /> <span class="sr-only">Trash</span>
+					<Trash class="text-destructive h-4 w-4" />
+					<span class="sr-only">{m.least_moving_spider_roam()}</span>
 				{:else}
 					<IconX class="text-destructive h-5 w-5" />
 				{/if}
@@ -135,6 +137,8 @@
 	{/if}
 {:else}
 	<DropZone
+		labelButton={secretType === 'snap' ? m.slimy_close_frog_laugh() : undefined}
+		labelDropzone={secretType === 'snap' ? m.jolly_whole_hyena_slurp() : undefined}
 		{onDrop}
 		{accept}
 		onError={(e) => {

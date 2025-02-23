@@ -1,6 +1,6 @@
 ---
 title: Scrt.link vs. Onetime Secret
-lead: A comparison between Scrt.link and Onetime Secret
+lead: A comparison between scrt.link and Onetime Secret
 description: Scrt.link and Onetime Secret both offer secure, self-destructing message sharing—but how do they compare? In this post, we break down the key differences in security, privacy, and user experience to help you choose the right tool for your needs.
 date: '2021-12-13'
 ogImage: '/images/blog/comparison-one-time-secret-og.png'
@@ -24,6 +24,7 @@ When you visit [Onetime Secret](https://onetimesecret.com) for the first time, i
 Now, after digging the topic of secure disposable messaging and analyzing the website from a security perspective, I came to notice **one big flaw**: Messages are not end-to-end encrypted.
 
 ![comparison-one-time-secret-screenshot-console.png](/images/blog/comparison-one-time-secret-screenshot-console.png)
+_Screenshot from 12/2021_
 
 As shown in the screenshot, the secret is sent to the server in plain text. This doesn’t mean that anyone on the network can simply eavesdrop on your message—the connection is still secured with HTTPS. However, this approach introduces potential security risks.
 

@@ -7,7 +7,7 @@
 		showTimer?: boolean;
 		onComplete?: () => void;
 	};
-	let { duration = 10, onComplete = () => {}, class: className, showTimer }: Props = $props();
+	let { duration = 5, onComplete = () => {}, class: className, showTimer }: Props = $props();
 
 	let timeLeft = $state(duration);
 	let timer: ReturnType<typeof setInterval>;

@@ -23,8 +23,20 @@
 		multiple?: boolean;
 		disabled?: boolean;
 		accept?: string; // image/*, .gif etc.
+		labelButton?: string;
+		labelDropzone?: string;
 	};
-	let { onError, onDrop, onEnter, onLeave, multiple = false, disabled, accept }: Props = $props();
+	let {
+		onError,
+		onDrop,
+		onEnter,
+		onLeave,
+		multiple = false,
+		disabled,
+		accept,
+		labelButton = m.gray_free_manatee_buy(),
+		labelDropzone = m.ideal_jumpy_lionfish_scold()
+	}: Props = $props();
 
 	const validateFiles = (files: File[]) => {
 		if (!multiple) {
@@ -114,8 +126,8 @@
 			<ArrowUpFromLine class="h-5 w-5" />
 		</div>
 		<!-- We show a simple button on smaller screens, and a drag/onDrop area on larger screens. -->
-		<span class="dz:inline hidden text-center">{m.ideal_jumpy_lionfish_scold()}</span>
-		<span class="dz:hidden text-center text-lg">{m.gray_free_manatee_buy()}</span>
+		<span class="dz:inline hidden text-center">{labelDropzone}</span>
+		<span class="dz:hidden text-center text-lg">{labelButton}</span>
 	</div>
 
 	<div

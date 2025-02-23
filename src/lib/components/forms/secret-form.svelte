@@ -162,7 +162,7 @@
 					/>
 
 					{#if secretType === 'snap' && !isFileUploading && !$formData.content}
-						<div class="text-muted-foreground p-1 text-center text-xs">
+						<div class="text-muted-foreground p-1 text-center text-xs text-pretty">
 							{m.tired_inner_cougar_push()}
 						</div>
 					{/if}
