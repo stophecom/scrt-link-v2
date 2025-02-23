@@ -21,14 +21,16 @@
 	import ShareButton from '../ui/share-button';
 
 	type Props = {
-		data: { form: SecretFormProps['form'] } & LayoutServerData;
+		form: SecretFormProps['form'];
+		baseUrl: LayoutServerData['baseUrl'];
+		user: LayoutServerData['user'];
 		secretType?: SecretFormProps['secretType'];
 	};
-	let { data, secretType }: Props = $props();
+	let { form, baseUrl, user, secretType }: Props = $props();
 
 	let masterPassword = $state('');
 	let successMessage = $state('');
-	let link: string = $derived(`${data.baseUrl}/s#${masterPassword}`);
+	let link: string = $derived(`${baseUrl}/s#${masterPassword}`);
 </script>
 
 {#if successMessage}
@@ -59,13 +61,7 @@
 {:else}
 	<Card>
 		{#if secretType}
-			<SecretForm
-				form={data.form}
-				user={data.user}
-				{secretType}
-				bind:masterPassword
-				bind:successMessage
-			/>
+			<SecretForm {form} {user} {secretType} bind:masterPassword bind:successMessage />
 		{:else}
 			<Tabs.Root value="text" let:value>
 				{@const secretType = value as SecretType}
@@ -75,13 +71,7 @@
 					{/each}
 				</Tabs.List>
 				<Tabs.Content {value}>
-					<SecretForm
-						form={data.form}
-						user={data.user}
-						{secretType}
-						bind:masterPassword
-						bind:successMessage
-					/>
+					<SecretForm {form} {user} {secretType} bind:masterPassword bind:successMessage />
 				</Tabs.Content>
 			</Tabs.Root>
 		{/if}

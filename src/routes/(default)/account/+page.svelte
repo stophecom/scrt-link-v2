@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
+	import CreateSecret from '$lib/components/layout/create-secret.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as m from '$lib/paraglide/messages.js';
 
+	import type { LayoutServerData } from '../../$types';
 	import type { PageServerData } from './$types';
 
-	let { data }: { data: PageServerData } = $props();
+	let { data }: { data: PageServerData & LayoutServerData } = $props();
 </script>
 
 <Page
@@ -16,8 +18,10 @@
 	lead="Welcome back to your safe space."
 >
 	<div class="grid gap-2">
+		<CreateSecret form={data.secretForm} user={data.user} baseUrl={data.baseUrl} />
+
 		<Card title="Settings">
-			<SettingsForm form={data.form} user={data.user} />
+			<SettingsForm form={data.settingsForm} user={data.user} />
 		</Card>
 
 		<div>

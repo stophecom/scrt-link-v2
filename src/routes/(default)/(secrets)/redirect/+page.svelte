@@ -9,5 +9,10 @@
 </script>
 
 <Page title={m.grassy_fine_puma_push()} lead={m.fun_knotty_penguin_clip()}>
-	<CreateSecret {data} secretType={'redirect'} />
+	<CreateSecret
+		form={data.secretForm}
+		user={data.user}
+		baseUrl={data.baseUrl}
+		secretType={'redirect'}
+	/>
 </Page>

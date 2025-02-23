@@ -9,5 +9,10 @@
 </script>
 
 <Page title={m.light_these_quail_sing()} lead={m.swift_small_gecko_drum()}>
-	<CreateSecret {data} secretType={'text'} />
+	<CreateSecret
+		form={data.secretForm}
+		user={data.user}
+		baseUrl={data.baseUrl}
+		secretType={'text'}
+	/>
 </Page>

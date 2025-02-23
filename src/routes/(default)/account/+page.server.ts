@@ -6,9 +6,10 @@ import { zod } from 'sveltekit-superforms/adapters';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import { userSettings } from '$lib/server/db/schema';
-import { settingsFormSchema } from '$lib/validators/formSchemas';
+import { secretFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
 
 import { ReadReceiptOptions } from '../../../lib/data/schemaEnums';
+import { actions as secretActions } from '../+page.server';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -21,7 +22,8 @@ export const load: PageServerLoad = async (event) => {
 
 	return {
 		user: user,
-		form: await superValidate(
+		secretForm: await superValidate(zod(secretFormSchema())),
+		settingsForm: await superValidate(
 			{
 				readReceiptOption: settings.readReceipt || ReadReceiptOptions.NONE,
 				email: settings.email || user.email,
@@ -33,6 +35,7 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
+	...secretActions,
 	saveSettings: async (event) => {
 		const form = await superValidate(event.request, zod(settingsFormSchema()));
 

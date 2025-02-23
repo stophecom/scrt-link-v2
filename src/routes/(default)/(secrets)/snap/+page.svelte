@@ -9,5 +9,10 @@
 </script>
 
 <Page title="Snap" lead={m.misty_north_hedgehog_breathe()}>
-	<CreateSecret {data} secretType={'snap'} />
+	<CreateSecret
+		form={data.secretForm}
+		user={data.user}
+		baseUrl={data.baseUrl}
+		secretType={'snap'}
+	/>
 </Page>

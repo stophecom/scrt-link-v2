@@ -7,7 +7,7 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(secretFormSchema()))
+		secretForm: await superValidate(zod(secretFormSchema()))
 	};
 };
 
