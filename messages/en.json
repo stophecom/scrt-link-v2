@@ -117,7 +117,7 @@
 	"dry_fun_ant_sail": "Why do I get \"Secret not found\" error?",
 	"crazy_dark_tuna_stop": "This means that the secret link has already been visited. If this happens unexpectedly:\n- Check with the sender to make sure the link hasn't been visited by mistake.\n- The secret was accessed via brut-force attack or there is an issue with the server infrastructure (don't worry, the contents of the secrets would still be encrypted) - both cases are very unlikely.\n- **Worst case**: A third party accessed the link, which ultimately means, your communication channel and/or either party's device has been compromised.",
 	"such_sad_mayfly_express": "How secure is this service?",
-	"gross_helpful_bee_attend": "All messages are end-to-end encrypted using **AES-256**, which is virtually impenetrable using brute-force methods. AES would take billions of years to break using current computing technology.\nFor the highest level of security, an optional password (which is never stored either) will be used to encrypt your message. Read more on our [Security page](/security).",
+	"gross_helpful_bee_attend": "All messages are end-to-end encrypted using **AES-256**, which is virtually impenetrable using brute-force methods. AES would take billions of years to break using current computing technology.\nFor the highest level of security, an optional password will be used to encrypt your message. Read more on our [Security page](/security).",
 	"main_smart_deer_learn": "How is my privacy protected?",
 	"aqua_home_rooster_amuse": "We take a number of steps to protect your privacy, detailed on the [privacy page](/privacy) - however some of the features require third party services that may have access to personal identifiable information (PII). If you want to further protect your privacy, we recommend the following:\n\n- Connect to our service via a virtual private network (VPN): This way you never expose your personal IP address. We recommend [ProtonVPN](https://protonvpn.com/).\n- Use a service such as [Abine Blur](https://www.abine.com/) to hide your personal email address, phone number and/or credit card information.",
 	"smug_even_mammoth_nudge": "How is end-to-end encryption achieved?",
@@ -211,7 +211,7 @@
 	"candid_sleek_jackal_reside": "Learn about product updates, privacy and the web.",
 	"royal_cuddly_kitten_tickle": "How can we help?",
 	"grand_male_jackal_persist": "Describe your request…",
-	"jolly_whole_hyena_slurp": "Drop a photo or select a photo",
+	"jolly_whole_hyena_slurp": "Drop or select a photo",
 	"slimy_close_frog_laugh": "Select a photo",
 	"least_moving_spider_roam": "Delete"
 }
