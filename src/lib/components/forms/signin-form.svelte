@@ -3,16 +3,13 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
-	import Google from '$lib/assets/images/Google.svg?component';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SignInFormSchema, signInFormSchema } from '$lib/validators/formSchemas';
 
 	import Password from '../form-fields/password.svelte';
-	import Button from '../ui/button/button.svelte';
 	import Link from '../ui/link';
-	import Separator from '../ui/separator/separator.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	export let data: SuperValidated<Infer<SignInFormSchema>>;
@@ -20,7 +17,7 @@
 	const form = superForm(data, {
 		validators: zodClient(signInFormSchema()),
 		validationMethod: 'auto',
-		resetForm: false,
+
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
@@ -39,7 +36,12 @@
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
-				<Input {...attrs} bind:value={$formData.email} {...$constraints.email} />
+				<Input
+					{...attrs}
+					bind:value={$formData.email}
+					{...$constraints.email}
+					autocomplete="username"
+				/>
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
@@ -62,10 +64,6 @@
 				>{m.legal_weak_jay_bless()}</Form.Button
 			>
 		</div>
-		<div class="px-5 text-center text-sm">
-			{m.warm_ideal_butterfly_radiate()}
-			<Link href="/signup">{m.grassy_sea_pug_gasp()}</Link>
-		</div>
 
 		<!-- For debugging -->
 		{#if dev}
@@ -74,12 +72,4 @@
 			</div>
 		{/if}
 	</form>
-
-	<div class="py-5">
-		<Separator />
-	</div>
-
-	<Button class="w-full" variant="outline" size="lg" href="/login/google"
-		><Google class="mr-3" />{m.major_noble_snake_drop()}</Button
-	>
 </FormWrapper>

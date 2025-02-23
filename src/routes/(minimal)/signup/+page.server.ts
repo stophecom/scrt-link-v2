@@ -3,7 +3,6 @@ import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import * as m from '$lib/paraglide/messages.js';
-import { createEmailVerificationRequest } from '$lib/server/email-verification';
 import { checkIfUserExists, checkIsEmailVerified } from '$lib/server/helpers';
 import { emailFormSchema } from '$lib/validators/formSchemas';
 
@@ -25,9 +24,6 @@ export const actions: Actions = {
 
 		const { email } = form.data;
 
-		// Server side validation
-		// @todo check if additional DB Schema validation is necessary
-		// console.log(userInsertSchema.parse({ username }));
 		if (!form.valid) {
 			return fail(400, { form });
 		}
@@ -38,9 +34,6 @@ export const actions: Actions = {
 			setError(form, 'email', m.agent_same_puma_achieve());
 			return { form };
 		}
-
-		// User needs to verify his/her email
-		await createEmailVerificationRequest(email);
 
 		event.cookies.set('email_verification', email, {
 			path: '/'

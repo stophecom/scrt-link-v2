@@ -31,6 +31,9 @@ export async function load(event: RequestEvent) {
 		return redirect(307, '/signup');
 	}
 
+	// User needs to verify his/her email
+	await createEmailVerificationRequest(email);
+
 	const defaultValues = {
 		email
 	};
