@@ -9,7 +9,7 @@ categories:
 published: true
 ---
 
-> This blog post was originally published on my [personal blog](https://blog.stophe.com) and featured on [hackernews](https://news.ycombinator.com/item?id=27692766). Some orthographic corrections have been made. Please note: Some information about the product is no longer accurate.
+> This blog post was originally published on my [personal blog](https://blog.stophe.com) and featured on [hacker News](https://news.ycombinator.com/item?id=27692766). Some orthographic corrections have been made. Please note: Some information about the product is no longer accurate.
 
 ## The Beginning
 

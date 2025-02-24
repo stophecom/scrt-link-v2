@@ -18,7 +18,7 @@
 	lead="Welcome back to your safe space."
 >
 	<div class="grid gap-2">
-		<CreateSecret form={data.secretForm} user={data.user} baseUrl={data.baseUrl} />
+		<CreateSecret form={data.secretForm} user={data.user} baseUrl={data.baseUrl} hideUsps={true} />
 
 		<Card title="Settings">
 			<SettingsForm form={data.settingsForm} user={data.user} />

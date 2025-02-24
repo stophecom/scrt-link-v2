@@ -25,8 +25,9 @@
 		baseUrl: LayoutServerData['baseUrl'];
 		user: LayoutServerData['user'];
 		secretType?: SecretFormProps['secretType'];
+		hideUsps?: boolean;
 	};
-	let { form, baseUrl, user, secretType }: Props = $props();
+	let { form, baseUrl, user, secretType, hideUsps = false }: Props = $props();
 
 	let masterPassword = $state('');
 	let successMessage = $state('');
@@ -76,5 +77,7 @@
 			</Tabs.Root>
 		{/if}
 	</Card>
-	<Usps items={privacyUsps} />
+	{#if !hideUsps}
+		<Usps items={privacyUsps} />
+	{/if}
 {/if}
