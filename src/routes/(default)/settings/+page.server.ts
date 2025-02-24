@@ -3,15 +3,14 @@ import { eq } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { ReadReceiptOptions } from '$lib/data/schemaEnums';
 import * as m from '$lib/paraglide/messages.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import { userSettings } from '$lib/server/db/schema';
 import { secretFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
 
-import { ReadReceiptOptions } from '../../../../lib/data/schemaEnums';
-import { actions as secretActions } from '../../+page.server';
-import type { Actions, PageServerLoad } from '../../settings/$types';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
@@ -36,7 +35,6 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
-	...secretActions,
 	saveSettings: async (event) => {
 		const form = await superValidate(event.request, zod(settingsFormSchema()));
 
