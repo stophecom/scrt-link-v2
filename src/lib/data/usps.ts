@@ -4,7 +4,6 @@ import ShieldPlus from 'lucide-svelte/icons/shield-plus';
 
 import * as m from '$lib/paraglide/messages.js';
 
-// @todo: Extract
 export const privacyUsps = [
 	{
 		icon: LockKeyhole,

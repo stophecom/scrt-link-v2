@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Crown from 'lucide-svelte/icons/crown';
+	import LogOut from 'lucide-svelte/icons/log-out';
 	import Moon from 'lucide-svelte/icons/moon';
 	import Sun from 'lucide-svelte/icons/sun';
 	import { toggleMode } from 'mode-watcher';
@@ -6,6 +8,8 @@
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { accountMenuHeader } from '$lib/data/menu';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { LayoutServerData } from '../../../routes/$types';
@@ -50,15 +54,38 @@
 						<span class="sr-only">{m.hour_lofty_warthog_wish()}</span>
 					</Button>
 					{#if user}
-						<a class="flex items-center" href="/account">
-							<Avatar.Root class="mr-2">
-								<Avatar.Image src={user.picture} alt={user.name} />
-								<Avatar.Fallback
-									class="border-foreground bg-foreground text-background border uppercase"
-									>{Array.from(user.email)[0]}</Avatar.Fallback
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger>
+								<Avatar.Root class="mr-2">
+									<Avatar.Image src={user.picture} alt={user.name} />
+									<Avatar.Fallback
+										class="border-foreground bg-foreground text-background border uppercase"
+										>{Array.from(user.email)[0]}</Avatar.Fallback
+									>
+								</Avatar.Root>
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content class="w-56">
+								{#each accountMenuHeader() as menuItem}
+									<DropdownMenu.Item href={menuItem.href}
+										><menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</DropdownMenu.Item
+									>
+								{/each}
+								<DropdownMenu.Item href="/pricing"
+									><Crown class="me-2 h-4 w-4" />Upgrade
+									<span
+										class="bg-primary text-primary-foreground ms-3 rounded-full px-2 text-xs font-medium uppercase"
+										>50% off</span
+									></DropdownMenu.Item
 								>
-							</Avatar.Root>
-						</a>
+
+								<DropdownMenu.Item>
+									<LogOut class="me-2 h-4 w-4" />
+									<form method="post" action="/account?/logout">
+										<button type="submit">{m.wacky_big_raven_honor()}</button>
+									</form>
+								</DropdownMenu.Item>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
 					{:else}
 						<Button variant="outline" href="/login">{m.simple_dry_boar_dazzle()}</Button>
 						<Button href="/signup">{m.large_smart_badger_beam()}</Button>

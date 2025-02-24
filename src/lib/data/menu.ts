@@ -1,3 +1,6 @@
+import Settings from 'lucide-svelte/icons/settings';
+import User from 'lucide-svelte/icons/user';
+
 import * as m from '$lib/paraglide/messages.js';
 
 import { githubUrl } from './app';
@@ -57,6 +60,28 @@ export const helpMenu = () => [
 		href: githubUrl,
 		externalLink: true,
 		label: 'Github'
+	}
+];
+
+const account = {
+	icon: User,
+	href: '/account',
+	label: 'Account'
+};
+
+export const accountMenu = () => [
+	{
+		icon: Settings,
+		href: '/account/settings',
+		label: 'Settings'
+	}
+];
+export const accountMenuHeader = () => [
+	account,
+	{
+		icon: Settings,
+		href: '/account/settings',
+		label: 'Settings'
 	}
 ];
 
