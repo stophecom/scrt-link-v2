@@ -1,3 +1,4 @@
+import Send from 'lucide-svelte/icons/send';
 import Settings from 'lucide-svelte/icons/settings';
 import User from 'lucide-svelte/icons/user';
 
@@ -63,27 +64,24 @@ export const helpMenu = () => [
 	}
 ];
 
+const createSecret = {
+	icon: Send,
+	href: '/',
+	label: m.shy_salty_rooster_gasp()
+};
 const account = {
 	icon: User,
 	href: '/account',
-	label: 'Account'
+	label: m.novel_proud_anaconda_zoom()
+};
+const settings = {
+	icon: Settings,
+	href: '/account/settings',
+	label: m.less_tangy_crab_chop()
 };
 
-export const accountMenu = () => [
-	{
-		icon: Settings,
-		href: '/account/settings',
-		label: 'Settings'
-	}
-];
-export const accountMenuHeader = () => [
-	account,
-	{
-		icon: Settings,
-		href: '/account/settings',
-		label: 'Settings'
-	}
-];
+export const accountMenu = () => [settings];
+export const accountMenuHeader = () => [createSecret, account, settings];
 
 const tos = {
 	href: '/terms-of-service',
