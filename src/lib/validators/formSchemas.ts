@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import * as m from '$lib/paraglide/messages.js';
 
-import { ReadReceiptOptions } from '../data/schemaEnums';
+import { ReadReceiptOptions, ThemeOptions } from '../data/schemaEnums';
 import { getExpiresInOptions } from '../data/secretSettings';
 
 // We return functions in order for translations to work as expected.
@@ -40,6 +40,8 @@ export const secretFormSchema = () =>
 		password: z.string().min(6).max(512).optional(),
 		expiresIn: z.number().default(defaultExpiresInValue.value)
 	});
+
+export const themeFormSchema = () => z.object({ themeOption: z.nativeEnum(ThemeOptions) });
 
 export const settingsFormSchema = () =>
 	z
@@ -91,5 +93,6 @@ export type CodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type SecretTextFormSchema = ReturnType<typeof secretFormSchema>;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
+export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;
 export type RevealSecretFormSchema = ReturnType<typeof revealSecretFormSchema>;
 export type ContactFormSchema = ReturnType<typeof contactFormSchema>;

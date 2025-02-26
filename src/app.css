@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+	/* Custom theme color options */
+	--theme-color-pink: #e60077;
+	--theme-color-purple: #8645b5;
+	--theme-color-blue: #2071c9;
+	--theme-color-teal: #068484;
+}
+
 @layer base {
 	:root {
 		interpolate-size: allow-keywords;
@@ -22,7 +30,6 @@
 		--border: 240 6% 84%;
 		--input: 240 6% 84%;
 
-		--primary: 329, 100%, 45%;
 		--primary-foreground: 0 0% 100%;
 
 		--secondary: 240 4.8% 91%;
@@ -58,7 +65,6 @@
 		--border: 240 3.7% 30%;
 		--input: 240 3.7% 30%;
 
-		--primary: 329 100% 45%;
 		--primary-foreground: 0 0% 100%;
 
 		--secondary: 240 3.7% 15.9%;
@@ -121,7 +127,7 @@
 	--color-background: hsl(var(--background));
 	--color-foreground: hsl(var(--foreground));
 
-	--color-primary: hsl(var(--primary));
+	--color-primary: var(--theme-color-pink);
 	--color-primary-foreground: hsl(var(--primary-foreground));
 
 	--color-secondary: hsl(var(--secondary));

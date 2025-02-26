@@ -22,7 +22,13 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	event.locals.user = user;
 	event.locals.session = session;
 
-	return resolve(event);
+	const themeColor = user?.preferences.themeColor
+		? `var(--theme-color-${user?.preferences.themeColor})`
+		: `var(--theme-color-pink)`;
+
+	return resolve(event, {
+		transformPageChunk: ({ html }) => html.replace('%THEME_COLOR%', themeColor)
+	});
 };
 
 const handleParaglide: Handle = i18n.handle();

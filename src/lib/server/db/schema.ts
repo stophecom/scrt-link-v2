@@ -1,6 +1,7 @@
 import {
 	boolean,
 	integer,
+	jsonb,
 	pgEnum,
 	pgTable,
 	serial,
@@ -10,7 +11,7 @@ import {
 	uuid
 } from 'drizzle-orm/pg-core';
 
-import { ReadReceiptOptions } from '../../data/schemaEnums';
+import { ReadReceiptOptions, TierOptions } from '../../data/schemaEnums';
 
 export const user = pgTable('user', {
 	id: uuid('id').defaultRandom().primaryKey().unique(),
@@ -19,14 +20,26 @@ export const user = pgTable('user', {
 	name: text('name'),
 	picture: text('picture'),
 	googleId: text('google_id'),
+	stripeId: text('stripe_id'),
+	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified')
+});
+
+export const tier = pgEnum('tier', [TierOptions.FREE, TierOptions.PREMIUM, TierOptions.PREPAID]);
+
+export const subscriptions = pgTable('subscriptions', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }),
+	tier: tier().default(TierOptions.FREE),
+	balance: integer('balance'),
+	expiresAt: timestamp('expires_at', { withTimezone: true })
 });
 
 export const session = pgTable('session', {
 	id: text('id').primaryKey(),
 	userId: uuid('user_id')
 		.notNull()
-		.references(() => user.id),
+		.references(() => user.id, { onDelete: 'cascade' }),
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull()
 });
 
@@ -48,7 +61,7 @@ export const secret = pgTable('secret', {
 	passwordAttempts: smallint('password_attempts').notNull().default(0),
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
 	retrievedAt: timestamp('retrieved_at', { withTimezone: true, mode: 'date' }),
-	userId: uuid('user_id').references(() => user.id)
+	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
 });
 
 // Check secretSettings for reference
@@ -65,7 +78,7 @@ export const userSettings = pgTable('user_settings', {
 	readReceipt: readReceipt().default(ReadReceiptOptions.NONE),
 	userId: uuid('user_id')
 		.notNull()
-		.references(() => user.id)
+		.references(() => user.id, { onDelete: 'cascade' })
 });
 
 export const scope = pgEnum('scope', ['global', 'user']);
@@ -80,6 +93,7 @@ export const stats = pgTable('stats', {
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
+export type Subscriptions = typeof subscriptions.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;
 export type Secret = typeof secret.$inferSelect;
 export type UserSettings = typeof userSettings.$inferSelect;

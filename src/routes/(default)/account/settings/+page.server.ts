@@ -5,10 +5,10 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import * as m from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
-import { userSettings } from '$lib/server/db/schema';
-import { settingsFormSchema } from '$lib/validators/formSchemas';
+import { user as userSchema, userSettings } from '$lib/server/db/schema';
+import { settingsFormSchema, themeFormSchema } from '$lib/validators/formSchemas';
 
-import { ReadReceiptOptions } from '../../../../lib/data/schemaEnums';
+import { ReadReceiptOptions, ThemeOptions } from '../../../../lib/data/schemaEnums';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -21,6 +21,14 @@ export const load: PageServerLoad = async (event) => {
 
 	return {
 		user: user,
+
+		themeForm: await superValidate(
+			{
+				themeOption: user.preferences.themeColor || ThemeOptions.PINK
+			},
+			zod(themeFormSchema())
+		),
+
 		settingsForm: await superValidate(
 			{
 				readReceiptOption: settings.readReceipt || ReadReceiptOptions.NONE,
@@ -33,6 +41,33 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
+	saveTheme: async (event) => {
+		const form = await superValidate(event.request, zod(themeFormSchema()));
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		const user = event.locals.user;
+
+		if (!user) {
+			return redirect(307, '/signup');
+		}
+
+		const { themeOption } = form.data;
+
+		await db
+			.update(userSchema)
+			.set({
+				preferences: { themeColor: themeOption }
+			})
+
+			.where(eq(userSchema.id, user.id));
+
+		return message(form, {
+			status: 'success',
+			title: m.many_seemly_gorilla_jolt()
+		});
+	},
 	saveSettings: async (event) => {
 		const form = await superValidate(event.request, zod(settingsFormSchema()));
 

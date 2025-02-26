@@ -5,11 +5,17 @@ import { eq } from 'drizzle-orm';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
+import type { ThemeOptions } from '$lib/data/schemaEnums';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import { sha256Hash } from '$lib/web-crypto';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
+
+// Since preferences is stored as json in the DB, we type it here.
+type Preferences = {
+	themeColor: ThemeOptions;
+};
 
 export const sessionCookieName = 'auth-session';
 
@@ -39,7 +45,9 @@ export async function validateSessionToken(token: string) {
 				name: table.user.name,
 				email: table.user.email,
 				googleId: table.user.googleId,
-				picture: table.user.picture
+				stripeId: table.user.stripeId,
+				picture: table.user.picture,
+				preferences: table.user.preferences
 			},
 			session: table.session
 		})
@@ -67,7 +75,13 @@ export async function validateSessionToken(token: string) {
 			.where(eq(table.session.id, session.id));
 	}
 
-	return { session, user };
+	return {
+		session,
+		user: {
+			...user,
+			preferences: user.preferences as Preferences
+		}
+	};
 }
 
 export type SessionValidationResult = Awaited<ReturnType<typeof validateSessionToken>>;

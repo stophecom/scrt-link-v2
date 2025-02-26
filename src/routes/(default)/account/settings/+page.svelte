@@ -2,6 +2,7 @@
 	import ArrowLeft from 'lucide-svelte/icons/arrow-left';
 
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
+	import ThemeForm from '$lib/components/forms/theme-form.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
@@ -20,6 +21,9 @@
 		</div>
 		<Card title={m.vivid_house_flea_zap()}>
 			<SettingsForm form={data.settingsForm} user={data.user} />
+		</Card>
+		<Card title="Theme">
+			<ThemeForm form={data.themeForm} user={data.user} />
 		</Card>
 
 		<Button variant="outline" href="/set-password">{m.jumpy_factual_mole_hunt()}</Button>

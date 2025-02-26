@@ -7,14 +7,10 @@
 	import * as m from '$lib/paraglide/messages.js';
 
 	const colors = [
-		'#E60077',
-		'#8645b5',
-		'#2071c9',
-		'#068484',
-		'#1E8552',
-		'#EA0B0B',
-		'#804A00',
-		'#3A54A1'
+		'var(--theme-color-pink)',
+		'var(--theme-color-purple)',
+		'var(--theme-color-blue)',
+		'var(--theme-color-teal)'
 	];
 
 	const activeColor = new PersistedState('activeColor', colors[0]);
