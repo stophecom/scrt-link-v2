@@ -22,6 +22,13 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	event.locals.user = user;
 	event.locals.session = session;
 
+	return resolve(event);
+};
+
+const handleParaglide: Handle = i18n.handle();
+const handleTheme: Handle = async ({ event, resolve }) => {
+	const user = event.locals.user;
+
 	const themeColor = user?.preferences.themeColor
 		? `var(--theme-color-${user?.preferences.themeColor})`
 		: `var(--theme-color-pink)`;
@@ -31,6 +38,4 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	});
 };
 
-const handleParaglide: Handle = i18n.handle();
-
-export const handle: Handle = sequence(handleAuth, handleParaglide);
+export const handle: Handle = sequence(handleAuth, handleParaglide, handleTheme);
