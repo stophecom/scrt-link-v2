@@ -24,7 +24,7 @@ export const load: PageServerLoad = async (event) => {
 
 		themeForm: await superValidate(
 			{
-				themeOption: user.preferences.themeColor || ThemeOptions.PINK
+				themeOption: user.preferences?.themeColor || ThemeOptions.PINK
 			},
 			zod(themeFormSchema())
 		),
