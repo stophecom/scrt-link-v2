@@ -7,7 +7,6 @@
 	import { aboutMenu, helpMenu, imprintMenu, secretMenu } from '../../data/menu';
 	import LanguageSwitcher from '../ui/language-switcher';
 	import FooterMenu from '../ui/menu';
-	import ThemeSwitcher from '../ui/theme-switcher';
 </script>
 
 <footer class="border-border bg-background border-t pt-14 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
@@ -51,9 +50,6 @@
 
 			<div class="ms-auto flex justify-center py-5 md:py-2">
 				<LanguageSwitcher />
-				<div class="ml-2">
-					<ThemeSwitcher />
-				</div>
 			</div>
 		</div>
 	</div>
