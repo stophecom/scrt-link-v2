@@ -9,7 +9,7 @@
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getThemeOptions } from '../../data/secretSettings';
-	import RadioGroup from '../form-fields/radio-group.svelte';
+	import RadioGroupColors from '../form-fields/radio-group-colors.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
@@ -29,6 +29,8 @@
 		onChange: () => {
 			const documentStyle = document.body.style;
 			documentStyle.setProperty('--color-primary', `var(--theme-color-${$formData.themeOption})`);
+
+			form.submit();
 		},
 		onError({ result }) {
 			// We use message for unexpected errors
@@ -40,20 +42,18 @@
 		}
 	});
 
-	const { form: formData, message, delayed, enhance } = form;
+	const { form: formData, message, enhance } = form;
 </script>
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/saveTheme">
 		<Form.Fieldset {form} name="themeOption">
-			<RadioGroup
+			<RadioGroupColors
 				options={getThemeOptions()}
-				label="Theme Color"
+				label={m.loved_yummy_kangaroo_dance()}
 				bind:value={$formData.themeOption}
 			/>
 		</Form.Fieldset>
-
-		<Form.Button delayed={$delayed} class="ml-auto ">{m.caring_light_tiger_taste()}</Form.Button>
 	</form>
 	{#if dev}
 		<div class="py-4">

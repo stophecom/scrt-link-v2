@@ -37,6 +37,7 @@
 				</Button>
 			{/each}
 
+			<Button variant="outline" href="/set-password">{m.jumpy_factual_mole_hunt()}</Button>
 			<form method="post" action="?/logout">
 				<Button class="w-full" type="submit" variant="outline"
 					><LogOut class="me-2 h-4 w-4" />{m.wacky_big_raven_honor()}</Button

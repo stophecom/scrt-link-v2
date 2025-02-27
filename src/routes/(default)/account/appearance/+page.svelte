@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ArrowLeft from 'lucide-svelte/icons/arrow-left';
 
-	import SettingsForm from '$lib/components/forms/settings-form.svelte';
+	import ThemeForm from '$lib/components/forms/theme-form.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
@@ -13,13 +13,15 @@
 	let { data }: { data: PageServerData & LayoutServerData } = $props();
 </script>
 
-<Page title={m.nimble_quick_bird_sew()} lead={m.wacky_key_vole_roam()}>
+<Page title="Appearance" lead="Have it your way">
 	<div class="grid gap-4">
 		<div>
-			<Button variant="ghost" href="/account"><ArrowLeft class="mr-2" />Back to Account</Button>
+			<Button variant="ghost" href="/account"
+				><ArrowLeft class="mr-2" />{m.stout_loved_marlin_enrich()}</Button
+			>
 		</div>
-		<Card title={m.vivid_house_flea_zap()}>
-			<SettingsForm form={data.settingsForm} user={data.user} />
+		<Card title="Theme">
+			<ThemeForm form={data.themeForm} user={data.user} />
 		</Card>
 	</div>
 </Page>

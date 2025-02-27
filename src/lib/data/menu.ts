@@ -1,3 +1,4 @@
+import Palette from 'lucide-svelte/icons/palette';
 import Send from 'lucide-svelte/icons/send';
 import Settings from 'lucide-svelte/icons/settings';
 import User from 'lucide-svelte/icons/user';
@@ -79,9 +80,14 @@ const settings = {
 	href: '/account/settings',
 	label: m.less_tangy_crab_chop()
 };
+const appearance = {
+	icon: Palette,
+	href: '/account/appearance',
+	label: 'Appearance'
+};
 
-export const accountMenu = () => [settings];
-export const accountMenuHeader = () => [createSecret, account, settings];
+export const accountMenu = () => [settings, appearance];
+export const accountMenuHeader = () => [createSecret, account, settings, appearance];
 
 const tos = {
 	href: '/terms-of-service',

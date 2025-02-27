@@ -1,8 +1,7 @@
 <script lang="ts">
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SettingsFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
@@ -70,9 +69,4 @@
 
 		<Form.Button delayed={$delayed} class="ml-auto ">{m.caring_light_tiger_taste()}</Form.Button>
 	</form>
-	{#if dev}
-		<div class="py-4">
-			<SuperDebug data={$formData} />
-		</div>
-	{/if}
 </FormWrapper>
