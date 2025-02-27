@@ -29,7 +29,7 @@ const handleParaglide: Handle = i18n.handle();
 const handleTheme: Handle = async ({ event, resolve }) => {
 	const user = event.locals.user;
 
-	const themeColor = user?.preferences.themeColor
+	const themeColor = user?.preferences?.themeColor
 		? `var(--theme-color-${user?.preferences.themeColor})`
 		: `var(--theme-color-pink)`;
 
