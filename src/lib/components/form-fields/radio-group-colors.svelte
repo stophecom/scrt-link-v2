@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { RadioGroup as RadioGroupPrimitive } from 'bits-ui';
 	import Check from 'lucide-svelte/icons/check';
+	import { elasticOut } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
+	import { scale } from 'svelte/transition';
 
 	import * as Form from '$lib/components/ui/form';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
@@ -19,7 +21,7 @@
 </script>
 
 <Form.Legend class="sr-only">{label}</Form.Legend>
-<RadioGroup.Root bind:value class="px-1 md:flex">
+<RadioGroup.Root bind:value class="flex px-1">
 	{#each options as option}
 		<div class="flex items-center py-1 pe-3">
 			<Form.Control let:attrs>
@@ -32,7 +34,9 @@
 					style="background-color: var(--theme-color-{option.value});"
 				>
 					{#if value === option.value}
-						<Check class="text-primary-foreground h-6 w-6" />
+						<span in:scale={{ easing: elasticOut, duration: 1000 }}>
+							<Check class="text-primary-foreground h-6 w-6" />
+						</span>
 					{/if}
 				</RadioGroupPrimitive.Item>
 

@@ -16,7 +16,7 @@
 
 <DropdownMenuPrimitive.Item
 	class={cn(
-		'data-highlighted:bg-muted data-highlighted:text-foreground hover:bg-muted relative flex cursor-pointer items-center rounded-sm px-4 py-3 outline-hidden transition-colors select-none data-disabled:pointer-events-none data-disabled:opacity-50',
+		'data-highlighted:bg-muted data-highlighted:text-foreground hover:bg-muted relative flex cursor-pointer items-center rounded-sm px-4 py-5 outline-hidden transition-colors select-none data-disabled:pointer-events-none data-disabled:opacity-50 sm:py-3',
 		inset && 'pl-8',
 		className
 	)}
