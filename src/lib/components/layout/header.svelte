@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Crown from 'lucide-svelte/icons/crown';
-	import LogOut from 'lucide-svelte/icons/log-out';
 	import Moon from 'lucide-svelte/icons/moon';
 	import Sun from 'lucide-svelte/icons/sun';
 	import { toggleMode } from 'mode-watcher';
@@ -77,13 +76,6 @@
 										>50% off</span
 									></DropdownMenu.Item
 								>
-
-								<DropdownMenu.Item>
-									<LogOut class="me-2 h-4 w-4" />
-									<form method="post" action="/account?/logout">
-										<button type="submit">{m.wacky_big_raven_honor()}</button>
-									</form>
-								</DropdownMenu.Item>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 					{:else}

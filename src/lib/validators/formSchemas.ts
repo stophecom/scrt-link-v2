@@ -22,6 +22,13 @@ export const passwordFormSchema = () =>
 		password: z.string().min(8, m.aloof_careful_trout_dine()).max(255)
 	});
 
+export const deleteAccountSchema = () =>
+	z.object({
+		confirm: z.boolean().refine((val) => val === true, {
+			message: 'You need to confirm your choice.'
+		})
+	});
+
 export const signInFormSchema = () =>
 	z.object({
 		email: z.string().email(),
@@ -91,6 +98,7 @@ export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = ReturnType<typeof emailFormSchema>;
 export type CodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
+export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
 export type SecretTextFormSchema = ReturnType<typeof secretFormSchema>;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;

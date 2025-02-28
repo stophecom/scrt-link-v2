@@ -88,7 +88,7 @@ export const stats = pgTable('stats', {
 	totalSecrets: integer().default(1),
 	userId: uuid('user_id')
 		.unique()
-		.references(() => user.id)
+		.references(() => user.id, { onDelete: 'cascade' })
 });
 
 export type Session = typeof session.$inferSelect;

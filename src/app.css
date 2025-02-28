@@ -36,7 +36,7 @@
 		--secondary-foreground: 240 7% 10%;
 
 		--destructive: 0 72% 40%;
-		--destructive-foreground: 0 72% 40%;
+		--destructive-foreground: 0 0% 100%;
 
 		--success: 123 38% 37%;
 		--success-foreground: 123 38% 30%;
@@ -70,8 +70,8 @@
 		--secondary: 240 3.7% 15.9%;
 		--secondary-foreground: 0 0% 98%;
 
-		--destructive: 0 90% 68%;
-		--destructive-foreground: 0 82% 90%;
+		--destructive: 0 90% 60%;
+		--destructive-foreground: 0 0% 100%;
 
 		--success: 123 38% 57%;
 		--success-foreground: 123 38% 88%;

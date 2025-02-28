@@ -5,6 +5,7 @@
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
+	import CardTitle from '$lib/components/ui/card/card-title.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { LayoutServerData } from '../../../$types';
@@ -20,6 +21,14 @@
 		</div>
 		<Card title={m.vivid_house_flea_zap()}>
 			<SettingsForm form={data.settingsForm} user={data.user} />
+
+			<CardTitle class="mt-12">Account</CardTitle>
+			<div class="mb-2">
+				<Button variant="outline" href="/set-password">{m.jumpy_factual_mole_hunt()}</Button>
+			</div>
+			<Button variant="outline" href="/delete-account" class="text-destructive"
+				>Delete Account</Button
+			>
 		</Card>
 	</div>
 </Page>

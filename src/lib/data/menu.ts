@@ -1,5 +1,4 @@
 import Palette from 'lucide-svelte/icons/palette';
-import Send from 'lucide-svelte/icons/send';
 import Settings from 'lucide-svelte/icons/settings';
 import User from 'lucide-svelte/icons/user';
 
@@ -65,11 +64,6 @@ export const helpMenu = () => [
 	}
 ];
 
-const createSecret = {
-	icon: Send,
-	href: '/',
-	label: m.shy_salty_rooster_gasp()
-};
 const account = {
 	icon: User,
 	href: '/account',
@@ -87,7 +81,7 @@ const appearance = {
 };
 
 export const accountMenu = () => [settings, appearance];
-export const accountMenuHeader = () => [createSecret, account, settings, appearance];
+export const accountMenuHeader = () => [account, settings, appearance];
 
 const tos = {
 	href: '/terms-of-service',
