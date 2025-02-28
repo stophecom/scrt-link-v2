@@ -20,7 +20,7 @@ function subtractDays(date: Date, days: number) {
 }
 
 type ObjectList = { Key: string }[];
-export const POST: RequestHandler = async ({ request }) => {
+export const GET: RequestHandler = async ({ request }) => {
 	const authorization = request.headers.get('authorization');
 
 	if (authorization === `Bearer ${CRON_SECRET}`) {
