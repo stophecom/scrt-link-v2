@@ -42,7 +42,7 @@
 	iterator: number
 )}
 	<Card
-		class="grid grid-cols-[36%_1fr]  grid-rows-2 gap-2 px-4! !py-0 sm:grid-cols-none sm:grid-rows-none sm:py-6! sm:text-center"
+		class="grid grid-cols-[33%_1fr] grid-rows-2 gap-2 px-4! !py-0 ps-0! sm:grid-cols-none sm:grid-rows-none sm:py-6! sm:ps-4! sm:text-center"
 	>
 		<h4 class="xs:text-2xl order-2 self-end text-xl font-bold sm:order-1 sm:mb-4 sm:text-3xl">
 			{iterator + 1}. {title}
