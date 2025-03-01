@@ -41,13 +41,13 @@
 	iterator: number
 )}
 	<Card
-		class="grid grid-cols-2 grid-rows-2 gap-2 !px-4 sm:grid-cols-none sm:grid-rows-none sm:text-center"
+		class="grid grid-cols-[36%_1fr]  grid-rows-2 gap-2 px-4! !py-0 sm:grid-cols-none sm:grid-rows-none sm:py-6! sm:text-center"
 	>
-		<h4 class="order-2 self-end text-2xl font-bold sm:order-1 sm:mb-4 sm:text-3xl">
+		<h4 class="xs:text-2xl order-2 self-end text-xl font-bold sm:order-1 sm:mb-4 sm:text-3xl">
 			{iterator + 1}. {title}
 		</h4>
 		<Illustration class="order-1 row-span-2 sm:order-2" />
-		<p class="order-3 text-sm font-semibold sm:order-3">
+		<p class="xs:text-sm order-3 text-xs font-semibold sm:order-3">
 			{description}
 		</p>
 	</Card>

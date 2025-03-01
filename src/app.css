@@ -116,6 +116,7 @@
 @theme {
 	--breakpoint-xs: 30rem;
 
+	--breakpoint-xs: 26rem;
 	--breakpoint-lg: initial;
 	--breakpoint-xl: initial;
 	--breakpoint-2xl: initial;
