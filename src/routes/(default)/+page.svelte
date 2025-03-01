@@ -57,10 +57,7 @@
 	<div class="mb-12">
 		<CreateSecret form={data.secretForm} user={data.user} baseUrl={data.baseUrl} />
 	</div>
-	<Section
-		title="One-Time Secrets"
-		lead="Share sensitive information that can be viewed only once—perfect for transmitting passwords, credit card details, private keys, or other confidential data."
-	>
+	<Section title={m.full_minor_fireant_accept()} lead={m.dirty_bright_robin_earn()}>
 		<div class="grid grid-rows-3 gap-4 sm:grid-cols-3 sm:grid-rows-none">
 			{#each explanationSteps() as step, i}
 				{@render illustrationCards(step.title, step.illustration, step.description, i)}
