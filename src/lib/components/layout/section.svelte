@@ -6,10 +6,10 @@
 
 <section class="py-16">
 	{#if title}
-		<h2 class="font-display mb-4 text-4xl font-bold md:text-5xl">{title}</h2>
+		<h2 class="font-display mb-4 text-3xl font-bold md:text-4xl">{title}</h2>
 	{/if}
 	{#if lead}
-		<p class="mb-8 text-xl leading-normal md:text-2xl">{lead}</p>
+		<p class="mb-8 text-lg leading-normal md:text-xl">{lead}</p>
 	{/if}
 	{@render children?.()}
 </section>
