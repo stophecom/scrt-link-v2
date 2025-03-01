@@ -15,7 +15,7 @@
 		{#each menu as menuItem}
 			<li>
 				<a
-					class="block p-1 font-medium hover:underline"
+					class="block p-1 py-2 font-medium hover:underline sm:py-1"
 					target={menuItem?.externalLink ? '_blank' : ''}
 					href={menuItem.href}
 				>
