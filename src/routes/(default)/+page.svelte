@@ -61,7 +61,7 @@
 		title="One-Time Secrets"
 		lead="Share sensitive information that can be viewed only once—perfect for transmitting passwords, credit card details, private keys, or other confidential data."
 	>
-		<div class="grid grid-rows-3 gap-4 sm:grid-cols-3">
+		<div class="grid grid-rows-3 gap-4 sm:grid-cols-3 sm:grid-rows-none">
 			{#each explanationSteps() as step, i}
 				{@render illustrationCards(step.title, step.illustration, step.description, i)}
 			{/each}
