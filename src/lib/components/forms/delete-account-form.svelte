@@ -4,7 +4,7 @@
 
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
-	// import * as m from '$lib/paraglide/messages.js';
+	import * as m from '$lib/paraglide/messages.js';
 	import { type DeleteAccountSchema, deleteAccountSchema } from '$lib/validators/formSchemas';
 
 	import Switch from '../form-fields/switch.svelte';
@@ -30,15 +30,12 @@
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/deleteAccount">
 		<Form.Field form={deleteAccountForm} name="confirm" class="py-4">
-			<Switch
-				bind:checked={$formData.confirm}
-				label="I confirm that I want to delete my account."
-			/>
+			<Switch bind:checked={$formData.confirm} label={m.inclusive_male_squirrel_treasure()} />
 		</Form.Field>
 
 		<div class="py-4">
 			<Form.Button variant="destructive" delayed={$delayed} class="w-full" size="lg"
-				>Delete Account</Form.Button
+				>{m.home_sharp_jackdaw_endure()}</Form.Button
 			>
 		</div>
 

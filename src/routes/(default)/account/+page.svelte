@@ -18,7 +18,7 @@
 
 <Page
 	title={m.zany_jolly_cuckoo_scoop({ name: user.name || m.quiet_long_beaver_scold() })}
-	lead="Welcome back to your safe space."
+	lead={m.gray_quiet_tern_bubble()}
 >
 	<Card>
 		<div class="mb-4 flex flex-col items-center justify-center">

@@ -17,17 +17,19 @@
 <Page title={m.nimble_quick_bird_sew()} lead={m.wacky_key_vole_roam()}>
 	<div class="grid gap-4">
 		<div>
-			<Button variant="ghost" href="/account"><ArrowLeft class="mr-2" />Back to Account</Button>
+			<Button variant="ghost" href="/account"
+				><ArrowLeft class="mr-2" />{m.still_key_hornet_adapt()}</Button
+			>
 		</div>
 		<Card title={m.vivid_house_flea_zap()}>
 			<SettingsForm form={data.settingsForm} user={data.user} />
 
-			<CardTitle class="mt-12">Account</CardTitle>
+			<CardTitle class="mt-12">{m.novel_proud_anaconda_zoom()}</CardTitle>
 			<div class="mb-2">
 				<Button variant="outline" href="/set-password">{m.jumpy_factual_mole_hunt()}</Button>
 			</div>
 			<Button variant="outline" href="/delete-account" class="text-destructive"
-				>Delete Account</Button
+				>{m.home_sharp_jackdaw_endure()}</Button
 			>
 		</Card>
 	</div>

@@ -139,7 +139,7 @@
 	"curly_few_parrot_savor": "{amount} days",
 	"lucky_warm_mayfly_engage": "Share a secret",
 	"aloof_quaint_snail_pave": "…with a link that only works one time and then self-destructs.",
-	"sea_giant_flamingo_forgive": "E2E-encrypted",
+	"sea_giant_flamingo_forgive": "End-to-end-encrypted",
 	"gross_empty_lion_dash": "Swiss privacy",
 	"mean_smug_loris_cherish": "Without a trace",
 	"tiny_mean_marmot_cheer": "What is your secret?",
@@ -224,5 +224,14 @@
 	"novel_proud_anaconda_zoom": "Account",
 	"less_tangy_crab_chop": "Settings",
 	"loved_yummy_kangaroo_dance": "Theme color",
-	"stout_loved_marlin_enrich": "Back to Account"
+	"stout_loved_marlin_enrich": "Back to Account",
+	"keen_lost_oryx_stab": "Just kidding. We deleted all your data from our servers. \n\nAll the best,  \nChris",
+	"ok_known_mule_cherish": "Farewell",
+	"sleek_ornate_baboon_transform": "Gone, but never forgotten.",
+	"gray_quiet_tern_bubble": "Welcome back to your safe space.",
+	"home_sharp_jackdaw_endure": "Delete Account",
+	"inclusive_male_squirrel_treasure": "I confirm that I want to delete my account.",
+	"orange_major_sheep_hush": "Delete your account",
+	"agent_heavy_canary_jump": "If you close your account, all content will be deleted. If you have a subscription, it will be automatically canceled.",
+	"still_key_hornet_adapt": "Back to account"
 }

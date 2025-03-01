@@ -1,16 +1,9 @@
 <script lang="ts">
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Markdown from '$lib/components/ui/markdown';
-	// import * as m from '$lib/paraglide/messages.js';
-
-	const message = `
-Just kidding. We deleted all your data from our servers. 
-
-All the best,  
-Chris
-`;
+	import * as m from '$lib/paraglide/messages.js';
 </script>
 
-<Page title="Farewell" lead="Gone, but never forgotten.">
-	<Markdown markdown={message} format={true} />
+<Page title={m.ok_known_mule_cherish()} lead={m.sleek_ornate_baboon_transform()}>
+	<Markdown markdown={m.keen_lost_oryx_stab()} format={true} />
 </Page>

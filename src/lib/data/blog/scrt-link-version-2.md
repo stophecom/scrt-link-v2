@@ -1,5 +1,5 @@
 ---
-title: Version 2 is coming
+title: Version 2 is here
 lead: Mostly same, but better.
 description: With the release of V2 we not only improved performance, security and user experience, we also added new features. And, end-to-end encrypted file transfer is generally available.
 date: '2024-02-23'

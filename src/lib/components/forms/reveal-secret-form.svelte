@@ -234,7 +234,7 @@
 								<FileLock class="text-primary h-10 w-10 stroke-1" />
 							</div>
 
-							<div>
+							<div class="overflow-hidden">
 								<div class="flex truncate">
 									<strong class="mr-1">{m.suave_level_squirrel_hope()}</strong>
 									<Typewriter message={fileMeta?.name} />
