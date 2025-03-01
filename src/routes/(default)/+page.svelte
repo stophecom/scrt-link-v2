@@ -2,6 +2,7 @@
 	import Burn from '$lib/assets/images/illustrations/burn.svg?component';
 	import Write from '$lib/assets/images/illustrations/create.svg?component';
 	import Share from '$lib/assets/images/illustrations/share.svg?component';
+	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import CreateSecret from '$lib/components/layout/create-secret.svelte';
 	import Page from '$lib/components/layout/page/page.svelte';
 	import Section from '$lib/components/layout/section.svelte';
@@ -58,11 +59,20 @@
 		<CreateSecret form={data.secretForm} user={data.user} baseUrl={data.baseUrl} />
 	</div>
 	<Section title={m.full_minor_fireant_accept()} lead={m.dirty_bright_robin_earn()}>
-		<div class="grid grid-rows-3 gap-4 sm:grid-cols-3 sm:grid-rows-none">
-			{#each explanationSteps() as step, i}
-				{@render illustrationCards(step.title, step.illustration, step.description, i)}
-			{/each}
-		</div>
+		<IntersectionObserver let:intersecting top={-100} once={true}>
+			<div class="grid grid-rows-3 gap-4 sm:grid-cols-3 sm:grid-rows-none">
+				{#each explanationSteps() as step, i}
+					<div
+						style="transition-delay: {i * 100}ms;"
+						class="transition-all {intersecting
+							? 'translate-y-0 scale-100 opacity-100 duration-700'
+							: 'translate-y-20 scale-90 opacity-0'}"
+					>
+						{@render illustrationCards(step.title, step.illustration, step.description, i)}
+					</div>
+				{/each}
+			</div>
+		</IntersectionObserver>
 	</Section>
 
 	<Section title="FAQ" lead={m.stock_keen_marten_commend()}>
