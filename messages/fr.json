@@ -138,7 +138,7 @@
 	"raw_stout_felix_empower": "{amount} heures",
 	"curly_few_parrot_savor": "{amount} jours",
 	"lucky_warm_mayfly_engage": "Partager un secret",
-	"aloof_quaint_snail_pave": "…avec un lien qui ne fonctionne qu’une seule fois et qui s’autodétruit ensuite.",
+	"aloof_quaint_snail_pave": "…avec un lien qui ne fonctionne qu’une <span class=\"gradient-text\">seule fois</span> et qui s’autodétruit ensuite.",
 	"sea_giant_flamingo_forgive": "Cryptage de bout en bout",
 	"gross_empty_lion_dash": "Confidentialité suisse",
 	"mean_smug_loris_cherish": "Sans laisser de trace"

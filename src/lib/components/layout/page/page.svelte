@@ -10,7 +10,7 @@
 
 	type Props = {
 		title: string;
-		lead?: string;
+		lead?: string | Snippet;
 		metaTitle?: string;
 		metaDescription?: string;
 		metaKeywords?: string;
@@ -51,7 +51,8 @@
 
 	{#if lead}
 		<p class="mb-10 text-2xl leading-snug text-pretty md:text-3xl">
-			{lead}
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html lead}
 		</p>
 	{/if}
 
@@ -91,7 +92,7 @@
 		}
 	}
 
-	.gradient-text {
+	:global(.gradient-text) {
 		--_space: ;
 
 		--_color-1-from: var(--color-foreground);
