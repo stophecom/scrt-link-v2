@@ -69,6 +69,7 @@
 		"@aws-sdk/s3-presigned-post": "^3.741.0",
 		"@aws-sdk/s3-request-presigner": "^3.741.0",
 		"@inlang/paraglide-sveltekit": "^0.15.5",
+		"@stripe/stripe-js": "^5.10.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"@tailwindcss/vite": "^4.0.6",
 		"arctic": "^2.3.3",
@@ -82,6 +83,7 @@
 		"pretty-bytes": "^6.1.1",
 		"resend": "^4.1.1",
 		"runed": "^0.23.3",
+		"stripe": "^17.7.0",
 		"svelte-email-tailwind": "^2.0.1",
 		"svelte-exmarkdown": "^4.0.2",
 		"svelte-typewriter": "^3.2.3"

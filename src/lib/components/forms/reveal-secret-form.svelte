@@ -3,7 +3,6 @@
 	import FileLock from 'lucide-svelte/icons/file-lock';
 	import Flame from 'lucide-svelte/icons/flame';
 	import Reply from 'lucide-svelte/icons/reply';
-	import prettyBytes from 'pretty-bytes';
 	import { tick } from 'svelte';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -11,6 +10,7 @@
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
 	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
+	import { formatBytes } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
 	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/utils';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
@@ -242,7 +242,7 @@
 
 								<div class="flex truncate">
 									<strong class="mr-1">{m.smug_smart_giraffe_borrow()}</strong>
-									<Typewriter message={prettyBytes(fileMeta?.size || 0)} />
+									<Typewriter message={formatBytes(fileMeta?.size || 0)} />
 								</div>
 								<div class="flex truncate">
 									<strong class="mr-1">{m.slow_free_lynx_spur()}</strong>
