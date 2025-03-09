@@ -245,7 +245,7 @@
 	"royal_odd_ox_read": "We encrypt your secret directly on your device. The encryption key is never stored; instead, it becomes part of the link itself. Without the full link, no one—including us—can ever decrypt your secret.",
 	"flat_zany_baboon_adapt": "End-to-End Encryption",
 	"happy_plain_panther_fry": "Learn more about security",
-	"equal_elegant_herring_yell": "\t\tWe generate a random encryption key directly in your browser to encrypt your secret. This key\n\t\t\tis appended to the fragment identifier—commonly known as the #hash or anchor part of the\n\t\t\tURL—of the download link, which is never transmitted to the server.",
+	"equal_elegant_herring_yell": "\t\tWe generate a random encryption key directly in your browser to encrypt your secret. This key is never transmitted to the server.",
 	"slimy_next_shad_fall": "Simple plans, fair pricing.",
 	"moving_quaint_buzzard_trip": "Pricing",
 	"pretty_factual_piranha_hug": "Frequently asked questions about plans and pricing.",
