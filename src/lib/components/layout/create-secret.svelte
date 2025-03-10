@@ -63,14 +63,19 @@
 			<SecretForm {form} {user} {secretType} bind:masterPassword bind:successMessage />
 		{:else}
 			<Tabs.Root value="text" let:value>
-				{@const secretType = value as SecretType}
 				<Tabs.List>
 					{#each getSecretTypes() as secretTypeItem}
 						<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
 					{/each}
 				</Tabs.List>
 				<Tabs.Content {value}>
-					<SecretForm {form} {user} {secretType} bind:masterPassword bind:successMessage />
+					<SecretForm
+						{form}
+						{user}
+						secretType={value as SecretType}
+						bind:masterPassword
+						bind:successMessage
+					/>
 				</Tabs.Content>
 			</Tabs.Root>
 		{/if}

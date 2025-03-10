@@ -38,12 +38,12 @@ export const signInFormSchema = () =>
 // Set default value for expiresIn to the "medium" option.
 const expiresInOptions = getExpiresInOptions();
 const defaultExpiresInValue = expiresInOptions[(expiresInOptions.length / 2) | 0];
-export const secretFormSchema = (characterLimit = 100_000) =>
+export const secretFormSchema = () =>
 	z.object({
 		secretIdHash: z.string().max(512),
 		publicKey: z.string().max(512),
 		meta: z.string().max(100_000),
-		content: z.string().min(1).max(characterLimit),
+		content: z.string().min(1).max(100_000),
 		password: z.string().min(6).max(512).optional(),
 		expiresIn: z.number().default(defaultExpiresInValue.value)
 	});

@@ -3,7 +3,7 @@ import * as m from '$lib/paraglide/messages.js';
 import { ReadReceiptOptions, ThemeOptions } from './enums';
 import { DAY, MIN } from './units';
 
-export const getExpiresInOptions = (extended: boolean) => {
+export const getExpiresInOptions = (extended?: boolean) => {
 	const options = [
 		{
 			value: 10 * MIN, // Time period in milliseconds

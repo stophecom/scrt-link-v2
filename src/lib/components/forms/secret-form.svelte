@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { type Infer, intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod } from 'sveltekit-superforms/adapters';
 
 	import {
 		encryptString,
@@ -48,15 +48,14 @@
 		masterPassword = $bindable(),
 		form: formProp,
 		user,
-		secretType = $bindable()
+		secretType
 	}: SecretFormProps = $props();
 
 	const planLimits = getPlanLimits(user?.subscriptionTier);
 
+	console.log(secretType);
 	const form = superForm(formProp, {
-		validators: zodClient(
-			secretFormSchema(secretType === SecretType.TEXT ? planLimits.text : 100_000)
-		),
+		validators: zod(secretFormSchema()),
 		validationMethod: 'onblur',
 		dataType: 'json',
 
@@ -161,9 +160,10 @@
 						isHiddenLabel
 						{charactersLeft}
 						{...$constraints.content}
+						maxlength={planLimits.text}
 					/>
 				</Form.Field>
-				{#if charactersLeft < 0}
+				{#if charactersLeft <= 0}
 					{@render upgrade()}
 				{/if}
 			</div>
