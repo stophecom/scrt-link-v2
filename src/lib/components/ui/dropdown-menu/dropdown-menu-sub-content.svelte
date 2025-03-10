@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui';
 
-	import { cn, flyAndScale } from '$lib/utils.js';
+	import { cn, flyAndScale } from '$lib/client/utils.js';
 
 	type $$Props = DropdownMenuPrimitive.SubContentProps;
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

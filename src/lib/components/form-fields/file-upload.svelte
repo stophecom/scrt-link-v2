@@ -5,27 +5,30 @@
 	import { fade } from 'svelte/transition';
 
 	import { PUBLIC_S3_BUCKET } from '$env/static/public';
+	import { SecretType } from '$lib/data/enums';
 	import { handleFileEncryptionAndUpload } from '$lib/file-transfer';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { MB } from '../../data/units';
-	import type { SecretType } from '../forms/secret-form.svelte';
 	import Button from '../ui/button/button.svelte';
 	import DropZone from '../ui/drop-zone/drop-zone.svelte';
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
+	import Markdown from '../ui/markdown';
 	import { UploadSpinner } from '../ui/spinner';
 
 	type Props = {
+		accept?: string;
+		maxFileSize?: number;
 		secretType: SecretType;
 		masterPassword: string;
 		privateKey: CryptoKey;
 		content: string;
 		meta: string;
 		loading: boolean;
-		accept?: string;
 	};
 	let {
 		accept,
+		maxFileSize,
 		secretType,
 		masterPassword,
 		privateKey,
@@ -137,8 +140,9 @@
 	{/if}
 {:else}
 	<DropZone
-		labelButton={secretType === 'snap' ? m.slimy_close_frog_laugh() : undefined}
-		labelDropzone={secretType === 'snap' ? m.jolly_whole_hyena_slurp() : undefined}
+		labelButton={secretType === SecretType.SNAP ? m.slimy_close_frog_laugh() : undefined}
+		labelDropzone={secretType === SecretType.SNAP ? m.jolly_whole_hyena_slurp() : undefined}
+		{maxFileSize}
 		{onDrop}
 		{accept}
 		onError={(e) => {
@@ -149,6 +153,6 @@
 
 {#if error}
 	<div class="text-destructive p-1 text-sm">
-		{error}
+		<Markdown markdown={error} />
 	</div>
 {/if}

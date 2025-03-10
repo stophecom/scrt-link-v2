@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Toggle as TogglePrimitive } from 'bits-ui';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	import { type Size, toggleVariants, type Variant } from './index.js';
 

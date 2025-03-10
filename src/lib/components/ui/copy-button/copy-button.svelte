@@ -2,8 +2,8 @@
 	import Check from 'lucide-svelte/icons/check';
 	import Copy from 'lucide-svelte/icons/copy';
 
+	import { copyText } from '$lib/client/utils';
 	import * as m from '$lib/paraglide/messages.js';
-	import { copyText } from '$lib/utils';
 
 	import Button from '../button/button.svelte';
 

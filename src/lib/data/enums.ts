@@ -1,3 +1,10 @@
+export enum SecretType {
+	TEXT = 'text',
+	FILE = 'file',
+	REDIRECT = 'redirect',
+	SNAP = 'snap'
+}
+
 export enum ReadReceiptOptions {
 	NONE = 'none',
 	EMAIL = 'email',
@@ -5,9 +12,9 @@ export enum ReadReceiptOptions {
 }
 
 export enum TierOptions {
-	FREE = 'free',
-	PREMIUM = 'premium',
-	PREPAID = 'prepaid'
+	CONFIDENTIAL = 'Confidential',
+	SECRET = 'Secret',
+	TOP_SECRET = 'Top Secret'
 }
 
 export enum ThemeOptions {

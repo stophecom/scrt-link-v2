@@ -7,7 +7,7 @@ import { db } from '$lib/server/db';
 import { user as userSchema } from '$lib/server/db/schema';
 import { themeFormSchema } from '$lib/validators/formSchemas';
 
-import { ThemeOptions } from '../../../../lib/data/schemaEnums';
+import { ThemeOptions } from '../../../../lib/data/enums';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {

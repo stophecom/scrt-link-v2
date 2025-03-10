@@ -11,7 +11,13 @@ import {
 	uuid
 } from 'drizzle-orm/pg-core';
 
-import { ReadReceiptOptions, TierOptions } from '../../data/schemaEnums';
+import { ReadReceiptOptions, TierOptions } from '../../data/enums';
+
+export const subscriptionTier = pgEnum('subscription_tier', [
+	TierOptions.CONFIDENTIAL,
+	TierOptions.SECRET,
+	TierOptions.TOP_SECRET
+]);
 
 export const user = pgTable('user', {
 	id: uuid('id').defaultRandom().primaryKey().unique(),
@@ -20,19 +26,10 @@ export const user = pgTable('user', {
 	name: text('name'),
 	picture: text('picture'),
 	googleId: text('google_id'),
-	stripeId: text('stripe_id'),
+	stripeCustomerId: text('stripe_customer_id'),
+	subscriptionTier: subscriptionTier().default(TierOptions.CONFIDENTIAL),
 	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified')
-});
-
-export const tier = pgEnum('tier', [TierOptions.FREE, TierOptions.PREMIUM, TierOptions.PREPAID]);
-
-export const subscriptions = pgTable('subscriptions', {
-	id: uuid('id').defaultRandom().primaryKey(),
-	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }),
-	tier: tier().default(TierOptions.FREE),
-	balance: integer('balance'),
-	expiresAt: timestamp('expires_at', { withTimezone: true })
 });
 
 export const session = pgTable('session', {
@@ -93,7 +90,6 @@ export const stats = pgTable('stats', {
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
-export type Subscriptions = typeof subscriptions.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;
 export type Secret = typeof secret.$inferSelect;
 export type UserSettings = typeof userSettings.$inferSelect;

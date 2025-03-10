@@ -1,30 +1,35 @@
 import * as m from '$lib/paraglide/messages.js';
 
-import { ReadReceiptOptions, ThemeOptions } from './schemaEnums';
+import { ReadReceiptOptions, ThemeOptions } from './enums';
 import { DAY, MIN } from './units';
 
-export const getExpiresInOptions = () => [
-	{
-		value: 10 * MIN, // Time period in milliseconds
-		label: m.sleek_away_gull_gaze({ amount: 10 })
-	},
-	{
-		value: 60 * MIN,
-		label: m.close_pink_ant_radiate()
-	},
-	{
-		value: DAY,
-		label: m.raw_stout_felix_empower({ amount: 24 })
-	},
-	{
-		value: 7 * DAY,
-		label: m.curly_few_parrot_savor({ amount: 7 })
-	},
-	{
-		value: 30 * DAY,
-		label: m.curly_few_parrot_savor({ amount: 30 })
-	}
-];
+export const getExpiresInOptions = (extended?: boolean) => {
+	const options = [
+		{
+			value: 10 * MIN, // Time period in milliseconds
+			label: m.sleek_away_gull_gaze({ amount: 10 })
+		},
+		{
+			value: 60 * MIN,
+			label: m.close_pink_ant_radiate()
+		},
+		{
+			value: DAY,
+			label: m.raw_stout_felix_empower({ amount: 24 })
+		},
+		{
+			value: 7 * DAY,
+			label: m.curly_few_parrot_savor({ amount: 7 })
+		},
+		{
+			value: 30 * DAY,
+			label: m.curly_few_parrot_savor({ amount: 30 }),
+			disabled: !extended
+		}
+	];
+
+	return options;
+};
 
 export const getReadReceiptOptions = () => [
 	{

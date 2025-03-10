@@ -3,18 +3,19 @@
 	import FileLock from 'lucide-svelte/icons/file-lock';
 	import Flame from 'lucide-svelte/icons/flame';
 	import Reply from 'lucide-svelte/icons/reply';
-	import prettyBytes from 'pretty-bytes';
 	import { tick } from 'svelte';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
+	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
+	import { decryptString } from '$lib/client/web-crypto';
 	import * as Form from '$lib/components/ui/form';
+	import { SecretType } from '$lib/data/enums';
 	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
+	import { formatBytes } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
-	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/utils';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
-	import { decryptString } from '$lib/web-crypto';
 
 	import Password from '../form-fields/password.svelte';
 	import Typewriter from '../helpers/typewriter.svelte';
@@ -46,10 +47,10 @@
 	let error: string = $state('');
 
 	let isSecretFileOrSnap = $derived(
-		metaParsed?.secretType === 'file' || metaParsed?.secretType === 'snap'
+		metaParsed?.secretType === SecretType.FILE || metaParsed?.secretType === SecretType.SNAP
 	);
-	let isSnap = $derived(metaParsed?.secretType === 'snap');
-	let isSecretRedirect = $derived(metaParsed?.secretType === 'redirect');
+	let isSnap = $derived(metaParsed?.secretType === SecretType.SNAP);
+	let isSecretRedirect = $derived(metaParsed?.secretType === SecretType.REDIRECT);
 	let fileMeta = $derived(isSecretFileOrSnap ? metaParsed : undefined) as FileMeta;
 	let fileReference = $derived(isSecretFileOrSnap ? contentParsed : undefined) as FileReference;
 	let isDownloading = $derived(progress < 1);
@@ -242,7 +243,7 @@
 
 								<div class="flex truncate">
 									<strong class="mr-1">{m.smug_smart_giraffe_borrow()}</strong>
-									<Typewriter message={prettyBytes(fileMeta?.size || 0)} />
+									<Typewriter message={formatBytes(fileMeta?.size || 0)} />
 								</div>
 								<div class="flex truncate">
 									<strong class="mr-1">{m.slow_free_lynx_spur()}</strong>

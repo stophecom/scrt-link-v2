@@ -13,6 +13,7 @@ import {
 	deleteEmailVerificationRequests
 } from '$lib/server/email-verification';
 import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '$lib/server/rate-limit';
+import stripeInstance from '$lib/server/stripe';
 import { emailFormSchema, emailVerificationCodeFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, RequestEvent } from './$types';
@@ -132,6 +133,18 @@ async function verifyCode(event: RequestEvent) {
 				set: { emailVerified: true }
 			})
 			.returning();
+
+		// In case a user doesn't have a stripe account, we create one
+		if (!userResult.stripeCustomerId) {
+			const stripeCustomer = await stripeInstance.customers.create({
+				email: userResult.email
+			});
+
+			await db
+				.update(user)
+				.set({ stripeCustomerId: stripeCustomer.id })
+				.where(eq(user.id, userResult.id));
+		}
 
 		await db.insert(userSettings).values({
 			userId: userResult.id,

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button as ButtonPrimitive } from 'bits-ui';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	import Spinner from '../spinner/spinner.svelte';
 	import { buttonVariants, type Events, type Props } from './index.js';

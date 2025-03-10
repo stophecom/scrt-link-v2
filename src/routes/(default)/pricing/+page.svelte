@@ -5,17 +5,19 @@
 	import Accordion from '$lib/components/ui/accordion';
 	import accountAndBilling from '$lib/data/faq/accountAndBilling';
 	import * as m from '$lib/paraglide/messages.js';
+
+	import PlanSelection from './plan-selection.svelte';
+
+	let { data } = $props();
 </script>
 
-<svelte:head>
-	<script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-</svelte:head>
 <Page title={m.moving_quaint_buzzard_trip()} lead={m.slimy_next_shad_fall()}>
-	<stripe-pricing-table
-		pricing-table-id="prctbl_1QxwfGBo4UBHEOfAoo9scvM0"
-		publishable-key="pk_live_5XZb1AkCSXkoFiN8MR7kvndp"
-	>
-	</stripe-pricing-table>
+	<Section>
+		{#if data.plans}
+			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
+		{/if}
+	</Section>
+
 	<Section title="FAQ" lead={m.pretty_factual_piranha_hug()}>
 		<Accordion items={accountAndBilling()} />
 	</Section>

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import * as m from '$lib/paraglide/messages.js';
 
-import { ReadReceiptOptions, ThemeOptions } from '../data/schemaEnums';
+import { ReadReceiptOptions, ThemeOptions } from '../data/enums';
 import { getExpiresInOptions } from '../data/secretSettings';
 
 // We return functions in order for translations to work as expected.

@@ -3,28 +3,26 @@
 	import Reply from 'lucide-svelte/icons/reply';
 	import { fade } from 'svelte/transition';
 
-	import SecretForm, {
-		type SecretFormProps,
-		type SecretType
-	} from '$lib/components/forms/secret-form.svelte';
+	import SecretForm, { type SecretFormProps } from '$lib/components/forms/secret-form.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import Usps from '$lib/components/ui/usps';
+	import { privacyUsps } from '$lib/data/app';
+	import type { SecretType } from '$lib/data/enums';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getSecretTypes } from '../../data/secretSettings';
-	import { privacyUsps } from '../../data/usps';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import Markdown from '../ui/markdown';
 	import ShareButton from '../ui/share-button';
+	import Usps from './usps.svelte';
 
 	type Props = {
 		form: SecretFormProps['form'];
 		baseUrl: LayoutServerData['baseUrl'];
 		user: LayoutServerData['user'];
-		secretType?: SecretFormProps['secretType'];
+		secretType?: SecretType;
 		hideUsps?: boolean;
 	};
 	let { form, baseUrl, user, secretType, hideUsps = false }: Props = $props();
@@ -65,14 +63,19 @@
 			<SecretForm {form} {user} {secretType} bind:masterPassword bind:successMessage />
 		{:else}
 			<Tabs.Root value="text" let:value>
-				{@const secretType = value as SecretType}
 				<Tabs.List>
 					{#each getSecretTypes() as secretTypeItem}
 						<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
 					{/each}
 				</Tabs.List>
 				<Tabs.Content {value}>
-					<SecretForm {form} {user} {secretType} bind:masterPassword bind:successMessage />
+					<SecretForm
+						{form}
+						{user}
+						secretType={value as SecretType}
+						bind:masterPassword
+						bind:successMessage
+					/>
 				</Tabs.Content>
 			</Tabs.Root>
 		{/if}

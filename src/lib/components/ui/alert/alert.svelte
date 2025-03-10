@@ -6,7 +6,7 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	import Description from './alert-description.svelte';
 	import Title from './alert-title.svelte';
