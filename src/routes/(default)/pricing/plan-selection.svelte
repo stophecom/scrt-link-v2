@@ -120,7 +120,7 @@
 			{@const currency = price?.currency}
 			{@const priceUnitAmount = price?.unit_amount || 0}
 			{@const priceId = price.id}
-			{@const promotion = index === 0 ? m.happy_witty_anteater_soar() : undefined}
+			{@const promotion = index === 0 && !subscription ? m.happy_witty_anteater_soar() : undefined}
 
 			<PlanView
 				name={plan.name}

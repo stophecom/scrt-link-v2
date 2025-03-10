@@ -105,10 +105,13 @@
 	const { form: formData, message, delayed, constraints, enhance } = form;
 
 	// We need to convert number (expiration timeout) to string, since radio input only supports string.
-	const expiresInOptions = getExpiresInOptions().map((option) => ({
-		...option,
-		value: String(option.value)
-	}));
+	const expiresInOptions = getExpiresInOptions(planLimits.expirationOptionsExtended).map(
+		(option) => ({
+			disabled: !planLimits.expirationOptionsAllowed,
+			...option,
+			value: String(option.value)
+		})
+	);
 	const expiresInProxy = intProxy(form, 'expiresIn'); // Cast string to number
 
 	let privateKey: CryptoKey | undefined = $state();
@@ -231,7 +234,6 @@
 					options={expiresInOptions}
 					bind:value={$expiresInProxy}
 					label={m.noble_whole_hornet_evoke()}
-					disabled={!planLimits.expirationOptionsAllowed}
 				/>
 			</Form.Fieldset>
 			{#if !planLimits.expirationOptionsAllowed || !planLimits.passwordAllowed}
