@@ -4,7 +4,7 @@ export const freePlanName = 'Confidential';
 export const premiumPlanName = 'Secret';
 export const enterprisePlanName = 'Top Secret';
 
-const plans = [
+const plans = () => [
 	{
 		name: 'Confidential',
 		title: m.tasty_awake_cobra_belong(),
@@ -34,7 +34,7 @@ const plans = [
 ];
 
 export const getPlanContents = (name: string) => {
-	const plan = plans.find((el) => el.name === name);
+	const plan = plans().find((el) => el.name === name);
 
 	if (!plan) {
 		throw new Error(`No plan contents found with name: ${name} `);

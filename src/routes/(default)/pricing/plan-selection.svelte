@@ -152,11 +152,9 @@
 
 	<div class="flex flex-wrap">
 		<div class="xs:flex mr-4 items-center py-4">
-			<div class="xs:mb-0 mr-2 mb-1 font-medium">{m.novel_level_florian_kiss()}</div>
 			<CurrencySwitcher />
 		</div>
 		<div class="xs:flex items-center py-4">
-			<div class="xs:mb-0 mr-2 mb-1 font-medium">{m.cool_small_hornet_mix()}</div>
 			<div class="flex items-center text-sm">
 				{m.noisy_late_mouse_amaze()}
 				<Switch bind:checked={showYearlyPrice} class="mx-2" />
