@@ -13,19 +13,22 @@
 	import Button from '../ui/button/button.svelte';
 	import DropZone from '../ui/drop-zone/drop-zone.svelte';
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
+	import Markdown from '../ui/markdown';
 	import { UploadSpinner } from '../ui/spinner';
 
 	type Props = {
+		accept?: string;
+		maxFileSize?: number;
 		secretType: SecretType;
 		masterPassword: string;
 		privateKey: CryptoKey;
 		content: string;
 		meta: string;
 		loading: boolean;
-		accept?: string;
 	};
 	let {
 		accept,
+		maxFileSize,
 		secretType,
 		masterPassword,
 		privateKey,
@@ -139,6 +142,7 @@
 	<DropZone
 		labelButton={secretType === SecretType.SNAP ? m.slimy_close_frog_laugh() : undefined}
 		labelDropzone={secretType === SecretType.SNAP ? m.jolly_whole_hyena_slurp() : undefined}
+		{maxFileSize}
 		{onDrop}
 		{accept}
 		onError={(e) => {
@@ -149,6 +153,6 @@
 
 {#if error}
 	<div class="text-destructive p-1 text-sm">
-		{error}
+		<Markdown markdown={error} />
 	</div>
 {/if}

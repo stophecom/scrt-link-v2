@@ -15,6 +15,7 @@
 	} from '$lib/client/web-crypto';
 	import * as Form from '$lib/components/ui/form';
 	import { SecretType } from '$lib/data/enums';
+	import { getPlanLimits } from '$lib/data/plans';
 	import type { FileMeta } from '$lib/file-transfer';
 	import * as m from '$lib/paraglide/messages.js';
 	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
@@ -30,8 +31,6 @@
 	import Link from '../ui/link';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
-
-	const CHARACTER_LIMIT = 100_000;
 
 	export type Meta = Partial<FileMeta> & {
 		secretType: SecretType;
@@ -49,11 +48,15 @@
 		masterPassword = $bindable(),
 		form: formProp,
 		user,
-		secretType
+		secretType = $bindable()
 	}: SecretFormProps = $props();
 
+	const planLimits = getPlanLimits(user?.subscriptionTier);
+
 	const form = superForm(formProp, {
-		validators: zodClient(secretFormSchema()),
+		validators: zodClient(
+			secretFormSchema(secretType === SecretType.TEXT ? planLimits.text : 100_000)
+		),
 		validationMethod: 'onblur',
 		dataType: 'json',
 
@@ -113,7 +116,7 @@
 	let isOptionsVisible = $state(false);
 	let isFileUploading = $state(false);
 
-	let charactersLeft = $derived(CHARACTER_LIMIT - $formData.content.length);
+	let charactersLeft = $derived(planLimits.text - $formData.content.length);
 
 	const setCryptoKeys = async () => {
 		masterPassword = generateRandomUrlSafeString();
@@ -132,6 +135,17 @@
 	});
 </script>
 
+{#snippet upgrade()}
+	<div class="py-2">
+		<Alert Icon={LockKeyhole} variant="info" title={m.fair_red_warbler_bake()}>
+			<p>
+				{m.cool_spicy_gopher_earn()}
+			</p>
+			<Link href="/pricing">{m.mild_tangy_elk_scoop()}</Link>
+		</Alert>
+	</div>
+{/snippet}
+
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/postSecret">
 		{#if secretType === SecretType.TEXT}
@@ -146,42 +160,55 @@
 						{...$constraints.content}
 					/>
 				</Form.Field>
+				{#if charactersLeft < 0}
+					{@render upgrade()}
+				{/if}
 			</div>
 		{/if}
+
 		{#if [SecretType.FILE, SecretType.SNAP].includes(secretType) && privateKey}
 			<div in:fade>
-				<div class="min-h-32 py-2">
-					<FileUpload
-						{secretType}
-						bind:content={$formData.content}
-						bind:meta={$formData.meta}
-						{masterPassword}
-						{privateKey}
-						bind:loading={isFileUploading}
-						accept={secretType === SecretType.SNAP ? 'image/*' : undefined}
-					/>
+				{#if secretType === SecretType.FILE || (secretType === SecretType.SNAP && planLimits.snap)}
+					<div class="min-h-32 py-2">
+						<FileUpload
+							{secretType}
+							bind:content={$formData.content}
+							bind:meta={$formData.meta}
+							{masterPassword}
+							{privateKey}
+							maxFileSize={planLimits.file}
+							bind:loading={isFileUploading}
+							accept={secretType === SecretType.SNAP ? 'image/*' : undefined}
+						/>
 
-					{#if secretType === SecretType.SNAP && !isFileUploading && !$formData.content}
-						<div class="text-muted-foreground p-1 text-center text-xs text-pretty">
-							{m.tired_inner_cougar_push()}
-						</div>
-					{/if}
-				</div>
+						{#if secretType === SecretType.SNAP && !isFileUploading && !$formData.content}
+							<div class="text-muted-foreground p-1 text-center text-xs text-pretty">
+								{m.tired_inner_cougar_push()}
+							</div>
+						{/if}
+					</div>
+				{:else}
+					{@render upgrade()}
+				{/if}
 			</div>
 		{/if}
 
 		{#if secretType === SecretType.REDIRECT}
 			<div in:fade>
-				<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
-					<Text
-						bind:value={$formData.content}
-						label="URL"
-						isHiddenLabel={true}
-						placeholder="https://example.com"
-						description="The URL to get redirected to (one time)."
-						type="url"
-					/>
-				</Form.Field>
+				{#if planLimits.redirect}
+					<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
+						<Text
+							bind:value={$formData.content}
+							label="URL"
+							isHiddenLabel={true}
+							placeholder="https://example.com"
+							description="The URL to get redirected to (one time)."
+							type="url"
+						/>
+					</Form.Field>
+				{:else}
+					{@render upgrade()}
+				{/if}
 			</div>
 		{/if}
 
@@ -190,31 +217,25 @@
 				? 'visible h-[calc(auto)] pb-4 opacity-100'
 				: 'invisible h-0 opacity-0'}"
 		>
-			{#if user}
-				<Form.Field {form} name="password">
-					<Password
-						bind:value={$formData.password}
-						autocomplete="new-password"
-						{...$constraints.password}
-					/>
-				</Form.Field>
+			<Form.Field {form} name="password">
+				<Password
+					bind:value={$formData.password}
+					autocomplete="new-password"
+					{...$constraints.password}
+					disabled={!planLimits.passwordAllowed}
+				/>
+			</Form.Field>
 
-				<Form.Fieldset {form} name="expiresIn">
-					<RadioGroup
-						options={expiresInOptions}
-						bind:value={$expiresInProxy}
-						label={m.noble_whole_hornet_evoke()}
-					/>
-				</Form.Fieldset>
-			{:else}
-				<div class="py-2">
-					<Alert Icon={LockKeyhole} variant="info" title={m.fair_red_warbler_bake()}>
-						<p>
-							{m.cool_spicy_gopher_earn()}
-							<Link href="/signup">{m.mild_tangy_elk_scoop()}</Link>
-						</p>
-					</Alert>
-				</div>
+			<Form.Fieldset {form} name="expiresIn">
+				<RadioGroup
+					options={expiresInOptions}
+					bind:value={$expiresInProxy}
+					label={m.noble_whole_hornet_evoke()}
+					disabled={!planLimits.expirationOptionsAllowed}
+				/>
+			</Form.Fieldset>
+			{#if !planLimits.expirationOptionsAllowed || !planLimits.passwordAllowed}
+				{@render upgrade()}
 			{/if}
 		</div>
 

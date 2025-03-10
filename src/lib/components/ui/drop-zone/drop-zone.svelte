@@ -2,11 +2,10 @@
 	import ArrowUpFromLine from 'lucide-svelte/icons/arrow-up-from-line';
 
 	import gif from '$lib/assets/images/snoop.webp';
+	import { formatBytes } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { GB } from '../../../data/units';
-
-	const MAX_FILE_SIZE = 1 * GB; // @todo make dynamic
 
 	let isOver = $state(false);
 
@@ -21,6 +20,7 @@
 		onDrop: OnDrop;
 		onError: OnError;
 		multiple?: boolean;
+		maxFileSize?: number;
 		disabled?: boolean;
 		accept?: string; // image/*, .gif etc.
 		labelButton?: string;
@@ -32,6 +32,7 @@
 		onEnter,
 		onLeave,
 		multiple = false,
+		maxFileSize = 1 * GB,
 		disabled,
 		accept,
 		labelButton = m.gray_free_manatee_buy(),
@@ -47,8 +48,8 @@
 		}
 
 		// Since we only allow one file, checking first file only
-		if (files[0].size > MAX_FILE_SIZE) {
-			handleError(m.slimy_royal_lamb_roar({ amount: MAX_FILE_SIZE / GB }));
+		if (files[0].size > maxFileSize) {
+			handleError(m.slimy_royal_lamb_roar({ amount: formatBytes(maxFileSize) }));
 			return false;
 		}
 		return true;
