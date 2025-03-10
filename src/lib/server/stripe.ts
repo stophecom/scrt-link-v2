@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 
 import { STRIPE_SECRET_KEY } from '$env/static/private';
+import { TierOptions } from '$lib/data/enums';
 
 const stripeInstance = new Stripe(STRIPE_SECRET_KEY, {
 	// https://github.com/stripe/stripe-node#configuration
@@ -15,7 +16,15 @@ export type StripeCustomerWithSubscription = StripeCustomer & {
 
 export default stripeInstance;
 
-export const getActiveProducts = async () => await stripeInstance.products.list({ active: true });
+export const getActiveProducts = async () => {
+	const { data } = await stripeInstance.products.list({ active: true });
+
+	// We filter by predefined products (TierOptions).
+	// TierOptions.Confidential is the free option not covered on Stripe
+	return data.filter(
+		(item) => item.name === TierOptions.SECRET || item.name === TierOptions.TOP_SECRET
+	);
+};
 
 export const getActivePrices = async (productId: string, currency: string) =>
 	await stripeInstance.prices.list({

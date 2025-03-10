@@ -31,6 +31,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	switch (event.type) {
 		case 'customer.subscription.created':
+		case 'customer.subscription.deleted':
 		case 'customer.subscription.updated': {
 			const subscription = event.data.object as Stripe.Subscription;
 

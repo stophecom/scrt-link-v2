@@ -13,13 +13,13 @@ export type Plan = {
 };
 
 export const GET = async ({ url }: RequestEvent) => {
-	const { data } = await getActiveProducts();
+	const products = await getActiveProducts();
 
 	const currency = url.searchParams.get('currency') || 'usd';
 
 	const getPlans = async () =>
 		Promise.all(
-			data.map(async (item) => {
+			products.map(async (item) => {
 				const { data } = await getActivePrices(item.id, currency);
 
 				const priceByInterval = (interval: string) =>
