@@ -3,10 +3,10 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { error, json } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
+import { importPublicKey, verifyMessageSignature } from '$lib/client/web-crypto';
 import { s3Client } from '$lib/s3';
 import { db } from '$lib/server/db';
 import { secret as secretSchema } from '$lib/server/db/schema';
-import { importPublicKey, verifyMessageSignature } from '$lib/web-crypto';
 
 import type { RequestEvent } from './$types';
 

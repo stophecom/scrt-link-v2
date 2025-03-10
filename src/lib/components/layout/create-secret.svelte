@@ -9,16 +9,16 @@
 	} from '$lib/components/forms/secret-form.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import Usps from '$lib/components/ui/usps';
+	import { privacyUsps } from '$lib/data/app';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getSecretTypes } from '../../data/secretSettings';
-	import { privacyUsps } from '../../data/usps';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
 	import Markdown from '../ui/markdown';
 	import ShareButton from '../ui/share-button';
+	import Usps from './usps.svelte';
 
 	type Props = {
 		form: SecretFormProps['form'];

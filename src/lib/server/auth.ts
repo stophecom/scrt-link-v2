@@ -3,12 +3,12 @@ import { Google } from 'arctic';
 import { eq } from 'drizzle-orm';
 
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
+import { sha256Hash } from '$lib/client/web-crypto';
 import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
 import type { ThemeOptions } from '$lib/data/schemaEnums';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import { sha256Hash } from '$lib/web-crypto';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 

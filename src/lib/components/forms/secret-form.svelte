@@ -6,17 +6,17 @@
 	import { type Infer, intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import * as Form from '$lib/components/ui/form';
-	import type { FileMeta } from '$lib/file-transfer';
-	import * as m from '$lib/paraglide/messages.js';
-	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
 	import {
 		encryptString,
 		exportPublicKey,
 		generateKeyPair,
 		generateRandomUrlSafeString,
 		sha256Hash
-	} from '$lib/web-crypto';
+	} from '$lib/client/web-crypto';
+	import * as Form from '$lib/components/ui/form';
+	import type { FileMeta } from '$lib/file-transfer';
+	import * as m from '$lib/paraglide/messages.js';
+	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getExpiresInOptions } from '../../data/secretSettings';
