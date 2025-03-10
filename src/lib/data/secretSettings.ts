@@ -1,6 +1,6 @@
 import * as m from '$lib/paraglide/messages.js';
 
-import { ReadReceiptOptions, ThemeOptions } from './schemaEnums';
+import { ReadReceiptOptions, ThemeOptions } from './enums';
 import { DAY, MIN } from './units';
 
 export const getExpiresInOptions = () => [

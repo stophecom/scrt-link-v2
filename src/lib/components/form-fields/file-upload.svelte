@@ -5,11 +5,11 @@
 	import { fade } from 'svelte/transition';
 
 	import { PUBLIC_S3_BUCKET } from '$env/static/public';
+	import { SecretType } from '$lib/data/enums';
 	import { handleFileEncryptionAndUpload } from '$lib/file-transfer';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { MB } from '../../data/units';
-	import type { SecretType } from '../forms/secret-form.svelte';
 	import Button from '../ui/button/button.svelte';
 	import DropZone from '../ui/drop-zone/drop-zone.svelte';
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
@@ -137,8 +137,8 @@
 	{/if}
 {:else}
 	<DropZone
-		labelButton={secretType === 'snap' ? m.slimy_close_frog_laugh() : undefined}
-		labelDropzone={secretType === 'snap' ? m.jolly_whole_hyena_slurp() : undefined}
+		labelButton={secretType === SecretType.SNAP ? m.slimy_close_frog_laugh() : undefined}
+		labelDropzone={secretType === SecretType.SNAP ? m.jolly_whole_hyena_slurp() : undefined}
 		{onDrop}
 		{accept}
 		onError={(e) => {

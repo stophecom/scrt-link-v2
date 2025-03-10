@@ -3,13 +3,11 @@
 	import Reply from 'lucide-svelte/icons/reply';
 	import { fade } from 'svelte/transition';
 
-	import SecretForm, {
-		type SecretFormProps,
-		type SecretType
-	} from '$lib/components/forms/secret-form.svelte';
+	import SecretForm, { type SecretFormProps } from '$lib/components/forms/secret-form.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { privacyUsps } from '$lib/data/app';
+	import type { SecretType } from '$lib/data/enums';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { LayoutServerData } from '../../../routes/$types';
@@ -24,7 +22,7 @@
 		form: SecretFormProps['form'];
 		baseUrl: LayoutServerData['baseUrl'];
 		user: LayoutServerData['user'];
-		secretType?: SecretFormProps['secretType'];
+		secretType?: SecretType;
 		hideUsps?: boolean;
 	};
 	let { form, baseUrl, user, secretType, hideUsps = false }: Props = $props();

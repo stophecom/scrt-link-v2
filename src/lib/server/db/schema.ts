@@ -11,7 +11,7 @@ import {
 	uuid
 } from 'drizzle-orm/pg-core';
 
-import { ReadReceiptOptions, TierOptions } from '../../data/schemaEnums';
+import { ReadReceiptOptions, TierOptions } from '../../data/enums';
 
 export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,

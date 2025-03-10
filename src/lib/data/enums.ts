@@ -1,3 +1,10 @@
+export enum SecretType {
+	TEXT = 'text',
+	FILE = 'file',
+	REDIRECT = 'redirect',
+	SNAP = 'snap'
+}
+
 export enum ReadReceiptOptions {
 	NONE = 'none',
 	EMAIL = 'email',

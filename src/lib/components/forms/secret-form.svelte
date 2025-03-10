@@ -14,6 +14,7 @@
 		sha256Hash
 	} from '$lib/client/web-crypto';
 	import * as Form from '$lib/components/ui/form';
+	import { SecretType } from '$lib/data/enums';
 	import type { FileMeta } from '$lib/file-transfer';
 	import * as m from '$lib/paraglide/messages.js';
 	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
@@ -32,7 +33,6 @@
 
 	const CHARACTER_LIMIT = 100_000;
 
-	export type SecretType = 'text' | 'file' | 'redirect' | 'snap';
 	export type Meta = Partial<FileMeta> & {
 		secretType: SecretType;
 	};
@@ -134,7 +134,7 @@
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/postSecret">
-		{#if secretType === 'text'}
+		{#if secretType === SecretType.TEXT}
 			<div in:fade>
 				<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
 					<Textarea
@@ -148,7 +148,7 @@
 				</Form.Field>
 			</div>
 		{/if}
-		{#if ['file', 'snap'].includes(secretType) && privateKey}
+		{#if [SecretType.FILE, SecretType.SNAP].includes(secretType) && privateKey}
 			<div in:fade>
 				<div class="min-h-32 py-2">
 					<FileUpload
@@ -158,10 +158,10 @@
 						{masterPassword}
 						{privateKey}
 						bind:loading={isFileUploading}
-						accept={secretType === 'snap' ? 'image/*' : undefined}
+						accept={secretType === SecretType.SNAP ? 'image/*' : undefined}
 					/>
 
-					{#if secretType === 'snap' && !isFileUploading && !$formData.content}
+					{#if secretType === SecretType.SNAP && !isFileUploading && !$formData.content}
 						<div class="text-muted-foreground p-1 text-center text-xs text-pretty">
 							{m.tired_inner_cougar_push()}
 						</div>
@@ -170,7 +170,7 @@
 			</div>
 		{/if}
 
-		{#if secretType === 'redirect'}
+		{#if secretType === SecretType.REDIRECT}
 			<div in:fade>
 				<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
 					<Text

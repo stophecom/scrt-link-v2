@@ -1,6 +1,7 @@
 import * as m from '$lib/paraglide/messages.js';
 
-import { TierOptions } from './schemaEnums';
+import { TierOptions } from './enums';
+import { MB } from './units';
 
 const plans = () => [
 	{
@@ -11,7 +12,13 @@ const plans = () => [
 			m.livid_patchy_mallard_dig(),
 			m.loose_chunky_duck_intend(),
 			m.long_tired_monkey_rest()
-		]
+		],
+		limits: {
+			text: 150,
+			file: 10 * MB,
+			redirect: false,
+			snap: false
+		}
 	},
 	{
 		name: TierOptions.SECRET,

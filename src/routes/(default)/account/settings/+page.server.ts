@@ -8,7 +8,7 @@ import { db } from '$lib/server/db';
 import { userSettings } from '$lib/server/db/schema';
 import { settingsFormSchema } from '$lib/validators/formSchemas';
 
-import { ReadReceiptOptions } from '../../../../lib/data/schemaEnums';
+import { ReadReceiptOptions } from '../../../../lib/data/enums';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {

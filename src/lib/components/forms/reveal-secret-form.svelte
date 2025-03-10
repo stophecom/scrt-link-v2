@@ -11,6 +11,7 @@
 	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
 	import { decryptString } from '$lib/client/web-crypto';
 	import * as Form from '$lib/components/ui/form';
+	import { SecretType } from '$lib/data/enums';
 	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
 	import { formatBytes } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
@@ -46,10 +47,10 @@
 	let error: string = $state('');
 
 	let isSecretFileOrSnap = $derived(
-		metaParsed?.secretType === 'file' || metaParsed?.secretType === 'snap'
+		metaParsed?.secretType === SecretType.FILE || metaParsed?.secretType === SecretType.SNAP
 	);
-	let isSnap = $derived(metaParsed?.secretType === 'snap');
-	let isSecretRedirect = $derived(metaParsed?.secretType === 'redirect');
+	let isSnap = $derived(metaParsed?.secretType === SecretType.SNAP);
+	let isSecretRedirect = $derived(metaParsed?.secretType === SecretType.REDIRECT);
 	let fileMeta = $derived(isSecretFileOrSnap ? metaParsed : undefined) as FileMeta;
 	let fileReference = $derived(isSecretFileOrSnap ? contentParsed : undefined) as FileReference;
 	let isDownloading = $derived(progress < 1);

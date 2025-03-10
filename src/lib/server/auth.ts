@@ -6,7 +6,7 @@ import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { sha256Hash } from '$lib/client/web-crypto';
 import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
-import type { ThemeOptions } from '$lib/data/schemaEnums';
+import type { ThemeOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
@@ -46,6 +46,7 @@ export async function validateSessionToken(token: string) {
 				email: table.user.email,
 				googleId: table.user.googleId,
 				stripeCustomerId: table.user.stripeCustomerId,
+				subscriptionTier: table.user.subscriptionTier,
 				picture: table.user.picture,
 				preferences: table.user.preferences
 			},
