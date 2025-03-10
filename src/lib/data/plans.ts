@@ -1,12 +1,10 @@
 import * as m from '$lib/paraglide/messages.js';
 
-export const freePlanName = 'Confidential';
-export const premiumPlanName = 'Secret';
-export const enterprisePlanName = 'Top Secret';
+import { TierOptions } from './schemaEnums';
 
 const plans = () => [
 	{
-		name: 'Confidential',
+		name: TierOptions.CONFIDENTIAL,
 		title: m.tasty_awake_cobra_belong(),
 		contents: [
 			m.stale_fine_turkey_praise(),
@@ -16,7 +14,7 @@ const plans = () => [
 		]
 	},
 	{
-		name: 'Secret',
+		name: TierOptions.SECRET,
 		title: m.careful_inner_lynx_embrace(),
 		contents: [
 			m.new_still_dingo_create(),
@@ -27,7 +25,7 @@ const plans = () => [
 		]
 	},
 	{
-		name: 'Top Secret',
+		name: TierOptions.TOP_SECRET,
 		title: m.crisp_fluffy_toucan_vent(),
 		contents: [m.active_mellow_swan_list(), m.still_busy_starfish_dare()]
 	}

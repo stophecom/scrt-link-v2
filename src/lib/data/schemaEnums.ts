@@ -5,9 +5,9 @@ export enum ReadReceiptOptions {
 }
 
 export enum TierOptions {
-	FREE = 'free',
-	PREMIUM = 'premium',
-	PREPAID = 'prepaid'
+	CONFIDENTIAL = 'Confidential',
+	SECRET = 'Secret',
+	TOP_SECRET = 'Top Secret'
 }
 
 export enum ThemeOptions {
