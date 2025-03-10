@@ -45,7 +45,7 @@ export async function validateSessionToken(token: string) {
 				name: table.user.name,
 				email: table.user.email,
 				googleId: table.user.googleId,
-				stripeId: table.user.stripeId,
+				stripeCustomerId: table.user.stripeCustomerId,
 				picture: table.user.picture,
 				preferences: table.user.preferences
 			},

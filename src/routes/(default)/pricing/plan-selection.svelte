@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { Check } from 'lucide-svelte';
 	import { Stripe } from 'stripe';
 
 	import { goto } from '$app/navigation';
 	import { api } from '$lib/api';
 	import getStripe from '$lib/client/stripe';
+	import { type Variant } from '$lib/components/ui/alert';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Switch from '$lib/components/ui/switch/switch.svelte';
-	import { formatCurrency } from '$lib/i18n';
+	import { formatCurrency, formatDate } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { LayoutServerData } from '../../$types';
@@ -20,15 +20,15 @@
 		plans: Plan[];
 		user: LayoutServerData['user'];
 		subscription: Stripe.Subscription | null;
-		stripePortalUrl: string | null;
 	};
-	let { plans, user, subscription, stripePortalUrl }: Props = $props();
+	let { plans, user, subscription }: Props = $props();
 
 	let showYearlyPrice = $state(true);
 
-	const isSubscriptionActive =
-		subscription?.status === 'active' || subscription?.status === 'trialing'; // We don't have trials, but include it be future-proof.
-	const isSubscriptionCanceled = isSubscriptionActive && !!subscription?.cancel_at;
+	const isSubscriptionCanceled = subscription && !!subscription?.cancel_at;
+
+	// We assume a subscription has only one plan associated with it.
+	const activeProduct = subscription?.items.data[0].plan.product;
 
 	// Get % yearly savings. We take first plan. (There should be only one)
 	const premiumPlanPrices = plans.length && plans[0].prices;
@@ -88,44 +88,39 @@
 	};
 </script>
 
-{#if isSubscriptionActive && !isSubscriptionCanceled && stripePortalUrl}
-	<Alert variant="info" title="You have an active subscription." class="mb-10 text-pretty"
-		>{m.blue_livid_lobster_fulfill()}
-		<div class="mt-4">
-			<Button href={stripePortalUrl} target="_blank">{m.polite_super_antelope_lock()}</Button>
-		</div>
+{#snippet subscriptionInfo(variant: Variant, title: string, description: string)}
+	<Alert {variant} {title} class="mb-10 text-pretty">
+		{description}
+		<form class="mt-4 block" method="post" action="?/manageSubscriptionOnStripe">
+			<Button type="submit">{m.polite_super_antelope_lock()}</Button>
+		</form>
 	</Alert>
+{/snippet}
+
+{#if subscription && !isSubscriptionCanceled}
+	{@render subscriptionInfo('info', m.honest_witty_whale_pout(), m.blue_livid_lobster_fulfill())}
 {/if}
 
-{#if isSubscriptionCanceled && stripePortalUrl}
-	<Alert variant="destructive" title="Subscription canceled" class="mb-10 text-pretty"
-		>{m.last_jolly_stork_gasp()}
-		<div class="mt-4">
-			<Button href={stripePortalUrl} target="_blank">{m.polite_super_antelope_lock()}</Button>
-		</div>
-	</Alert>
+{#if isSubscriptionCanceled}
+	{@render subscriptionInfo('destructive', m.aware_tangy_giraffe_dial(), m.last_jolly_stork_gasp())}
 {/if}
+
 <div class="lg:-mx-20">
 	<div class="grid gap-3 sm:grid-cols-3 lg:gap-4">
 		<PlanView name="Confidential" class="mb-6 sm:mb-0">
-			{#if user}
-				<Button variant="outline" disabled class="w-full">
-					<Check />
-				</Button>
-			{:else}
-				<Button class="w-full" href="/signup">
-					{m.major_next_meerkat_believe()}
-				</Button>
+			{#if !user}
+				<Button class="w-full" href="/signup">{m.lofty_tasty_ray_fond()}</Button>
 			{/if}
 		</PlanView>
 
 		{#each plans as plan, index}
 			{@const prices = plan.prices}
+			{@const isActiveProduct = plan.id === activeProduct}
 			{@const price = showYearlyPrice ? prices?.yearly : prices?.monthly}
 			{@const currency = price?.currency}
 			{@const priceUnitAmount = price?.unit_amount || 0}
 			{@const priceId = price.id}
-			{@const promotion = index === 0 ? 'Ideal for most people' : undefined}
+			{@const promotion = index === 0 ? m.happy_witty_anteater_soar() : undefined}
 
 			<PlanView
 				name={plan.name}
@@ -141,10 +136,20 @@
 							amount: formatCurrency(priceUnitAmount / 100, currency)
 						})}
 			>
-				{#if !subscription && priceId !== 'free'}
+				{#if !subscription}
 					<Button class="w-full" onclick={() => handleSubmit(priceId)}
 						>{m.major_next_meerkat_believe()}</Button
 					>
+				{/if}
+				{#if isActiveProduct}
+					<p class="text-success text-sm font-medium">{m.shy_clean_frog_belong()}</p>
+					{#if subscription?.cancel_at}
+						<p class="text-destructive text-sm font-medium">
+							{m.fair_true_moth_commend({
+								date: formatDate(new Date(subscription.cancel_at * 1000))
+							})}
+						</p>
+					{/if}
 				{/if}
 			</PlanView>
 		{/each}

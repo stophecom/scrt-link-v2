@@ -56,6 +56,7 @@
 			</span>
 		</div>
 	{/if}
+
 	<h4 class="text-sm">{name}</h4>
 	<div>
 		{#if priceUnitAmount && currency}

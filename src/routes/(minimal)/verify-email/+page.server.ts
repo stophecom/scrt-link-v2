@@ -135,12 +135,15 @@ async function verifyCode(event: RequestEvent) {
 			.returning();
 
 		// In case a user doesn't have a stripe account, we create one
-		if (!userResult.stripeId) {
+		if (!userResult.stripeCustomerId) {
 			const stripeCustomer = await stripeInstance.customers.create({
 				email: userResult.email
 			});
 
-			await db.update(user).set({ stripeId: stripeCustomer.id }).where(eq(user.id, userResult.id));
+			await db
+				.update(user)
+				.set({ stripeCustomerId: stripeCustomer.id })
+				.where(eq(user.id, userResult.id));
 		}
 
 		await db.insert(userSettings).values({

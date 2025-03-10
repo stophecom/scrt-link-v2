@@ -20,7 +20,7 @@ export const user = pgTable('user', {
 	name: text('name'),
 	picture: text('picture'),
 	googleId: text('google_id'),
-	stripeId: text('stripe_id'),
+	stripeCustomerId: text('stripe_customer_id'),
 	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified')
 });

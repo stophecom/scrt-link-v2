@@ -14,12 +14,7 @@
 <Page title={m.moving_quaint_buzzard_trip()} lead={m.slimy_next_shad_fall()}>
 	<Section>
 		{#if data.plans}
-			<PlanSelection
-				plans={data.plans}
-				user={data.user}
-				subscription={data.subscription}
-				stripePortalUrl={data.stripePortalUrl}
-			/>
+			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
 		{/if}
 	</Section>
 

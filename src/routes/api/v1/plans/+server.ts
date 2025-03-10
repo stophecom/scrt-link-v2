@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { Stripe } from 'stripe';
 
-import stripe from '$lib/server/stripe';
+import { getActivePrices, getActiveProducts } from '$lib/server/stripe';
 
 import type { RequestEvent } from './$types';
 
@@ -13,18 +13,14 @@ export type Plan = {
 };
 
 export const GET = async ({ url }: RequestEvent) => {
-	const { data } = await stripe.products.list({ active: true });
+	const { data } = await getActiveProducts();
 
-	const currency = url.searchParams.get('currency');
+	const currency = url.searchParams.get('currency') || 'usd';
 
 	const getPlans = async () =>
 		Promise.all(
 			data.map(async (item) => {
-				const { data } = await stripe.prices.list({
-					product: item.id,
-					active: true,
-					currency: currency || 'usd'
-				});
+				const { data } = await getActivePrices(item.id, currency);
 
 				const priceByInterval = (interval: string) =>
 					data.find(({ recurring }) => recurring?.interval === interval);

@@ -13,7 +13,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 		error(405, 'Not allowed. You need to be signed in.');
 	}
 
-	if (!locals.user.stripeId) {
+	if (!locals.user.stripeCustomerId) {
 		throw new Error('No stripe id associated with user.');
 	}
 
@@ -28,7 +28,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 			locale: 'auto', // Set it to auto since we have languages that are not supported by Stripe
 			mode: 'subscription',
 			allow_promotion_codes: true,
-			customer: locals.user.stripeId,
+			customer: locals.user.stripeCustomerId,
 			line_items: [
 				{
 					price: priceId,

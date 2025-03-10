@@ -28,3 +28,10 @@ export const formatNumber = (amount: number) =>
 
 export const getAbsoluteLocalizedUrl = (baseUrl: string, pathname: string, locale = 'en') =>
 	`${baseUrl}${locale === defaultLanguage ? '' : `/${locale}`}${pathname}`;
+
+export const formatDate = (date: Date) =>
+	new Intl.DateTimeFormat(runtime.languageTag(), {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric'
+	}).format(new Date(date));
