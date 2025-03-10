@@ -105,6 +105,17 @@ We use Stripe as payment provider.
 - [Client Side (ES Module)](https://www.npmjs.com/package/@stripe/stripe-js)
 - [Server (Node.js)](https://www.npmjs.com/package/stripe)
 
+```bash
+# Stripe CLI
+# Test webhooks
+stripe login
+stripe listen --forward-to localhost:5173/api/v1/webhooks
+
+# Trigger event
+stripe trigger payment_intent.succeeded
+
+```
+
 ## Transactional Emails
 
 - Delivered via [resend](https://resend.com/)

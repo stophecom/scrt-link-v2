@@ -29,10 +29,6 @@ export const load: PageServerLoad = async ({ fetch, url, locals }) => {
 
 		plans = await response.json();
 
-		if (plans) {
-			console.log('Load function called with URL:', plans[0].prices.monthly.id);
-		}
-
 		if (stripeCustomerId) {
 			subscription = await getActiveSubscription(stripeCustomerId);
 		}

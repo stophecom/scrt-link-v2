@@ -29,7 +29,7 @@ export const POST = async ({ params, request }: RequestEvent) => {
 		.where(eq(secretSchema.secretIdHash, secretIdHash));
 
 	if (!secret) {
-		error(400, `No database entry for alias ${secretIdHash}.`);
+		error(400, `No database entry for id ${secretIdHash}.`);
 	}
 
 	// Here we check if the requested file belongs to the "owner" via signature.
