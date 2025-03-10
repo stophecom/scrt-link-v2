@@ -2,7 +2,7 @@
 	import { Accordion as AccordionPrimitive } from 'bits-ui';
 	import { slide } from 'svelte/transition';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = AccordionPrimitive.ContentProps;
 

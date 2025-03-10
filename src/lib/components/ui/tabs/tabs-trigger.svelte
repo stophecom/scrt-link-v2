@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Tabs as TabsPrimitive } from 'bits-ui';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = TabsPrimitive.TriggerProps;
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

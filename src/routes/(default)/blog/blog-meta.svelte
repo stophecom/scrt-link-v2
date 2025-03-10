@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
+	import { cn } from '$lib/client/utils';
 	import { languageTag } from '$lib/paraglide/runtime';
 	import type { BlogCategory } from '$lib/types';
-	import { cn } from '$lib/utils';
+
 	let {
 		date,
 		categories,

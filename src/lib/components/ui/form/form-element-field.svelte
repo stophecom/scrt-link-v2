@@ -8,7 +8,7 @@
 	import * as FormPrimitive from 'formsnap';
 	import type { HTMLAttributes } from 'svelte/elements';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = FormPrimitive.ElementFieldProps<T, U> & HTMLAttributes<HTMLElement>;
 

@@ -4,10 +4,10 @@
 	import type { Snippet } from 'svelte';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
+	import { cn } from '$lib/client/utils';
 	import { getPlanContents } from '$lib/data/plans';
 	import { formatCurrency } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
-	import { cn } from '$lib/utils';
 
 	type Props = {
 		name: string;

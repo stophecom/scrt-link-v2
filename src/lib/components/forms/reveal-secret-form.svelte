@@ -8,11 +8,11 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
+	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
 	import * as Form from '$lib/components/ui/form';
 	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
 	import { formatBytes } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
-	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/utils';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 	import { decryptString } from '$lib/web-crypto';
 

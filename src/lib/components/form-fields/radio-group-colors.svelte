@@ -5,9 +5,10 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { scale } from 'svelte/transition';
 
+	import { cn } from '$lib/client/utils.js';
 	import * as Form from '$lib/components/ui/form';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
-	import { cn } from '$lib/utils.js';
+
 	type Option = {
 		value: string;
 		label: string;
