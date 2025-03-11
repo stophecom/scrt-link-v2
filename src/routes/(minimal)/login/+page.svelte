@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Google from '$lib/assets/images/Google.svg?component';
 	import EmailForm from '$lib/components/forms/email-form.svelte';
-	import SingleFormPage from '$lib/components/layout/page/single-form-page.svelte';
+	import SingleFormPage from '$lib/components/page/single-form-page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Link from '$lib/components/ui/link';
 	import Separator from '$lib/components/ui/separator/separator.svelte';

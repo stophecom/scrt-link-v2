@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LogOut from 'lucide-svelte/icons/log-out';
 
-	import Page from '$lib/components/layout/page/page.svelte';
+	import Page from '$lib/components/page/page.svelte';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';

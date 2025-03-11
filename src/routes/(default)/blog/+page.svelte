@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ArrowRight } from 'lucide-svelte';
 
-	import Page from '$lib/components/layout/page/page.svelte';
+	import Page from '$lib/components/page/page.svelte';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import BlogMeta from './blog-meta.svelte';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ContactForm from '$lib/components/forms/contact-form.svelte';
-	import Page from '$lib/components/layout/page/page.svelte';
+	import Page from '$lib/components/page/page.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as m from '$lib/paraglide/messages.js';
 

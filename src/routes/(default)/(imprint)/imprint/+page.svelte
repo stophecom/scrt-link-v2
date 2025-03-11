@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Page from '$lib/components/layout/page/page.svelte';
+	import Page from '$lib/components/page/page.svelte';
 
 	import { legalMenu } from '../../../../lib/data/menu';
 </script>

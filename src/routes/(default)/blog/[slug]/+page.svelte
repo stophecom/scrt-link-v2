@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ArrowLeft from 'lucide-svelte/icons/arrow-left';
 
-	import Page from '$lib/components/layout/page/page.svelte';
+	import Page from '$lib/components/page/page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import ShareButton from '$lib/components/ui/share-button';

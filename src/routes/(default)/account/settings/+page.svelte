@@ -2,7 +2,7 @@
 	import ArrowLeft from 'lucide-svelte/icons/arrow-left';
 
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
-	import Page from '$lib/components/layout/page/page.svelte';
+	import Page from '$lib/components/page/page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';

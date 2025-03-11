@@ -5,10 +5,10 @@
 	import Write from '$lib/assets/images/illustrations/create.svg?component';
 	import Share from '$lib/assets/images/illustrations/share.svg?component';
 	import UrlExplained from '$lib/assets/images/illustrations/url-explained.svg?component';
+	import CreateSecret from '$lib/components/elements/create-secret.svelte';
+	import Section from '$lib/components/elements/section.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import CreateSecret from '$lib/components/layout/create-secret.svelte';
-	import Page from '$lib/components/layout/page/page.svelte';
-	import Section from '$lib/components/layout/section.svelte';
+	import Page from '$lib/components/page/page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';

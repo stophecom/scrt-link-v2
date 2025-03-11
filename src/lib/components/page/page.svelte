@@ -6,7 +6,7 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import { languageTag } from '$lib/paraglide/runtime';
 
-	import { appName, emailSupport } from '../../../data/app';
+	import { appName, emailSupport } from '../../data/app';
 
 	type Props = {
 		title: string;

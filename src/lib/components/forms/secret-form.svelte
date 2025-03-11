@@ -53,7 +53,6 @@
 
 	const planLimits = getPlanLimits(user?.subscriptionTier);
 
-	console.log(secretType);
 	const form = superForm(formProp, {
 		validators: zod(secretFormSchema()),
 		validationMethod: 'onblur',

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import TOS from '$lib/assets/terms/TermsOfService.md?raw';
-	import Page from '$lib/components/layout/page/page.svelte';
+	import Page from '$lib/components/page/page.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 </script>
 
