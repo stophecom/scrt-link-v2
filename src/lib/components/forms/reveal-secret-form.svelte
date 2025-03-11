@@ -1,30 +1,24 @@
 <script lang="ts">
-	import Check from 'lucide-svelte/icons/check';
-	import FileLock from 'lucide-svelte/icons/file-lock';
 	import Flame from 'lucide-svelte/icons/flame';
 	import Reply from 'lucide-svelte/icons/reply';
 	import { tick } from 'svelte';
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
 	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
 	import { decryptString } from '$lib/client/web-crypto';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { SecretType } from '$lib/data/enums';
 	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
-	import { formatBytes } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 
+	import FileRevelation from '../elements/file-revelation.svelte';
 	import SnapRevelation from '../elements/snap-revelation.svelte';
-	import Typewriter from '../helpers/typewriter.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
-	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
-	import UploadSpinner from '../ui/spinner/upload-spinner.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 	import type { Meta } from './secret-form.svelte';
 
@@ -52,7 +46,6 @@
 	let isSecretRedirect = $derived(metaParsed?.secretType === SecretType.REDIRECT);
 	let fileMeta = $derived(isSecretFileOrSnap ? metaParsed : undefined) as FileMeta;
 	let fileReference = $derived(isSecretFileOrSnap ? contentParsed : undefined) as FileReference;
-	let isDownloading = $derived(progress < 1);
 
 	const partialSchema = revealSecretFormSchema().omit({ password: true });
 
@@ -205,58 +198,11 @@
 		{#if content}
 			{#if isSecretFileOrSnap}
 				{#if isSnap}
+					<!-- Secret Type: Snap -->
 					<SnapRevelation {imageUrl} />
 				{:else}
-					<h3 class="mb-2 pt-4 text-2xl font-semibold">{m.house_warm_fox_transform()}</h3>
-					<p class="mb-3">
-						{m.helpful_mean_salmon_slurp()}
-					</p>
-
-					<div class="border-foreground bg-background relative min-h-24 rounded border p-4">
-						<div
-							class="bg-muted absolute top-0 left-0 h-full rounded"
-							style="min-width: 0%; width: {progress * 100}%"
-						></div>
-
-						<div class="relative grid grid-cols-[min-content_1fr] gap-4">
-							<div class="flex items-center">
-								<FileLock class="text-primary h-10 w-10 stroke-1" />
-							</div>
-
-							<div class="overflow-hidden">
-								<div class="flex truncate">
-									<strong class="mr-1">{m.suave_level_squirrel_hope()}</strong>
-									<Typewriter message={fileMeta?.name} />
-								</div>
-
-								<div class="flex truncate">
-									<strong class="mr-1">{m.smug_smart_giraffe_borrow()}</strong>
-									<Typewriter message={formatBytes(fileMeta?.size || 0)} />
-								</div>
-								<div class="flex truncate">
-									<strong class="mr-1">{m.slow_free_lynx_spur()}</strong>
-									<Typewriter message={fileMeta?.mimeType} />
-								</div>
-							</div>
-						</div>
-
-						<div
-							class="border-foreground bg-background text-muted-foreground absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 rounded-full border p-2"
-						>
-							{#if isDownloading}
-								<UploadSpinner class="rotate-180" />
-							{:else}
-								<Check class="text-success" />
-							{/if}
-						</div>
-					</div>
-					<div class="text-muted-foreground h-5 pt-1">
-						<ProgressBar
-							labelInProgress={m.every_awful_guppy_fear()}
-							labelComplete={m.hour_tense_gecko_succeed()}
-							progress={progress * 100}
-						/>
-					</div>
+					<!-- Secret Type: File -->
+					<FileRevelation {progress} {fileMeta} />
 				{/if}
 			{:else}
 				<!-- Secret Type: Text -->
@@ -298,13 +244,6 @@
 							>{m.same_gaudy_iguana_bend()}</Form.Button
 						>
 					</div>
-
-					<!-- For debugging -->
-					{#if dev}
-						<div class="py-3">
-							<SuperDebug data={$formData} />
-						</div>
-					{/if}
 				</form>
 			</FormWrapper>
 		{/if}
