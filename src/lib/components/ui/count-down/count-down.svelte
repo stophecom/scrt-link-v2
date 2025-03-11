@@ -14,7 +14,7 @@
 
 	function startCountdown() {
 		clearInterval(timer); // Ensure no duplicate timers
-		timeLeft = duration;
+		timeLeft = duration - 1;
 
 		timer = setInterval(() => {
 			if (timeLeft > 0) {

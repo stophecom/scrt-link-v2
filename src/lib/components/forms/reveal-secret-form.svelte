@@ -18,13 +18,12 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 
+	import SnapRevelation from '../elements/snap-revelation.svelte';
 	import Typewriter from '../helpers/typewriter.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
-	import CountDown from '../ui/count-down';
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
-	import Spinner from '../ui/spinner/spinner.svelte';
 	import UploadSpinner from '../ui/spinner/upload-spinner.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 	import type { Meta } from './secret-form.svelte';
@@ -206,18 +205,7 @@
 		{#if content}
 			{#if isSecretFileOrSnap}
 				{#if isSnap}
-					{#if imageUrl}
-						<div class="pb-2">
-							<CountDown
-								onComplete={() => {
-									window.location.reload();
-								}}
-							/>
-						</div>
-						<img src={imageUrl} alt="Preview" />
-					{:else}
-						<Spinner />
-					{/if}
+					<SnapRevelation {imageUrl} />
 				{:else}
 					<h3 class="mb-2 pt-4 text-2xl font-semibold">{m.house_warm_fox_transform()}</h3>
 					<p class="mb-3">
