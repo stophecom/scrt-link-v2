@@ -1,5 +1,3 @@
-import Palette from 'lucide-svelte/icons/palette';
-import Settings from 'lucide-svelte/icons/settings';
 import User from 'lucide-svelte/icons/user';
 
 import * as m from '$lib/paraglide/messages.js';
@@ -69,19 +67,8 @@ const account = {
 	href: '/account',
 	label: m.novel_proud_anaconda_zoom()
 };
-const settings = {
-	icon: Settings,
-	href: '/account/settings',
-	label: m.less_tangy_crab_chop()
-};
-const appearance = {
-	icon: Palette,
-	href: '/account/appearance',
-	label: 'Appearance'
-};
 
-export const accountMenu = () => [settings, appearance];
-export const accountMenuHeader = () => [account, settings, appearance];
+export const accountMenuHeader = () => [account];
 
 const tos = {
 	href: '/terms-of-service',

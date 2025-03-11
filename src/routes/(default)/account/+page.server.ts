@@ -1,6 +1,7 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 
-import * as auth from '$lib/server/auth';
+import { logout, saveSettings, saveTheme } from '$lib/server/form/actions';
+import { settingsFormValidator, themeFormValidator } from '$lib/server/form/validators';
 
 import { actions as secretActions } from '../+page.server';
 import type { Actions, PageServerLoad } from './$types';
@@ -12,19 +13,15 @@ export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user;
 
 	return {
-		user: user
+		user: user,
+		themeForm: await themeFormValidator(user),
+		settingsForm: await settingsFormValidator(user)
 	};
 };
 
 export const actions: Actions = {
 	...secretActions,
-	logout: async (event) => {
-		if (!event.locals.session) {
-			return fail(401);
-		}
-		await auth.invalidateSession(event.locals.session.id);
-		auth.deleteSessionTokenCookie(event);
-
-		return redirect(303, '/');
-	}
+	saveTheme: saveTheme,
+	saveSettings: saveSettings,
+	logout: logout
 };
