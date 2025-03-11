@@ -23,7 +23,7 @@ export const getExpiresInOptions = (extended?: boolean) => {
 		},
 		{
 			value: 30 * DAY,
-			label: `${m.curly_few_parrot_savor({ amount: 30 })} ${!extended ? `(locked)` : ''}`,
+			label: `${m.curly_few_parrot_savor({ amount: 30 })} ${!extended ? `${m.vexed_dirty_loris_bump()}` : ''}`,
 			disabled: !extended
 		}
 	];
