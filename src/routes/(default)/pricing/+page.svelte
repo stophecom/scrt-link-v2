@@ -12,11 +12,11 @@
 </script>
 
 <Page title={m.moving_quaint_buzzard_trip()} lead={m.slimy_next_shad_fall()}>
-	<Section>
+	<div class="py-10">
 		{#if data.plans}
 			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
 		{/if}
-	</Section>
+	</div>
 
 	<Section title="FAQ" lead={m.pretty_factual_piranha_hug()}>
 		<Accordion items={accountAndBilling()} />

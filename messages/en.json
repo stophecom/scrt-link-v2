@@ -279,7 +279,7 @@
 	"weird_key_stork_dazzle": "Couldn't cancel subscription.",
 	"shy_clean_frog_belong": "This plan is currently active.",
 	"happy_witty_anteater_soar": "Ideal for most people",
-	"fair_true_moth_commend": "Plan will be downgraded on {date}.",
+	"fair_true_moth_commend": "You will be downgraded to the free plan on {date}.",
 	"honest_witty_whale_pout": "You have an active subscription.",
 	"aware_tangy_giraffe_dial": "Subscription canceled",
 	"lofty_tasty_ray_fond": "Sign up",
@@ -291,5 +291,7 @@
 	"lost_mellow_oryx_bask": "We use this information solely to provide you with a personalized experience.",
 	"dizzy_light_pigeon_animate": "The primary email address has been verified. It can't be changed.",
 	"mild_noble_orangutan_compose": "Email:",
-	"good_wacky_alligator_dare": "change"
+	"good_wacky_alligator_dare": "change",
+	"hour_royal_moose_kiss": "You can use an email address different from your primary one.",
+	"agent_smart_dragonfly_dream": "All end-to-end encrypted"
 }

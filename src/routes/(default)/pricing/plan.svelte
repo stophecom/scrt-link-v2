@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Check from 'lucide-svelte/icons/check';
-	import Pointer from 'lucide-svelte/icons/pointer';
 	import type { Snippet } from 'svelte';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
@@ -15,17 +14,19 @@
 		currency?: string;
 		billingInfo?: string;
 		showYearlyPrice?: boolean;
-		promotion?: string;
+		isActiveProduct?: boolean;
+		hidePromotion?: boolean;
 		children?: Snippet;
 	};
 
 	let {
 		name,
 		priceUnitAmount,
-		promotion,
 		currency,
-		showYearlyPrice,
 		billingInfo,
+		showYearlyPrice,
+		isActiveProduct,
+		hidePromotion,
 		children,
 		...rest
 	}: Props & SvelteHTMLElements['div'] = $props();
@@ -34,7 +35,7 @@
 </script>
 
 {#snippet renderPrice(amount: null | number, currency: string)}
-	<div class="text-3xl font-bold">
+	<div class="text-3xl font-extrabold">
 		{formatCurrency(Number(amount) / 100 / (showYearlyPrice ? 12 : 1), currency)}
 	</div>
 {/snippet}
@@ -43,21 +44,20 @@
 	class={cn(
 		'bg-card border-border relative row-span-4 mt-6 grid grid-rows-subgrid gap-4 rounded border p-4',
 		rest.class,
-		promotion ? 'border-primary rounded-t-none' : ''
+		planContent.promotion && !hidePromotion ? 'border-foreground rounded-t-none' : '',
+		isActiveProduct ? 'border-primary' : ''
 	)}
 >
-	{#if promotion}
+	{#if planContent.promotion && !hidePromotion}
 		<div
-			class="bg-primary text-primary-foreground absolute -right-[1px] bottom-full -left-[1px] flex items-center rounded-t-lg px-4 py-1"
+			class="bg-foreground text-background absolute -right-[1px] bottom-full -left-[1px] flex items-center rounded-t-lg px-4 py-1 text-sm"
 		>
-			<Pointer class="h-4 w-4 rotate-90" />
-			<span class="ms-2 text-sm">
-				{promotion}
-			</span>
+			{planContent.promotion}
 		</div>
 	{/if}
 
-	<h4 class="text-sm">{name}</h4>
+	<h4 class="mb-1 text-sm font-medium">{name}</h4>
+	<planContent.icon class={cn('absolute top-4 right-4', isActiveProduct ? 'text-primary' : '')} />
 	<div>
 		{#if priceUnitAmount && currency}
 			{@render renderPrice(priceUnitAmount, currency)}

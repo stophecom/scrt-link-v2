@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ArrowRight, Check, Rocket } from 'lucide-svelte';
 	import BadgeCheck from 'lucide-svelte/icons/badge-check';
 	import LogOut from 'lucide-svelte/icons/log-out';
 
@@ -7,11 +8,12 @@
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';
 	import UserForm from '$lib/components/forms/user-form.svelte';
 	import Page from '$lib/components/page/page.svelte';
-	import * as Avatar from '$lib/components/ui/avatar';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
+	import Markdown from '$lib/components/ui/markdown';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
+	import { TierOptions } from '$lib/data/enums';
 	import * as m from '$lib/paraglide/messages.js';
 
 	import type { LayoutServerData } from '../../$types';
@@ -20,6 +22,15 @@
 	let { data }: { data: PageServerData & LayoutServerData } = $props();
 
 	const { user } = data;
+
+	const usps = [
+		'Get notified when secrets are being viewed with read receipts',
+		'Transfer files **up to 100GB**',
+		'Extend retention time up to 30 days',
+		'Snaps: Private disappearing images',
+		'Add **additional password** for advanced security',
+		'...and more'
+	];
 </script>
 
 {#snippet renderLabel(label: string)}
@@ -30,18 +41,28 @@
 	title={m.zany_jolly_cuckoo_scoop({ name: user.name || m.quiet_long_beaver_scold() })}
 	lead={m.gray_quiet_tern_bubble()}
 >
-	<Card class="mb-6">
-		<div class="mb-4 flex flex-col items-center justify-center">
-			<Avatar.Root class="h-16 w-16">
-				<Avatar.Image src={user.picture} alt={user.name} />
-				<Avatar.Fallback class="border-foreground bg-foreground text-background border uppercase"
-					>{Array.from(user.email)[0]}</Avatar.Fallback
-				>
-			</Avatar.Root>
-			<div class="py-2">{user.name || user.email}</div>
-		</div>
-		<div class="grid gap-4 sm:grid-cols-2"></div>
-	</Card>
+	{#if user.subscriptionTier !== TierOptions.CONFIDENTIAL}
+		<Button class="mb-6" variant="outline" href="/pricing">Manage subscription</Button>
+	{:else}
+		<Card
+			title="Get full access"
+			description="Consider a premium plan to unlock all features."
+			class="border-primary relative mb-6 border-2"
+		>
+			<Rocket class="absolute top-5 right-5" />
+			<ul>
+				{#each usps as item}
+					<li class="flex items-center text-lg">
+						<Check class="text-primary me-2" />
+						<Markdown markdown={item} />
+					</li>
+				{/each}
+			</ul>
+			<Button class="mt-2 ml-auto" href="/pricing"
+				><ArrowRight class="mr-2 h-5 w-5" /> View plans</Button
+			>
+		</Card>
+	{/if}
 
 	<Card class="mb-6" title={m.vivid_house_flea_zap()} description={m.wacky_key_vole_roam()}>
 		<SettingsForm form={data.settingsForm} />

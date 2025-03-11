@@ -1,10 +1,12 @@
 <script lang="ts">
-	import Crown from 'lucide-svelte/icons/crown';
+	import Plane from 'lucide-svelte/icons/plane';
+	import Rocket from 'lucide-svelte/icons/rocket';
 
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { TierOptions } from '$lib/data/enums';
 	import { accountMenuHeader } from '$lib/data/menu';
 	import * as m from '$lib/paraglide/messages.js';
 
@@ -46,13 +48,27 @@
 					{#if user}
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
-								<Avatar.Root class="mr-2">
-									<Avatar.Image src={user.picture} alt={user.name} />
-									<Avatar.Fallback
-										class="border-foreground bg-foreground text-background border uppercase"
-										>{Array.from(user.email)[0]}</Avatar.Fallback
-									>
-								</Avatar.Root>
+								<div class="relative mr-2">
+									<Avatar.Root>
+										<Avatar.Image src={user.picture} alt={user.name} />
+										<Avatar.Fallback
+											class="border-foreground bg-foreground text-background border uppercase"
+											>{Array.from(user.email)[0]}</Avatar.Fallback
+										>
+									</Avatar.Root>
+									{#if user.subscriptionTier === TierOptions.SECRET || user.subscriptionTier === TierOptions.TOP_SECRET}
+										<div
+											class="border-background bg-primary text-primary-foreground absolute -right-[2px] -bottom-[2px] rounded-full border p-[3px]"
+										>
+											{#if user.subscriptionTier === TierOptions.SECRET}
+												<Plane class="h-3 w-3" />
+											{/if}
+											{#if user.subscriptionTier === TierOptions.TOP_SECRET}
+												<Rocket class="h-3 w-3" />
+											{/if}
+										</div>
+									{/if}
+								</div>
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content class="w-56">
 								{#each accountMenuHeader() as menuItem}
@@ -61,7 +77,7 @@
 									>
 								{/each}
 								<DropdownMenu.Item href="/pricing"
-									><Crown class="me-2 h-4 w-4" />Upgrade
+									><Rocket class="me-2 h-4 w-4" />Upgrade
 									<span
 										class="bg-primary text-primary-foreground ms-3 rounded-full px-2 text-xs font-medium uppercase"
 										>50% off</span

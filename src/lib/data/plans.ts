@@ -1,3 +1,5 @@
+import { Plane, Rocket, Send } from 'lucide-svelte';
+
 import { formatBytes } from '$lib/i18n';
 import * as m from '$lib/paraglide/messages.js';
 
@@ -18,11 +20,13 @@ const defaultLimits = {
 const plans = () => [
 	{
 		name: TierOptions.CONFIDENTIAL,
+		icon: Send,
 		title: m.tasty_awake_cobra_belong(),
 		contents: [
 			m.stale_fine_turkey_praise(),
 			m.new_still_dingo_create({ limit: formatBytes(10 * MB) }),
-			m.loose_chunky_duck_intend()
+			m.loose_chunky_duck_intend(),
+			m.agent_smart_dragonfly_dream()
 		],
 		limits: {
 			[SecretType.TEXT]: 150,
@@ -36,11 +40,13 @@ const plans = () => [
 	},
 	{
 		name: TierOptions.SECRET,
+		icon: Plane,
+		promotion: m.happy_witty_anteater_soar(),
 		title: m.careful_inner_lynx_embrace(),
 		contents: [
 			m.long_tired_monkey_rest(),
-			m.pink_many_fox_boost(),
 			m.new_still_dingo_create({ limit: formatBytes(1 * GB) }),
+			m.pink_many_fox_boost(),
 			m.slimy_livid_pelican_gleam(),
 			m.active_mellow_swan_list({ amount: 7 }),
 			m.tired_new_mantis_buy()
@@ -57,6 +63,7 @@ const plans = () => [
 	},
 	{
 		name: TierOptions.TOP_SECRET,
+		icon: Rocket,
 		title: m.crisp_fluffy_toucan_vent(),
 		contents: [
 			m.new_still_dingo_create({ limit: formatBytes(100 * GB) }),
@@ -75,7 +82,7 @@ const plans = () => [
 	}
 ];
 
-export const getPlanContents = (name: string) => {
+export const getPlanContents = (name?: string) => {
 	const plan = plans().find((el) => el.name === name);
 
 	if (!plan) {

@@ -55,9 +55,7 @@
 					{...$constraints.email}
 					type="email"
 				/>
-				<Form.Description
-					>You can use an email address different from your primary one.</Form.Description
-				>
+				<Form.Description>{m.hour_royal_moose_kiss()}</Form.Description>
 			</Form.Field>
 		{/if}
 

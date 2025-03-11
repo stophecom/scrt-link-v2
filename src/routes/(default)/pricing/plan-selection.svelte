@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Check from 'lucide-svelte/icons/check-circle';
 	import { Stripe } from 'stripe';
 
 	import { goto } from '$app/navigation';
@@ -97,6 +98,12 @@
 	</Alert>
 {/snippet}
 
+{#snippet renderIsActivePlan()}
+	<p class="text-success text-sm font-semibold">
+		<Check class="mb-2" />{m.shy_clean_frog_belong()}
+	</p>
+{/snippet}
+
 {#if subscription && !isSubscriptionCanceled}
 	{@render subscriptionInfo('info', m.honest_witty_whale_pout(), m.blue_livid_lobster_fulfill())}
 {/if}
@@ -111,23 +118,26 @@
 			{#if !user}
 				<Button class="w-full" href="/signup">{m.lofty_tasty_ray_fond()}</Button>
 			{/if}
+			{#if !subscription}
+				{@render renderIsActivePlan()}
+			{/if}
 		</PlanView>
 
-		{#each plans as plan, index}
+		{#each plans as plan}
 			{@const prices = plan.prices}
 			{@const isActiveProduct = plan.id === activeProduct}
 			{@const price = showYearlyPrice ? prices?.yearly : prices?.monthly}
 			{@const currency = price?.currency}
 			{@const priceUnitAmount = price?.unit_amount || 0}
 			{@const priceId = price.id}
-			{@const promotion = index === 0 && !subscription ? m.happy_witty_anteater_soar() : undefined}
 
 			<PlanView
 				name={plan.name}
 				{showYearlyPrice}
 				{priceUnitAmount}
 				currency={price?.currency}
-				{promotion}
+				hidePromotion={!!subscription}
+				{isActiveProduct}
 				billingInfo={price.recurring?.interval === 'year'
 					? m.alert_heroic_haddock_dare({
 							amount: formatCurrency(priceUnitAmount / 100, currency)
@@ -142,9 +152,9 @@
 					>
 				{/if}
 				{#if isActiveProduct}
-					<p class="text-success text-sm font-medium">{m.shy_clean_frog_belong()}</p>
+					{@render renderIsActivePlan()}
 					{#if subscription?.cancel_at}
-						<p class="text-destructive text-sm font-medium">
+						<p class="text-destructive text-sm">
 							{m.fair_true_moth_commend({
 								date: formatDate(new Date(subscription.cancel_at * 1000))
 							})}
