@@ -5,16 +5,15 @@
 	import { fade } from 'svelte/transition';
 
 	import { PUBLIC_S3_BUCKET } from '$env/static/public';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import DropZone from '$lib/components/ui/drop-zone/drop-zone.svelte';
+	import ProgressBar from '$lib/components/ui/drop-zone/progress-bar/progress-bar.svelte';
+	import Markdown from '$lib/components/ui/markdown';
+	import { UploadSpinner } from '$lib/components/ui/spinner';
 	import { SecretType } from '$lib/data/enums';
+	import { MB } from '$lib/data/units';
 	import { handleFileEncryptionAndUpload } from '$lib/file-transfer';
 	import * as m from '$lib/paraglide/messages.js';
-
-	import { MB } from '../../data/units';
-	import Button from '../ui/button/button.svelte';
-	import DropZone from '../ui/drop-zone/drop-zone.svelte';
-	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
-	import Markdown from '../ui/markdown';
-	import { UploadSpinner } from '../ui/spinner';
 
 	type Props = {
 		accept?: string;

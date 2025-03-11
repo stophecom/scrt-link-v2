@@ -2,8 +2,7 @@
 	import { Switch as SwitchPrimitive } from 'bits-ui';
 
 	import * as Form from '$lib/components/ui/form';
-
-	import { Switch } from '../ui/switch';
+	import { Switch } from '$lib/components/ui/switch';
 
 	type Props = {
 		label: string;

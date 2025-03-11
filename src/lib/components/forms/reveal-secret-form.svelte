@@ -10,6 +10,7 @@
 	import { dev } from '$app/environment';
 	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
 	import { decryptString } from '$lib/client/web-crypto';
+	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { SecretType } from '$lib/data/enums';
 	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
@@ -17,7 +18,6 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 
-	import Password from '../form-fields/password.svelte';
 	import Typewriter from '../helpers/typewriter.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';

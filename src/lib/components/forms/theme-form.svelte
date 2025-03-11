@@ -3,13 +3,13 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
+	import RadioGroupColors from '$lib/components/forms/form-fields/radio-group-colors.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import * as m from '$lib/paraglide/messages.js';
 	import { type ThemeFormSchema, themeFormSchema } from '$lib/validators/formSchemas';
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getThemeOptions } from '../../data/secretSettings';
-	import RadioGroupColors from '../form-fields/radio-group-colors.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {

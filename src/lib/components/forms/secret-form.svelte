@@ -13,6 +13,11 @@
 		generateRandomUrlSafeString,
 		sha256Hash
 	} from '$lib/client/web-crypto';
+	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
+	import Password from '$lib/components/forms/form-fields/password.svelte';
+	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
+	import Text from '$lib/components/forms/form-fields/text.svelte';
+	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { SecretType } from '$lib/data/enums';
 	import { getPlanLimits } from '$lib/data/plans';
@@ -22,11 +27,6 @@
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getExpiresInOptions } from '../../data/secretSettings';
-	import FileUpload from '../form-fields/file-upload.svelte';
-	import Password from '../form-fields/password.svelte';
-	import RadioGroup from '../form-fields/radio-group.svelte';
-	import Text from '../form-fields/text.svelte';
-	import Textarea from '../form-fields/textarea.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Link from '../ui/link';
 	import Toggle from '../ui/toggle/toggle.svelte';

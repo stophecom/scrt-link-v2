@@ -2,9 +2,8 @@
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 
 	import * as Form from '$lib/components/ui/form';
+	import { Textarea } from '$lib/components/ui/textarea';
 	import { languageTag } from '$lib/paraglide/runtime';
-
-	import { Textarea } from '../../ui/textarea';
 
 	type Props = {
 		charactersLeft?: number;

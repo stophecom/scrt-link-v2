@@ -2,9 +2,8 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	import * as Form from '$lib/components/ui/form';
+	import Input from '$lib/components/ui/input/input.svelte';
 	import * as m from '$lib/paraglide/messages.js';
-
-	import Input from '../ui/input/input.svelte';
 
 	type Props = {
 		isHiddenLabel?: boolean;

@@ -2,9 +2,8 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	import * as Form from '$lib/components/ui/form';
-
-	import Input from '../ui/input/input.svelte';
-	import Markdown from '../ui/markdown';
+	import Input from '$lib/components/ui/input/input.svelte';
+	import Markdown from '$lib/components/ui/markdown';
 
 	type Props = {
 		label: string;
