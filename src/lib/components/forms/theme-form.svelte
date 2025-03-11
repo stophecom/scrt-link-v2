@@ -1,8 +1,7 @@
 <script lang="ts">
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
 	import RadioGroupColors from '$lib/components/forms/form-fields/radio-group-colors.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import * as m from '$lib/paraglide/messages.js';
@@ -55,9 +54,4 @@
 			/>
 		</Form.Fieldset>
 	</form>
-	{#if dev}
-		<div class="py-4">
-			<SuperDebug data={$formData} />
-		</div>
-	{/if}
 </FormWrapper>

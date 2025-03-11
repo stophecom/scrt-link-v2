@@ -1,8 +1,5 @@
 <script lang="ts">
 	import Crown from 'lucide-svelte/icons/crown';
-	import Moon from 'lucide-svelte/icons/moon';
-	import Sun from 'lucide-svelte/icons/sun';
-	import { toggleMode } from 'mode-watcher';
 
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
@@ -13,6 +10,7 @@
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
+	import DarkModeSwitcher from './dark-mode-switcher.svelte';
 
 	let { user, minimal }: { user: LayoutServerData['user']; minimal?: boolean } = $props();
 </script>
@@ -43,15 +41,8 @@
 				</a>
 
 				<div class="ml-auto grid grid-flow-col gap-2">
-					<Button onclick={toggleMode} variant="ghost" size="icon">
-						<Sun
-							class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
-						/>
-						<Moon
-							class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
-						/>
-						<span class="sr-only">{m.hour_lofty_warthog_wish()}</span>
-					</Button>
+					<DarkModeSwitcher hideLabel variant="ghost" size="icon" />
+
 					{#if user}
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>

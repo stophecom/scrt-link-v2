@@ -1,6 +1,7 @@
 <script lang="ts">
 	import LogOut from 'lucide-svelte/icons/log-out';
 
+	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';
 	import Page from '$lib/components/page/page.svelte';
@@ -45,7 +46,10 @@
 	</Card>
 
 	<Card class="mb-6" title="Appearance" description="Choose your favorite theme color.">
-		<ThemeForm form={data.themeForm} user={data.user} />
+		<div class="mb-2">
+			<ThemeForm form={data.themeForm} user={data.user} />
+		</div>
+		<DarkModeSwitcher variant="outline" />
 	</Card>
 
 	<Card title={m.novel_proud_anaconda_zoom()}>
