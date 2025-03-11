@@ -3,7 +3,9 @@
 
 	import CountDown from '$lib/components/ui/count-down';
 
-	let { imageUrl } = $props();
+	type Props = { imageUrl?: string };
+
+	let { imageUrl }: Props = $props();
 
 	let finished = $state(false);
 </script>
@@ -36,7 +38,7 @@
 			/>
 		{:else}
 			<div
-				class="bg-muted flex max-h-full min-h-0 max-w-full animate-pulse items-center justify-center"
+				class="bg-muted flex max-h-[min(100%,_1000px)] min-h-0 max-w-full animate-pulse items-center justify-center"
 			></div>
 		{/if}
 	</div>
