@@ -50,6 +50,8 @@ export const secretFormSchema = () =>
 
 export const themeFormSchema = () => z.object({ themeOption: z.nativeEnum(ThemeOptions) });
 
+export const userFormSchema = () => z.object({ name: z.string().min(2).max(30) });
+
 export const settingsFormSchema = () =>
 	z
 		.object({
@@ -100,6 +102,7 @@ export type EmailVerificationCodeFormSchema = ReturnType<typeof emailVerificatio
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
 export type SecretTextFormSchema = ReturnType<typeof secretFormSchema>;
+export type UserFormSchema = ReturnType<typeof userFormSchema>;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;
 export type RevealSecretFormSchema = ReturnType<typeof revealSecretFormSchema>;

@@ -14,7 +14,8 @@ import {
 	settingsFormSchema,
 	type SignInFormSchema,
 	signInFormSchema,
-	themeFormSchema
+	themeFormSchema,
+	userFormSchema
 } from '$lib/validators/formSchemas';
 
 export const secretFormValidator = async () => await superValidate(zod(secretFormSchema()));
@@ -64,5 +65,16 @@ export const settingsFormValidator = async (user: App.Locals['user']) => {
 			ntfyEndpoint: settings.ntfyEndpoint || ''
 		},
 		zod(settingsFormSchema())
+	);
+};
+
+// User
+export const userFormValidator = async (user: App.Locals['user']) => {
+	return await superValidate(
+		{
+			name: user?.name || ''
+		},
+		zod(userFormSchema()),
+		{ errors: false }
 	);
 };

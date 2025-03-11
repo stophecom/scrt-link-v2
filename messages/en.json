@@ -157,7 +157,7 @@
 	"helpful_mean_salmon_slurp": "Important: We have absolutely no knowledge about the contents of the file. Be sure to trust\n\t\t\t\tthe sender!",
 	"house_warm_fox_transform": "Secret file",
 	"giant_smug_lobster_clasp": "Reply with a secret",
-	"hour_lofty_warthog_wish": "Toggle theme",
+	"hour_lofty_warthog_wish": "Toggle dark mode",
 	"simple_dry_boar_dazzle": "Login",
 	"large_smart_badger_beam": "Sign up free",
 	"ago_icy_cockroach_dart": "Invalid url",
@@ -216,7 +216,7 @@
 	"least_moving_spider_roam": "Delete",
 	"many_seemly_gorilla_jolt": "Settings saved",
 	"nimble_quick_bird_sew": "Settings",
-	"wacky_key_vole_roam": "Have it your way—you’re in control.",
+	"wacky_key_vole_roam": "Choose how you want to get notified once a secret has been viewed.",
 	"jumpy_factual_mole_hunt": "Change password",
 	"vivid_house_flea_zap": "Notifications",
 	"wacky_big_raven_honor": "Sign out",
@@ -283,5 +283,13 @@
 	"honest_witty_whale_pout": "You have an active subscription.",
 	"aware_tangy_giraffe_dial": "Subscription canceled",
 	"lofty_tasty_ray_fond": "Sign up",
-	"vexed_dirty_loris_bump": "(locked)"
+	"vexed_dirty_loris_bump": "(locked)",
+	"just_every_oryx_flop": "Email",
+	"sea_zippy_piranha_lift": "Ntfy Endpoint",
+	"nimble_mushy_felix_drop": "*Unique endpoint that is used to send you notifications to your ntfy app. For more info\n\t\t\t\t\tvisit {link}",
+	"crazy_solid_cow_cuddle": "Name",
+	"lost_mellow_oryx_bask": "We use this information solely to provide you with a personalized experience.",
+	"dizzy_light_pigeon_animate": "The primary email address has been verified. It can't be changed.",
+	"mild_noble_orangutan_compose": "Email:",
+	"good_wacky_alligator_dare": "change"
 }

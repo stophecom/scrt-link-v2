@@ -8,13 +8,11 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import { type SettingsFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
 
-	import type { LayoutServerData } from '../../../routes/$types';
 	import { getReadReceiptOptions } from '../../data/secretSettings';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
 		form: SuperValidated<Infer<SettingsFormSchema>>;
-		user: LayoutServerData['user'];
 	};
 
 	let { form: formProp }: Props = $props();
@@ -51,18 +49,25 @@
 
 		{#if $formData.readReceiptOption === 'email'}
 			<Form.Field {form} name="email">
-				<Text label="Email" bind:value={$formData.email} {...$constraints.email} type="email" />
+				<Text
+					label={m.just_every_oryx_flop()}
+					bind:value={$formData.email}
+					{...$constraints.email}
+					type="email"
+				/>
+				<Form.Description
+					>You can use an email address different from your primary one.</Form.Description
+				>
 			</Form.Field>
 		{/if}
 
 		{#if $formData.readReceiptOption === 'ntfy'}
 			<Form.Field {form} name="ntfyEndpoint">
 				<Text
-					label="Ntfy Endpoint"
+					label={m.sea_zippy_piranha_lift()}
 					bind:value={$formData.ntfyEndpoint}
 					{...$constraints.ntfyEndpoint}
-					description="*Unique endpoint that is used to send you notifications to your ntfy app. For more info
-					visit [https://ntfy.sh](https://ntfy.sh)"
+					description={m.nimble_mushy_felix_drop({ link: '[https://ntfy.sh](https://ntfy.sh)' })}
 				/>
 			</Form.Field>
 		{/if}

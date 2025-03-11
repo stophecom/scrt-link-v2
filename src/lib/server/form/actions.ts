@@ -21,7 +21,8 @@ import {
 	secretFormSchema,
 	settingsFormSchema,
 	signInFormSchema,
-	themeFormSchema
+	themeFormSchema,
+	userFormSchema
 } from '$lib/validators/formSchemas';
 
 import {
@@ -153,6 +154,34 @@ export const saveSettings: Action = async (event) => {
 	return message(form, {
 		status: 'success',
 		title: m.many_seemly_gorilla_jolt()
+	});
+};
+
+export const saveUser: Action = async (event) => {
+	const form = await superValidate(event.request, zod(userFormSchema()));
+
+	const { name } = form.data;
+
+	const user = event.locals.user;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirect(307, '/signup');
+	}
+
+	await db
+		.update(userSchema)
+		.set({
+			name
+		})
+		.where(eq(userSchema.id, user.id));
+
+	return message(form, {
+		status: 'success',
+		title: 'Saved'
 	});
 };
 
