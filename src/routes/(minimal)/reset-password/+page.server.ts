@@ -8,6 +8,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	await limiter.cookieLimiter?.preflight(event);
+
 	if (event.locals.user) {
 		return redirect(307, '/account');
 	}

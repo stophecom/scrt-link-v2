@@ -55,7 +55,6 @@
 
 	const form = superForm(formProp, {
 		validators: zod(secretFormSchema()),
-		validationMethod: 'onblur',
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {

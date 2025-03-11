@@ -22,8 +22,7 @@ const plans = () => [
 		contents: [
 			m.stale_fine_turkey_praise(),
 			m.new_still_dingo_create({ limit: formatBytes(10 * MB) }),
-			m.loose_chunky_duck_intend(),
-			m.long_tired_monkey_rest()
+			m.loose_chunky_duck_intend()
 		],
 		limits: {
 			[SecretType.TEXT]: 150,
@@ -39,6 +38,7 @@ const plans = () => [
 		name: TierOptions.SECRET,
 		title: m.careful_inner_lynx_embrace(),
 		contents: [
+			m.long_tired_monkey_rest(),
 			m.pink_many_fox_boost(),
 			m.new_still_dingo_create({ limit: formatBytes(1 * GB) }),
 			m.slimy_livid_pelican_gleam(),
