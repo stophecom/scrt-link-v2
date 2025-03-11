@@ -119,7 +119,7 @@ const uploadFileChunk = async ({
 	progressCallback
 }: UploadFileChunkParams): Promise<void> => {
 	progressCallback(0);
-	// Get presigned S3 post url
+	// Get presigned S3 post URL
 	const { url, fields } = await api<PresignedPostResponse>(`/files?file=${fileName}`);
 
 	// Prepare form data

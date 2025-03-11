@@ -32,6 +32,6 @@ export const POST = async ({ url }: RequestEvent) => {
 		return json(post);
 	} catch (err) {
 		console.error(err);
-		error(400, 'Something went wrong.');
+		error(400, 'No able to get a presigned post URL.');
 	}
 };

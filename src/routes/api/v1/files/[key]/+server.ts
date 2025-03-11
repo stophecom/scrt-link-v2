@@ -17,8 +17,6 @@ export const POST = async ({ params, request }: RequestEvent) => {
 	const Bucket = bucket;
 	const Key = keyHash;
 
-	// const resourceAccessToken = request.headers['X-Sharrr-Access-Token']
-
 	if (!Key) {
 		error(400, 'No file key provided.');
 	}
