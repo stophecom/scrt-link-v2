@@ -4,7 +4,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { languageTag } from '$lib/paraglide/runtime';
 
-	import Textarea from '../ui/textarea/textarea.svelte';
+	import { Textarea } from '../../ui/textarea';
 
 	type Props = {
 		charactersLeft?: number;
