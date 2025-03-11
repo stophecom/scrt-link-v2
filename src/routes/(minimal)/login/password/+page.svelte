@@ -9,5 +9,5 @@
 </script>
 
 <SingleFormPage title={m.legal_weak_jay_bless()} description={m.ago_crazy_pelican_pray()}>
-	<SigninForm data={data.form} />
+	<SigninForm data={data.passwordForm} />
 </SingleFormPage>

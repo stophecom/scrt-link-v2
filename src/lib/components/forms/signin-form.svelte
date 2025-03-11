@@ -32,7 +32,7 @@
 </script>
 
 <FormWrapper message={$message}>
-	<form method="POST" use:enhance>
+	<form method="POST" use:enhance action="?/loginWithPassword">
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>

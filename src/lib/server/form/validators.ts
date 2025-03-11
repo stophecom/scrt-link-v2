@@ -1,14 +1,48 @@
 import { eq } from 'drizzle-orm';
-import { superValidate } from 'sveltekit-superforms';
+import { type Infer, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { ReadReceiptOptions, ThemeOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
 import { userSettings } from '$lib/server/db/schema';
-import { secretFormSchema, settingsFormSchema, themeFormSchema } from '$lib/validators/formSchemas';
+import {
+	type EmailFormSchema,
+	emailFormSchema,
+	type EmailVerificationCodeFormSchema,
+	emailVerificationCodeFormSchema,
+	secretFormSchema,
+	settingsFormSchema,
+	type SignInFormSchema,
+	signInFormSchema,
+	themeFormSchema
+} from '$lib/validators/formSchemas';
 
 export const secretFormValidator = async () => await superValidate(zod(secretFormSchema()));
 
+// Auth
+export const emailFormValidator = async () => await superValidate(zod(emailFormSchema())); // Used for login, signup, password reset
+
+export const loginPasswordFormValidator = async (defaultValues: Partial<Infer<SignInFormSchema>>) =>
+	await superValidate(defaultValues, zod(signInFormSchema()), {
+		errors: false
+	});
+
+export const resendEmailVerificationFormValidator = async (
+	defaultValues: Partial<Infer<EmailFormSchema>>
+) =>
+	await superValidate(defaultValues, zod(emailFormSchema()), {
+		errors: false,
+		id: 'resend-form'
+	});
+
+export const emailVerificationFormValidator = async (
+	defaultValues: Partial<Infer<EmailVerificationCodeFormSchema>>
+) =>
+	await superValidate(defaultValues, zod(emailVerificationCodeFormSchema()), {
+		errors: false
+	});
+
+// Settings
 export const themeFormValidator = async (user: App.Locals['user']) =>
 	await superValidate(
 		{

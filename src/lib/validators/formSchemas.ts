@@ -96,7 +96,7 @@ export const contactFormSchema = () =>
 
 export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = ReturnType<typeof emailFormSchema>;
-export type CodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
+export type EmailVerificationCodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
 export type SecretTextFormSchema = ReturnType<typeof secretFormSchema>;

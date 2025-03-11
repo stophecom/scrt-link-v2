@@ -7,15 +7,15 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as m from '$lib/paraglide/messages.js';
 	import {
-		type CodeFormSchema,
 		type EmailFormSchema,
+		type EmailVerificationCodeFormSchema,
 		emailVerificationCodeFormSchema
 	} from '$lib/validators/formSchemas';
 
 	import Button from '../ui/button/button.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
-	export let verificationFormData: SuperValidated<Infer<CodeFormSchema>>;
+	export let verificationFormData: SuperValidated<Infer<EmailVerificationCodeFormSchema>>;
 	export let resendFormData: SuperValidated<Infer<EmailFormSchema>>;
 
 	const verificationForm = superForm(verificationFormData, {
@@ -54,7 +54,7 @@
 </script>
 
 <FormWrapper message={$verificationFormMessage || $resendFormMessage}>
-	<form method="POST" action="?/verifyCode" use:enhance>
+	<form method="POST" action="?/verifyEmailVerificationCode" use:enhance>
 		<Form.Field form={verificationForm} name="code" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.few_lime_kudu_imagine()}</Form.Label>

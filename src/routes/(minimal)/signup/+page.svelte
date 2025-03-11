@@ -13,7 +13,11 @@
 </script>
 
 <SingleFormPage title={m.tough_jumpy_anteater_taste()} description={m.teary_brief_robin_scoop()}>
-	<EmailForm data={data.form} buttonLabel={m.full_awake_puffin_pray()} />
+	<EmailForm
+		data={data.signupForm}
+		buttonLabel={m.full_awake_puffin_pray()}
+		action="?/signupWithEmail"
+	/>
 	<div class="px-5 text-center text-sm">
 		{m.many_home_felix_seek()}
 		<Link href="/login">{m.legal_weak_jay_bless()}</Link>
