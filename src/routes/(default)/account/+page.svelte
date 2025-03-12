@@ -74,7 +74,7 @@
 	{/if}
 
 	<Card class="mb-6" title={m.vivid_house_flea_zap()} description={m.wacky_key_vole_roam()}>
-		<SettingsForm form={data.settingsForm} />
+		<SettingsForm {user} form={data.settingsForm} />
 	</Card>
 
 	<Card class="mb-6" title="Appearance" description="Choose your favorite theme color.">

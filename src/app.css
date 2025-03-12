@@ -101,7 +101,7 @@
 	padding-inline: 1.2rem;
 
 	@media (width >= theme(--breakpoint-xs)) {
-		padding-inline: 2rem;
+		padding-inline: 1.4rem;
 		max-width: 100%;
 	}
 

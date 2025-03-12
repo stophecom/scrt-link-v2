@@ -13,6 +13,7 @@ const defaultLimits = {
 	[SecretType.REDIRECT]: false,
 	[SecretType.SNAP]: false,
 	passwordAllowed: false,
+	readReceiptsAllowed: false,
 	expirationOptionsAllowed: false,
 	expirationOptionsExtended: false
 };
@@ -34,6 +35,7 @@ const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: false,
 			passwordAllowed: false,
+			readReceiptsAllowed: false,
 			expirationOptionsAllowed: false,
 			expirationOptionsExtended: false
 		}
@@ -57,6 +59,7 @@ const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: true,
 			passwordAllowed: true,
+			readReceiptsAllowed: true,
 			expirationOptionsAllowed: true,
 			expirationOptionsExtended: false
 		}
@@ -76,6 +79,7 @@ const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: true,
 			passwordAllowed: true,
+			readReceiptsAllowed: true,
 			expirationOptionsAllowed: true,
 			expirationOptionsExtended: true
 		}

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
-	import LockKeyhole from 'lucide-svelte/icons/lock-keyhole';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { type Infer, intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
@@ -27,8 +26,7 @@
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getExpiresInOptions } from '../../data/secretSettings';
-	import Alert from '../ui/alert/alert.svelte';
-	import Link from '../ui/link';
+	import UpgradeNotice from '../elements/upgrade-notice.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
@@ -135,17 +133,6 @@
 	});
 </script>
 
-{#snippet upgrade()}
-	<div class="py-2">
-		<Alert Icon={LockKeyhole} variant="info" title={m.fair_red_warbler_bake()}>
-			<p>
-				{m.cool_spicy_gopher_earn()}
-			</p>
-			<Link href="/pricing">{m.mild_tangy_elk_scoop()}</Link>
-		</Alert>
-	</div>
-{/snippet}
-
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/postSecret">
 		{#if secretType === SecretType.TEXT}
@@ -162,15 +149,15 @@
 					/>
 				</Form.Field>
 				{#if charactersLeft <= 0}
-					{@render upgrade()}
+					<UpgradeNotice {user} class="my-2" />
 				{/if}
 			</div>
 		{/if}
 
 		{#if [SecretType.FILE, SecretType.SNAP].includes(secretType) && privateKey}
 			<div in:fade>
-				{#if secretType === SecretType.FILE || (secretType === SecretType.SNAP && planLimits.snap)}
-					<div class="min-h-32 py-2">
+				<div class="min-h-32 py-2">
+					{#if secretType === SecretType.FILE || (secretType === SecretType.SNAP && planLimits.snap)}
 						<FileUpload
 							{secretType}
 							bind:content={$formData.content}
@@ -187,29 +174,31 @@
 								{m.tired_inner_cougar_push()}
 							</div>
 						{/if}
-					</div>
-				{:else}
-					{@render upgrade()}
-				{/if}
+					{:else}
+						<UpgradeNotice {user} />
+					{/if}
+				</div>
 			</div>
 		{/if}
 
 		{#if secretType === SecretType.REDIRECT}
 			<div in:fade>
-				{#if planLimits.redirect}
-					<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
-						<Text
-							bind:value={$formData.content}
-							label="URL"
-							isHiddenLabel={true}
-							placeholder="https://example.com"
-							description="The URL to get redirected to (one time)."
-							type="url"
-						/>
-					</Form.Field>
-				{:else}
-					{@render upgrade()}
-				{/if}
+				<div class=" min-h-32 py-2">
+					{#if planLimits.redirect}
+						<Form.Field {form} name="content">
+							<Text
+								bind:value={$formData.content}
+								label="URL"
+								isHiddenLabel={true}
+								placeholder="https://example.com"
+								description={m.seemly_loud_falcon_pave()}
+								type="url"
+							/>
+						</Form.Field>
+					{:else}
+						<UpgradeNotice {user} />
+					{/if}
+				</div>
 			</div>
 		{/if}
 
@@ -234,13 +223,16 @@
 					label={m.noble_whole_hornet_evoke()}
 				/>
 			</Form.Fieldset>
-			{#if !planLimits.expirationOptionsAllowed || !planLimits.passwordAllowed}
-				{@render upgrade()}
+			{#if (!planLimits.expirationOptionsAllowed || !planLimits.passwordAllowed) && !(secretType === SecretType.SNAP && !planLimits.snap)}
+				<UpgradeNotice {user} />
 			{/if}
 		</div>
 
 		<div class="flex flex-col items-stretch sm:flex-row">
-			<Toggle class="mb-1" bind:pressed={isOptionsVisible} aria-label="Toggle options"
+			<Toggle
+				class="mb-1"
+				bind:pressed={isOptionsVisible}
+				aria-label={m.topical_zany_grebe_exhale()}
 				>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 				<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
 			>

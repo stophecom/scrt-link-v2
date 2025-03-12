@@ -1,4 +1,4 @@
-import User from 'lucide-svelte/icons/user';
+import { Paperclip, Redo2, TypeOutline, Zap } from 'lucide-svelte';
 
 import * as m from '$lib/paraglide/messages.js';
 
@@ -6,18 +6,22 @@ import { githubUrl } from './app';
 
 export const secretMenu = () => [
 	{
+		icon: TypeOutline,
 		href: '/text',
 		label: m.aloof_caring_anteater_compose()
 	},
 	{
+		icon: Paperclip,
 		href: '/file',
 		label: m.formal_aware_platypus_charm()
 	},
 	{
+		icon: Redo2,
 		href: '/redirect',
 		label: m.just_mellow_moth_stab()
 	},
 	{
+		icon: Zap,
 		href: '/snap',
 		label: m.awake_big_halibut_view()
 	}
@@ -61,14 +65,6 @@ export const helpMenu = () => [
 		label: 'Github'
 	}
 ];
-
-const account = {
-	icon: User,
-	href: '/account',
-	label: m.novel_proud_anaconda_zoom()
-};
-
-export const accountMenuHeader = () => [account];
 
 const tos = {
 	href: '/terms-of-service',
