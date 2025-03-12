@@ -2,6 +2,7 @@
 	import { ArrowRight, Check, Rocket } from 'lucide-svelte';
 	import BadgeCheck from 'lucide-svelte/icons/badge-check';
 	import LogOut from 'lucide-svelte/icons/log-out';
+	import { PersistedState } from 'runed';
 
 	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
@@ -24,13 +25,14 @@
 	const { user } = data;
 
 	const usps = [
-		'Get notified when secrets are being viewed with read receipts',
-		'Transfer files **up to 100GB**',
-		'Extend retention time up to 30 days',
-		'Snaps: Private disappearing images',
-		'Add **additional password** for advanced security',
-		'...and more'
+		m.weary_antsy_lionfish_pat(),
+		m.shy_suave_donkey_gasp(),
+		m.this_ideal_racoon_link(),
+		m.basic_just_camel_clasp(),
+		m.candid_noble_cobra_fetch()
 	];
+
+	const hidePremiumPromo = new PersistedState<boolean>('hidePremiumPromo', false);
 </script>
 
 {#snippet renderLabel(label: string)}
@@ -42,25 +44,32 @@
 	lead={m.gray_quiet_tern_bubble()}
 >
 	{#if user.subscriptionTier !== TierOptions.CONFIDENTIAL}
-		<Button class="mb-6" variant="outline" href="/pricing">Manage subscription</Button>
-	{:else}
+		<Button class="mb-6" variant="outline" href="/pricing">{m.short_male_racoon_prosper()}</Button>
+	{:else if !hidePremiumPromo.current}
 		<Card
-			title="Get full access"
-			description="Consider a premium plan to unlock all features."
+			title={m.red_less_tapir_edit()}
+			description={m.few_short_gull_taste()}
 			class="border-primary relative mb-6 border-2"
 		>
 			<Rocket class="absolute top-5 right-5" />
-			<ul>
+			<ul class="mb-6">
 				{#each usps as item}
-					<li class="flex items-center text-lg">
+					<li class="flex items-center py-1 text-lg">
 						<Check class="text-primary me-2" />
 						<Markdown markdown={item} />
 					</li>
 				{/each}
 			</ul>
-			<Button class="mt-2 ml-auto" href="/pricing"
-				><ArrowRight class="mr-2 h-5 w-5" /> View plans</Button
-			>
+
+			<div class="flex justify-between">
+				<Button variant="outline" onclick={() => (hidePremiumPromo.current = true)}
+					>{m.proud_awake_shark_drum()}</Button
+				>
+
+				<Button class="ml-auto" href="/pricing"
+					><ArrowRight class="mr-2 h-5 w-5" />{m.quick_sweet_angelfish_lend()}</Button
+				>
+			</div>
 		</Card>
 	{/if}
 
