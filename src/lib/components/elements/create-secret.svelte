@@ -3,6 +3,7 @@
 	import Reply from 'lucide-svelte/icons/reply';
 	import { fade } from 'svelte/transition';
 
+	import { onNavigate } from '$app/navigation';
 	import SecretForm, { type SecretFormProps } from '$lib/components/forms/secret-form.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
@@ -30,6 +31,11 @@
 	let masterPassword = $state('');
 	let successMessage = $state('');
 	let link: string = $derived(`${baseUrl}/s#${masterPassword}`);
+
+	onNavigate(() => {
+		// Make sure we force a reset. This causes the SecretForm to mount again which is what we want.
+		successMessage = '';
+	});
 </script>
 
 {#if successMessage}
@@ -54,7 +60,7 @@
 			<CopyButton class="shrink-0" text={link} />
 		</div>
 	</div>
-	<Button on:click={() => window.location.reload()} variant="ghost" size="sm"
+	<Button onclick={() => (successMessage = '')} variant="ghost" size="sm"
 		><Reply class="mr-2 h-4 w-4" />{m.trite_fun_starfish_ripple()}</Button
 	>
 {:else}

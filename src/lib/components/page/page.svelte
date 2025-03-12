@@ -38,7 +38,7 @@
 
 <div class="container min-h-screen pt-8 pb-16">
 	<div>
-		<a data-sveltekit-reload class="inline-flex" href="/">
+		<a class="inline-flex" href="/">
 			<Logo class="h-28 w-28 md:h-32 md:w-32" />
 		</a>
 	</div>

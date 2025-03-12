@@ -208,7 +208,7 @@
 				<!-- Secret Type: Text -->
 				{content}
 				<div class="flex items-center justify-end pt-2">
-					<Button data-sveltekit-reload href="/" class="mr-2" size="sm" variant="ghost">
+					<Button href="/" class="mr-2" size="sm" variant="ghost">
 						<Flame class="mr-2 h-4 w-4" /> {m.left_cool_raven_zap()}</Button
 					>
 
@@ -251,7 +251,7 @@
 
 	{#if content}
 		<div class="pt-2">
-			<Button data-sveltekit-reload href="/" variant="ghost"
+			<Button href="/" variant="ghost"
 				><Reply class="mr-2 h-4 w-4" />{m.giant_smug_lobster_clasp()}</Button
 			>
 		</div>
