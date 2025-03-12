@@ -4,6 +4,7 @@
 	import { fade } from 'svelte/transition';
 
 	import { onNavigate } from '$app/navigation';
+	import { copyText } from '$lib/client/utils';
 	import SecretForm, { type SecretFormProps } from '$lib/components/forms/secret-form.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
@@ -35,6 +36,12 @@
 	onNavigate(() => {
 		// Make sure we force a reset. This causes the SecretForm to mount again which is what we want.
 		successMessage = '';
+	});
+
+	$effect(() => {
+		if (successMessage) {
+			copyText(link);
+		}
 	});
 </script>
 
