@@ -28,6 +28,12 @@
 	{#if PUBLIC_ENV !== 'production'}
 		<meta name="robots" content="noindex" />
 	{/if}
+
+	<script
+		defer
+		data-domain="v2.scrt.link"
+		src="/js/script.pageview-props.revenue.tagged-events.js"
+	></script>
 </svelte:head>
 
 <ParaglideJS {i18n}>
