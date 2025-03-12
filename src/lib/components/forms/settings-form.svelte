@@ -63,6 +63,7 @@
 					bind:value={$formData.email}
 					{...$constraints.email}
 					type="email"
+					disabled={!planLimits.readReceiptsAllowed}
 				/>
 				<Form.Description>{m.hour_royal_moose_kiss()}</Form.Description>
 			</Form.Field>
@@ -72,9 +73,11 @@
 			<Form.Field {form} name="ntfyEndpoint">
 				<Text
 					label={m.sea_zippy_piranha_lift()}
+					placeholder="unique-endpoint123"
 					bind:value={$formData.ntfyEndpoint}
 					{...$constraints.ntfyEndpoint}
 					description={m.nimble_mushy_felix_drop({ link: '[https://ntfy.sh](https://ntfy.sh)' })}
+					disabled={!planLimits.readReceiptsAllowed}
 				/>
 			</Form.Field>
 		{/if}
