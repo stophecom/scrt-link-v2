@@ -79,6 +79,7 @@
 		"drizzle-zod": "^0.6.1",
 		"jwt-decode": "^4.0.0",
 		"mode-watcher": "^0.5.0",
+		"plausible-tracker": "^0.3.9",
 		"postgres": "^3.4.5",
 		"pretty-bytes": "^6.1.1",
 		"resend": "^4.1.1",

@@ -3,9 +3,10 @@
 
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
 	import { ModeWatcher } from 'mode-watcher';
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 
 	import { PUBLIC_ENV } from '$env/static/public';
+	import { plausible } from '$lib/client/plausible';
 	import { appName } from '$lib/data/app';
 	import { i18n } from '$lib/i18n';
 	import { languageTag } from '$lib/paraglide/runtime';
@@ -13,6 +14,14 @@
 	import type { LayoutData } from './$types';
 
 	let { children }: { data: LayoutData; children: Snippet } = $props();
+
+	onMount(async () => {
+		if (plausible) {
+			const { enableAutoPageviews } = plausible;
+
+			enableAutoPageviews();
+		}
+	});
 </script>
 
 <svelte:head>
@@ -28,12 +37,6 @@
 	{#if PUBLIC_ENV !== 'production'}
 		<meta name="robots" content="noindex" />
 	{/if}
-
-	<script
-		defer
-		data-domain="v2.scrt.link"
-		src="/js/script.pageview-props.revenue.tagged-events.js"
-	></script>
 </svelte:head>
 
 <ParaglideJS {i18n}>

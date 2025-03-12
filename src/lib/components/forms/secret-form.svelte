@@ -5,6 +5,7 @@
 	import { type Infer, intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod } from 'sveltekit-superforms/adapters';
 
+	import { plausible } from '$lib/client/plausible';
 	import {
 		encryptString,
 		exportPublicKey,
@@ -83,6 +84,17 @@
 				expiresIn: expiresIn,
 				password: $formData.password
 			};
+
+			if (plausible) {
+				const { trackEvent } = plausible;
+				trackEvent('SecretCreation', {
+					props: {
+						secretType: secretType,
+						withPassword: !!$formData.password,
+						subscriptionTier: user?.subscriptionTier || 'none'
+					}
+				});
+			}
 
 			jsonData(jsonPayload);
 		},
