@@ -12,7 +12,7 @@
 </script>
 
 <Page title={m.moving_quaint_buzzard_trip()} lead={m.slimy_next_shad_fall()}>
-	<div class="py-10">
+	<div class="sm:py-10">
 		{#if data.plans}
 			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
 		{/if}

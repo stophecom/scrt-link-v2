@@ -42,9 +42,9 @@
 
 <div
 	class={cn(
-		'bg-card border-border relative row-span-4 mt-6 grid grid-rows-subgrid gap-4 rounded border p-4',
+		'bg-card border-border relative row-span-4 grid grid-rows-subgrid gap-4 rounded border p-4',
 		rest.class,
-		planContent.promotion && !hidePromotion ? 'border-foreground rounded-t-none' : '',
+		planContent.promotion && !hidePromotion ? 'border-foreground mt-6 rounded-t-none sm:mt-0' : '',
 		isActiveProduct ? 'border-primary' : ''
 	)}
 >

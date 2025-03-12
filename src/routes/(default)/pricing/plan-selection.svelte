@@ -113,8 +113,8 @@
 {/if}
 
 <div class="lg:-mx-20">
-	<div class="grid gap-3 sm:grid-cols-3 lg:gap-4">
-		<PlanView name="Confidential" class="mb-6 sm:mb-0">
+	<div class="grid gap-6 sm:grid-cols-3 sm:gap-3 lg:gap-4">
+		<PlanView name="Confidential">
 			{#if !user}
 				<Button class="w-full" href="/signup">{m.lofty_tasty_ray_fond()}</Button>
 			{/if}
