@@ -117,8 +117,7 @@
 		<PlanView name="Confidential">
 			{#if !user}
 				<Button class="w-full" href="/signup">{m.lofty_tasty_ray_fond()}</Button>
-			{/if}
-			{#if !subscription}
+			{:else if user && !subscription}
 				{@render renderIsActivePlan()}
 			{/if}
 		</PlanView>

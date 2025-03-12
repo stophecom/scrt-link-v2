@@ -2,6 +2,8 @@
 	import { Plus } from 'lucide-svelte';
 	import Plane from 'lucide-svelte/icons/plane';
 	import Rocket from 'lucide-svelte/icons/rocket';
+	import { backInOut } from 'svelte/easing';
+	import { scale } from 'svelte/transition';
 
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
@@ -48,45 +50,45 @@
 				</a>
 
 				<div class="ml-auto grid grid-flow-col items-center gap-2">
-					{#if user}
-						{#if !minimal && !hideCreateSecretButton}
-							<MediaQuery query="not (min-width: 40rem)" let:matches>
-								<div
-									class={matches
-										? 'rounded-full max-sm:fixed max-sm:right-6 max-sm:bottom-6 max-sm:shadow-xl'
-										: ''}
-								>
-									<DropdownMenu.Root>
-										<DropdownMenu.Trigger asChild let:builder
-											><Button
-												builders={[builder]}
-												variant={matches ? 'default' : 'ghost'}
-												size={matches ? 'floating' : 'default'}
-												class={matches ? 'rounded-full' : ''}
-											>
-												<Plus
-													class="transition-all {builder['data-state'] === 'open'
-														? 'rotate-45'
-														: 'rotate-0'}"
-												/>
-												<span class="sr-only">{m.ideal_brave_eagle_trust()}</span></Button
-											></DropdownMenu.Trigger
+					{#if !minimal && !hideCreateSecretButton}
+						<MediaQuery query="not (min-width: 40rem)" let:matches>
+							<div
+								in:scale={{ easing: backInOut, duration: 500 }}
+								class={matches
+									? 'rounded-full max-sm:fixed max-sm:right-6 max-sm:bottom-6 max-sm:shadow-xl'
+									: ''}
+							>
+								<DropdownMenu.Root>
+									<DropdownMenu.Trigger asChild let:builder
+										><Button
+											builders={[builder]}
+											variant={matches ? 'default' : 'ghost'}
+											size={matches ? 'floating' : 'icon'}
+											class={matches ? 'rounded-full' : ''}
 										>
-										<DropdownMenu.Content class="w-56">
-											<DropdownMenu.Label>{m.ideal_brave_eagle_trust()}</DropdownMenu.Label>
-											<DropdownMenu.Separator />
+											<Plus
+												class="transition-all {builder['data-state'] === 'open'
+													? 'rotate-45'
+													: 'rotate-0'}"
+											/>
+											<span class="sr-only">{m.ideal_brave_eagle_trust()}</span></Button
+										></DropdownMenu.Trigger
+									>
+									<DropdownMenu.Content class="w-56">
+										<DropdownMenu.Label>{m.ideal_brave_eagle_trust()}</DropdownMenu.Label>
+										<DropdownMenu.Separator />
 
-											{#each secretMenu() as menuItem}
-												<DropdownMenu.Item href={menuItem.href}>
-													<menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</DropdownMenu.Item
-												>
-											{/each}
-										</DropdownMenu.Content>
-									</DropdownMenu.Root>
-								</div>
-							</MediaQuery>
-						{/if}
-
+										{#each secretMenu() as menuItem}
+											<DropdownMenu.Item href={menuItem.href}>
+												<menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</DropdownMenu.Item
+											>
+										{/each}
+									</DropdownMenu.Content>
+								</DropdownMenu.Root>
+							</div>
+						</MediaQuery>
+					{/if}
+					{#if user}
 						<a href="/account" class="relative mr-2">
 							<Avatar.Root>
 								<Avatar.Image src={user.picture} alt={user.name} />
