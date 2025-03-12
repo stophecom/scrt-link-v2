@@ -1,8 +1,6 @@
-import { json } from '@sveltejs/kit';
-
 import type { BlogPostMeta } from '$lib/types';
 
-async function getPosts() {
+export const getBlogPosts = async () => {
 	let posts: BlogPostMeta[] = [];
 
 	const paths = import.meta.glob('$lib/data/blog/*.md', { eager: true });
@@ -25,9 +23,4 @@ async function getPosts() {
 	);
 
 	return posts;
-}
-
-export const GET = async () => {
-	const posts = await getPosts();
-	return json(posts);
 };
