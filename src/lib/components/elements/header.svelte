@@ -51,13 +51,17 @@
 					{#if user}
 						{#if !minimal && !hideCreateSecretButton}
 							<MediaQuery query="not (min-width: 40rem)" let:matches>
-								<div class={matches ? 'max-sm:fixed max-sm:right-5 max-sm:bottom-5' : ''}>
+								<div
+									class={matches
+										? 'rounded-full max-sm:fixed max-sm:right-6 max-sm:bottom-6 max-sm:shadow-xl'
+										: ''}
+								>
 									<DropdownMenu.Root>
 										<DropdownMenu.Trigger asChild let:builder
 											><Button
 												builders={[builder]}
 												variant={matches ? 'default' : 'ghost'}
-												size={matches ? 'icon' : 'default'}
+												size={matches ? 'floating' : 'default'}
 												class={matches ? 'rounded-full' : ''}
 											>
 												<Plus
@@ -105,7 +109,7 @@
 							{/if}
 						</a>
 					{:else}
-						<DarkModeSwitcher hideLabel variant="ghost" size="icon" />
+						<DarkModeSwitcher hideLabel variant="ghost" size="icon" class="max-xs:hidden" />
 						<Button variant="outline" href="/login">{m.simple_dry_boar_dazzle()}</Button>
 						<Button href="/signup">{m.large_smart_badger_beam()}</Button>
 					{/if}

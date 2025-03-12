@@ -15,8 +15,8 @@
 </script>
 
 <Button onclick={toggleMode} class={cn('relative', rest.class)} {...rest}>
-	<Sun class="h-[1.2rem] w-[1.2rem] opacity-100 transition-all dark:opacity-0" />
-	<Moon class="absolute left-4 h-[1.2rem] w-[1.2rem] opacity-0 transition-all dark:opacity-100 " />
+	<Moon class="hidden h-5 w-5 dark:block " />
+	<Sun class="block h-5 w-5 dark:hidden" />
 
 	<span class={hideLabel ? 'sr-only' : 'ms-2'}>{m.hour_lofty_warthog_wish()}</span>
 </Button>
