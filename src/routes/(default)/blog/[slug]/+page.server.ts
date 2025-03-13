@@ -25,5 +25,3 @@ export const entries: EntryGenerator = async () => {
 	const posts = await getBlogPosts();
 	return posts.map((item) => ({ slug: item.slug }));
 };
-
-export const prerender = 'auto';
