@@ -20,7 +20,7 @@
 	"yummy_fair_gazelle_link": "Mot de passe",
 	"legal_weak_jay_bless": "Se connecter",
 	"ago_crazy_pelican_pray": "pour continuer vers votre compte.",
-	"aloof_careful_trout_dine": "Le mot de passe doit contenir au moins 8 caractères.",
+	"aloof_careful_trout_dine": "Le mot de passe doit contenir au moins {number} caractères.",
 	"every_chunky_osprey_zip": "Adresse email invalide.",
 	"many_home_felix_seek": "Vous avez déjà un compte ?",
 	"grassy_sea_pug_gasp": "Créer un compte",

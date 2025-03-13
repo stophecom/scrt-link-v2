@@ -1,10 +1,11 @@
-import { type Action, error, fail, redirect } from '@sveltejs/kit';
+import { type Action, error, fail } from '@sveltejs/kit';
 import { desc, eq, sql } from 'drizzle-orm';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { generateRandomUrlSafeString, scryptHash, verifyPassword } from '$lib/crypto';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
+import { redirectLocalized } from '$lib/i18n';
 import * as m from '$lib/paraglide/messages.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
@@ -18,6 +19,7 @@ import {
 import {
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
+	passwordFormSchema,
 	secretFormSchema,
 	settingsFormSchema,
 	signInFormSchema,
@@ -111,7 +113,7 @@ export const saveTheme: Action = async (event) => {
 	const user = event.locals.user;
 
 	if (!user) {
-		return redirect(307, '/signup');
+		return redirectLocalized(307, '/signup');
 	}
 
 	const { themeOption } = form.data;
@@ -139,7 +141,7 @@ export const saveSettings: Action = async (event) => {
 	}
 
 	if (!user) {
-		return redirect(307, '/signup');
+		return redirectLocalized(307, '/signup');
 	}
 
 	await db
@@ -169,7 +171,7 @@ export const saveUser: Action = async (event) => {
 	}
 
 	if (!user) {
-		return redirect(307, '/signup');
+		return redirectLocalized(307, '/signup');
 	}
 
 	await db
@@ -218,10 +220,10 @@ export const loginWithEmail: Action = async (event) => {
 
 	// If user doesn't have a password (e.g. from old version of scrt.link) or email is not verified.
 	if (!result.passwordHash || !result.emailVerified) {
-		return redirect(303, '/verify-email');
+		return redirectLocalized(303, '/verify-email');
 	}
 
-	return redirect(303, '/login/password');
+	return redirectLocalized(303, '/login/password');
 };
 
 export const loginWithPassword: Action = async (event) => {
@@ -280,7 +282,7 @@ export const loginWithPassword: Action = async (event) => {
 		);
 	}
 
-	return redirect(303, '/account');
+	return redirectLocalized(303, '/account');
 };
 
 export const signupWithEmail: Action = async (event) => {
@@ -303,7 +305,7 @@ export const signupWithEmail: Action = async (event) => {
 		path: '/'
 	});
 
-	return redirect(303, '/verify-email');
+	return redirectLocalized(303, '/verify-email');
 };
 
 export const verifyEmailVerificationCode: Action = async (event) => {
@@ -415,7 +417,7 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 		error(500, 'Failed to register');
 	}
 
-	return redirect(303, '/set-password');
+	return redirectLocalized(303, '/set-password');
 };
 
 export const resendEmailVerificationCode: Action = async (event) => {
@@ -439,7 +441,7 @@ export const resendEmailVerificationCode: Action = async (event) => {
 
 	// No email from cookie
 	if (!email) {
-		return redirect(307, '/signup');
+		return redirectLocalized(307, '/signup');
 	}
 	try {
 		await createEmailVerificationRequest(email);
@@ -490,7 +492,36 @@ export const resetPassword: Action = async (event) => {
 		path: '/'
 	});
 
-	return redirect(303, '/verify-email');
+	return redirectLocalized(303, '/verify-email');
+};
+
+export const setPassword: Action = async (event) => {
+	if (!event.locals.user) {
+		return redirectLocalized(307, '/login');
+	}
+
+	const passwordForm = await superValidate(event.request, zod(passwordFormSchema()));
+
+	if (!passwordForm.valid) {
+		return fail(400, { form: passwordForm });
+	}
+
+	const { password } = passwordForm.data;
+
+	try {
+		// Update user
+		const hashedPassword = await scryptHash(password);
+
+		await db
+			.update(userSchema)
+			.set({ passwordHash: hashedPassword })
+			.where(eq(userSchema.id, event.locals.user.id));
+	} catch (e) {
+		console.error(e);
+		error(500, 'Failed to set password.');
+	}
+
+	return redirectLocalized(303, '/account');
 };
 
 export const logout: Action = async (event) => {
@@ -500,5 +531,5 @@ export const logout: Action = async (event) => {
 	await auth.invalidateSession(event.locals.session.id);
 	auth.deleteSessionTokenCookie(event);
 
-	return redirect(303, '/');
+	return redirectLocalized(303, '/');
 };

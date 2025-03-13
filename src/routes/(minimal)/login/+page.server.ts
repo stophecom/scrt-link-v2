@@ -1,5 +1,4 @@
-import { redirect } from '@sveltejs/kit';
-
+import { redirectLocalized } from '$lib/i18n';
 import { loginWithEmail } from '$lib/server/form/actions';
 import { emailFormValidator } from '$lib/server/form/validators';
 import { limiter } from '$lib/server/rate-limit';
@@ -10,7 +9,7 @@ export const load: PageServerLoad = async (event) => {
 	await limiter.cookieLimiter?.preflight(event);
 
 	if (event.locals.user) {
-		return redirect(307, '/account');
+		return redirectLocalized(307, '/account');
 	}
 
 	return {

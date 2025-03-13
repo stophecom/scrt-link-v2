@@ -1,8 +1,9 @@
-import { error, redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { redirectLocalized } from '$lib/i18n';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import { user as userSchema } from '$lib/server/db/schema';
@@ -13,7 +14,7 @@ import type { Actions, RequestEvent } from './$types';
 
 export async function load(event: RequestEvent) {
 	if (!event.locals.user) {
-		return redirect(307, '/login');
+		return redirectLocalized(307, '/login');
 	}
 
 	return {
@@ -28,7 +29,7 @@ export const actions: Actions = {
 
 async function deleteAccount(event: RequestEvent) {
 	if (!event.locals.user) {
-		return redirect(307, '/login');
+		return redirectLocalized(307, '/login');
 	}
 
 	if (!event.locals.session) {
@@ -62,5 +63,5 @@ async function deleteAccount(event: RequestEvent) {
 		error(500, 'Failed to delete account.');
 	}
 
-	return redirect(303, '/farewell');
+	return redirectLocalized(303, '/farewell');
 }

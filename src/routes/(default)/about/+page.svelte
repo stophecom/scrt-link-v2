@@ -4,6 +4,6 @@
 	import * as m from '$lib/paraglide/messages.js';
 </script>
 
-<Page title="About" lead="The less we know, the better.">
+<Page title={m.polite_misty_jan_hint()} lead={m.such_bright_panther_rush()}>
 	<Markdown markdown={m.polite_clean_canary_walk()} format={true} />
 </Page>

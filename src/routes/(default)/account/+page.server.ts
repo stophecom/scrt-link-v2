@@ -1,5 +1,4 @@
-import { redirect } from '@sveltejs/kit';
-
+import { redirectLocalized } from '$lib/i18n';
 import { logout, saveSettings, saveTheme, saveUser } from '$lib/server/form/actions';
 import {
 	settingsFormValidator,
@@ -12,7 +11,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
-		return redirect(307, '/signup');
+		return redirectLocalized(307, '/signup');
 	}
 	const user = event.locals.user;
 

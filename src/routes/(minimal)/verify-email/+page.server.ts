@@ -1,5 +1,4 @@
-import { redirect } from '@sveltejs/kit';
-
+import { redirectLocalized } from '$lib/i18n';
 import { createEmailVerificationRequest } from '$lib/server/email-verification';
 import { resendEmailVerificationCode, verifyEmailVerificationCode } from '$lib/server/form/actions';
 import {
@@ -16,12 +15,12 @@ export async function load(event: RequestEvent) {
 
 	// Already logged in
 	if (event.locals.user) {
-		return redirect(307, '/account');
+		return redirectLocalized(307, '/account');
 	}
 
 	// No email from cookie
 	if (!email) {
-		return redirect(307, '/signup');
+		return redirectLocalized(307, '/signup');
 	}
 
 	// User needs to verify his/her email

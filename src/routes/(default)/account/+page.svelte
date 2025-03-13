@@ -100,7 +100,7 @@
 		</Tooltip.Root>
 
 		<div class="flex py-1">
-			{@render renderLabel('My current plan:')}
+			{@render renderLabel(m.weird_ok_sparrow_praise())}
 			<span class="inline-block p-1"
 				>{user.subscriptionTier}
 				(<a class="hover:text-primary underline" href="/pricing">{m.good_wacky_alligator_dare()}</a

@@ -9,7 +9,7 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title="Snap" lead={m.misty_north_hedgehog_breathe()}>
+<Page title={m.awake_big_halibut_view()} lead={m.misty_north_hedgehog_breathe()}>
 	<CreateSecret
 		form={data.secretForm}
 		user={data.user}

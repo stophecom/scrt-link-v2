@@ -3,6 +3,7 @@ import { createI18n } from '@inlang/paraglide-sveltekit';
 import * as runtime from '$lib/paraglide/runtime';
 export const i18n = createI18n(runtime);
 
+import { redirect } from '@sveltejs/kit';
 import prettyBytes from 'pretty-bytes';
 
 const defaultLanguage = 'en';
@@ -25,6 +26,16 @@ export const formatCurrency = (
 
 export const formatNumber = (amount: number) =>
 	new Intl.NumberFormat(runtime.languageTag()).format(amount);
+
+export const getLocalizedUrl = (location: string | URL) => {
+	const locale = runtime.languageTag();
+
+	return `${locale === defaultLanguage ? '' : `/${locale}`}${location}`;
+};
+
+type CustomRedirect = typeof redirect;
+export const redirectLocalized: CustomRedirect = (status, location) =>
+	redirect(status, getLocalizedUrl(location));
 
 export const getAbsoluteLocalizedUrl = (baseUrl: string, pathname: string, locale = 'en') =>
 	`${baseUrl}${locale === defaultLanguage ? '' : `/${locale}`}${pathname}`;

@@ -1,5 +1,4 @@
-import { redirect } from '@sveltejs/kit';
-
+import { redirectLocalized } from '$lib/i18n';
 import { signupWithEmail } from '$lib/server/form/actions';
 import { emailFormValidator } from '$lib/server/form/validators';
 
@@ -8,7 +7,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
-		return redirect(307, '/account');
+		return redirectLocalized(307, '/account');
 	}
 	return {
 		signupForm: await emailFormValidator()

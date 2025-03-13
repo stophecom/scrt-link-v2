@@ -1,18 +1,15 @@
-import { error, redirect } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
-import { fail, superValidate } from 'sveltekit-superforms';
+import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { scryptHash } from '$lib/crypto';
-import { db } from '$lib/server/db';
-import { user } from '$lib/server/db/schema';
+import { redirectLocalized } from '$lib/i18n';
+import { setPassword } from '$lib/server/form/actions';
 import { passwordFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, RequestEvent } from './$types';
 
 export async function load(event: RequestEvent) {
 	if (!event.locals.user) {
-		return redirect(307, '/login');
+		return redirectLocalized(307, '/login');
 	}
 
 	return {
@@ -24,32 +21,3 @@ export async function load(event: RequestEvent) {
 export const actions: Actions = {
 	setPassword: setPassword
 };
-
-async function setPassword(event: RequestEvent) {
-	if (!event.locals.user) {
-		return redirect(307, '/login');
-	}
-
-	const passwordForm = await superValidate(event.request, zod(passwordFormSchema()));
-
-	if (!passwordForm.valid) {
-		return fail(400, { form: passwordForm });
-	}
-
-	const { password } = passwordForm.data;
-
-	try {
-		// Update user
-		const hashedPassword = await scryptHash(password);
-
-		await db
-			.update(user)
-			.set({ passwordHash: hashedPassword })
-			.where(eq(user.id, event.locals.user.id));
-	} catch (e) {
-		console.error(e);
-		error(500, 'Failed to set password.');
-	}
-
-	return redirect(303, '/account');
-}

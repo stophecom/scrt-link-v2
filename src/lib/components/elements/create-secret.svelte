@@ -94,6 +94,6 @@
 		{/if}
 	</Card>
 	{#if !hideUsps}
-		<Usps items={privacyUsps} />
+		<Usps items={privacyUsps()} />
 	{/if}
 {/if}
