@@ -4,6 +4,7 @@
 	import Footer from '$lib/components/elements/footer.svelte';
 	import Header from '$lib/components/elements/header.svelte';
 	import { secretMenu } from '$lib/data/menu';
+	import { availableLanguageTags } from '$lib/paraglide/runtime';
 
 	import type { LayoutData } from './$types';
 
@@ -13,8 +14,15 @@
 	const paths = secretMenu().map((item) => item.href);
 	let isCreateSecretButtonHidden = $state(false);
 
+	const languageSpecificLandingPages = availableLanguageTags.map((item) => `/${item}`);
+
 	$effect(() => {
-		isCreateSecretButtonHidden = ['/', '/pricing', ...paths].includes(data.pathname);
+		isCreateSecretButtonHidden = [
+			'/',
+			'/pricing',
+			...languageSpecificLandingPages,
+			...paths
+		].includes(data.pathname);
 	});
 </script>
 
