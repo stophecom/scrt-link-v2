@@ -11,13 +11,15 @@ import {
 	uuid
 } from 'drizzle-orm/pg-core';
 
-import { ReadReceiptOptions, TierOptions } from '../../data/enums';
+import { ReadReceiptOptions, Role, TierOptions } from '../../data/enums';
 
 export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,
 	TierOptions.SECRET,
 	TierOptions.TOP_SECRET
 ]);
+
+export const role = pgEnum('role', [Role.USER, Role.ADMIN]);
 
 export const user = pgTable('user', {
 	id: uuid('id').defaultRandom().primaryKey().unique(),
@@ -27,6 +29,7 @@ export const user = pgTable('user', {
 	picture: text('picture'),
 	googleId: text('google_id'),
 	stripeCustomerId: text('stripe_customer_id'),
+	role: role().default(Role.USER),
 	subscriptionTier: subscriptionTier().default(TierOptions.CONFIDENTIAL),
 	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified')
@@ -80,12 +83,10 @@ export const userSettings = pgTable('user_settings', {
 
 export const scope = pgEnum('scope', ['global', 'user']);
 export const stats = pgTable('stats', {
-	id: serial('id').primaryKey().unique(),
+	id: serial('id').primaryKey(),
 	scope: scope(),
 	totalSecrets: integer().default(1),
-	userId: uuid('user_id')
-		.unique()
-		.references(() => user.id, { onDelete: 'cascade' })
+	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
 });
 
 export type Session = typeof session.$inferSelect;

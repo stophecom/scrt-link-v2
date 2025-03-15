@@ -11,6 +11,11 @@ export enum ReadReceiptOptions {
 	NTFY = 'ntfy'
 }
 
+export enum Role {
+	USER = 'user',
+	ADMIN = 'admin'
+}
+
 export enum TierOptions {
 	CONFIDENTIAL = 'Confidential',
 	SECRET = 'Secret',
