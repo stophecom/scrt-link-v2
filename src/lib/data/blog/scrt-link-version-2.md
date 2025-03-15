@@ -2,7 +2,7 @@
 title: Version 2 is here
 lead: Mostly same, but better.
 description: With the release of V2 we not only improved performance, security and user experience, we also added new features. And, end-to-end encrypted file transfer is generally available.
-date: '2024-02-23'
+date: '2024-03-15'
 categories:
   - product
   - tech
@@ -12,7 +12,7 @@ published: true
 ## Summary
 
 After 4 years of scrt.link, the app has been rewritten from scratch. In addition to performance and security improvements, we’ve introduced new features such as more granular privacy options, social login, and new types of secrets.  
-Existing secret links will continue to function, and the old app (V1) will remain accessible at [v1.scrt.link](https://v1.scrt.link) until 06/06/2025.
+Existing secret links will continue to function, and the old app (V1) will remain accessible at [v1.scrt.link](https://v1.scrt.link) until at least 06/2025.
 
 ## Long version
 
@@ -25,7 +25,7 @@ We’ve also listened to our users. In addition to purely cosmetic updates, like
 
 A special mention goes to [secret files](/file). This feature is now out of beta and available to all users. You can **transfer files up to 100GB**—far more than you’ll ever need. And, as with all secrets, they are end-to-end encrypted. Finally, we introduced [Snap](/snap), a fun way to share disposable photos that vanish after being viewed.
 
-We hope you enjoy the new version, and as always, we **welcome your feedback**.
+We hope you enjoy the new version, and as always, [welcome your feedback](/contact).
 
 Be safe,  
 Chris

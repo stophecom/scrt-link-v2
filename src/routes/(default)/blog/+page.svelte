@@ -31,7 +31,7 @@
 								<div
 									class="text-primary after:bg-primary relative inline-block after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out group-hover:after:origin-bottom-left group-hover:after:scale-x-100"
 								>
-									Read more
+									{m.bald_pretty_macaw_ripple()}
 								</div>
 								<ArrowRight
 									class="group-hover:text-primary -translate-x-4 opacity-0 transition-all delay-200 group-hover:translate-x-0 group-hover:opacity-100"

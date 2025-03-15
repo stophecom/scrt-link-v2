@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { Plus } from 'lucide-svelte';
+	import { Plus, User, X } from 'lucide-svelte';
 	import Plane from 'lucide-svelte/icons/plane';
 	import Rocket from 'lucide-svelte/icons/rocket';
+	import { PersistedState } from 'runed';
 	import { backInOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
@@ -18,40 +19,61 @@
 	import MediaQuery from '../helpers/media-query.svelte';
 	import DarkModeSwitcher from './dark-mode-switcher.svelte';
 
-	let {
-		user,
-		minimal,
-		hideCreateSecretButton
-	}: { user: App.Locals['user']; minimal?: boolean; hideCreateSecretButton?: boolean } = $props();
+	type Props = { user: App.Locals['user']; minimal?: boolean; hideCreateSecretButton?: boolean };
+
+	let { user, minimal, hideCreateSecretButton }: Props = $props();
+
+	const showAnnouncement = new PersistedState<boolean>('showAnnouncement', true);
 </script>
 
 <IntersectionObserver let:intersecting bottom={minimal ? 0 : 100}>
-	<header class="relative z-10 h-16">
-		<div
-			class="fixed top-0 left-0 h-16 w-full transition duration-300 ease-in-out {intersecting
-				? 'bg-transparent'
-				: 'bg-background shadow-sm'}"
-		>
-			<div class="container flex h-full items-center">
-				<a
-					class="flex items-center py-2 transition duration-150 ease-in-out {intersecting &&
-					!minimal
-						? 'translate-x-4 scale-150 opacity-0'
-						: 'scale-100 opacity-100'}"
-					href="/"
-				>
-					<Logo class="h-10 w-10" />
-					<span
-						class="p-2 text-lg font-semibold transition delay-100 duration-150 ease-in-out {intersecting &&
+	<MediaQuery query="not (min-width: 40rem)" let:matches>
+		<header class="relative z-10 {showAnnouncement.current ? 'h-[104px]' : 'h-16'}">
+			<div
+				class="fixed top-0 left-0 {showAnnouncement.current
+					? 'h-[104px]'
+					: 'h-16'} w-full transition duration-300 ease-in-out {intersecting
+					? 'bg-transparent'
+					: 'bg-background shadow-sm'}"
+			>
+				{#if showAnnouncement.current}
+					<div class="bg-primary text-primary-foreground">
+						<div class="container flex h-10 items-center text-sm">
+							{m.stale_ago_mongoose_zoom()}
+							<a
+								class="after:bg-primary-foreground before:bg-primary-foreground relative ms-2 inline-block before:absolute before:bottom-0 before:left-0 before:h-[1px] before:w-full before:opacity-50 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
+								href="/blog/scrt-link-version-2">{m.elegant_next_beaver_persist()}</a
+							>
+							<button
+								class="ml-auto block p-2"
+								onclick={() => {
+									showAnnouncement.current = false;
+								}}
+								><X class="h-5 w-5" /><span class="sr-only">{m.steep_brave_sloth_list()}</span
+								></button
+							>
+						</div>
+					</div>
+				{/if}
+				<div class="container flex h-16 items-center">
+					<a
+						class="flex items-center py-2 transition duration-150 ease-in-out {intersecting &&
 						!minimal
 							? 'translate-x-4 scale-150 opacity-0'
-							: 'translate-x-0 scale-100 opacity-100'}">{appName}</span
+							: 'scale-100 opacity-100'}"
+						href="/"
 					>
-				</a>
+						<Logo class="h-10 w-10" />
+						<span
+							class="p-2 text-lg font-semibold transition delay-100 duration-150 ease-in-out {intersecting &&
+							!minimal
+								? 'translate-x-4 scale-150 opacity-0'
+								: 'translate-x-0 scale-100 opacity-100'}">{appName}</span
+						>
+					</a>
 
-				<div class="ml-auto grid grid-flow-col items-center gap-2">
-					{#if !minimal && !hideCreateSecretButton}
-						<MediaQuery query="not (min-width: 40rem)" let:matches>
+					<div class="ml-auto grid grid-flow-col items-center gap-2">
+						{#if !minimal && !hideCreateSecretButton}
 							<div
 								in:scale={{ easing: backInOut, duration: 500 }}
 								class={matches
@@ -86,37 +108,40 @@
 									</DropdownMenu.Content>
 								</DropdownMenu.Root>
 							</div>
-						</MediaQuery>
-					{/if}
-					{#if user}
-						<a href="/account" class="relative mr-2">
-							<Avatar.Root>
-								<Avatar.Image src={user.picture} alt={user.name} />
-								<Avatar.Fallback
-									class="border-foreground bg-foreground text-background border uppercase"
-									>{Array.from(user.email)[0]}</Avatar.Fallback
-								>
-							</Avatar.Root>
-							{#if user.subscriptionTier === TierOptions.SECRET || user.subscriptionTier === TierOptions.TOP_SECRET}
-								<div
-									class="border-background bg-primary text-primary-foreground absolute -right-[2px] -bottom-[2px] rounded-full border p-[3px]"
-								>
-									{#if user.subscriptionTier === TierOptions.SECRET}
-										<Plane class="h-3 w-3" />
-									{/if}
-									{#if user.subscriptionTier === TierOptions.TOP_SECRET}
-										<Rocket class="h-3 w-3" />
-									{/if}
-								</div>
-							{/if}
-						</a>
-					{:else}
-						<DarkModeSwitcher hideLabel variant="ghost" size="icon" class="max-xs:hidden" />
-						<Button variant="outline" href="/login">{m.simple_dry_boar_dazzle()}</Button>
-						<Button href="/signup">{m.large_smart_badger_beam()}</Button>
-					{/if}
+						{/if}
+						{#if user}
+							<a href="/account" class="relative mr-2">
+								<Avatar.Root>
+									<Avatar.Image src={user.picture} alt={user.name} />
+									<Avatar.Fallback
+										class="border-foreground bg-foreground text-background border uppercase"
+										>{Array.from(user.email)[0]}</Avatar.Fallback
+									>
+								</Avatar.Root>
+								{#if user.subscriptionTier === TierOptions.SECRET || user.subscriptionTier === TierOptions.TOP_SECRET}
+									<div
+										class="border-background bg-primary text-primary-foreground absolute -right-[2px] -bottom-[2px] rounded-full border p-[3px]"
+									>
+										{#if user.subscriptionTier === TierOptions.SECRET}
+											<Plane class="h-3 w-3" />
+										{/if}
+										{#if user.subscriptionTier === TierOptions.TOP_SECRET}
+											<Rocket class="h-3 w-3" />
+										{/if}
+									</div>
+								{/if}
+							</a>
+						{:else}
+							<DarkModeSwitcher hideLabel variant="ghost" size="icon" class="max-xs:hidden" />
+							<Button variant="outline" href="/login" size={matches ? 'icon' : 'default'}>
+								<span class="max-sm:sr-only">{m.simple_dry_boar_dazzle()}</span>
+								<User class="h-5 w-5 sm:hidden" />
+							</Button>
+							<Button href="/signup">{m.large_smart_badger_beam()}</Button>
+						{/if}
+					</div>
 				</div>
 			</div>
-		</div>
-	</header>
+		</header>
+	</MediaQuery>
 </IntersectionObserver>
