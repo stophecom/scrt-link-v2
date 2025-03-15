@@ -29,9 +29,9 @@
 	};
 	let { form, baseUrl, user, secretType, hideUsps = false }: Props = $props();
 
-	let masterPassword = $state('');
+	let masterKey = $state('');
 	let successMessage = $state('');
-	let link: string = $derived(`${baseUrl}/s#${masterPassword}`);
+	let link: string = $derived(`${baseUrl}/s#${masterKey}`);
 
 	onNavigate(() => {
 		// Make sure we force a reset. This causes the SecretForm to mount again which is what we want.
@@ -73,7 +73,7 @@
 {:else}
 	<Card>
 		{#if secretType}
-			<SecretForm {form} {user} {secretType} bind:masterPassword bind:successMessage />
+			<SecretForm {form} {user} {secretType} bind:masterKey bind:successMessage />
 		{:else}
 			<Tabs.Root value="text" let:value>
 				<Tabs.List>
@@ -86,7 +86,7 @@
 						{form}
 						{user}
 						secretType={value as SecretType}
-						bind:masterPassword
+						bind:masterKey
 						bind:successMessage
 					/>
 				</Tabs.Content>

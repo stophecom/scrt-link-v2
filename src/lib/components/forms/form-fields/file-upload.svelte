@@ -19,7 +19,7 @@
 		accept?: string;
 		maxFileSize?: number;
 		secretType: SecretType;
-		masterPassword: string;
+		masterKey: string;
 		privateKey: CryptoKey;
 		content: string;
 		meta: string;
@@ -29,7 +29,7 @@
 		accept,
 		maxFileSize,
 		secretType,
-		masterPassword,
+		masterKey,
 		privateKey,
 		content = $bindable(),
 		meta = $bindable(),
@@ -53,7 +53,7 @@
 			controllers,
 			file,
 			bucket,
-			masterPassword,
+			masterKey,
 			privateKey,
 			chunkSize,
 			progressCallback: (p) => {

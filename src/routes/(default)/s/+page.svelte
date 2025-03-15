@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 
 	import { api } from '$lib/api';
+	import { SECRET_ID_LENGTH } from '$lib/client/constants';
 	import { sha256Hash } from '$lib/client/web-crypto';
 	import RevealSecretForm from '$lib/components/forms/reveal-secret-form.svelte';
 	import Page from '$lib/components/page/page.svelte';
@@ -27,8 +28,8 @@
 			if (!masterKey.length || masterKey.includes('?')) {
 				throw new Error(`Invalid URL.`);
 			}
-
-			secretIdHash = await sha256Hash(masterKey);
+			const secretIdSubstring = masterKey.substring(SECRET_ID_LENGTH);
+			secretIdHash = await sha256Hash(secretIdSubstring);
 			const { isPasswordProtected } = await api<{ isPasswordProtected: boolean }>(
 				`/secrets/${secretIdHash}`
 			);

@@ -39,7 +39,7 @@ type HandleFileEncryptionAndUpload = {
 	controllers: Map<number, AbortController>;
 	file: File;
 	bucket: string;
-	masterPassword: string;
+	masterKey: string;
 	privateKey: CryptoKey;
 	chunkSize: number;
 	progressCallback: (progress: number) => void;
@@ -48,7 +48,7 @@ export const handleFileEncryptionAndUpload = async ({
 	controllers,
 	file,
 	bucket,
-	masterPassword,
+	masterKey,
 	privateKey,
 	chunkSize,
 	progressCallback
@@ -72,7 +72,7 @@ export const handleFileEncryptionAndUpload = async ({
 		const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize;
 		const chunk = file.slice(start, end);
 
-		const encryptedFile = await encryptFile(chunk, masterPassword);
+		const encryptedFile = await encryptFile(chunk, masterKey);
 
 		const chunkFileSize = encryptedFile.size;
 		const fileName = crypto.randomUUID();

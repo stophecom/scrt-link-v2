@@ -5,6 +5,7 @@
 	import { type Infer, intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod } from 'sveltekit-superforms/adapters';
 
+	import { MASTER_PASSWORD_LENGTH, SECRET_ID_LENGTH } from '$lib/client/constants';
 	import { plausible } from '$lib/client/plausible';
 	import {
 		encryptString,
@@ -40,11 +41,11 @@
 		user: LayoutServerData['user'];
 		secretType: SecretType;
 		successMessage?: string;
-		masterPassword: string;
+		masterKey: string;
 	};
 	let {
 		successMessage = $bindable(),
-		masterPassword = $bindable(),
+		masterKey = $bindable(),
 		form: formProp,
 		user,
 		secretType
@@ -72,12 +73,13 @@
 				encryptedMeta = await encryptString(encryptedMeta, password);
 				encryptedContent = await encryptString(encryptedContent, password);
 			}
-			encryptedMeta = await encryptString(encryptedMeta, masterPassword);
-			encryptedContent = await encryptString(encryptedContent, masterPassword);
+			encryptedMeta = await encryptString(encryptedMeta, masterKey);
+			encryptedContent = await encryptString(encryptedContent, masterKey);
 
+			const secretIdSubstring = masterKey.substring(SECRET_ID_LENGTH);
 			// Set data to be posted
 			const jsonPayload: Infer<SecretTextFormSchema> = {
-				secretIdHash: await sha256Hash(masterPassword),
+				secretIdHash: await sha256Hash(secretIdSubstring),
 				meta: encryptedMeta,
 				content: encryptedContent,
 				publicKey: publicKeyRaw,
@@ -129,7 +131,7 @@
 	let charactersLeft = $derived(planLimits.text - $formData.content.length);
 
 	const setCryptoKeys = async () => {
-		masterPassword = generateRandomUrlSafeString();
+		masterKey = generateRandomUrlSafeString(MASTER_PASSWORD_LENGTH);
 		const keyPair = await generateKeyPair();
 		privateKey = keyPair.privateKey;
 		publicKeyRaw = await exportPublicKey(keyPair.publicKey);
@@ -174,7 +176,7 @@
 							{secretType}
 							bind:content={$formData.content}
 							bind:meta={$formData.meta}
-							{masterPassword}
+							{masterKey}
 							{privateKey}
 							maxFileSize={planLimits.file}
 							bind:loading={isFileUploading}
