@@ -253,7 +253,7 @@
 					label={m.noble_whole_hornet_evoke()}
 				/>
 			</Form.Fieldset>
-			{#if (!planLimits.expirationOptionsAllowed || !planLimits.passwordAllowed) && !(secretType === SecretType.SNAP && !planLimits.snap)}
+			{#if (!planLimits.expirationOptionsAllowed || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}
 				<UpgradeNotice {user} />
 			{/if}
 		</div>

@@ -40,7 +40,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 				getBaseUrl(),
 				'/pricing?session_id={CHECKOUT_SESSION_ID}'
 			),
-			cancel_url: getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing/canceled')
+			cancel_url: getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing')
 		};
 
 		const checkoutSession: Stripe.Checkout.Session =

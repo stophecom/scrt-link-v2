@@ -49,6 +49,7 @@ const plans = () => [
 		title: m.careful_inner_lynx_embrace(),
 		contents: [
 			m.long_tired_monkey_rest(),
+			m.green_sour_mongoose_burn(),
 			m.new_still_dingo_create({ limit: formatBytes(1 * GB) }),
 			m.pink_many_fox_boost(),
 			m.slimy_livid_pelican_gleam(),
