@@ -57,7 +57,7 @@
 	{/if}
 
 	{#if markNotTranslated && languageTag() !== 'en'}
-		<Alert class="mb-5" title="Important" variant="info">
+		<Alert class="mb-5" title={m.heroic_acidic_jurgen_dash()} variant="info">
 			<div>
 				{m.grassy_due_crab_cook()}
 			</div>

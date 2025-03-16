@@ -11,7 +11,7 @@
 	};
 	let { user, ...rest }: Props & SvelteHTMLElements['address'] = $props();
 
-	const title = user ? m.fair_red_warbler_bake() : 'Please sign up';
+	const title = user ? m.fair_red_warbler_bake() : m.acidic_aqua_octopus_revive();
 </script>
 
 <div {...rest}>
@@ -22,7 +22,7 @@
 		{#if user}
 			<Link href="/pricing">{m.mild_tangy_elk_scoop()}</Link>
 		{:else}
-			<Link href="/signup">Sign up free</Link>
+			<Link href="/signup">{m.loved_legal_clownfish_kiss()}</Link>
 		{/if}
 	</Alert>
 </div>

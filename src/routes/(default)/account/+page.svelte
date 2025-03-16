@@ -77,7 +77,7 @@
 		<SettingsForm {user} form={data.settingsForm} />
 	</Card>
 
-	<Card class="mb-6" title="Appearance" description="Choose your favorite theme color.">
+	<Card class="mb-6" title={m.shy_smug_crow_sing()} description={m.left_patchy_piranha_foster()}>
 		<div class="mb-2">
 			<ThemeForm form={data.themeForm} />
 		</div>

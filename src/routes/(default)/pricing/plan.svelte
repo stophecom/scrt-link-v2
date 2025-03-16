@@ -63,8 +63,8 @@
 			{@render renderPrice(priceUnitAmount, currency)}
 			<div class="text-sm">{m.sunny_such_cod_shine()}</div>
 		{:else}
-			<div class="text-3xl font-bold">Free</div>
-			<div class="text-sm">forever</div>
+			<div class="text-3xl font-bold">{m.inner_pretty_raven_dine()}</div>
+			<div class="text-sm">{m.weak_witty_alligator_foster()}</div>
 		{/if}
 		<div class="text-sm">
 			{billingInfo}

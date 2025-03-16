@@ -4,6 +4,6 @@
 	import * as m from '$lib/paraglide/messages.js';
 </script>
 
-<Page title="Privacy" lead="No ads, no tracking, no bullshit.">
+<Page title={m.awake_frail_kitten_hush()} lead={m.fit_slimy_hamster_thrive()}>
 	<Markdown markdown={m.trick_tidy_monkey_grow()} format={true} />
 </Page>
