@@ -41,6 +41,11 @@
 	let error = $state('');
 
 	let done = $derived(progress === 100);
+	let imageSrc = $derived(
+		selectedFile && (selectedFile as File)?.type.startsWith('image/')
+			? URL.createObjectURL(selectedFile)
+			: undefined
+	);
 
 	const chunkSize = 64 * MB;
 	let controllers = new Map<number, AbortController>(); // Track each request's AbortController
@@ -101,8 +106,13 @@
 	<div
 		class="border-foreground bg-background relative flex h-full items-center justify-center rounded border p-4"
 	>
+		{#if imageSrc}
+			<div class="absolute top-0 left-0 h-full w-full overflow-clip">
+				<img class="h-full w-full object-cover opacity-50 blur-md" src={imageSrc} alt={'preview'} />
+			</div>
+		{/if}
 		<div
-			class="bg-muted absolute left-0 h-full rounded"
+			class="bg-muted absolute left-0 h-full rounded opacity-70"
 			style="min-width: 0%; width: {progress}%"
 		></div>
 
