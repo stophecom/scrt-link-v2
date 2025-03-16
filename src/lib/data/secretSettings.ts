@@ -1,6 +1,6 @@
 import * as m from '$lib/paraglide/messages.js';
 
-import { ReadReceiptOptions, ThemeOptions } from './enums';
+import { ReadReceiptOptions, SecretType, ThemeOptions } from './enums';
 import { DAY, MIN } from './units';
 
 export const getExpiresInOptions = (extended?: boolean) => {
@@ -67,19 +67,23 @@ export const getThemeOptions = () => [
 
 export const getSecretTypes = () => [
 	{
-		value: 'text',
+		value: SecretType.TEXT,
 		label: m.happy_dizzy_angelfish_stir()
 	},
 	{
-		value: 'file',
+		value: SecretType.FILE,
 		label: m.nice_male_zebra_stop()
 	},
 	{
-		value: 'redirect',
+		value: SecretType.REDIRECT,
 		label: m.bad_royal_kudu_nudge()
 	},
 	{
-		value: 'snap',
+		value: SecretType.SNAP,
 		label: 'Snap'
+	},
+	{
+		value: SecretType.NEOGRAM,
+		label: 'Neogram'
 	}
 ];

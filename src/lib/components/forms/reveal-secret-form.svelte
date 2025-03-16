@@ -15,6 +15,7 @@
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 
 	import FileRevelation from '../elements/file-revelation.svelte';
+	import NeogramRevelation from '../elements/neogram-revelation.svelte';
 	import SnapRevelation from '../elements/snap-revelation.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
@@ -43,6 +44,7 @@
 		metaParsed?.secretType === SecretType.FILE || metaParsed?.secretType === SecretType.SNAP
 	);
 	let isSnap = $derived(metaParsed?.secretType === SecretType.SNAP);
+	let isNeogram = $derived(metaParsed?.secretType === SecretType.NEOGRAM);
 	let isSecretRedirect = $derived(metaParsed?.secretType === SecretType.REDIRECT);
 	let fileMeta = $derived(isSecretFileOrSnap ? metaParsed : undefined) as FileMeta;
 	let fileReference = $derived(isSecretFileOrSnap ? contentParsed : undefined) as FileReference;
@@ -204,6 +206,8 @@
 					<!-- Secret Type: File -->
 					<FileRevelation {progress} {fileMeta} />
 				{/if}
+			{:else if isNeogram}
+				<NeogramRevelation neogram={content} />
 			{:else}
 				<!-- Secret Type: Text -->
 				{content}

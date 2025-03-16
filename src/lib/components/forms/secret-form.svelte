@@ -149,20 +149,24 @@
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/postSecret">
-		{#if secretType === SecretType.TEXT}
+		{#if secretType === SecretType.TEXT || secretType === SecretType.NEOGRAM}
 			<div in:fade>
-				<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
-					<Textarea
-						bind:value={$formData.content}
-						label={m.mellow_lime_squid_urge()}
-						placeholder={m.tiny_mean_marmot_cheer()}
-						isHiddenLabel
-						{charactersLeft}
-						{...$constraints.content}
-						maxlength={planLimits.text}
-					/>
-				</Form.Field>
-				{#if charactersLeft <= 0}
+				{#if secretType === SecretType.TEXT || (secretType === SecretType.NEOGRAM && planLimits.neogram)}
+					<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
+						<Textarea
+							bind:value={$formData.content}
+							label={m.mellow_lime_squid_urge()}
+							placeholder={secretType === SecretType.NEOGRAM
+								? m.wise_each_badger_borrow()
+								: m.tiny_mean_marmot_cheer()}
+							isHiddenLabel
+							{charactersLeft}
+							{...$constraints.content}
+							maxlength={planLimits.text}
+						/>
+					</Form.Field>
+				{/if}
+				{#if charactersLeft <= 0 || (secretType === SecretType.NEOGRAM && !planLimits.neogram)}
 					<UpgradeNotice {user} class="my-2" />
 				{/if}
 			</div>

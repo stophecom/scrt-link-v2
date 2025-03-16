@@ -2,6 +2,7 @@
 	import { fade } from 'svelte/transition';
 
 	import CountDown from '$lib/components/ui/count-down';
+	import * as m from '$lib/paraglide/messages.js';
 
 	type Props = { imageUrl?: string };
 
@@ -31,14 +32,14 @@
 			<img
 				in:fade
 				src={imageUrl}
-				alt="Preview"
+				alt={m.bold_factual_parakeet_reap()}
 				class="mx-auto max-h-[min(100%,_1000px)] min-h-0 max-w-full self-center justify-self-center rounded-md object-scale-down transition-all duration-1000 {finished
 					? 'blur-lg'
 					: undefined}"
 			/>
 		{:else}
 			<div
-				class="bg-muted flex max-h-[min(100%,_1000px)] min-h-0 max-w-full animate-pulse items-center justify-center"
+				class="bg-muted flex max-h-[min(100%,_600px)] min-h-0 max-w-full animate-pulse items-center justify-center"
 			></div>
 		{/if}
 	</div>

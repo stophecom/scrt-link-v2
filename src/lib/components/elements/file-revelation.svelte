@@ -36,16 +36,20 @@
 		<div class="overflow-hidden">
 			<div class="flex truncate">
 				<strong class="mr-1">{m.suave_level_squirrel_hope()}</strong>
-				<Typewriter message={fileMeta?.name} />
+				<Typewriter mode="scramble" scrambleDuration={900} message={fileMeta?.name} />
 			</div>
 
 			<div class="flex truncate">
 				<strong class="mr-1">{m.smug_smart_giraffe_borrow()}</strong>
-				<Typewriter message={formatBytes(fileMeta?.size || 0)} />
+				<Typewriter
+					mode="scramble"
+					scrambleDuration={900}
+					message={formatBytes(fileMeta?.size || 0)}
+				/>
 			</div>
 			<div class="flex truncate">
 				<strong class="mr-1">{m.slow_free_lynx_spur()}</strong>
-				<Typewriter message={fileMeta?.mimeType} />
+				<Typewriter mode="scramble" scrambleDuration={900} message={fileMeta?.mimeType} />
 			</div>
 		</div>
 	</div>

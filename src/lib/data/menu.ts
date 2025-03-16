@@ -1,4 +1,4 @@
-import { Paperclip, Redo2, TypeOutline, Zap } from 'lucide-svelte';
+import { MessageCircleDashed, Paperclip, Redo2, TypeOutline, Zap } from 'lucide-svelte';
 
 import * as m from '$lib/paraglide/messages.js';
 
@@ -24,6 +24,11 @@ export const secretMenu = () => [
 		icon: Zap,
 		href: '/snap',
 		label: m.awake_big_halibut_view()
+	},
+	{
+		icon: MessageCircleDashed,
+		href: '/neogram',
+		label: 'Neogram'
 	}
 ];
 
