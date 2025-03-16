@@ -35,7 +35,7 @@
 		<Textarea class="resize-none pb-5" {...attrs} bind:value {...rest} on:keyup={scrollToBottom} />
 		{#if typeof charactersLeft === 'number'}
 			<span
-				class="bg-background absolute right-[1px] bottom-[1px] rounded-tl p-1 text-xs {charactersLeft <=
+				class="bg-background absolute right-[1px] bottom-[1px] rounded-xl p-1 text-xs {charactersLeft <=
 				0
 					? 'text-destructive'
 					: 'text-muted-foreground'}"

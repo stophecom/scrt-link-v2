@@ -130,6 +130,14 @@
 
 	let charactersLeft = $derived(planLimits.text - $formData.content.length);
 
+	const isNeogramAllowed = $derived(secretType === SecretType.NEOGRAM && planLimits.neogram);
+	const isSnapAllowed = $derived(secretType === SecretType.SNAP && planLimits.snap);
+
+	let isButtonDisabled = $derived(
+		isFileUploading ||
+			((secretType === SecretType.FILE || secretType === SecretType.SNAP) && !$formData.content)
+	);
+
 	const setCryptoKeys = async () => {
 		masterKey = generateRandomUrlSafeString(MASTER_PASSWORD_LENGTH);
 		const keyPair = await generateKeyPair();
@@ -151,31 +159,35 @@
 	<form method="POST" use:enhance action="?/postSecret">
 		{#if secretType === SecretType.TEXT || secretType === SecretType.NEOGRAM}
 			<div in:fade>
-				{#if secretType === SecretType.TEXT || (secretType === SecretType.NEOGRAM && planLimits.neogram)}
-					<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
-						<Textarea
-							bind:value={$formData.content}
-							label={m.mellow_lime_squid_urge()}
-							placeholder={secretType === SecretType.NEOGRAM
-								? m.wise_each_badger_borrow()
-								: m.tiny_mean_marmot_cheer()}
-							isHiddenLabel
-							{charactersLeft}
-							{...$constraints.content}
-							maxlength={planLimits.text}
-						/>
-					</Form.Field>
-				{/if}
-				{#if charactersLeft <= 0 || (secretType === SecretType.NEOGRAM && !planLimits.neogram)}
-					<UpgradeNotice {user} class="my-2" />
-				{/if}
+				<div class="min-h-32">
+					{#if secretType === SecretType.TEXT || isNeogramAllowed}
+						<Form.Field {form} name="content">
+							<Textarea
+								bind:value={$formData.content}
+								label={m.mellow_lime_squid_urge()}
+								placeholder={secretType === SecretType.NEOGRAM
+									? m.wise_each_badger_borrow()
+									: m.tiny_mean_marmot_cheer()}
+								isHiddenLabel
+								{charactersLeft}
+								{...$constraints.content}
+								maxlength={planLimits.text}
+							/>
+						</Form.Field>
+					{/if}
+					{#if charactersLeft <= 0 || (secretType === SecretType.NEOGRAM && !planLimits.neogram)}
+						<div class="pt-2">
+							<UpgradeNotice {user} />
+						</div>
+					{/if}
+				</div>
 			</div>
 		{/if}
 
 		{#if [SecretType.FILE, SecretType.SNAP].includes(secretType) && privateKey}
 			<div in:fade>
 				<div class="min-h-32 py-2">
-					{#if secretType === SecretType.FILE || (secretType === SecretType.SNAP && planLimits.snap)}
+					{#if secretType === SecretType.FILE || isSnapAllowed}
 						<FileUpload
 							{secretType}
 							bind:content={$formData.content}
@@ -201,7 +213,7 @@
 
 		{#if secretType === SecretType.REDIRECT}
 			<div in:fade>
-				<div class=" min-h-32 py-2">
+				<div class="min-h-32 py-2">
 					{#if planLimits.redirect}
 						<Form.Field {form} name="content">
 							<Text
@@ -254,7 +266,7 @@
 				>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 				<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
 			>
-			<Form.Button delayed={$delayed} class="sm:ml-auto " disabled={isFileUploading}
+			<Form.Button delayed={$delayed} class="sm:ml-auto " disabled={isButtonDisabled}
 				>{m.lazy_mealy_vole_harbor()}</Form.Button
 			>
 		</div>
