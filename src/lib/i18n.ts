@@ -1,12 +1,12 @@
 import { createI18n } from '@inlang/paraglide-sveltekit';
-
-import * as runtime from '$lib/paraglide/runtime';
-export const i18n = createI18n(runtime);
-
 import { redirect } from '@sveltejs/kit';
 import prettyBytes from 'pretty-bytes';
 
-const defaultLanguage = 'en';
+import * as runtime from '$lib/paraglide/runtime';
+
+const DEFAULT_LANGUAGE = 'en';
+
+export const i18n = createI18n(runtime);
 
 export const formatBytes = (number: number) =>
 	prettyBytes(number, { locale: runtime.languageTag() });
@@ -27,18 +27,20 @@ export const formatCurrency = (
 export const formatNumber = (amount: number) =>
 	new Intl.NumberFormat(runtime.languageTag()).format(amount);
 
-export const getLocalizedUrl = (location: string | URL) => {
-	const locale = runtime.languageTag();
-
-	return `${locale === defaultLanguage ? '' : `/${locale}`}${location}`;
+export const getLocalizedUrl = (location: string | URL, locale: string) => {
+	return locale === DEFAULT_LANGUAGE ? location : `/${locale}${location}`;
 };
 
 type CustomRedirect = typeof redirect;
-export const redirectLocalized: CustomRedirect = (status, location) =>
-	redirect(status, getLocalizedUrl(location));
+export const redirectLocalized: CustomRedirect = (status, location) => {
+	const locale = runtime.languageTag();
+	return redirect(status, getLocalizedUrl(location, locale));
+};
 
-export const getAbsoluteLocalizedUrl = (baseUrl: string, pathname: string, locale = 'en') =>
-	`${baseUrl}${locale === defaultLanguage ? '' : `/${locale}`}${pathname}`;
+export const getAbsoluteLocalizedUrl = (baseUrl: string, location: string) => {
+	const locale = runtime.languageTag();
+	return `${baseUrl}${getLocalizedUrl(location, locale)}`;
+};
 
 export const formatDate = (date: Date) =>
 	new Intl.DateTimeFormat(runtime.languageTag(), {

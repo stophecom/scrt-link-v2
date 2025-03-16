@@ -3,7 +3,6 @@ import type Stripe from 'stripe';
 
 import { getBaseUrl } from '$lib/constants';
 import { getAbsoluteLocalizedUrl } from '$lib/i18n';
-import { languageTag } from '$lib/paraglide/runtime';
 import stripeInstance from '$lib/server/stripe';
 
 import type { RequestEvent } from '../$types';
@@ -19,8 +18,6 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 
 	const body = await request.json();
 	const { priceId } = body;
-
-	const locale = languageTag();
 
 	try {
 		// Create Checkout Sessions from body params.
@@ -41,10 +38,9 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 			// is redirected to the success page.
 			success_url: getAbsoluteLocalizedUrl(
 				getBaseUrl(),
-				'/pricing?session_id={CHECKOUT_SESSION_ID}',
-				locale
+				'/pricing?session_id={CHECKOUT_SESSION_ID}'
 			),
-			cancel_url: getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing/canceled', locale)
+			cancel_url: getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing/canceled')
 		};
 
 		const checkoutSession: Stripe.Checkout.Session =

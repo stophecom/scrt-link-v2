@@ -4,7 +4,6 @@ import { type Stripe } from 'stripe';
 import { supportedCurrencies } from '$lib/client/constants';
 import { getBaseUrl } from '$lib/constants';
 import { getAbsoluteLocalizedUrl } from '$lib/i18n';
-import { languageTag } from '$lib/paraglide/runtime';
 import { getActiveSubscription, getStripePortalUrl } from '$lib/server/stripe';
 
 import type { Plan } from '../../api/v1/plans/+server';
@@ -49,7 +48,7 @@ export const actions: Actions = {
 
 		const { url } = await getStripePortalUrl(
 			stripeCustomerId,
-			`${getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing', languageTag())}`
+			`${getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing')}`
 		);
 
 		if (!url) {
