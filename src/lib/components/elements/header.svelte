@@ -41,7 +41,7 @@
 						<div class="container flex h-10 items-center text-sm">
 							{m.stale_ago_mongoose_zoom()}
 							<a
-								class="after:bg-primary-foreground before:bg-primary-foreground relative ms-2 inline-block before:absolute before:bottom-0 before:left-0 before:h-[1px] before:w-full before:opacity-50 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
+								class="after:bg-primary-foreground before:bg-primary-foreground relative ms-2 inline-block py-2 before:absolute before:bottom-0 before:left-0 before:h-[1px] before:w-full before:opacity-50 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
 								href="/blog/scrt-link-version-2">{m.elegant_next_beaver_persist()}</a
 							>
 							<button
@@ -67,8 +67,8 @@
 						<span
 							class="p-2 text-lg font-semibold transition delay-100 duration-150 ease-in-out {intersecting &&
 							!minimal
-								? 'translate-x-4 scale-150 opacity-0'
-								: 'translate-x-0 scale-100 opacity-100'}">{appName}</span
+								? 'hidden translate-x-4 scale-150 opacity-0'
+								: 'visible translate-x-0 scale-100 opacity-100'}">{appName}</span
 						>
 					</a>
 

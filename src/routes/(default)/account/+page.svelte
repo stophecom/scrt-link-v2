@@ -54,19 +54,19 @@
 			<Rocket class="absolute top-5 right-5" />
 			<ul class="mb-6">
 				{#each usps as item}
-					<li class="flex items-center py-1 text-lg">
+					<li class="flex items-center py-1 sm:text-lg">
 						<Check class="text-primary me-2" />
 						<Markdown markdown={item} />
 					</li>
 				{/each}
 			</ul>
 
-			<div class="flex justify-between">
+			<div class="grid grid-rows-2 gap-2 sm:flex sm:justify-between">
 				<Button variant="outline" onclick={() => (hidePremiumPromo.current = true)}
 					>{m.proud_awake_shark_drum()}</Button
 				>
 
-				<Button class="ml-auto" href="/pricing"
+				<Button class="sm:ml-auto" href="/pricing"
 					><ArrowRight class="mr-2 h-5 w-5" />{m.quick_sweet_angelfish_lend()}</Button
 				>
 			</div>
