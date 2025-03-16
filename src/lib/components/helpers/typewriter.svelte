@@ -2,7 +2,7 @@
 	import Typewriter from 'svelte-typewriter';
 
 	type Props = {
-		message: string | undefined;
+		message: string;
 		className?: string;
 		onDone?: (e: CustomEvent) => void | undefined;
 	};
@@ -13,5 +13,5 @@
 </script>
 
 <Typewriter {...rest} on:done={onDoneHandler}>
-	<span class={className}>{message}</span>
+	<pre class={className}>{message}</pre>
 </Typewriter>
