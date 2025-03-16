@@ -69,7 +69,7 @@
 				</a>
 
 				<div class="ml-auto grid grid-flow-col items-center gap-2">
-					{#if !minimal}
+					{#if !minimal && user}
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger asChild let:builder
 								><Button builders={[builder]} variant="ghost" size="icon">
