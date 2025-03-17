@@ -44,6 +44,8 @@ To create a production version of your app:
 
 ```bash
 pnpm run build
+
+pnpm run postbuild # Creates sitemap.xml
 ```
 
 ## Cron
