@@ -6,7 +6,8 @@ const map: Record<AvailableLanguageTag, string> = {
 	en: 'English',
 	fr: 'Français',
 	es: 'Español',
-	ru: 'Русский'
+	ru: 'Русский',
+	cn: '中文(简体)'
 };
 
 export const getSupportedLanguagesMap = (locale: AvailableLanguageTag) => {
