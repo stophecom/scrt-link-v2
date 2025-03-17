@@ -60,6 +60,7 @@
 					href="/"
 				>
 					<Logo class="h-10 w-10" />
+					<span class="sr-only">{m.red_trite_turkey_flip()}</span>
 					<span
 						class="p-2 text-lg font-semibold transition delay-100 duration-150 ease-in-out {intersecting &&
 						!minimal
