@@ -1,14 +1,27 @@
-import { error } from '@sveltejs/kit';
+import { type Action, error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { render } from 'svelte/server';
 
 import EmailOtpVerification from '$lib/emails/email-otp-verification.svelte';
+import { redirectLocalized } from '$lib/i18n';
 import * as m from '$lib/paraglide/messages.js';
 import { type EmailVerificationRequest, emailVerificationRequest } from '$lib/server/db/schema';
 
 import { generateOtp, scryptHash } from '../crypto';
 import { db } from './db';
 import sendTransactionalEmail from './resend';
+
+export const createEmailVerificationRequestAndRedirect = async (
+	event: Parameters<Action>[0],
+	email: string
+) => {
+	event.cookies.set('email_verification', email, {
+		path: '/'
+	});
+
+	await createEmailVerificationRequest(email);
+	return redirectLocalized(303, '/verify-email');
+};
 
 export async function createEmailVerificationRequest(
 	email: string

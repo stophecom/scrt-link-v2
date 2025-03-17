@@ -1,5 +1,4 @@
 import { redirectLocalized } from '$lib/i18n';
-import { createEmailVerificationRequest } from '$lib/server/email-verification';
 import { resendEmailVerificationCode, verifyEmailVerificationCode } from '$lib/server/form/actions';
 import {
 	emailVerificationFormValidator,
@@ -22,9 +21,6 @@ export async function load(event: RequestEvent) {
 	if (!email) {
 		return redirectLocalized(307, '/signup');
 	}
-
-	// User needs to verify his/her email
-	await createEmailVerificationRequest(email);
 
 	const defaultValues = {
 		email

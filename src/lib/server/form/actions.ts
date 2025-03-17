@@ -29,6 +29,7 @@ import {
 
 import {
 	createEmailVerificationRequest,
+	createEmailVerificationRequestAndRedirect,
 	deleteEmailVerificationRequests
 } from '../email-verification';
 import { checkIfUserExists, checkIsEmailVerified } from '../helpers';
@@ -214,14 +215,15 @@ export const loginWithEmail: Action = async (event) => {
 		return { form };
 	}
 
+	// If user doesn't have a password (e.g. from old version of scrt.link) or email is not verified.
+	if (!result.passwordHash || !result.emailVerified) {
+		// User needs to verify his/her email
+		await createEmailVerificationRequestAndRedirect(event, email);
+	}
+
 	event.cookies.set('email_verification', email, {
 		path: '/'
 	});
-
-	// If user doesn't have a password (e.g. from old version of scrt.link) or email is not verified.
-	if (!result.passwordHash || !result.emailVerified) {
-		return redirectLocalized(303, '/verify-email');
-	}
 
 	return redirectLocalized(303, '/login/password');
 };
@@ -301,11 +303,8 @@ export const signupWithEmail: Action = async (event) => {
 		return { form };
 	}
 
-	event.cookies.set('email_verification', email, {
-		path: '/'
-	});
-
-	return redirectLocalized(303, '/verify-email');
+	// User needs to verify his/her email
+	await createEmailVerificationRequestAndRedirect(event, email);
 };
 
 export const verifyEmailVerificationCode: Action = async (event) => {
@@ -486,13 +485,7 @@ export const resetPassword: Action = async (event) => {
 	}
 
 	// User needs to verify his/her email
-	await createEmailVerificationRequest(email);
-
-	event.cookies.set('email_verification', email, {
-		path: '/'
-	});
-
-	return redirectLocalized(303, '/verify-email');
+	await createEmailVerificationRequestAndRedirect(event, email);
 };
 
 export const setPassword: Action = async (event) => {
