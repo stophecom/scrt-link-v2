@@ -47,7 +47,7 @@
 	<Card
 		class="grid grid-cols-[33%_1fr] grid-rows-2 gap-2 px-4! !py-0 ps-0! sm:grid-cols-none sm:grid-rows-[min-content_min-content_1fr]  sm:py-6! sm:ps-4! sm:text-center"
 	>
-		<h4 class="xs:text-2xl order-2 self-end text-xl font-bold sm:order-1 sm:mb-4 sm:text-3xl">
+		<h4 class="xs:text-2xl order-2 self-end text-xl font-bold sm:order-1 sm:mb-4 sm:text-2xl">
 			{iterator + 1}. {title}
 		</h4>
 		<Illustration class="order-1 row-span-2 sm:order-2 sm:row-span-1" />
