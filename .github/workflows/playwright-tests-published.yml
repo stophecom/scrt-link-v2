@@ -27,7 +27,7 @@ jobs:
         run: npx playwright test
         env:
           PUBLIC_ENV: production
-          VERCEL_URL: https://v2.scrt.link
+          VERCEL_URL: https://scrt.link
           DEBUG: pw:api
       - name: Create folder for artifacts
         if: always()
