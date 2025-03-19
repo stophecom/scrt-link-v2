@@ -146,13 +146,17 @@ export const saveSettings: Action = async (event) => {
 	}
 
 	await db
-		.update(userSettings)
-		.set({
+		.insert(userSettings)
+		.values({
+			userId: user.id,
 			email,
 			ntfyEndpoint,
 			readReceipt: readReceiptOption
 		})
-		.where(eq(userSettings.userId, user.id));
+		.onConflictDoUpdate({
+			target: userSettings.userId,
+			set: { email, ntfyEndpoint, readReceipt: readReceiptOption }
+		});
 
 	return message(form, {
 		status: 'success',

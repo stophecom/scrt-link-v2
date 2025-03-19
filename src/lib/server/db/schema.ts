@@ -78,6 +78,7 @@ export const userSettings = pgTable('user_settings', {
 	readReceipt: readReceipt().default(ReadReceiptOptions.NONE),
 	userId: uuid('user_id')
 		.notNull()
+		.unique()
 		.references(() => user.id, { onDelete: 'cascade' })
 });
 

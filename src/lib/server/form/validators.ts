@@ -56,13 +56,14 @@ export const settingsFormValidator = async (user: App.Locals['user']) => {
 	if (!user) {
 		throw new Error('User is undefined.');
 	}
+
 	const [settings] = await db.select().from(userSettings).where(eq(userSettings.userId, user.id));
 
 	return await superValidate(
 		{
-			readReceiptOption: settings.readReceipt || ReadReceiptOptions.NONE,
-			email: settings.email || user.email || '',
-			ntfyEndpoint: settings.ntfyEndpoint || ''
+			readReceiptOption: settings?.readReceipt || ReadReceiptOptions.NONE,
+			email: settings?.email || user.email || '',
+			ntfyEndpoint: settings?.ntfyEndpoint || ''
 		},
 		zod(settingsFormSchema())
 	);
