@@ -402,10 +402,19 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 				.where(eq(userSchema.id, userResult.id));
 		}
 
-		await db.insert(userSettings).values({
-			userId: userResult.id,
-			email: userResult.email
-		});
+		// Add user settings
+		await db
+			.insert(userSettings)
+			.values({
+				userId: userResult.id,
+				email: userResult.email
+			})
+			.onConflictDoUpdate({
+				target: userSettings.userId,
+				set: {
+					email: userResult.email
+				}
+			});
 
 		// Create session
 		const sessionToken = auth.generateSessionToken();
