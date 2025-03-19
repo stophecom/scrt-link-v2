@@ -18,7 +18,7 @@ const securityAndPrivacy = () => [
 		category: 'securityAndPrivacy',
 		heading: m.smug_even_mammoth_nudge(),
 		body: m.lofty_cozy_loris_praise({
-			illustration: `![Link explanation](/images/localized/en/link-explanation.svg)`
+			illustration: `![Link explanation](/images/url-explained.svg)`
 		})
 	},
 	{
