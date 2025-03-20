@@ -1,18 +1,18 @@
 import { redirect } from '@sveltejs/kit';
 import prettyBytes from 'pretty-bytes';
 
-import * as runtime from '$lib/paraglide/runtime';
+import { getLocale, type Locale } from '$lib/paraglide/runtime';
 
-const DEFAULT_LANGUAGE = 'en';
+export const DEFAULT_LOCALE = 'en';
 
-export const formatBytes = (number: number) => prettyBytes(number, { locale: runtime.getLocale() });
+export const formatBytes = (number: number) => prettyBytes(number, { locale: getLocale() });
 
 export const formatCurrency = (
 	amount: number,
 	currency: string = 'usd',
 	minimumFractionDigits: number = 2
 ) =>
-	new Intl.NumberFormat(runtime.getLocale(), {
+	new Intl.NumberFormat(getLocale(), {
 		style: 'currency',
 		currency,
 		signDisplay: 'never',
@@ -20,26 +20,25 @@ export const formatCurrency = (
 		minimumFractionDigits
 	}).format(amount);
 
-export const formatNumber = (amount: number) =>
-	new Intl.NumberFormat(runtime.getLocale()).format(amount);
+export const formatNumber = (amount: number) => new Intl.NumberFormat(getLocale()).format(amount);
 
 export const getLocalizedUrl = (location: string | URL, locale: string) => {
-	return locale === DEFAULT_LANGUAGE ? location : `/${locale}${location}`;
+	const path = location === '/' ? '' : location; // Remove trailing slash for home path
+	return locale === DEFAULT_LOCALE ? path : `/${locale}${path}`;
 };
 
 type CustomRedirect = typeof redirect;
 export const redirectLocalized: CustomRedirect = (status, location) => {
-	const locale = runtime.getLocale();
+	const locale = getLocale();
 	return redirect(status, getLocalizedUrl(location, locale));
 };
 
-export const getAbsoluteLocalizedUrl = (baseUrl: string, location: string) => {
-	const locale = runtime.getLocale();
-	return `${baseUrl}${getLocalizedUrl(location, locale)}`;
+export const getAbsoluteLocalizedUrl = (baseUrl: string, location: string, locale?: Locale) => {
+	return `${baseUrl}${getLocalizedUrl(location, locale || getLocale())}`;
 };
 
 export const formatDate = (date: Date) =>
-	new Intl.DateTimeFormat(runtime.getLocale(), {
+	new Intl.DateTimeFormat(getLocale(), {
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric'

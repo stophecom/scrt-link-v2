@@ -6,7 +6,8 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import { getLocale } from '$lib/paraglide/runtime';
 
-	import { appName, emailSupport } from '../../data/app';
+	import { emailSupport } from '../../data/app';
+	import Head from './head.svelte';
 
 	type Props = {
 		title: string;
@@ -29,13 +30,7 @@
 	}: Props = $props();
 </script>
 
-<svelte:head>
-	<title>{metaTitle || title} - {appName}</title>
-	<meta property="og:title" content="{title} - {appName}" />
-	<meta name="description" content={metaDescription} />
-	<meta name="keywords" content={metaKeywords} />
-</svelte:head>
-
+<Head title={metaTitle || title} {metaDescription} {metaKeywords} />
 <div class="container min-h-screen pt-8 pb-16">
 	<div>
 		<a class="inline-flex" href="/">
