@@ -2,7 +2,7 @@ import { RateLimiter } from 'sveltekit-rate-limiter/server';
 
 import { RATE_LIMIT_COOKIE_SECRET } from '$env/static/private';
 
-export const ALLOWED_REQUESTS_PER_MINUTE = 3;
+export const ALLOWED_REQUESTS_PER_MINUTE = 5;
 
 export const limiter = new RateLimiter({
 	IP: [10, 'h'], // IP address limiter

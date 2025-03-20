@@ -1,14 +1,16 @@
-import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import type { Actions } from '@sveltejs/kit';
 
-import { secretFormSchema } from '$lib/validators/formSchemas';
+import { postSecret } from '$lib/server/form/actions';
+import { secretFormValidator } from '$lib/server/form/validators';
 
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(secretFormSchema()))
+		secretForm: await secretFormValidator()
 	};
 };
 
-export { actions } from '../../+page.server';
+export const actions: Actions = {
+	postSecret: postSecret
+};

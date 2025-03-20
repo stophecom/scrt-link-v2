@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { ArrowRight } from 'lucide-svelte';
 
-	import Page from '$lib/components/layout/page/page.svelte';
-	import * as m from '$lib/paraglide/messages.js';
+	import Page from '$lib/components/page/page.svelte';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import BlogMeta from './blog-meta.svelte';
 
@@ -16,7 +17,7 @@
 				<li>
 					<a
 						class="group border-border flex w-full rounded border-b transition-all"
-						href="/blog/{post.slug}"
+						href={localizeHref(`/blog/${post.slug}`)}
 					>
 						<div class="rounded py-5 md:py-6">
 							<h2 class="mb-2 text-xl font-bold text-pretty md:text-2xl">
@@ -31,7 +32,7 @@
 								<div
 									class="text-primary after:bg-primary relative inline-block after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out group-hover:after:origin-bottom-left group-hover:after:scale-x-100"
 								>
-									Read more
+									{m.bald_pretty_macaw_ripple()}
 								</div>
 								<ArrowRight
 									class="group-hover:text-primary -translate-x-4 opacity-0 transition-all delay-200 group-hover:translate-x-0 group-hover:opacity-100"

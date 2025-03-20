@@ -1,7 +1,7 @@
 /// <reference types="@vitest/browser/providers/playwright" />
 import { describe, expect, test } from 'vitest';
 
-import { decryptString, encryptString, generateRandomUrlSafeString } from './web-crypto';
+import { decryptString, encryptString, generateRandomUrlSafeString } from './client/web-crypto';
 
 describe('Create secret', () => {
 	test('Simple encryption', async () => {

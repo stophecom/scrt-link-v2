@@ -7,7 +7,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { RECAPTCHA_SERVER_KEY } from '$env/static/private';
 import { emailSupport } from '$lib/data/app';
 import EmailContact from '$lib/emails/email-contact.svelte';
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 import sendTransactionalEmail from '$lib/server/resend';
 import { contactFormSchema } from '$lib/validators/formSchemas';
 

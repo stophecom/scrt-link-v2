@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	let { class: className, children, href, ...rest }: SvelteHTMLElements['a'] = $props();
 </script>

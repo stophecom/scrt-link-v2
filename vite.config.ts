@@ -1,4 +1,4 @@
-import { paraglide } from '@inlang/paraglide-sveltekit/vite';
+import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import svg from '@poppanator/sveltekit-svg';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
@@ -28,12 +28,14 @@ const config = {
 };
 export default defineConfig({
 	plugins: [
+		paraglideVitePlugin({
+			project: './project.inlang',
+			outdir: './src/lib/paraglide',
+			strategy: ['cookie', 'preferredLanguage', 'url', 'baseLocale']
+			// disableAsyncLocalStorage: true // Only Vercel
+		}),
 		sveltekit(),
 		svelteEmailTailwind({ tailwindConfig: config }),
-		paraglide({
-			project: './project.inlang',
-			outdir: './src/lib/paraglide'
-		}),
 		svg(),
 		tailwindcss()
 	]

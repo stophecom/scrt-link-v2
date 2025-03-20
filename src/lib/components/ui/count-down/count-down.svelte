@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
+	import { cn } from '$lib/client/utils';
 
 	type Props = {
 		class?: string;
@@ -14,7 +14,7 @@
 
 	function startCountdown() {
 		clearInterval(timer); // Ensure no duplicate timers
-		timeLeft = duration;
+		timeLeft = duration - 1;
 
 		timer = setInterval(() => {
 			if (timeLeft > 0) {

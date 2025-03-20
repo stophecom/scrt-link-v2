@@ -2,8 +2,9 @@
 	import { Container, Head, Heading, Hr, Html, Img, Link, Text } from 'svelte-email-tailwind';
 
 	import { getBaseUrl } from '$lib/constants';
-	import * as m from '$lib/paraglide/messages.js';
-	import { languageTag } from '$lib/paraglide/runtime.js';
+	import { appName } from '$lib/data/app';
+	import { m } from '$lib/paraglide/messages.js';
+	import { getLocale } from '$lib/paraglide/runtime.js';
 
 	type Props = {
 		code: string;
@@ -12,7 +13,7 @@
 	let { code = '123456' }: Props = $props();
 </script>
 
-<Html lang={languageTag()} class="bg-background font-sans">
+<Html lang={getLocale()} class="bg-background font-sans">
 	<Head />
 	<Container class="bg-background py-12">
 		<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />
@@ -26,8 +27,11 @@
 		<Hr class="border-border mt-8" />
 
 		<Text class="text text-muted">
-			©{new Date().getFullYear()} SANTiHANS GmbH -
-			<Link class="text-muted" href="{getBaseUrl()}/privacy-policy">Privacy Policy</Link>
+			©{new Date().getFullYear()}
+			{appName} -
+			<Link class="text-muted" href="{getBaseUrl()}/privacy-policy"
+				>{m.crazy_jumpy_mouse_hush()}</Link
+			>
 		</Text>
 	</Container>
 </Html>

@@ -1,4 +1,4 @@
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 
 import accountAndBilling from './accountAndBilling';
 import general from './general';

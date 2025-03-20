@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EmailVerificationCodeForm from '$lib/components/forms/email-verification-code-form.svelte';
-	import SingleFormPage from '$lib/components/layout/page/single-form-page.svelte';
-	import * as m from '$lib/paraglide/messages.js';
+	import SingleFormPage from '$lib/components/page/single-form-page.svelte';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
 

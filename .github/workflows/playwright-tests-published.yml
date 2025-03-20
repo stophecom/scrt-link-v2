@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - uses: pnpm/action-setup@v4
         with:
           version: 8
@@ -27,7 +30,7 @@ jobs:
         run: npx playwright test
         env:
           PUBLIC_ENV: production
-          VERCEL_URL: https://v2.scrt.link
+          VERCEL_URL: https://scrt.link
           DEBUG: pw:api
       - name: Create folder for artifacts
         if: always()

@@ -1,38 +1,37 @@
 <script lang="ts">
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
-	import LockKeyhole from 'lucide-svelte/icons/lock-keyhole';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { type Infer, intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod } from 'sveltekit-superforms/adapters';
 
-	import * as Form from '$lib/components/ui/form';
-	import type { FileMeta } from '$lib/file-transfer';
-	import * as m from '$lib/paraglide/messages.js';
-	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
+	import { MASTER_PASSWORD_LENGTH, SECRET_ID_LENGTH } from '$lib/client/constants';
+	import { plausible } from '$lib/client/plausible';
 	import {
 		encryptString,
 		exportPublicKey,
 		generateKeyPair,
 		generateRandomUrlSafeString,
 		sha256Hash
-	} from '$lib/web-crypto';
+	} from '$lib/client/web-crypto';
+	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
+	import Password from '$lib/components/forms/form-fields/password.svelte';
+	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
+	import Text from '$lib/components/forms/form-fields/text.svelte';
+	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
+	import * as Form from '$lib/components/ui/form';
+	import { SecretType } from '$lib/data/enums';
+	import { getPlanLimits } from '$lib/data/plans';
+	import type { FileMeta } from '$lib/file-transfer';
+	import { m } from '$lib/paraglide/messages.js';
+	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getExpiresInOptions } from '../../data/secretSettings';
-	import FileUpload from '../form-fields/file-upload.svelte';
-	import Password from '../form-fields/password.svelte';
-	import RadioGroup from '../form-fields/radio-group.svelte';
-	import Text from '../form-fields/text.svelte';
-	import Textarea from '../form-fields/textarea.svelte';
-	import Alert from '../ui/alert/alert.svelte';
-	import Link from '../ui/link';
+	import UpgradeNotice from '../elements/upgrade-notice.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
-	const CHARACTER_LIMIT = 100_000;
-
-	export type SecretType = 'text' | 'file' | 'redirect' | 'snap';
 	export type Meta = Partial<FileMeta> & {
 		secretType: SecretType;
 	};
@@ -42,19 +41,20 @@
 		user: LayoutServerData['user'];
 		secretType: SecretType;
 		successMessage?: string;
-		masterPassword: string;
+		masterKey: string;
 	};
 	let {
 		successMessage = $bindable(),
-		masterPassword = $bindable(),
+		masterKey = $bindable(),
 		form: formProp,
 		user,
 		secretType
 	}: SecretFormProps = $props();
 
+	const planLimits = getPlanLimits(user?.subscriptionTier);
+
 	const form = superForm(formProp, {
-		validators: zodClient(secretFormSchema()),
-		validationMethod: 'onblur',
+		validators: zod(secretFormSchema()),
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {
@@ -73,18 +73,30 @@
 				encryptedMeta = await encryptString(encryptedMeta, password);
 				encryptedContent = await encryptString(encryptedContent, password);
 			}
-			encryptedMeta = await encryptString(encryptedMeta, masterPassword);
-			encryptedContent = await encryptString(encryptedContent, masterPassword);
+			encryptedMeta = await encryptString(encryptedMeta, masterKey);
+			encryptedContent = await encryptString(encryptedContent, masterKey);
 
+			const secretIdSubstring = masterKey.substring(SECRET_ID_LENGTH);
 			// Set data to be posted
 			const jsonPayload: Infer<SecretTextFormSchema> = {
-				secretIdHash: await sha256Hash(masterPassword),
+				secretIdHash: await sha256Hash(secretIdSubstring),
 				meta: encryptedMeta,
 				content: encryptedContent,
 				publicKey: publicKeyRaw,
 				expiresIn: expiresIn,
 				password: $formData.password
 			};
+
+			if (plausible) {
+				const { trackEvent } = plausible;
+				trackEvent('SecretCreation', {
+					props: {
+						secretType: secretType,
+						withPassword: !!$formData.password,
+						subscriptionTier: user?.subscriptionTier || 'none'
+					}
+				});
+			}
 
 			jsonData(jsonPayload);
 		},
@@ -102,10 +114,13 @@
 	const { form: formData, message, delayed, constraints, enhance } = form;
 
 	// We need to convert number (expiration timeout) to string, since radio input only supports string.
-	const expiresInOptions = getExpiresInOptions().map((option) => ({
-		...option,
-		value: String(option.value)
-	}));
+	const expiresInOptions = getExpiresInOptions(planLimits.expirationOptionsExtended).map(
+		(option) => ({
+			disabled: !planLimits.expirationOptionsAllowed,
+			...option,
+			value: String(option.value)
+		})
+	);
 	const expiresInProxy = intProxy(form, 'expiresIn'); // Cast string to number
 
 	let privateKey: CryptoKey | undefined = $state();
@@ -113,10 +128,18 @@
 	let isOptionsVisible = $state(false);
 	let isFileUploading = $state(false);
 
-	let charactersLeft = $derived(CHARACTER_LIMIT - $formData.content.length);
+	let charactersLeft = $derived(planLimits.text - $formData.content.length);
+
+	const isNeogramAllowed = $derived(secretType === SecretType.NEOGRAM && planLimits.neogram);
+	const isSnapAllowed = $derived(secretType === SecretType.SNAP && planLimits.snap);
+
+	let isButtonDisabled = $derived(
+		isFileUploading ||
+			((secretType === SecretType.FILE || secretType === SecretType.SNAP) && !$formData.content)
+	);
 
 	const setCryptoKeys = async () => {
-		masterPassword = generateRandomUrlSafeString();
+		masterKey = generateRandomUrlSafeString(MASTER_PASSWORD_LENGTH);
 		const keyPair = await generateKeyPair();
 		privateKey = keyPair.privateKey;
 		publicKeyRaw = await exportPublicKey(keyPair.publicKey);
@@ -134,54 +157,78 @@
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/postSecret">
-		{#if secretType === 'text'}
+		{#if secretType === SecretType.TEXT || secretType === SecretType.NEOGRAM}
 			<div in:fade>
-				<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
-					<Textarea
-						bind:value={$formData.content}
-						label={m.mellow_lime_squid_urge()}
-						placeholder={m.tiny_mean_marmot_cheer()}
-						isHiddenLabel
-						{charactersLeft}
-						{...$constraints.content}
-					/>
-				</Form.Field>
-			</div>
-		{/if}
-		{#if ['file', 'snap'].includes(secretType) && privateKey}
-			<div in:fade>
-				<div class="min-h-32 py-2">
-					<FileUpload
-						{secretType}
-						bind:content={$formData.content}
-						bind:meta={$formData.meta}
-						{masterPassword}
-						{privateKey}
-						bind:loading={isFileUploading}
-						accept={secretType === 'snap' ? 'image/*' : undefined}
-					/>
-
-					{#if secretType === 'snap' && !isFileUploading && !$formData.content}
-						<div class="text-muted-foreground p-1 text-center text-xs text-pretty">
-							{m.tired_inner_cougar_push()}
+				<div class="min-h-32">
+					{#if secretType === SecretType.TEXT || isNeogramAllowed}
+						<Form.Field {form} name="content">
+							<Textarea
+								bind:value={$formData.content}
+								label={m.mellow_lime_squid_urge()}
+								placeholder={secretType === SecretType.NEOGRAM
+									? m.wise_each_badger_borrow()
+									: m.tiny_mean_marmot_cheer()}
+								isHiddenLabel
+								{charactersLeft}
+								{...$constraints.content}
+								maxlength={planLimits.text}
+							/>
+						</Form.Field>
+					{/if}
+					{#if charactersLeft <= 0 || (secretType === SecretType.NEOGRAM && !planLimits.neogram)}
+						<div class="pt-2">
+							<UpgradeNotice {user} />
 						</div>
 					{/if}
 				</div>
 			</div>
 		{/if}
 
-		{#if secretType === 'redirect'}
+		{#if [SecretType.FILE, SecretType.SNAP].includes(secretType) && privateKey}
 			<div in:fade>
-				<Form.Field {form} name="content" class="flex min-h-32 flex-col justify-center">
-					<Text
-						bind:value={$formData.content}
-						label="URL"
-						isHiddenLabel={true}
-						placeholder="https://example.com"
-						description="The URL to get redirected to (one time)."
-						type="url"
-					/>
-				</Form.Field>
+				<div class="min-h-32 py-2">
+					{#if secretType === SecretType.FILE || isSnapAllowed}
+						<FileUpload
+							{secretType}
+							bind:content={$formData.content}
+							bind:meta={$formData.meta}
+							{masterKey}
+							{privateKey}
+							maxFileSize={planLimits.file}
+							bind:loading={isFileUploading}
+							accept={secretType === SecretType.SNAP ? 'image/*' : undefined}
+						/>
+
+						{#if secretType === SecretType.SNAP && !isFileUploading && !$formData.content}
+							<div class="text-muted-foreground p-1 text-center text-xs text-pretty">
+								{m.tired_inner_cougar_push()}
+							</div>
+						{/if}
+					{:else}
+						<UpgradeNotice {user} />
+					{/if}
+				</div>
+			</div>
+		{/if}
+
+		{#if secretType === SecretType.REDIRECT}
+			<div in:fade>
+				<div class="min-h-32 py-2">
+					{#if planLimits.redirect}
+						<Form.Field {form} name="content">
+							<Text
+								bind:value={$formData.content}
+								label="URL"
+								isHiddenLabel={true}
+								placeholder="https://example.com"
+								description={m.seemly_loud_falcon_pave()}
+								type="url"
+							/>
+						</Form.Field>
+					{:else}
+						<UpgradeNotice {user} />
+					{/if}
+				</div>
 			</div>
 		{/if}
 
@@ -190,40 +237,36 @@
 				? 'visible h-[calc(auto)] pb-4 opacity-100'
 				: 'invisible h-0 opacity-0'}"
 		>
-			{#if user}
-				<Form.Field {form} name="password">
-					<Password
-						bind:value={$formData.password}
-						autocomplete="new-password"
-						{...$constraints.password}
-					/>
-				</Form.Field>
+			<Form.Field {form} name="password">
+				<Password
+					bind:value={$formData.password}
+					autocomplete="new-password"
+					{...$constraints.password}
+					disabled={!planLimits.passwordAllowed}
+				/>
+			</Form.Field>
 
-				<Form.Fieldset {form} name="expiresIn">
-					<RadioGroup
-						options={expiresInOptions}
-						bind:value={$expiresInProxy}
-						label={m.noble_whole_hornet_evoke()}
-					/>
-				</Form.Fieldset>
-			{:else}
-				<div class="py-2">
-					<Alert Icon={LockKeyhole} variant="info" title={m.fair_red_warbler_bake()}>
-						<p>
-							{m.cool_spicy_gopher_earn()}
-							<Link href="/signup">{m.mild_tangy_elk_scoop()}</Link>
-						</p>
-					</Alert>
-				</div>
+			<Form.Fieldset {form} name="expiresIn">
+				<RadioGroup
+					options={expiresInOptions}
+					bind:value={$expiresInProxy}
+					label={m.noble_whole_hornet_evoke()}
+				/>
+			</Form.Fieldset>
+			{#if (!planLimits.expirationOptionsAllowed || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}
+				<UpgradeNotice {user} />
 			{/if}
 		</div>
 
 		<div class="flex flex-col items-stretch sm:flex-row">
-			<Toggle class="mb-1" bind:pressed={isOptionsVisible} aria-label="Toggle options"
+			<Toggle
+				class="mb-1"
+				bind:pressed={isOptionsVisible}
+				aria-label={m.topical_zany_grebe_exhale()}
 				>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 				<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
 			>
-			<Form.Button delayed={$delayed} class="sm:ml-auto " disabled={isFileUploading}
+			<Form.Button delayed={$delayed} class="sm:ml-auto " disabled={isButtonDisabled}
 				>{m.lazy_mealy_vole_harbor()}</Form.Button
 			>
 		</div>

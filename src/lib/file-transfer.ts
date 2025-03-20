@@ -2,7 +2,7 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 import { api, asyncPool } from '$lib/api';
-import { decryptData, encryptFile, sha256Hash, signMessage } from '$lib/web-crypto';
+import { decryptData, encryptFile, sha256Hash, signMessage } from '$lib/client/web-crypto';
 
 // If the request fails, we retry
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
@@ -39,7 +39,7 @@ type HandleFileEncryptionAndUpload = {
 	controllers: Map<number, AbortController>;
 	file: File;
 	bucket: string;
-	masterPassword: string;
+	masterKey: string;
 	privateKey: CryptoKey;
 	chunkSize: number;
 	progressCallback: (progress: number) => void;
@@ -48,7 +48,7 @@ export const handleFileEncryptionAndUpload = async ({
 	controllers,
 	file,
 	bucket,
-	masterPassword,
+	masterKey,
 	privateKey,
 	chunkSize,
 	progressCallback
@@ -72,7 +72,7 @@ export const handleFileEncryptionAndUpload = async ({
 		const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize;
 		const chunk = file.slice(start, end);
 
-		const encryptedFile = await encryptFile(chunk, masterPassword);
+		const encryptedFile = await encryptFile(chunk, masterKey);
 
 		const chunkFileSize = encryptedFile.size;
 		const fileName = crypto.randomUUID();
@@ -119,7 +119,7 @@ const uploadFileChunk = async ({
 	progressCallback
 }: UploadFileChunkParams): Promise<void> => {
 	progressCallback(0);
-	// Get presigned S3 post url
+	// Get presigned S3 post URL
 	const { url, fields } = await api<PresignedPostResponse>(`/files?file=${fileName}`);
 
 	// Prepare form data

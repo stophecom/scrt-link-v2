@@ -1,12 +1,12 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { ArcticFetchError, OAuth2RequestError, type OAuth2Tokens } from 'arctic';
 import { eq } from 'drizzle-orm';
-import { jwtDecode } from 'jwt-decode';
 
 import * as auth from '$lib/server/auth';
 import { google } from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
+import stripeInstance from '$lib/server/stripe';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const storedState = event.cookies.get('google_oauth_state') ?? null;
@@ -24,16 +24,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 	try {
 		tokens = await google.validateAuthorizationCode(code, codeVerifier);
-		const idToken = tokens.idToken();
-		const claims = jwtDecode(idToken);
 		const accessToken = tokens.accessToken();
-		// const accessTokenExpiresAt = tokens.accessTokenExpiresAt();
-
-		console.log('claims', claims);
-		// const googleId = claims['sub'];
-		// const name = claimsParser.getString('name');
-		// const picture = claimsParser.getString('picture');
-		// const email = claimsParser.getString('email');
 
 		const response = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
 			headers: {
@@ -42,52 +33,56 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		});
 		const googleUser: UserInfoResponse = await response.json();
 
-		// Check if user exists.
-		const [existingUser] = await db
-			.select()
-			.from(table.user)
-			.where(eq(table.user.email, googleUser.email))
-			.limit(1);
-
-		if (existingUser) {
-			// Add GoogleID and complete/overwrite user based on Google Account
-			if (!existingUser.googleId) {
-				await db
-					.update(table.user)
-					.set({
-						googleId: googleUser.sub,
-						emailVerified: googleUser.email_verified,
-						picture: googleUser.picture,
-						name: googleUser.name
-					})
-					.where(eq(table.user.email, existingUser.email));
-			}
-
-			const sessionToken = auth.generateSessionToken();
-			const session = await auth.createSession(sessionToken, existingUser.id);
-
-			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-		} else {
-			// Create user
-			const [userResult] = await db
-				.insert(table.user)
-				.values({
+		// Create or update user
+		const [user] = await db
+			.insert(table.user)
+			.values({
+				googleId: googleUser.sub,
+				emailVerified: googleUser.email_verified,
+				picture: googleUser.picture,
+				name: googleUser.name,
+				email: googleUser.email
+			})
+			.onConflictDoUpdate({
+				target: table.user.email,
+				set: {
 					googleId: googleUser.sub,
-					email: googleUser.email,
+					emailVerified: googleUser.email_verified,
 					picture: googleUser.picture,
-					name: googleUser.name
-				})
-				.returning();
+					name: googleUser.name,
+					email: googleUser.email
+				}
+			})
+			.returning();
 
-			await db.insert(table.userSettings).values({
-				userId: userResult.id,
-				email: userResult.email
+		// Conditionally add user settings
+		await db
+			.insert(table.userSettings)
+			.values({
+				userId: user.id,
+				email: user.email
+			})
+			.onConflictDoNothing({
+				target: table.userSettings.userId
 			});
 
-			const sessionToken = auth.generateSessionToken();
-			const session = await auth.createSession(sessionToken, userResult.id);
-			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+		// In case a user doesn't have a stripe account, we create one
+		if (!user.stripeCustomerId) {
+			const stripeCustomer = await stripeInstance.customers.create({
+				email: user.email
+			});
+
+			await db
+				.update(table.user)
+				.set({ stripeCustomerId: stripeCustomer.id })
+				.where(eq(table.user.id, user.id));
 		}
+
+		// Create session
+		const sessionToken = auth.generateSessionToken();
+		const session = await auth.createSession(sessionToken, user.id);
+		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+
 		return new Response(null, {
 			status: 302,
 			headers: {

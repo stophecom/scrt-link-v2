@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import Footer from '$lib/components/layout/footer.svelte';
-	import Header from '$lib/components/layout/header.svelte';
+	import Footer from '$lib/components/elements/footer.svelte';
+	import Header from '$lib/components/elements/header.svelte';
 
 	import type { LayoutData } from './$types';
 
@@ -13,4 +13,4 @@
 <main>
 	{@render children()}
 </main>
-<Footer totalSecrets={data.totalSecrets} />
+<Footer />

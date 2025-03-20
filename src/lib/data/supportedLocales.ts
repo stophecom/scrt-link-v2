@@ -1,11 +1,15 @@
-import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
+import type { AvailablegetLocale } from '$lib/paraglide/runtime';
 
-const map: Record<AvailableLanguageTag, string> = {
+// Keep in sync with project.inlang/settings.json
+const map: Record<AvailablegetLocale, string> = {
 	de: 'Deutsch',
 	en: 'English',
-	fr: 'Français'
+	fr: 'Français',
+	es: 'Español',
+	ru: 'Русский',
+	cn: '中文(简体)'
 };
 
-export const getSupportedLanguagesMap = (locale: AvailableLanguageTag) => {
+export const getSupportedLanguagesMap = (locale: AvailablegetLocale) => {
 	return map[locale];
 };

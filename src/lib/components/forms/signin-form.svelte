@@ -3,12 +3,13 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
+	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type SignInFormSchema, signInFormSchema } from '$lib/validators/formSchemas';
 
-	import Password from '../form-fields/password.svelte';
 	import Link from '../ui/link';
 	import FormWrapper from './form-wrapper.svelte';
 
@@ -32,7 +33,7 @@
 </script>
 
 <FormWrapper message={$message}>
-	<form method="POST" use:enhance>
+	<form method="POST" use:enhance action="?/loginWithPassword">
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
@@ -54,7 +55,8 @@
 			/>
 
 			<Form.Description
-				><Link class="text-xs" href="/reset-password">{m.less_free_osprey_buzz()}</Link
+				><Link class="text-xs" href={localizeHref('/reset-password')}
+					>{m.less_free_osprey_buzz()}</Link
 				></Form.Description
 			>
 		</Form.Field>

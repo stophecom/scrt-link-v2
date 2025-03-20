@@ -2,14 +2,16 @@
 	import { onMount } from 'svelte';
 
 	import { api } from '$lib/api';
+	import { SECRET_ID_LENGTH } from '$lib/client/constants';
+	import { sha256Hash } from '$lib/client/web-crypto';
 	import RevealSecretForm from '$lib/components/forms/reveal-secret-form.svelte';
-	import Page from '$lib/components/layout/page/page.svelte';
+	import Page from '$lib/components/page/page.svelte';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import { Spinner } from '$lib/components/ui/spinner';
-	import * as m from '$lib/paraglide/messages.js';
-	import { sha256Hash } from '$lib/web-crypto';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
+
 	let isLoading = $state(true);
 	let error: string = $state('');
 
@@ -26,8 +28,8 @@
 			if (!masterKey.length || masterKey.includes('?')) {
 				throw new Error(`Invalid URL.`);
 			}
-
-			secretIdHash = await sha256Hash(masterKey);
+			const secretIdSubstring = masterKey.substring(SECRET_ID_LENGTH);
+			secretIdHash = await sha256Hash(secretIdSubstring);
 			const { isPasswordProtected } = await api<{ isPasswordProtected: boolean }>(
 				`/secrets/${secretIdHash}`
 			);
@@ -43,7 +45,7 @@
 	});
 </script>
 
-<Page title={m.each_light_mare_bump()} lead="You received a secret.">
+<Page title={m.each_light_mare_bump()} lead={m.warm_clean_horse_seek()}>
 	{#if isLoading}
 		<div class="flex min-h-48 items-center justify-center">
 			<Spinner />

@@ -6,7 +6,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { verifyPassword } from '$lib/crypto';
 import EmailReadReceipt from '$lib/emails/email-read-receipt.svelte';
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret as secretSchema, user as userSchema, userSettings } from '$lib/server/db/schema';
 import sendTransactionalEmail from '$lib/server/resend';

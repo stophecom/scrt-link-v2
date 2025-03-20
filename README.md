@@ -2,10 +2,7 @@
 
 Version 2 - built with [Svelte](https://github.com/sveltejs/cli).
 
-Live: [v2.scrt.link](v2.scrt.link)
-
-> [!WARNING]  
-> This is work-in-progress.
+Live: [scrt.link](scrt.link)
 
 ## Developing
 
@@ -47,6 +44,8 @@ To create a production version of your app:
 
 ```bash
 pnpm run build
+
+pnpm run postbuild # Creates sitemap.xml
 ```
 
 ## Cron
@@ -98,6 +97,24 @@ The following login methods are available:
 
 Redirect URI: `/login/google/callback`
 
+## Subscriptions
+
+We use Stripe as payment provider.
+
+- [Client Side (ES Module)](https://www.npmjs.com/package/@stripe/stripe-js)
+- [Server (Node.js)](https://www.npmjs.com/package/stripe)
+
+```bash
+# Stripe CLI
+# Test webhooks
+stripe login
+stripe listen --forward-to localhost:5173/api/v1/webhooks
+
+# Trigger event
+stripe trigger payment_intent.succeeded
+
+```
+
 ## Transactional Emails
 
 - Delivered via [resend](https://resend.com/)
@@ -121,6 +138,11 @@ Redirect URI: `/login/google/callback`
 
 In order to ship with confidence we run a set of tests during and after the deployment.
 See `playwright-tests-published.yml` for more info.
+
+## Error Handling
+
+We use SvelteKit recommendation: https://svelte.dev/docs/kit/errors
+Expected errors are returned with `error(404, 'Some message')` and might be shown to users. For internal errors (mostly unexpected) we use `throw new Error()`.
 
 ## Stack
 

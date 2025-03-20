@@ -2,7 +2,7 @@
 	import Share from 'lucide-svelte/icons/share-2';
 
 	import { appName } from '$lib/data/app';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import type { ButtonProps } from '../button';
 	import Button from '../button/button.svelte';

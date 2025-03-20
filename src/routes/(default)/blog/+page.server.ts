@@ -1,9 +1,7 @@
-import type { BlogPostMeta } from '$lib/types';
+import { getBlogPosts } from '$lib/server/blog';
 
-export async function load({ fetch }) {
-	const response = await fetch('/api/v1/blog');
-
-	const posts: BlogPostMeta[] = await response.json();
+export async function load() {
+	const posts = await getBlogPosts();
 
 	return { posts };
 }

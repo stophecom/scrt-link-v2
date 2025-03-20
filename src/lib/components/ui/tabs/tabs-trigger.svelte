@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Tabs as TabsPrimitive } from 'bits-ui';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = TabsPrimitive.TriggerProps;
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,7 +14,7 @@
 
 <TabsPrimitive.Trigger
 	class={cn(
-		'ring-offset-background hover:bg-muted focus-visible:ring-ring data-[state=active]:bg-background data-[state=active]:text-foreground inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-base font-medium whitespace-nowrap transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-xs',
+		'ring-offset-background hover:bg-muted focus-visible:ring-ring data-[state=active]:bg-background data-[state=active]:text-foreground xs:text-base inline-flex items-center justify-center rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-xs sm:px-4',
 		className
 	)}
 	{value}

@@ -2,7 +2,7 @@
 	import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui';
 	import Check from 'lucide-svelte/icons/check';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = DropdownMenuPrimitive.RadioItemProps;
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -15,7 +15,7 @@
 
 <DropdownMenuPrimitive.RadioItem
 	class={cn(
-		'data-highlighted:text-accent-foreground data-highlighted:bg-muted relative flex cursor-pointer items-center rounded-sm py-3 pr-2 pl-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50',
+		'data-highlighted:text-accent-foreground data-highlighted:bg-muted relative flex cursor-pointer items-center rounded-sm py-4 pr-2 pl-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 sm:py-3',
 		className
 	)}
 	{value}
@@ -28,7 +28,7 @@
 	on:pointerleave
 	on:pointermove
 >
-	<span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+	<span class="absolute left-2 flex h-4 w-4 items-center justify-center">
 		<DropdownMenuPrimitive.RadioIndicator>
 			<Check class="text-primary h-4 w-4" />
 		</DropdownMenuPrimitive.RadioIndicator>

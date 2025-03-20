@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
+	import { cn } from '$lib/client/utils';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	type Props = {
 		class?: string;
@@ -10,14 +11,14 @@
 </script>
 
 <div class={cn(className)}>
-	<h5 class="p-1 font-semibold">{title}</h5>
+	<h5 class="text-primary p-1 font-semibold">{title}</h5>
 	<ul class="">
 		{#each menu as menuItem}
 			<li>
 				<a
-					class="block p-1 font-medium hover:underline"
+					class="block p-1 py-2 font-medium hover:underline sm:py-1"
 					target={menuItem?.externalLink ? '_blank' : ''}
-					href={menuItem.href}
+					href={localizeHref(menuItem.href)}
 				>
 					{menuItem.label}
 				</a>

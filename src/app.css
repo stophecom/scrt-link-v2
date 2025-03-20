@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+	/* Custom theme color options */
+	--theme-color-pink: #e60077;
+	--theme-color-purple: #8645b5;
+	--theme-color-blue: #2071c9;
+	--theme-color-teal: #068484;
+}
+
 @layer base {
 	:root {
 		interpolate-size: allow-keywords;
@@ -22,14 +30,13 @@
 		--border: 240 6% 84%;
 		--input: 240 6% 84%;
 
-		--primary: 329, 100%, 45%;
 		--primary-foreground: 0 0% 100%;
 
 		--secondary: 240 4.8% 91%;
 		--secondary-foreground: 240 7% 10%;
 
 		--destructive: 0 72% 40%;
-		--destructive-foreground: 0 72% 40%;
+		--destructive-foreground: 0 0% 100%;
 
 		--success: 123 38% 37%;
 		--success-foreground: 123 38% 30%;
@@ -58,14 +65,13 @@
 		--border: 240 3.7% 30%;
 		--input: 240 3.7% 30%;
 
-		--primary: 329 100% 45%;
 		--primary-foreground: 0 0% 100%;
 
 		--secondary: 240 3.7% 15.9%;
 		--secondary-foreground: 0 0% 98%;
 
-		--destructive: 0 90% 68%;
-		--destructive-foreground: 0 82% 90%;
+		--destructive: 0 90% 60%;
+		--destructive-foreground: 0 0% 100%;
 
 		--success: 123 38% 57%;
 		--success-foreground: 123 38% 88%;
@@ -95,7 +101,7 @@
 	padding-inline: 1.2rem;
 
 	@media (width >= theme(--breakpoint-xs)) {
-		padding-inline: 2rem;
+		padding-inline: 1.4rem;
 		max-width: 100%;
 	}
 
@@ -108,9 +114,9 @@
 @custom-variant dz (@media (hover: hover) and (pointer: fine));
 
 @theme {
-	--breakpoint-xs: 30rem;
+	--color-*: initial;
 
-	--breakpoint-lg: initial;
+	--breakpoint-xs: 26rem; /* 416px */
 	--breakpoint-xl: initial;
 	--breakpoint-2xl: initial;
 
@@ -121,7 +127,7 @@
 	--color-background: hsl(var(--background));
 	--color-foreground: hsl(var(--foreground));
 
-	--color-primary: hsl(var(--primary));
+	--color-primary: var(--theme-color-pink);
 	--color-primary-foreground: hsl(var(--primary-foreground));
 
 	--color-secondary: hsl(var(--secondary));

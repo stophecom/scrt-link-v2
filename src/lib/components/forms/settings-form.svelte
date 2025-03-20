@@ -1,24 +1,26 @@
 <script lang="ts">
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
+	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
+	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import * as m from '$lib/paraglide/messages.js';
+	import { getPlanLimits } from '$lib/data/plans';
+	import { m } from '$lib/paraglide/messages.js';
 	import { type SettingsFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
 
-	import type { LayoutServerData } from '../../../routes/$types';
 	import { getReadReceiptOptions } from '../../data/secretSettings';
-	import RadioGroup from '../form-fields/radio-group.svelte';
-	import Text from '../form-fields/text.svelte';
+	import UpgradeNotice from '../elements/upgrade-notice.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
 		form: SuperValidated<Infer<SettingsFormSchema>>;
-		user: LayoutServerData['user'];
+		user: App.Locals['user'];
 	};
 
-	let { form: formProp }: Props = $props();
+	let { user, form: formProp }: Props = $props();
+
+	const planLimits = getPlanLimits(user?.subscriptionTier);
 
 	const form = superForm(formProp, {
 		validators: zodClient(settingsFormSchema()),
@@ -50,29 +52,36 @@
 			/>
 		</Form.Fieldset>
 
+		{#if $formData.readReceiptOption !== 'none' && !planLimits.readReceiptsAllowed}
+			<UpgradeNotice {user} />
+		{/if}
+
 		{#if $formData.readReceiptOption === 'email'}
 			<Form.Field {form} name="email">
-				<Text label="Email" bind:value={$formData.email} {...$constraints.email} type="email" />
+				<Text
+					label={m.just_every_oryx_flop()}
+					bind:value={$formData.email}
+					{...$constraints.email}
+					type="email"
+					disabled={!planLimits.readReceiptsAllowed}
+				/>
+				<Form.Description>{m.hour_royal_moose_kiss()}</Form.Description>
 			</Form.Field>
 		{/if}
 
 		{#if $formData.readReceiptOption === 'ntfy'}
 			<Form.Field {form} name="ntfyEndpoint">
 				<Text
-					label="Ntfy Endpoint"
+					label={m.sea_zippy_piranha_lift()}
+					placeholder="unique-endpoint123"
 					bind:value={$formData.ntfyEndpoint}
 					{...$constraints.ntfyEndpoint}
-					description="*Unique endpoint that is used to send you notifications to your ntfy app. For more info
-					visit [https://ntfy.sh](https://ntfy.sh)"
+					description={m.nimble_mushy_felix_drop({ link: '[https://ntfy.sh](https://ntfy.sh)' })}
+					disabled={!planLimits.readReceiptsAllowed}
 				/>
 			</Form.Field>
 		{/if}
 
 		<Form.Button delayed={$delayed} class="ml-auto ">{m.caring_light_tiger_taste()}</Form.Button>
 	</form>
-	{#if dev}
-		<div class="py-4">
-			<SuperDebug data={$formData} />
-		</div>
-	{/if}
 </FormWrapper>

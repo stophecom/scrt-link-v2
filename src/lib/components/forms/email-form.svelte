@@ -4,14 +4,18 @@
 
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { type EmailFormSchema, emailFormSchema } from '$lib/validators/formSchemas';
 
 	import FormWrapper from './form-wrapper.svelte';
 
-	export let data: SuperValidated<Infer<EmailFormSchema>>;
+	type Props = {
+		data: SuperValidated<Infer<EmailFormSchema>>;
+		buttonLabel?: string;
+		action: string;
+	};
 
-	export let buttonLabel: string = m.few_blue_wallaby_read();
+	let { action, data, buttonLabel = m.few_blue_wallaby_read() }: Props = $props();
 
 	const form = superForm(data, {
 		validators: zodClient(emailFormSchema()),
@@ -30,7 +34,7 @@
 </script>
 
 <FormWrapper message={$message}>
-	<form method="POST" use:enhance>
+	<form method="POST" use:enhance {action}>
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>

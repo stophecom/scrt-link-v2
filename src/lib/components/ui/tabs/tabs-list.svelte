@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Tabs as TabsPrimitive } from 'bits-ui';
 
-	import { cn } from '$lib/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = TabsPrimitive.ListProps;
 
@@ -11,7 +11,7 @@
 
 <TabsPrimitive.List
 	class={cn(
-		'text-muted-foreground inline-flex h-10 items-center justify-center  rounded-md',
+		'text-muted-foreground inline-flex h-10 items-center justify-center rounded-md',
 		className
 	)}
 	{...$$restProps}

@@ -3,12 +3,12 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { PUBLIC_RECAPTCHA_CLIENT_KEY } from '$env/static/public';
+	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { type ContactFormSchema, contactFormSchema } from '$lib/validators/formSchemas';
 
-	import Textarea from '../form-fields/textarea.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	let { data }: { data: SuperValidated<Infer<ContactFormSchema>> } = $props();

@@ -4,5 +4,11 @@
 			"path": "/api/v1/cron",
 			"schedule": "0 1 * * *"
 		}
+	],
+	"rewrites": [
+		{
+			"source": "/api/event",
+			"destination": "https://plausible.io/api/event"
+		}
 	]
 }
