@@ -28,7 +28,12 @@ const config = {
 };
 export default defineConfig({
 	plugins: [
-		paraglideVitePlugin({ project: './project.inlang', outdir: './src/lib/paraglide' }),
+		paraglideVitePlugin({
+			project: './project.inlang',
+			outdir: './src/lib/paraglide',
+			strategy: ['cookie', 'preferredLanguage', 'url', 'baseLocale']
+			// disableAsyncLocalStorage: true // Only Vercel
+		}),
 		sveltekit(),
 		svelteEmailTailwind({ tailwindConfig: config }),
 		svg(),
