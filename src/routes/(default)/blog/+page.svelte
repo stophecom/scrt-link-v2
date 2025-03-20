@@ -2,7 +2,8 @@
 	import { ArrowRight } from 'lucide-svelte';
 
 	import Page from '$lib/components/page/page.svelte';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import BlogMeta from './blog-meta.svelte';
 
@@ -16,7 +17,7 @@
 				<li>
 					<a
 						class="group border-border flex w-full rounded border-b transition-all"
-						href="/blog/{post.slug}"
+						href={localizeHref(`/blog/${post.slug}`)}
 					>
 						<div class="rounded py-5 md:py-6">
 							<h2 class="mb-2 text-xl font-bold text-pretty md:text-2xl">

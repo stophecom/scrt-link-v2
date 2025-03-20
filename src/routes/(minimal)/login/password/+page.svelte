@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SigninForm from '$lib/components/forms/signin-form.svelte';
 	import SingleFormPage from '$lib/components/page/single-form-page.svelte';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
 

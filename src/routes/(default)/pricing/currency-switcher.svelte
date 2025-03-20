@@ -6,7 +6,7 @@
 	import { supportedCurrencies } from '$lib/client/constants';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	let activeCurrency = $state('usd');
 

@@ -4,7 +4,8 @@
 
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import Link from '$lib/components/ui/link';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	type Props = {
 		user?: App.Locals['user'];
@@ -20,9 +21,9 @@
 			{m.cool_spicy_gopher_earn()}
 		</p>
 		{#if user}
-			<Link href="/pricing">{m.mild_tangy_elk_scoop()}</Link>
+			<Link href={localizeHref('/pricing')}>{m.mild_tangy_elk_scoop()}</Link>
 		{:else}
-			<Link href="/signup">{m.loved_legal_clownfish_kiss()}</Link>
+			<Link href={localizeHref('/signup')}>{m.loved_legal_clownfish_kiss()}</Link>
 		{/if}
 	</Alert>
 </div>

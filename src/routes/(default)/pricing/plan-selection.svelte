@@ -10,7 +10,8 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Switch from '$lib/components/ui/switch/switch.svelte';
 	import { formatCurrency, formatDate } from '$lib/i18n';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { LayoutServerData } from '../../$types';
 	import type { Plan } from '../../api/v1/plans/+server';
@@ -116,7 +117,7 @@
 	<div class="grid gap-6 sm:grid-cols-3 sm:gap-3 lg:gap-4">
 		<PlanView name="Confidential">
 			{#if !user}
-				<Button class="w-full" href="/signup">{m.lofty_tasty_ray_fond()}</Button>
+				<Button class="w-full" href={localizeHref('/signup')}>{m.lofty_tasty_ray_fond()}</Button>
 			{:else if user && !subscription}
 				{@render renderIsActivePlan()}
 			{/if}
@@ -172,7 +173,7 @@
 			<div class="flex items-center text-sm">
 				{m.noisy_late_mouse_amaze()}
 				<Switch bind:checked={showYearlyPrice} class="mx-2" />
-				{m.day_even_beaver_cry({ percentage: yearlyPlanSavings })}
+				{m.day_even_beaver_cry({ percentage: yearlyPlanSavings || 0 })}
 			</div>
 		</div>
 	</div>

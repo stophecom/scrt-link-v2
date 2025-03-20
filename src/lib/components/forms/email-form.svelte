@@ -4,7 +4,7 @@
 
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { type EmailFormSchema, emailFormSchema } from '$lib/validators/formSchemas';
 
 	import FormWrapper from './form-wrapper.svelte';

@@ -3,8 +3,8 @@
 
 	import { getBaseUrl } from '$lib/constants';
 	import { appName } from '$lib/data/app';
-	import * as m from '$lib/paraglide/messages.js';
-	import { languageTag } from '$lib/paraglide/runtime.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { getLocale } from '$lib/paraglide/runtime.js';
 
 	type Props = {
 		receiptId: string;
@@ -13,7 +13,7 @@
 	let { receiptId = 'ABC123' }: Props = $props();
 </script>
 
-<Html lang={languageTag()} class="font-sans">
+<Html lang={getLocale()} class="font-sans">
 	<Head />
 	<Body class="bg-background ">
 		<Container class="py-12">

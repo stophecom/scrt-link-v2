@@ -11,7 +11,8 @@
 	import * as Form from '$lib/components/ui/form';
 	import { SecretType } from '$lib/data/enums';
 	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 
 	import FileRevelation from '../elements/file-revelation.svelte';
@@ -212,7 +213,7 @@
 				<!-- Secret Type: Text -->
 				{content}
 				<div class="flex items-center justify-end pt-2">
-					<Button href="/" class="mr-2" size="sm" variant="ghost">
+					<Button href={localizeHref('/')} class="mr-2" size="sm" variant="ghost">
 						<Flame class="mr-2 h-4 w-4" /> {m.left_cool_raven_zap()}</Button
 					>
 
@@ -255,7 +256,7 @@
 
 	{#if content}
 		<div class="pt-2">
-			<Button href="/" variant="ghost"
+			<Button href={localizeHref('/')} variant="ghost"
 				><Reply class="mr-2 h-4 w-4" />{m.giant_smug_lobster_clasp()}</Button
 			>
 		</div>

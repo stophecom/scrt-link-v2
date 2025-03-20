@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { ClassValue } from 'svelte/elements';
 
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	type Props = {
 		progress: number;

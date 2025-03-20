@@ -2,7 +2,7 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { error, json } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret } from '$lib/server/db/schema';
 

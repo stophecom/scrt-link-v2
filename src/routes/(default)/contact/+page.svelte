@@ -2,7 +2,7 @@
 	import ContactForm from '$lib/components/forms/contact-form.svelte';
 	import Page from '$lib/components/page/page.svelte';
 	import Card from '$lib/components/ui/card';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import { emailSupport } from '../../../lib/data/app';
 	import type { PageData } from './$types';

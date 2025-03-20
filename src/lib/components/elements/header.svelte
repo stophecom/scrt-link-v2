@@ -11,7 +11,8 @@
 	import { appName } from '$lib/data/app';
 	import { TierOptions } from '$lib/data/enums';
 	import { secretMenu } from '$lib/data/menu';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
 	import DarkModeSwitcher from './dark-mode-switcher.svelte';
@@ -38,7 +39,7 @@
 						{m.stale_ago_mongoose_zoom()}
 						<a
 							class="after:bg-primary-foreground before:bg-primary-foreground relative ms-2 inline-block py-2 before:absolute before:bottom-2 before:left-0 before:h-[1px] before:w-full before:opacity-50 after:absolute after:bottom-2 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
-							href="/blog/scrt-link-version-2">{m.elegant_next_beaver_persist()}</a
+							href={localizeHref('/blog/scrt-link-version-2')}>{m.elegant_next_beaver_persist()}</a
 						>
 						<button
 							class="ml-auto block p-2"
@@ -57,7 +58,7 @@
 					!minimal
 						? 'translate-x-4 scale-150 opacity-0'
 						: 'scale-100 opacity-100'}"
-					href="/"
+					href={localizeHref('/')}
 				>
 					<Logo class="h-10 w-10" />
 					<span class="sr-only">{m.red_trite_turkey_flip()}</span>
@@ -87,7 +88,7 @@
 								<DropdownMenu.Separator />
 
 								{#each secretMenu() as menuItem}
-									<DropdownMenu.Item href={menuItem.href}>
+									<DropdownMenu.Item href={localizeHref(menuItem.href)}>
 										<menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</DropdownMenu.Item
 									>
 								{/each}
@@ -95,7 +96,7 @@
 						</DropdownMenu.Root>
 					{/if}
 					{#if user}
-						<a href="/account" class="relative mr-2">
+						<a href={localizeHref('/account')} class="relative mr-2">
 							<Avatar.Root>
 								<Avatar.Image src={user.picture} alt={user.name} />
 								<Avatar.Fallback
@@ -118,11 +119,11 @@
 						</a>
 					{:else}
 						<DarkModeSwitcher hideLabel variant="ghost" size="icon" class="max-xs:hidden" />
-						<Button variant="outline" href="/login" class="max-sm:h-12 max-sm:w-12">
+						<Button variant="outline" href={localizeHref('/login')} class="max-sm:h-12 max-sm:w-12">
 							<span class="max-sm:sr-only">{m.simple_dry_boar_dazzle()}</span>
 							<User class="h-5 w-5 sm:hidden" />
 						</Button>
-						<Button href="/signup">{m.large_smart_badger_beam()}</Button>
+						<Button href={localizeHref('/signup')}>{m.large_smart_badger_beam()}</Button>
 					{/if}
 				</div>
 			</div>

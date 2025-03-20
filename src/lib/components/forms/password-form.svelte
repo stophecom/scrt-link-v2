@@ -5,7 +5,7 @@
 	import { dev } from '$app/environment';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { type PasswordFormSchema, passwordFormSchema } from '$lib/validators/formSchemas';
 
 	import FormWrapper from './form-wrapper.svelte';

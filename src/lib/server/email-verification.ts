@@ -4,7 +4,7 @@ import { render } from 'svelte/server';
 
 import EmailOtpVerification from '$lib/emails/email-otp-verification.svelte';
 import { redirectLocalized } from '$lib/i18n';
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 import { type EmailVerificationRequest, emailVerificationRequest } from '$lib/server/db/schema';
 
 import { generateOtp, scryptHash } from '../crypto';

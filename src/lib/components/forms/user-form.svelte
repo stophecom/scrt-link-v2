@@ -3,7 +3,7 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { type UserFormSchema, userFormSchema } from '$lib/validators/formSchemas';
 
 	import Text from './form-fields/text.svelte';

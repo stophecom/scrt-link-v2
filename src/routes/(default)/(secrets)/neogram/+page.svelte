@@ -2,7 +2,7 @@
 	import CreateSecret from '$lib/components/elements/create-secret.svelte';
 	import Page from '$lib/components/page/page.svelte';
 	import { SecretType } from '$lib/data/enums';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
 

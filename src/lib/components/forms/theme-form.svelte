@@ -4,7 +4,7 @@
 
 	import RadioGroupColors from '$lib/components/forms/form-fields/radio-group-colors.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { type ThemeFormSchema, themeFormSchema } from '$lib/validators/formSchemas';
 
 	import { getThemeOptions } from '../../data/secretSettings';

@@ -4,7 +4,7 @@
 	import Page from '$lib/components/page/page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import accountAndBilling from '$lib/data/faq/accountAndBilling';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import PlanSelection from './plan-selection.svelte';
 
@@ -18,7 +18,7 @@
 		{/if}
 	</div>
 
-	<Section title="FAQ" lead={m.pretty_factual_piranha_hug()}>
+	<Section title={m.few_awful_chipmunk_trust()} lead={m.pretty_factual_piranha_hug()}>
 		<Accordion items={accountAndBilling()} />
 	</Section>
 	<div><PoweredByStripe class="w-[180px]" /></div>

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import { uptimerobotUrl } from '../../data/app';
 	import { aboutMenu, helpMenu, imprintMenu, secretMenu } from '../../data/menu';
@@ -36,13 +37,13 @@
 			<div class="text-muted-foreground flex flex-wrap items-center text-sm">
 				<span class="py-2 pe-4">©{new Date().getFullYear()} SANTiHANS GmbH</span>
 				{#each imprintMenu() as menuItem}
-					<a class="hover:text-foreground pe-4 underline" href={menuItem.href}>
+					<a class="hover:text-foreground pe-4 underline" href={localizeHref(menuItem.href)}>
 						{menuItem.label}
 					</a>
 				{/each}
 				<span class="text-nowrap">
 					<a class="hover:text-foreground py-2 pe-0 underline" target="_blank" href={uptimerobotUrl}
-						>Status</a
+						>{m.real_proud_dolphin_attend()}</a
 					>
 					<span class="text-success ps-1 text-[0.7rem]">●</span>
 				</span>

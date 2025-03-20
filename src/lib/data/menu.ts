@@ -1,6 +1,6 @@
 import { MessageCircleDashed, Paperclip, Redo2, TypeOutline, Zap } from 'lucide-svelte';
 
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 
 import { githubUrl } from './app';
 

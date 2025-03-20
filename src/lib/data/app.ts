@@ -2,7 +2,7 @@ import Flame from 'lucide-svelte/icons/flame';
 import LockKeyhole from 'lucide-svelte/icons/lock-keyhole';
 import ShieldPlus from 'lucide-svelte/icons/shield-plus';
 
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 
 export const appName = 'scrt.link';
 export const emailSupport = 'support@scrt.link';

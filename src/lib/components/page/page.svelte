@@ -3,10 +3,11 @@
 
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
-	import * as m from '$lib/paraglide/messages.js';
-	import { languageTag } from '$lib/paraglide/runtime';
+	import { m } from '$lib/paraglide/messages.js';
+	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
 
-	import { appName, emailSupport } from '../../data/app';
+	import { emailSupport } from '../../data/app';
+	import Head from './head.svelte';
 
 	type Props = {
 		title: string;
@@ -29,16 +30,10 @@
 	}: Props = $props();
 </script>
 
-<svelte:head>
-	<title>{metaTitle || title} - {appName}</title>
-	<meta property="og:title" content="{title} - {appName}" />
-	<meta name="description" content={metaDescription} />
-	<meta name="keywords" content={metaKeywords} />
-</svelte:head>
-
+<Head title={metaTitle || title} {metaDescription} {metaKeywords} />
 <div class="container min-h-screen pt-8 pb-16">
 	<div>
-		<a class="inline-flex" href="/">
+		<a class="inline-flex" href={localizeHref('/')}>
 			<Logo class="h-28 w-28 md:h-32 md:w-32" />
 		</a>
 	</div>
@@ -56,7 +51,7 @@
 		</p>
 	{/if}
 
-	{#if markNotTranslated && languageTag() !== 'en'}
+	{#if markNotTranslated && getLocale() !== 'en'}
 		<Alert class="mb-5" title={m.heroic_acidic_jurgen_dash()} variant="info">
 			<div>
 				{m.grassy_due_crab_cook()}

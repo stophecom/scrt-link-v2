@@ -15,7 +15,8 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { TierOptions } from '$lib/data/enums';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { LayoutServerData } from '../../$types';
 	import type { PageServerData } from './$types';
@@ -44,7 +45,9 @@
 	lead={m.gray_quiet_tern_bubble()}
 >
 	{#if user.subscriptionTier !== TierOptions.CONFIDENTIAL}
-		<Button class="mb-6" variant="outline" href="/pricing">{m.short_male_racoon_prosper()}</Button>
+		<Button class="mb-6" variant="outline" href={localizeHref('/pricing')}
+			>{m.short_male_racoon_prosper()}</Button
+		>
 	{:else if !hidePremiumPromo.current}
 		<Card
 			title={m.red_less_tapir_edit()}
@@ -66,7 +69,7 @@
 					>{m.proud_awake_shark_drum()}</Button
 				>
 
-				<Button class="sm:ml-auto" href="/pricing"
+				<Button class="sm:ml-auto" href={localizeHref('/pricing')}
 					><ArrowRight class="mr-2 h-5 w-5" />{m.quick_sweet_angelfish_lend()}</Button
 				>
 			</div>
@@ -103,7 +106,8 @@
 			{@render renderLabel(m.weird_ok_sparrow_praise())}
 			<span class="inline-block p-1"
 				>{user.subscriptionTier}
-				(<a class="hover:text-primary underline" href="/pricing">{m.good_wacky_alligator_dare()}</a
+				(<a class="hover:text-primary underline" href={localizeHref('/pricing')}
+					>{m.good_wacky_alligator_dare()}</a
 				>)</span
 			>
 		</div>
@@ -114,11 +118,11 @@
 
 		<Separator class="my-6" />
 		<div class="flex flex-wrap">
-			<Button class="mr-2 mb-2" variant="outline" href="/set-password"
+			<Button class="mr-2 mb-2" variant="outline" href={localizeHref('/set-password')}
 				>{m.jumpy_factual_mole_hunt()}</Button
 			>
 
-			<Button variant="ghost" href="/delete-account" class="text-destructive"
+			<Button variant="ghost" href={localizeHref('/delete-account')} class="text-destructive"
 				>{m.home_sharp_jackdaw_endure()}</Button
 			>
 		</div>

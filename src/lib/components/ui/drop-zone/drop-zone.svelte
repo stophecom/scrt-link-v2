@@ -3,7 +3,7 @@
 
 	import gif from '$lib/assets/images/snoop.webp';
 	import { formatBytes } from '$lib/i18n';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import { GB } from '../../../data/units';
 

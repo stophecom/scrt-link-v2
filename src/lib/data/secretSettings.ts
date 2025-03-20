@@ -1,4 +1,4 @@
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 
 import { ReadReceiptOptions, SecretType, ThemeOptions } from './enums';
 import { DAY, MIN } from './units';

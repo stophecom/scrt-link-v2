@@ -18,10 +18,8 @@
 		"db:push": "drizzle-kit push",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
-		"inlang:machine-translate": "npx @inlang/cli machine translate --project ./project.inlang",
-		"inlang:lint": "npx @inlang/cli lint --project ./project.inlang",
-		"inlang:editor": "npx @inlang/cli open editor",
-		"prepare": "husky"
+		"prepare": "husky",
+		"machine-translate": "inlang machine translate --project project.inlang"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.6",
@@ -60,13 +58,14 @@
 		"typescript-eslint": "^8.18.2",
 		"vite": "^5.4.11",
 		"vitest": "^3.0.1",
-		"zod": "^3.24.1"
+		"zod": "^3.24.1",
+		"@inlang/paraglide-js": "2.0.1",
+		"@inlang/cli": "^3.0.0"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.741.0",
 		"@aws-sdk/s3-presigned-post": "^3.741.0",
 		"@aws-sdk/s3-request-presigner": "^3.741.0",
-		"@inlang/paraglide-sveltekit": "^0.15.5",
 		"@stripe/stripe-js": "^5.10.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"@tailwindcss/vite": "^4.0.6",

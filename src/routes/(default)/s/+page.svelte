@@ -8,7 +8,7 @@
 	import Page from '$lib/components/page/page.svelte';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import { Spinner } from '$lib/components/ui/spinner';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
 
@@ -45,7 +45,7 @@
 	});
 </script>
 
-<Page title={m.each_light_mare_bump()} lead="You received a secret.">
+<Page title={m.each_light_mare_bump()} lead={m.warm_clean_horse_seek()}>
 	{#if isLoading}
 		<div class="flex min-h-48 items-center justify-center">
 			<Spinner />

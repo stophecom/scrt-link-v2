@@ -5,7 +5,7 @@
 	import { dev } from '$app/environment';
 	import Switch from '$lib/components/forms/form-fields/switch.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { type DeleteAccountSchema, deleteAccountSchema } from '$lib/validators/formSchemas';
 
 	import FormWrapper from './form-wrapper.svelte';

@@ -3,8 +3,8 @@
 
 	import { getBaseUrl } from '$lib/constants';
 	import { appName } from '$lib/data/app';
-	import * as m from '$lib/paraglide/messages.js';
-	import { languageTag } from '$lib/paraglide/runtime.js';
+	import { m } from '$lib/paraglide/messages.js';
+	import { getLocale } from '$lib/paraglide/runtime.js';
 
 	type Props = {
 		code: string;
@@ -13,7 +13,7 @@
 	let { code = '123456' }: Props = $props();
 </script>
 
-<Html lang={languageTag()} class="bg-background font-sans">
+<Html lang={getLocale()} class="bg-background font-sans">
 	<Head />
 	<Container class="bg-background py-12">
 		<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />

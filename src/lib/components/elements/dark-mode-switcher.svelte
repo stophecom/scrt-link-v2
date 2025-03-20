@@ -5,7 +5,7 @@
 
 	import { cn } from '$lib/client/utils';
 	import { Button, type ButtonProps } from '$lib/components/ui/button/index.js';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	type Props = {
 		hideLabel?: boolean;

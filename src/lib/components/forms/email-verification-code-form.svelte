@@ -5,7 +5,7 @@
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import {
 		type EmailFormSchema,
 		type EmailVerificationCodeFormSchema,

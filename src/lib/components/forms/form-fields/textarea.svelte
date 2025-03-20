@@ -3,7 +3,7 @@
 
 	import * as Form from '$lib/components/ui/form';
 	import { Textarea } from '$lib/components/ui/textarea';
-	import { languageTag } from '$lib/paraglide/runtime';
+	import { getLocale } from '$lib/paraglide/runtime';
 
 	type Props = {
 		charactersLeft?: number;
@@ -26,7 +26,7 @@
 		}
 	};
 
-	let formattedCount = $derived(new Intl.NumberFormat(languageTag()).format(charactersLeft || 0));
+	let formattedCount = $derived(new Intl.NumberFormat(getLocale()).format(charactersLeft || 0));
 </script>
 
 <Form.Control let:attrs>
