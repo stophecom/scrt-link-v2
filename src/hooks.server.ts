@@ -2,7 +2,6 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { createGuardHook } from 'svelte-guard';
 
-import { i18n } from '$lib/i18n';
 import * as auth from '$lib/server/auth.js';
 
 const guards = import.meta.glob('./routes/**/-guard.*');
@@ -29,7 +28,19 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
-const handleParaglide: Handle = i18n.handle();
+import { paraglideMiddleware } from '$lib/paraglide/server';
+
+// creating a handle to use the paraglide middleware
+const paraglideHandle: Handle = ({ event, resolve }) =>
+	paraglideMiddleware(event.request, ({ request: localizedRequest, locale }) => {
+		event.request = localizedRequest;
+		return resolve(event, {
+			transformPageChunk: ({ html }) => {
+				return html.replace('%lang%', locale);
+			}
+		});
+	});
+
 const handleTheme: Handle = async ({ event, resolve }) => {
 	const user = event.locals.user;
 
@@ -42,4 +53,4 @@ const handleTheme: Handle = async ({ event, resolve }) => {
 	});
 };
 
-export const handle: Handle = sequence(handleAuth, handleGuards, handleParaglide, handleTheme);
+export const handle: Handle = sequence(handleAuth, handleGuards, paraglideHandle, handleTheme);

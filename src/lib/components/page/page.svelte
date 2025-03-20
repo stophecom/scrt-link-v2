@@ -4,7 +4,7 @@
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import * as m from '$lib/paraglide/messages.js';
-	import { languageTag } from '$lib/paraglide/runtime';
+	import { getLocale } from '$lib/paraglide/runtime';
 
 	import { appName, emailSupport } from '../../data/app';
 
@@ -56,7 +56,7 @@
 		</p>
 	{/if}
 
-	{#if markNotTranslated && languageTag() !== 'en'}
+	{#if markNotTranslated && getLocale() !== 'en'}
 		<Alert class="mb-5" title={m.heroic_acidic_jurgen_dash()} variant="info">
 			<div>
 				{m.grassy_due_crab_cook()}

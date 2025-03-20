@@ -2,7 +2,7 @@
 	import { Body, Container, Head, Heading, Html, Img, Text } from 'svelte-email-tailwind';
 
 	import { getBaseUrl } from '$lib/constants';
-	import { languageTag } from '$lib/paraglide/runtime.js';
+	import { getLocale } from '$lib/paraglide/runtime.js';
 
 	type Props = {
 		message: string;
@@ -12,7 +12,7 @@
 	let { message = 'Empty', email }: Props = $props();
 </script>
 
-<Html lang={languageTag()} class="font-sans">
+<Html lang={getLocale()} class="font-sans">
 	<Head />
 	<Body class="bg-background ">
 		<Container class="py-12">
