@@ -4,6 +4,7 @@
 	import { fade } from 'svelte/transition';
 
 	import { onNavigate } from '$app/navigation';
+	import { page } from '$app/state';
 	import { copyText } from '$lib/client/utils';
 	import SecretForm, { type SecretFormProps } from '$lib/components/forms/secret-form.svelte';
 	import Card from '$lib/components/ui/card';
@@ -12,6 +13,7 @@
 	import { privacyUsps } from '$lib/data/app';
 	import type { SecretType } from '$lib/data/enums';
 	import { secretMenu } from '$lib/data/menu';
+	import { getAbsoluteLocalizedUrl } from '$lib/i18n';
 	import * as m from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -30,11 +32,11 @@
 		secretType?: SecretType;
 		hideUsps?: boolean;
 	};
-	let { form, baseUrl, user, secretType, hideUsps = false }: Props = $props();
+	let { form, user, secretType, hideUsps = false }: Props = $props();
 
 	let masterKey = $state('');
 	let successMessage = $state('');
-	let link: string = $derived(`${baseUrl}/s#${masterKey}`);
+	let link: string = $derived(`${getAbsoluteLocalizedUrl(page.url.origin, '/s')}#${masterKey}`);
 
 	onNavigate(() => {
 		// Make sure we force a reset. This causes the SecretForm to mount again which is what we want.

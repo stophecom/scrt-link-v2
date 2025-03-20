@@ -45,7 +45,7 @@
 	});
 </script>
 
-<Page title={m.each_light_mare_bump()} lead="You received a secret.">
+<Page title={m.each_light_mare_bump()} lead={m.warm_clean_horse_seek()}>
 	{#if isLoading}
 		<div class="flex min-h-48 items-center justify-center">
 			<Spinner />
