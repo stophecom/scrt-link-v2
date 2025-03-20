@@ -4,7 +4,7 @@
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import * as m from '$lib/paraglide/messages.js';
-	import { getLocale } from '$lib/paraglide/runtime';
+	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
 
 	import { emailSupport } from '../../data/app';
 	import Head from './head.svelte';
@@ -33,7 +33,7 @@
 <Head title={metaTitle || title} {metaDescription} {metaKeywords} />
 <div class="container min-h-screen pt-8 pb-16">
 	<div>
-		<a class="inline-flex" href="/">
+		<a class="inline-flex" href={localizeHref('/')}>
 			<Logo class="h-28 w-28 md:h-32 md:w-32" />
 		</a>
 	</div>

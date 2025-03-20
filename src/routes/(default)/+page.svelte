@@ -13,6 +13,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import * as m from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import { shortFaq } from '../../lib/data/faq';
 	import type { PageData } from './$types';
@@ -91,7 +92,7 @@
 				</Card>
 			</div>
 		</IntersectionObserver>
-		<Button variant="ghost" href="/security"
+		<Button variant="ghost" href={localizeHref('/security')}
 			>{m.happy_plain_panther_fry()}<ArrowRight class="ms-2 h-4 w-4" /></Button
 		>
 	</Section>
@@ -99,6 +100,6 @@
 	<Section title="FAQ" lead={m.stock_keen_marten_commend()}>
 		<Accordion items={shortFaq()} />
 
-		<Button href="/faq">{m.white_top_warbler_buzz()}</Button>
+		<Button href={localizeHref('/faq')}>{m.white_top_warbler_buzz()}</Button>
 	</Section>
 </Page>

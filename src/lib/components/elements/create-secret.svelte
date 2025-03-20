@@ -13,6 +13,7 @@
 	import type { SecretType } from '$lib/data/enums';
 	import { secretMenu } from '$lib/data/menu';
 	import * as m from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getSecretTypes } from '../../data/secretSettings';
@@ -96,7 +97,7 @@
 						>
 						<DropdownMenu.Content class="w-56">
 							{#each secretMenu().slice(4) as menuItem}
-								<DropdownMenu.Item href={menuItem.href}>
+								<DropdownMenu.Item href={localizeHref(menuItem.href)}>
 									<menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</DropdownMenu.Item
 								>
 							{/each}

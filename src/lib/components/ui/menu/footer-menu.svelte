@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/client/utils';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	type Props = {
 		class?: string;
@@ -17,7 +18,7 @@
 				<a
 					class="block p-1 py-2 font-medium hover:underline sm:py-1"
 					target={menuItem?.externalLink ? '_blank' : ''}
-					href={menuItem.href}
+					href={localizeHref(menuItem.href)}
 				>
 					{menuItem.label}
 				</a>

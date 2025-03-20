@@ -6,6 +6,7 @@
 	import Link from '$lib/components/ui/link';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as m from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { PageData } from './$types';
 
@@ -20,7 +21,7 @@
 	/>
 	<div class="px-5 text-center text-sm">
 		{m.many_home_felix_seek()}
-		<Link href="/login">{m.legal_weak_jay_bless()}</Link>
+		<Link href={localizeHref('/login')}>{m.legal_weak_jay_bless()}</Link>
 	</div>
 	<div class="py-5">
 		<Separator decorative />
@@ -35,6 +36,6 @@
 	</div>
 	<div class="muted px-5 text-center text-xs">
 		{m.ornate_main_beaver_snip()}
-		<Link href="/terms-of-service">{m.green_sharp_parrot_smile()}</Link>
+		<Link href={localizeHref('/terms-of-service')}>{m.green_sharp_parrot_smile()}</Link>
 	</div>
 </SingleFormPage>

@@ -7,6 +7,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import * as m from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type SignInFormSchema, signInFormSchema } from '$lib/validators/formSchemas';
 
 	import Link from '../ui/link';
@@ -54,7 +55,8 @@
 			/>
 
 			<Form.Description
-				><Link class="text-xs" href="/reset-password">{m.less_free_osprey_buzz()}</Link
+				><Link class="text-xs" href={localizeHref('/reset-password')}
+					>{m.less_free_osprey_buzz()}</Link
 				></Form.Description
 			>
 		</Form.Field>
