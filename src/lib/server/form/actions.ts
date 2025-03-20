@@ -6,7 +6,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { generateRandomUrlSafeString, scryptHash, verifyPassword } from '$lib/crypto';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { redirectLocalized } from '$lib/i18n';
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import {

@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 
 	import CountDown from '$lib/components/ui/count-down';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	type Props = { imageUrl?: string };
 

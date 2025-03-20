@@ -3,7 +3,7 @@
 
 	import { getBaseUrl } from '$lib/constants';
 	import { appName } from '$lib/data/app';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { getLocale } from '$lib/paraglide/runtime.js';
 
 	type Props = {

@@ -14,7 +14,7 @@
 	import type { SecretType } from '$lib/data/enums';
 	import { secretMenu } from '$lib/data/menu';
 	import { getAbsoluteLocalizedUrl } from '$lib/i18n';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { LayoutServerData } from '../../../routes/$types';

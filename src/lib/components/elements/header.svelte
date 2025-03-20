@@ -11,7 +11,7 @@
 	import { appName } from '$lib/data/app';
 	import { TierOptions } from '$lib/data/enums';
 	import { secretMenu } from '$lib/data/menu';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';

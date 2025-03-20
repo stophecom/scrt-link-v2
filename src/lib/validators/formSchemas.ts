@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import * as m from '$lib/paraglide/messages.js';
+import { m } from '$lib/paraglide/messages.js';
 
 import { ReadReceiptOptions, ThemeOptions } from '../data/enums';
 import { getExpiresInOptions } from '../data/secretSettings';

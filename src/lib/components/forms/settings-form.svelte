@@ -6,7 +6,7 @@
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { getPlanLimits } from '$lib/data/plans';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { type SettingsFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
 
 	import { getReadReceiptOptions } from '../../data/secretSettings';

@@ -5,7 +5,7 @@
 	import Typewriter from '$lib/components/helpers/typewriter.svelte';
 	import type { FileMeta } from '$lib/file-transfer';
 	import { formatBytes } from '$lib/i18n';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
 	import UploadSpinner from '../ui/spinner/upload-spinner.svelte';

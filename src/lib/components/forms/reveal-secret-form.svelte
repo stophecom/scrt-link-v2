@@ -11,7 +11,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { SecretType } from '$lib/data/enums';
 	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 

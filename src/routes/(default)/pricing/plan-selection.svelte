@@ -10,7 +10,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Switch from '$lib/components/ui/switch/switch.svelte';
 	import { formatCurrency, formatDate } from '$lib/i18n';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { LayoutServerData } from '../../$types';

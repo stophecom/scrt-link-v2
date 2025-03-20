@@ -3,7 +3,7 @@
 	import Copy from 'lucide-svelte/icons/copy';
 
 	import { copyText } from '$lib/client/utils';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import Button from '../button/button.svelte';
 

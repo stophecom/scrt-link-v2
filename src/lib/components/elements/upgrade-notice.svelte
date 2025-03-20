@@ -4,7 +4,7 @@
 
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import Link from '$lib/components/ui/link';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	type Props = {

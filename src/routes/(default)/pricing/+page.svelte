@@ -4,7 +4,7 @@
 	import Page from '$lib/components/page/page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import accountAndBilling from '$lib/data/faq/accountAndBilling';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import PlanSelection from './plan-selection.svelte';
 

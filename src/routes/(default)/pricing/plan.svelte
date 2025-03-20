@@ -6,7 +6,7 @@
 	import { cn } from '$lib/client/utils';
 	import { getPlanContents } from '$lib/data/plans';
 	import { formatCurrency } from '$lib/i18n';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	type Props = {
 		name: string;

@@ -23,7 +23,7 @@
 	import { SecretType } from '$lib/data/enums';
 	import { getPlanLimits } from '$lib/data/plans';
 	import type { FileMeta } from '$lib/file-transfer';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
 
 	import type { LayoutServerData } from '../../../routes/$types';

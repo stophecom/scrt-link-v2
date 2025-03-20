@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CountDown from '$lib/components/ui/count-down';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import Typewriter from '../helpers/typewriter.svelte';
 

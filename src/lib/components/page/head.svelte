@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import { appName } from '$lib/data/app';
 	import { DEFAULT_LOCALE, getAbsoluteLocalizedUrl } from '$lib/i18n';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { deLocalizeHref, locales } from '$lib/paraglide/runtime';
 
 	type Props = {

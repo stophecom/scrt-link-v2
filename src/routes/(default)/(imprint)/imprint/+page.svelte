@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Page from '$lib/components/page/page.svelte';
 	import Markdown from '$lib/components/ui/markdown';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import { legalMenu } from '../../../../lib/data/menu';

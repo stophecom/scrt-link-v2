@@ -13,7 +13,7 @@
 	import { SecretType } from '$lib/data/enums';
 	import { MB } from '$lib/data/units';
 	import { handleFileEncryptionAndUpload } from '$lib/file-transfer';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 
 	type Props = {
 		accept?: string;

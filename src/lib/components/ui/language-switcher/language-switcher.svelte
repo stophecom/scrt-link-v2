@@ -3,7 +3,7 @@
 
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { getLocale, type Locale, locales, setLocale } from '$lib/paraglide/runtime';
 
 	import { getSupportedLanguagesMap } from '../../../data/supportedLocales';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import * as m from '$lib/paraglide/messages.js';
+	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import { uptimerobotUrl } from '../../data/app';
