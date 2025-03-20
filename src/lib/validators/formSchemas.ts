@@ -8,12 +8,12 @@ import { getExpiresInOptions } from '../data/secretSettings';
 // We return functions in order for translations to work as expected.
 export const emailFormSchema = () =>
 	z.object({
-		email: z.string().email(m.every_chunky_osprey_zip())
+		email: z.string().toLowerCase().email(m.every_chunky_osprey_zip())
 	});
 
 export const emailVerificationCodeFormSchema = () =>
 	z.object({
-		email: z.string().email(m.every_chunky_osprey_zip()),
+		email: z.string().toLowerCase().email(m.every_chunky_osprey_zip()),
 		code: z.string().length(6, { message: m.arable_such_jay_swim({ number: 6 }) })
 	});
 
@@ -34,7 +34,7 @@ export const deleteAccountSchema = () =>
 
 export const signInFormSchema = () =>
 	z.object({
-		email: z.string().email(m.every_chunky_osprey_zip()),
+		email: z.string().toLowerCase().email(m.every_chunky_osprey_zip()),
 		password: z
 			.string()
 			.min(6, m.aloof_careful_trout_dine({ number: 6 }))
@@ -72,7 +72,12 @@ export const settingsFormSchema = () =>
 	z
 		.object({
 			readReceiptOption: z.nativeEnum(ReadReceiptOptions),
-			email: z.string().email(m.every_chunky_osprey_zip()).optional().or(z.literal('')), // https://github.com/colinhacks/zod/issues/310#issuecomment-794533682
+			email: z
+				.string()
+				.toLowerCase()
+				.email(m.every_chunky_osprey_zip())
+				.optional()
+				.or(z.literal('')), // https://github.com/colinhacks/zod/issues/310#issuecomment-794533682
 			ntfyEndpoint: z.string().optional()
 		})
 		.refine(
@@ -110,7 +115,7 @@ export const revealSecretFormSchema = () =>
 
 export const contactFormSchema = () =>
 	z.object({
-		email: z.string().email(m.every_chunky_osprey_zip()),
+		email: z.string().toLowerCase().email(m.every_chunky_osprey_zip()),
 		content: z.string().min(30, m.soft_proof_mink_pinch({ number: 30 })),
 		recaptchaToken: z.string()
 	});
