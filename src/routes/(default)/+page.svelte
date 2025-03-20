@@ -97,7 +97,7 @@
 		>
 	</Section>
 
-	<Section title="FAQ" lead={m.stock_keen_marten_commend()}>
+	<Section title={m.few_awful_chipmunk_trust()} lead={m.stock_keen_marten_commend()}>
 		<Accordion items={shortFaq()} />
 
 		<Button href={localizeHref('/faq')}>{m.white_top_warbler_buzz()}</Button>

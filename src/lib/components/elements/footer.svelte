@@ -43,7 +43,7 @@
 				{/each}
 				<span class="text-nowrap">
 					<a class="hover:text-foreground py-2 pe-0 underline" target="_blank" href={uptimerobotUrl}
-						>Status</a
+						>{m.real_proud_dolphin_attend()}</a
 					>
 					<span class="text-success ps-1 text-[0.7rem]">●</span>
 				</span>
