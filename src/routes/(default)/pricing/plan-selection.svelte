@@ -41,18 +41,19 @@
 		Math.floor(
 			(1 - premiumPlanPrices.yearly.unit_amount / 12 / premiumPlanPrices.monthly.unit_amount) * 100
 		);
-
 	// Sort plans based on price
-	plans.sort((a, b) => {
-		if (a.prices.monthly.unit_amount && b.prices.monthly.unit_amount) {
-			if (a?.prices.monthly.unit_amount < b.prices.monthly.unit_amount) {
-				return -1;
-			} else {
-				return 1;
+	let plansSorted = $derived(
+		plans.sort((a, b) => {
+			if (a.prices.monthly.unit_amount && b.prices.monthly.unit_amount) {
+				if (a?.prices.monthly.unit_amount < b.prices.monthly.unit_amount) {
+					return -1;
+				} else {
+					return 1;
+				}
 			}
-		}
-		return 1;
-	});
+			return 1;
+		})
+	);
 
 	const handleSubmit = async (priceId: string) => {
 		if (!user) {
@@ -123,7 +124,7 @@
 			{/if}
 		</PlanView>
 
-		{#each plans as plan}
+		{#each plansSorted as plan}
 			{@const prices = plan.prices}
 			{@const isActiveProduct = plan.id === activeProduct}
 			{@const price = showYearlyPrice ? prices?.yearly : prices?.monthly}
