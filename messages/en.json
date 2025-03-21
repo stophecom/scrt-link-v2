@@ -355,5 +355,8 @@
 	"red_trite_turkey_flip": "Home",
 	"frail_fresh_stork_scoop": "Status",
 	"real_proud_dolphin_attend": "Status",
-	"warm_clean_horse_seek": "You received a secret."
+	"warm_clean_horse_seek": "You received a secret.",
+	"sad_arable_canary_mop": "Secret expired",
+	"stale_slow_halibut_spur": "The secret is no longer available.",
+	"flat_novel_alpaca_scold": "Wrong password!"
 }
