@@ -18,7 +18,7 @@
 				<a
 					class="block p-1 py-2 font-medium hover:underline sm:py-1"
 					target={menuItem?.externalLink ? '_blank' : ''}
-					href={localizeHref(menuItem.href)}
+					href={menuItem?.externalLink ? menuItem.href : localizeHref(menuItem.href)}
 				>
 					{menuItem.label}
 				</a>
