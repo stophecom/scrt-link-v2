@@ -1,7 +1,7 @@
 ---
 title: Version 2 is here
 lead: Mostly same, but better.
-description: With the release of V2 we not only improved performance, security and user experience, we also added new features. And, end-to-end encrypted file transfer is generally available.
+description: With the release of Version 2, performance, security, and user experience have been significantly improved, along with the addition of new features. End-to-end encrypted file transfer is now generally available.
 date: '2024-03-15'
 categories:
   - product
