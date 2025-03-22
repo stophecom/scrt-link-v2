@@ -58,7 +58,7 @@ You can trigger the cron job locally with:
 ```bash
 curl --request POST \
      --url 'http://localhost:5173/api/v1/cron' \
-     --header 'Authorization: Bearer API_SECRET_KEY'
+     --header 'Authorization: Bearer CRON_SECRET'
 
 ```
 

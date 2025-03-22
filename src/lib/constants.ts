@@ -5,4 +5,4 @@ const scheme = PUBLIC_ENV === 'development' ? 'http' : 'https';
 
 export const getBaseUrl = () => `${scheme}://${VERCEL_PROJECT_PRODUCTION_URL}`;
 
-export const fileRetentionPeriodInDays = 30;
+export const FILE_RETENTION_PERIOD_IN_DAYS = 30;

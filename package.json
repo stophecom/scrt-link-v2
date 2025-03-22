@@ -24,6 +24,8 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.6",
 		"@eslint/js": "^9.21.0",
+		"@inlang/cli": "^3.0.0",
+		"@inlang/paraglide-js": "2.0.1",
 		"@playwright/test": "^1.50.1",
 		"@poppanator/sveltekit-svg": "^5.0.0",
 		"@sveltejs/adapter-vercel": "^5.5.2",
@@ -58,14 +60,12 @@
 		"typescript-eslint": "^8.18.2",
 		"vite": "^5.4.11",
 		"vitest": "^3.0.1",
-		"zod": "^3.24.1",
-		"@inlang/paraglide-js": "2.0.1",
-		"@inlang/cli": "^3.0.0"
+		"zod": "^3.24.1"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.741.0",
-		"@aws-sdk/s3-presigned-post": "^3.741.0",
-		"@aws-sdk/s3-request-presigner": "^3.741.0",
+		"@aws-sdk/client-s3": "^3.772.0",
+		"@aws-sdk/s3-presigned-post": "^3.772.0",
+		"@aws-sdk/s3-request-presigner": "^3.772.0",
 		"@stripe/stripe-js": "^5.10.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"@tailwindcss/vite": "^4.0.6",

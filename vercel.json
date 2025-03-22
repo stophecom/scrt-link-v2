@@ -2,7 +2,8 @@
 	"crons": [
 		{
 			"path": "/api/v1/cron",
-			"schedule": "0 1 * * *"
+			"schedule": "0 1 * * *",
+			"method": "POST"
 		}
 	],
 	"rewrites": [
