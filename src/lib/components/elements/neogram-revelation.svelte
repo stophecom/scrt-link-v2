@@ -31,12 +31,12 @@
 			{/if}
 		</div>
 		{#if neogram}
-			<div class={blur ? 'blur-lg' : undefined}>
+			<div class="max-w-full overflow-hidden {blur ? 'blur-lg' : undefined}">
 				<Typewriter
 					message={neogram}
 					delay={1000}
 					interval={40}
-					className="sm:text-lg"
+					className="sm:text-lg text-wrap break-words"
 					onDone={() => {
 						finished = true;
 					}}
@@ -46,7 +46,7 @@
 						message={m.red_glad_samuel_grip()}
 						delay={1000}
 						interval={40}
-						className="sm:text-lg"
+						className="mt-4 sm:text-lg text-wrap break-words"
 					/>
 				{/if}
 			</div>
