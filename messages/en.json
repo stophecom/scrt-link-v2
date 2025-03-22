@@ -358,5 +358,17 @@
 	"warm_clean_horse_seek": "You received a secret.",
 	"sad_arable_canary_mop": "Secret expired",
 	"stale_slow_halibut_spur": "The secret is no longer available.",
-	"flat_novel_alpaca_scold": "Wrong password!"
+	"flat_novel_alpaca_scold": "Wrong password!",
+	"blue_inclusive_sloth_flow": "Please upgrade",
+	"cute_witty_puffin_grow": "Upgrade subscription",
+	"silly_sharp_skunk_walk": "My service",
+	"tense_spicy_jannes_hug": "Revoke",
+	"fluffy_even_fox_greet": "Add name for your use case. (Optional)",
+	"light_royal_ladybug_greet": "Name your key",
+	"steep_equal_newt_grin": "Create API key",
+	"neat_less_jurgen_trip": "API key limit reached",
+	"such_safe_leopard_lend": "A maximum of {amount} API keys is allowed per user. To create a new key, please revoke an existing one.",
+	"real_fluffy_clownfish_fetch": "My API key",
+	"sleek_heavy_shad_exhale": "API key saved",
+	"cool_white_frog_scold": "API key revoked!"
 }

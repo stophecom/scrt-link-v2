@@ -6,6 +6,7 @@ import { ReadReceiptOptions, ThemeOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
 import { userSettings } from '$lib/server/db/schema';
 import {
+	apiKeyFormSchema,
 	type EmailFormSchema,
 	emailFormSchema,
 	type EmailVerificationCodeFormSchema,
@@ -79,3 +80,8 @@ export const userFormValidator = async (user: App.Locals['user']) => {
 		{ errors: false }
 	);
 };
+
+export const apiKeyFormValidator = async () =>
+	await superValidate(zod(apiKeyFormSchema()), {
+		id: 'api-token-form'
+	});

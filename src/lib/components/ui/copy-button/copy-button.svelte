@@ -5,11 +5,15 @@
 	import { copyText } from '$lib/client/utils';
 	import { m } from '$lib/paraglide/messages.js';
 
+	import type { ButtonProps } from '../button';
 	import Button from '../button/button.svelte';
 
-	export let text = '';
+	type Props = {
+		text: string;
+	};
+	let { text, ...rest }: Props & Partial<ButtonProps> = $props();
 
-	let visible = false;
+	let visible = $state(false);
 
 	const copy = (e: MouseEvent) => {
 		copyText(text);
@@ -24,8 +28,8 @@
 	};
 </script>
 
-<div {...$$restProps} class="relative inline-flex {$$restProps?.class}">
-	<Button data-testid="copy-link" on:click={copy}
+<div class="relative inline-flex {rest?.class}">
+	<Button data-testid="copy-link" on:click={copy} {...rest}
 		><Copy class="mr-2 h-4 w-4" />{m.knotty_fuzzy_scallop_fall()}</Button
 	>
 	<div

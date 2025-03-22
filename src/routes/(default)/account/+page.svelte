@@ -1,20 +1,25 @@
 <script lang="ts">
-	import { ArrowRight, Check, Rocket } from 'lucide-svelte';
+	import { ArrowRight, Check, Rocket, Trash } from 'lucide-svelte';
 	import BadgeCheck from 'lucide-svelte/icons/badge-check';
 	import LogOut from 'lucide-svelte/icons/log-out';
 	import { PersistedState } from 'runed';
 
+	import { enhance } from '$app/forms';
 	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
+	import ApiTokenForm from '$lib/components/forms/api-token-form.svelte';
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';
 	import UserForm from '$lib/components/forms/user-form.svelte';
 	import Page from '$lib/components/page/page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
+	import CopyButton from '$lib/components/ui/copy-button';
+	import Input from '$lib/components/ui/input/input.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { TierOptions } from '$lib/data/enums';
+	import { getPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -32,6 +37,8 @@
 		m.basic_just_camel_clasp(),
 		m.candid_noble_cobra_fetch()
 	];
+
+	const planLimits = getPlanLimits(user?.subscriptionTier);
 
 	const hidePremiumPromo = new PersistedState<boolean>('hidePremiumPromo', false);
 </script>
@@ -127,9 +134,35 @@
 			>
 		</div>
 	</Card>
+	{#if planLimits.apiAccess}
+		<Card class="mb-6" title={'API keys'}>
+			{#each data.apiKeys as item}
+				<div class="mb-3 grid grid-cols-[100px_1fr_min-content_min-content] gap-2 overflow-hidden">
+					<div
+						class="max-w-full items-center justify-center self-center justify-self-center truncate text-sm"
+					>
+						{item.description}
+					</div>
+					<Input type="text" value={item.key} disabled />
+					<CopyButton variant="outline" text={item.key}></CopyButton>
+
+					<form class="flex justify-center" method="post" use:enhance action="?/revokeAPIToken">
+						<input type="hidden" name="keyId" value={item.id} />
+						<Button type="submit" variant="ghost" class="text-destructive"
+							><Trash class="me-2 h-4 w-4" />{m.tense_spicy_jannes_hug()}</Button
+						>
+					</form>
+				</div>
+			{/each}
+
+			<Separator class="my-6" />
+
+			<ApiTokenForm {user} form={data.apiKeyForm} />
+		</Card>
+	{/if}
 
 	<form class="flex justify-center" method="post" action="?/logout">
-		<Button type="submit" variant="ghost"
+		<Button type="submit" variant="outline"
 			><LogOut class="me-2 h-4 w-4" />{m.wacky_big_raven_honor()}</Button
 		>
 	</form>

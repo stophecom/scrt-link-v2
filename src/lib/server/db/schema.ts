@@ -16,7 +16,8 @@ import { ReadReceiptOptions, Role, TierOptions } from '../../data/enums';
 export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,
 	TierOptions.SECRET,
-	TierOptions.TOP_SECRET
+	TierOptions.TOP_SECRET,
+	TierOptions.SECRET_SERVICE
 ]);
 
 export const role = pgEnum('role', [Role.USER, Role.ADMIN]);
@@ -82,6 +83,15 @@ export const userSettings = pgTable('user_settings', {
 		.references(() => user.id, { onDelete: 'cascade' })
 });
 
+export const apiKey = pgTable('api_key', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	key: text('key').notNull(),
+	description: text('description'),
+	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+	revoked: boolean('revoked').default(false),
+	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
+});
+
 export const scope = pgEnum('scope', ['global', 'user']);
 export const stats = pgTable('stats', {
 	id: serial('id').primaryKey(),
@@ -97,4 +107,5 @@ export type User = typeof user.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;
 export type Secret = typeof secret.$inferSelect;
 export type UserSettings = typeof userSettings.$inferSelect;
+export type APIKey = typeof apiKey.$inferSelect;
 export type Stats = typeof stats.$inferSelect;

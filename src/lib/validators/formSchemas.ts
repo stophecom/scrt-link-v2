@@ -120,6 +120,12 @@ export const contactFormSchema = () =>
 		recaptchaToken: z.string()
 	});
 
+export const apiKeyFormSchema = () =>
+	z.object({
+		keyId: z.string().optional(),
+		description: z.string().max(50).optional()
+	});
+
 export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = ReturnType<typeof emailFormSchema>;
 export type EmailVerificationCodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
@@ -131,3 +137,4 @@ export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;
 export type RevealSecretFormSchema = ReturnType<typeof revealSecretFormSchema>;
 export type ContactFormSchema = ReturnType<typeof contactFormSchema>;
+export type ApiTokenFormSchema = ReturnType<typeof apiKeyFormSchema>;

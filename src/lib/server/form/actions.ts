@@ -1,15 +1,22 @@
 import { type Action, error, fail } from '@sveltejs/kit';
-import { desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { generateRandomUrlSafeString, scryptHash, verifyPassword } from '$lib/crypto';
+import { MAX_API_KEYS_PER_USER } from '$lib/constants';
+import {
+	generateBase64Token,
+	generateRandomUrlSafeString,
+	scryptHash,
+	verifyPassword
+} from '$lib/crypto';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import {
+	apiKey,
 	emailVerificationRequest,
 	secret,
 	stats,
@@ -17,6 +24,7 @@ import {
 	userSettings
 } from '$lib/server/db/schema';
 import {
+	apiKeyFormSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
 	passwordFormSchema,
@@ -35,6 +43,7 @@ import {
 import { checkIfUserExists, checkIsEmailVerified } from '../helpers';
 import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '../rate-limit';
 import stripeInstance from '../stripe';
+import { getActiveApiKeys } from '../user';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod(secretFormSchema()));
@@ -538,4 +547,70 @@ export const logout: Action = async (event) => {
 	auth.deleteSessionTokenCookie(event);
 
 	return redirectLocalized(303, '/');
+};
+
+export const createAPIToken: Action = async (event) => {
+	const form = await superValidate(event.request, zod(apiKeyFormSchema()));
+
+	const user = event.locals.user;
+
+	const { description } = form.data;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	const activeApiKeys = await getActiveApiKeys(user.id);
+
+	// Too many API keys
+	if (activeApiKeys.length >= MAX_API_KEYS_PER_USER) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.neat_less_jurgen_trip(),
+				description: m.such_safe_leopard_lend({ amount: MAX_API_KEYS_PER_USER })
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
+	await db.insert(apiKey).values({
+		userId: user.id,
+		description: description || m.real_fluffy_clownfish_fetch(),
+		key: generateBase64Token()
+	});
+
+	return message(form, {
+		status: 'success',
+		title: m.sleek_heavy_shad_exhale()
+	});
+};
+
+export const revokeAPIToken: Action = async (event) => {
+	const apiKeyForm = await superValidate(event.request, zod(apiKeyFormSchema()), {
+		id: 'api-token-form'
+	});
+	const { keyId } = apiKeyForm.data;
+	const user = event.locals.user;
+
+	if (!user || !keyId) {
+		return fail(401);
+	}
+
+	await db
+		.update(apiKey)
+		.set({ revoked: true })
+		.where(and(eq(apiKey.id, keyId), eq(apiKey.userId, user.id)));
+
+	return message(apiKeyForm, {
+		status: 'success',
+		title: m.cool_white_frog_scold()
+	});
 };
