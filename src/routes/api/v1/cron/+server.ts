@@ -1,7 +1,7 @@
 import { DeleteObjectsCommand, paginateListObjectsV2 } from '@aws-sdk/client-s3';
 import type { RequestHandler } from '@sveltejs/kit';
 import { error, json } from '@sveltejs/kit';
-import { or } from 'drizzle-orm';
+import { eq, or } from 'drizzle-orm';
 import { lte } from 'drizzle-orm';
 
 import { CRON_SECRET } from '$env/static/private';
@@ -9,7 +9,7 @@ import { PUBLIC_S3_BUCKET } from '$env/static/public';
 import { FILE_RETENTION_PERIOD_IN_DAYS } from '$lib/constants';
 import { s3Client } from '$lib/s3';
 import { db } from '$lib/server/db';
-import { emailVerificationRequest, secret as secretSchema } from '$lib/server/db/schema';
+import { apiKey, emailVerificationRequest, secret as secretSchema } from '$lib/server/db/schema';
 
 const BucketName = PUBLIC_S3_BUCKET;
 const client = s3Client;
@@ -92,6 +92,16 @@ export const POST: RequestHandler = async ({ request }) => {
 		console.log(
 			`Cron: Deleted ${deletedEmailVerificationRequests.length} entries from the Email Verification Requests database.`
 		);
+
+		// Delete revoked API keys
+		const deleteRevokedAPIkeys = await db
+			.delete(apiKey)
+			.where(
+				eq(apiKey.revoked, true) // Revoked
+			)
+			.returning();
+
+		console.log(`Cron: Deleted ${deleteRevokedAPIkeys.length} entries from the api keys database.`);
 
 		return json({ success: true });
 	} else {
