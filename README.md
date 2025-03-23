@@ -76,12 +76,20 @@ pnpm dlx shadcn-svelte@latest add form
 Translations are done with [Paraglide.js by Inlang](https://inlang.com/m/gerre34r/library-inlang-paraglideJs)
 
 ```bash
+# See project.inlang/settings.json for configurations
 # Edit your messages in messages/en.json
 # Consider installing the Sherlock IDE Extension
-# Visit /demo/paraglide route to view the demo
-pnpm inlang:machine-translate # Machine translate missing keys
-pnpm inlang:lint
-pnpm inlang:editor # Opens visual editor
+pnpm machine-translate # Machine translate missing keys
+
+```
+
+### Usage
+
+```ts
+import { m } from '$lib/paraglide/messages.js';
+
+// Sherlock IDE Extensions helps managing strings
+const someString = m.elegant_muddy_wren_value();
 ```
 
 ## Authentication
@@ -138,6 +146,34 @@ stripe trigger payment_intent.succeeded
 
 In order to ship with confidence we run a set of tests during and after the deployment.
 See `playwright-tests-published.yml` for more info.
+
+## API
+
+Since all secrets are encrypted on the client, the API relies on proper client-side handling. Hence the validation of API
+
+```bash
+# example.http
+
+@hostname = localhost
+@port = 5173
+@host = {{hostname}}:{{port}}
+
+### API
+# Post Secret
+POST http://{{host}}/api/v1/secrets HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{apiAccessToken}}
+
+{
+  "secretIdHash": "480bda04dbf90e580fe1124ff050ad1481509478521dc12242173294d9fec4be",
+  "publicKey": "-----BEGIN PUBLIC KEY-----\nMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEbR5G6VDGfn8kPSE7y8MHY9PaWdgej1zz8nv6mN202pgOzuOzh221LoSFRprLhPqn9ykO+ZmvEMYVZa6+Wfk5GhEZpHl4QtJOGxH8rLhKqbLTJiBsLyXK0xm1u2N/UO1X\n-----END PUBLIC KEY-----",
+  "meta": "Some encrypted content",
+  "content": "Some encrypted content",
+  "password": "Optional password", # Optional. Can be omitted.
+  "expiresIn": 3600000
+}
+
+```
 
 ## Error Handling
 

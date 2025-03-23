@@ -58,7 +58,7 @@
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {
-			const { content, password, expiresIn, meta } = $formData;
+			const { content, password, expiresIn, meta, secretIdHash, publicKey } = $formData;
 
 			// Encrypt secret before submitting
 			let encryptedMeta =
@@ -76,15 +76,14 @@
 			encryptedMeta = await encryptString(encryptedMeta, masterKey);
 			encryptedContent = await encryptString(encryptedContent, masterKey);
 
-			const secretIdSubstring = masterKey.substring(SECRET_ID_LENGTH);
 			// Set data to be posted
 			const jsonPayload: Infer<SecretTextFormSchema> = {
-				secretIdHash: await sha256Hash(secretIdSubstring),
+				secretIdHash,
 				meta: encryptedMeta,
 				content: encryptedContent,
-				publicKey: publicKeyRaw,
-				expiresIn: expiresIn,
-				password: $formData.password
+				publicKey,
+				expiresIn,
+				password
 			};
 
 			if (plausible) {
@@ -124,7 +123,7 @@
 	const expiresInProxy = intProxy(form, 'expiresIn'); // Cast string to number
 
 	let privateKey: CryptoKey | undefined = $state();
-	let publicKeyRaw: string;
+
 	let isOptionsVisible = $state(false);
 	let isFileUploading = $state(false);
 
@@ -142,7 +141,11 @@
 		masterKey = generateRandomUrlSafeString(MASTER_PASSWORD_LENGTH);
 		const keyPair = await generateKeyPair();
 		privateKey = keyPair.privateKey;
-		publicKeyRaw = await exportPublicKey(keyPair.publicKey);
+
+		// Set initial formdata
+		const secretIdSubstring = masterKey.substring(SECRET_ID_LENGTH);
+		$formData.secretIdHash = await sha256Hash(secretIdSubstring);
+		$formData.publicKey = await exportPublicKey(keyPair.publicKey);
 	};
 
 	onMount(async () => {

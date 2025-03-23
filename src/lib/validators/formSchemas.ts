@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { pemFooter, pemHeader } from '$lib/client/web-crypto';
 import { m } from '$lib/paraglide/messages.js';
 
 import { ReadReceiptOptions, ThemeOptions } from '../data/enums';
@@ -42,20 +43,41 @@ export const signInFormSchema = () =>
 	});
 
 // Set default value for expiresIn to the "medium" option.
-const expiresInOptions = getExpiresInOptions();
-const defaultExpiresInValue = expiresInOptions[(expiresInOptions.length / 2) | 0];
+const expiresInOptionsValues = getExpiresInOptions().map(({ value }) => value);
+const defaultExpiresInValue = expiresInOptionsValues[(expiresInOptionsValues.length / 2) | 0];
 export const secretFormSchema = () =>
 	z.object({
-		secretIdHash: z.string().max(512),
-		publicKey: z.string().max(512),
-		meta: z.string().max(100_000),
-		content: z.string().min(1, m.orange_each_goldfish_amuse()).max(100_000),
+		secretIdHash: z.string().length(64), // See sha256Hash() in web-crypto.ts
+		publicKey: z.string().length(212).startsWith(pemHeader).endsWith(pemFooter), // See exportPublicKey() in web-crypto.ts
+		meta: z.string().min(1).max(100_000), // Validation is loose by design. Meta is encrypted on client.
+		content: z.string().min(1, m.orange_each_goldfish_amuse()).max(100_000), // Validation is loose by design. Content is encrypted on client.
 		password: z
 			.string()
 			.min(6, m.aloof_careful_trout_dine({ number: 6 }))
 			.max(512)
 			.optional(),
-		expiresIn: z.number().default(defaultExpiresInValue.value)
+		expiresIn: z
+			.union(
+				[
+					z.literal(expiresInOptionsValues[0]), // Making TS happy
+					z.literal(expiresInOptionsValues[1]),
+					...expiresInOptionsValues.slice(2).map((item) => z.literal(item))
+				],
+				{
+					errorMap: (error) => {
+						if (error.code === 'invalid_union') {
+							return {
+								message: `Valid options are: ${expiresInOptionsValues.join(', ')}`
+							};
+						}
+						return {
+							message: error.message ?? 'Unknown validation error.'
+						};
+					}
+				}
+			)
+
+			.default(defaultExpiresInValue)
 	});
 
 export const themeFormSchema = () => z.object({ themeOption: z.nativeEnum(ThemeOptions) });
