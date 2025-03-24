@@ -14,8 +14,12 @@ import {
 	sha256Hash
 } from './web-crypto';
 
-// const BASE_URL = 'http://localhost:5173'; // Dev
-const BASE_URL = 'https://scrt.link'; // Production
+const BASE_URL =
+	process.env.VERCEL_ENV === 'production'
+		? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+		: process.env.VERCEL === '1'
+			? `https://${process.env.VERCEL_URL}`
+			: 'http://localhost:5173';
 
 // Only text based secrets are supported via API.
 type Options = {
