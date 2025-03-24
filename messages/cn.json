@@ -356,5 +356,18 @@
 	"warm_clean_horse_seek": "你收到一个秘密。",
 	"sad_arable_canary_mop": "秘密已过期",
 	"stale_slow_halibut_spur": "该秘密已无法查看。",
-	"flat_novel_alpaca_scold": "密码错误！"
+	"flat_novel_alpaca_scold": "密码错误！",
+	"blue_inclusive_sloth_flow": "请升级",
+	"cute_witty_puffin_grow": "升级订阅",
+	"silly_sharp_skunk_walk": "我的服务",
+	"tense_spicy_jannes_hug": "撤销",
+	"fluffy_even_fox_greet": "为你的使用场景添加名称（可选）",
+	"light_royal_ladybug_greet": "命名你的密钥",
+	"steep_equal_newt_grin": "创建 API 密钥",
+	"neat_less_jurgen_trip": "已达到 API 密钥上限",
+	"such_safe_leopard_lend": "每位用户最多允许 {amount} 个 API 密钥。如需创建新密钥，请先撤销已有密钥。",
+	"real_fluffy_clownfish_fetch": "我的 API 密钥",
+	"sleek_heavy_shad_exhale": "API 密钥已保存",
+	"cool_white_frog_scold": "API 密钥已撤销！",
+	"blue_jumpy_shell_climb": "API 访问"
 }

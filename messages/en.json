@@ -370,5 +370,6 @@
 	"such_safe_leopard_lend": "A maximum of {amount} API keys is allowed per user. To create a new key, please revoke an existing one.",
 	"real_fluffy_clownfish_fetch": "My API key",
 	"sleek_heavy_shad_exhale": "API key saved",
-	"cool_white_frog_scold": "API key revoked!"
+	"cool_white_frog_scold": "API key revoked!",
+	"blue_jumpy_shell_climb": "API Access"
 }

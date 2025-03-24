@@ -78,6 +78,7 @@ const plans = () => [
 		contents: [
 			m.new_still_dingo_create({ limit: formatBytes(100 * GB) }),
 			m.active_mellow_swan_list({ amount: 30 }),
+			m.blue_jumpy_shell_climb(),
 			m.still_busy_starfish_dare()
 		],
 		limits: {

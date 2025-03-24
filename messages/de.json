@@ -358,5 +358,18 @@
 	"frail_fresh_stork_scoop": "Status",
 	"sad_arable_canary_mop": "Geheimnis abgelaufen",
 	"stale_slow_halibut_spur": "Das Geheimnis ist nicht mehr verfügbar.",
-	"flat_novel_alpaca_scold": "Falsches Passwort!"
+	"flat_novel_alpaca_scold": "Falsches Passwort!",
+	"blue_inclusive_sloth_flow": "Hol dir ein Abo",
+	"cute_witty_puffin_grow": "Abo erweitern",
+	"silly_sharp_skunk_walk": "Mein Service",
+	"tense_spicy_jannes_hug": "Widerrufen",
+	"fluffy_even_fox_greet": "Füge einen Namen für Deinen Anwendungsfall hinzu. (Optional)",
+	"light_royal_ladybug_greet": "Benenne Deinen Schlüssel",
+	"steep_equal_newt_grin": "API-Schlüssel erstellen",
+	"neat_less_jurgen_trip": "API-Schlüssel-Limit erreicht",
+	"such_safe_leopard_lend": "Pro Nutzer sind maximal {amount} API-Schlüssel erlaubt. Um einen neuen Schlüssel zu erstellen, widerrufe bitte einen bestehenden.",
+	"real_fluffy_clownfish_fetch": "Mein API-Schlüssel",
+	"sleek_heavy_shad_exhale": "API-Schlüssel gespeichert",
+	"cool_white_frog_scold": "API-Schlüssel widerrufen!",
+	"blue_jumpy_shell_climb": "API-Zugang"
 }
