@@ -24,7 +24,7 @@
 	import { getPlanLimits } from '$lib/data/plans';
 	import type { FileMeta } from '$lib/file-transfer';
 	import { m } from '$lib/paraglide/messages.js';
-	import { secretFormSchema, type SecretTextFormSchema } from '$lib/validators/formSchemas';
+	import { type SecretFormSchema, secretFormSchema } from '$lib/validators/formSchemas';
 
 	import type { LayoutServerData } from '../../../routes/$types';
 	import { getExpiresInOptions } from '../../data/secretSettings';
@@ -37,7 +37,7 @@
 	};
 
 	export type SecretFormProps = {
-		form: SuperValidated<Infer<SecretTextFormSchema>>;
+		form: SuperValidated<Infer<SecretFormSchema>>;
 		user: LayoutServerData['user'];
 		secretType: SecretType;
 		successMessage?: string;
@@ -77,7 +77,7 @@
 			encryptedContent = await encryptString(encryptedContent, masterKey);
 
 			// Set data to be posted
-			const jsonPayload: Infer<SecretTextFormSchema> = {
+			const jsonPayload: Infer<SecretFormSchema> = {
 				secretIdHash,
 				meta: encryptedMeta,
 				content: encryptedContent,

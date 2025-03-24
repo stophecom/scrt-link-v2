@@ -31,3 +31,6 @@ src/lib/paraglide
 *.http
 
 temp.*
+
+# Client module
+static/client-module.js

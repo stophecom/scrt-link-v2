@@ -49,7 +49,7 @@ export const secretFormSchema = () =>
 	z.object({
 		secretIdHash: z.string().length(64), // See sha256Hash() in web-crypto.ts
 		publicKey: z.string().length(212).startsWith(pemHeader).endsWith(pemFooter), // See exportPublicKey() in web-crypto.ts
-		meta: z.string().min(1).max(100_000), // Validation is loose by design. Meta is encrypted on client.
+		meta: z.string().max(100_000), // Validation is loose by design. Meta is encrypted on client.
 		content: z.string().min(1, m.orange_each_goldfish_amuse()).max(100_000), // Validation is loose by design. Content is encrypted on client.
 		password: z
 			.string()
@@ -153,7 +153,7 @@ export type EmailFormSchema = ReturnType<typeof emailFormSchema>;
 export type EmailVerificationCodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
-export type SecretTextFormSchema = ReturnType<typeof secretFormSchema>;
+export type SecretFormSchema = ReturnType<typeof secretFormSchema>;
 export type UserFormSchema = ReturnType<typeof userFormSchema>;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;

@@ -1,15 +1,10 @@
 import { type Action, error, fail } from '@sveltejs/kit';
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { MAX_API_KEYS_PER_USER } from '$lib/constants';
-import {
-	generateBase64Token,
-	generateRandomUrlSafeString,
-	scryptHash,
-	verifyPassword
-} from '$lib/crypto';
+import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
@@ -18,8 +13,6 @@ import { db } from '$lib/server/db';
 import {
 	apiKey,
 	emailVerificationRequest,
-	secret,
-	stats,
 	user as userSchema,
 	userSettings
 } from '$lib/server/db/schema';
@@ -42,62 +35,25 @@ import {
 } from '../email-verification';
 import { checkIfUserExists, checkIsEmailVerified } from '../helpers';
 import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '../rate-limit';
+import { saveSecret } from '../secrets';
 import stripeInstance from '../stripe';
 import { getActiveApiKeys } from '../user';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod(secretFormSchema()));
 
-	const { content, password, secretIdHash, meta, expiresIn, publicKey } = form.data;
-
 	if (!form.valid) {
 		return fail(400, { form });
 	}
 
-	let passwordHash;
+	const user = event.locals.user;
 
 	try {
-		if (password) {
-			passwordHash = await scryptHash(password);
-		}
-
-		// Attach user to secret, if exists
-		const user = event.locals.user;
-		const receiptId = generateRandomUrlSafeString(8);
-
-		await db.insert(secret).values({
-			secretIdHash,
-			meta,
-			content,
-			passwordHash,
-			expiresAt: new Date(Date.now() + expiresIn),
-			publicKey,
-			receiptId,
-			userId: user?.id
+		const { receiptId, expiresIn } = await saveSecret({
+			userId: user?.id,
+			secretRequest: form.data
 		});
 
-		// Global stats
-		await db
-			.insert(stats)
-			.values({ id: 1, scope: 'global' })
-			.onConflictDoUpdate({
-				target: stats.id,
-				set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
-			});
-
-		// Individual user stats
-		if (user) {
-			await db
-				.insert(stats)
-				.values({
-					userId: user.id,
-					scope: 'user'
-				})
-				.onConflictDoUpdate({
-					target: stats.userId,
-					set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
-				});
-		}
 		const expirationMessage = m.real_actual_cockroach_type({
 			time: getExpiresInOptions().find((item) => item.value === expiresIn)?.label || ''
 		});
@@ -584,7 +540,7 @@ export const createAPIToken: Action = async (event) => {
 	await db.insert(apiKey).values({
 		userId: user.id,
 		description: description || m.real_fluffy_clownfish_fetch(),
-		key: generateBase64Token()
+		key: `ak_${generateBase64Token()}`
 	});
 
 	return message(form, {

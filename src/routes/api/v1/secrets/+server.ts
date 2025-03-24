@@ -5,6 +5,7 @@ import { sha256Hash } from '$lib/client/web-crypto';
 import { db } from '$lib/server/db';
 import { apiKey } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/schema';
+import { saveSecret } from '$lib/server/secrets';
 import { secretFormSchema } from '$lib/validators/formSchemas';
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -41,8 +42,10 @@ export const POST: RequestHandler = async ({ request }) => {
 		return json({ error: 'Checksum mismatch.' }, { status: 400 });
 	}
 
-	// const { content, password, secretIdHash, meta, expiresIn, publicKey } = validation.data;
-	// console.log(validation.data);
+	const { receiptId, expiresIn } = await saveSecret({
+		userId: matchingApiKey.user?.id,
+		secretRequest: validation.data
+	});
 
-	return json({ success: true });
+	return json({ receiptId, expiresIn });
 };
