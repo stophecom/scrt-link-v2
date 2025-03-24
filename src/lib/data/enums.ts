@@ -20,7 +20,8 @@ export enum Role {
 export enum TierOptions {
 	CONFIDENTIAL = 'Confidential',
 	SECRET = 'Secret',
-	TOP_SECRET = 'Top Secret'
+	TOP_SECRET = 'Top Secret',
+	SECRET_SERVICE = 'Secret Service'
 }
 
 export enum ThemeOptions {

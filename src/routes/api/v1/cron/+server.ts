@@ -1,15 +1,15 @@
 import { DeleteObjectsCommand, paginateListObjectsV2 } from '@aws-sdk/client-s3';
 import type { RequestHandler } from '@sveltejs/kit';
 import { error, json } from '@sveltejs/kit';
-import { or } from 'drizzle-orm';
+import { eq, or } from 'drizzle-orm';
 import { lte } from 'drizzle-orm';
 
 import { CRON_SECRET } from '$env/static/private';
 import { PUBLIC_S3_BUCKET } from '$env/static/public';
-import { fileRetentionPeriodInDays } from '$lib/constants';
+import { FILE_RETENTION_PERIOD_IN_DAYS } from '$lib/constants';
 import { s3Client } from '$lib/s3';
 import { db } from '$lib/server/db';
-import { secret as secretSchema } from '$lib/server/db/schema';
+import { apiKey, emailVerificationRequest, secret as secretSchema } from '$lib/server/db/schema';
 
 const BucketName = PUBLIC_S3_BUCKET;
 const client = s3Client;
@@ -25,7 +25,7 @@ export const GET: RequestHandler = async ({ request }) => {
 
 	if (authorization === `Bearer ${CRON_SECRET}`) {
 		// Delete files older than X days
-		const deleteFilesBeforeDate = subtractDays(new Date(), fileRetentionPeriodInDays);
+		const deleteFilesBeforeDate = subtractDays(new Date(), FILE_RETENTION_PERIOD_IN_DAYS);
 
 		for await (const data of paginateListObjectsV2(
 			{ client, pageSize: 1000 },
@@ -45,20 +45,31 @@ export const GET: RequestHandler = async ({ request }) => {
 				}
 			}).filter(Boolean) as ObjectList;
 
-			if (s3ObjectsToDelete.length) {
-				console.log(`Cron: Start deleting files...`);
-				const bucketParams = { Bucket: BucketName, Delete: { Objects: s3ObjectsToDelete } };
-				await client.send(new DeleteObjectsCommand(bucketParams));
-				console.log(`Cron: Deleted ${s3ObjectsToDelete.length} files from S3.`);
-			} else {
-				console.log(`Cron: No files to delete from S3.`);
+			// @todo
+			// We currently get an error for no obvious reason
+			// InvalidDigest: The Content-MD5 you specified was an invalid
+			// We catch the error for now
+			try {
+				if (s3ObjectsToDelete.length) {
+					console.log(`Cron: Start deleting files...`);
+					const bucketParams = {
+						Bucket: BucketName,
+						Delete: { Objects: s3ObjectsToDelete, Quiet: false }
+					};
+					await client.send(new DeleteObjectsCommand(bucketParams));
+					console.log(`Cron: Deleted ${s3ObjectsToDelete.length} files from S3.`);
+				} else {
+					console.log(`Cron: No files to delete from S3.`);
+				}
+			} catch (e) {
+				console.error(e);
 			}
 		}
 
 		// Delete secrets that have been retrieved older than 1 days
 		const deleteRetrievedSecretsBeforeDate = subtractDays(new Date(), 1);
 
-		const result = await db
+		const deletedSecrets = await db
 			.delete(secretSchema)
 			.where(
 				or(
@@ -68,7 +79,30 @@ export const GET: RequestHandler = async ({ request }) => {
 			)
 			.returning();
 
-		console.log(`Cron: Deleted ${result.length} entries from the Secrets database.`);
+		console.log(`Cron: Deleted ${deletedSecrets.length} entries from the Secrets database.`);
+
+		// Delete email verification requests if expired
+		const deletedEmailVerificationRequests = await db
+			.delete(emailVerificationRequest)
+			.where(
+				lte(emailVerificationRequest.expiresAt, new Date()) // Expired requests
+			)
+			.returning();
+
+		console.log(
+			`Cron: Deleted ${deletedEmailVerificationRequests.length} entries from the Email Verification Requests database.`
+		);
+
+		// Delete revoked API keys
+		const deleteRevokedAPIkeys = await db
+			.delete(apiKey)
+			.where(
+				eq(apiKey.revoked, true) // Revoked
+			)
+			.returning();
+
+		console.log(`Cron: Deleted ${deleteRevokedAPIkeys.length} entries from the api keys database.`);
+
 		return json({ success: true });
 	} else {
 		error(401, 'Unauthorized');

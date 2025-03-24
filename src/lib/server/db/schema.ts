@@ -13,13 +13,14 @@ import {
 
 import { ReadReceiptOptions, Role, TierOptions } from '../../data/enums';
 
-export const subscriptionTier = pgEnum('subscription_tier', [
+const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,
 	TierOptions.SECRET,
-	TierOptions.TOP_SECRET
+	TierOptions.TOP_SECRET,
+	TierOptions.SECRET_SERVICE
 ]);
 
-export const role = pgEnum('role', [Role.USER, Role.ADMIN]);
+const role = pgEnum('role', [Role.USER, Role.ADMIN]);
 
 export const user = pgTable('user', {
 	id: uuid('id').defaultRandom().primaryKey().unique(),
@@ -33,6 +34,24 @@ export const user = pgTable('user', {
 	subscriptionTier: subscriptionTier().default(TierOptions.CONFIDENTIAL),
 	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified')
+});
+
+// Check secretSettings for reference
+const readReceipt = pgEnum('read_receipt', [
+	ReadReceiptOptions.NONE,
+	ReadReceiptOptions.EMAIL,
+	ReadReceiptOptions.NTFY
+]);
+
+export const userSettings = pgTable('user_settings', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	ntfyEndpoint: text('ntfy_endpoint'),
+	email: text('email'),
+	readReceipt: readReceipt().default(ReadReceiptOptions.NONE),
+	userId: uuid('user_id')
+		.notNull()
+		.unique()
+		.references(() => user.id, { onDelete: 'cascade' })
 });
 
 export const session = pgTable('session', {
@@ -64,25 +83,16 @@ export const secret = pgTable('secret', {
 	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
 });
 
-// Check secretSettings for reference
-export const readReceipt = pgEnum('read_receipt', [
-	ReadReceiptOptions.NONE,
-	ReadReceiptOptions.EMAIL,
-	ReadReceiptOptions.NTFY
-]);
-
-export const userSettings = pgTable('user_settings', {
+export const apiKey = pgTable('api_key', {
 	id: uuid('id').defaultRandom().primaryKey(),
-	ntfyEndpoint: text('ntfy_endpoint'),
-	email: text('email'),
-	readReceipt: readReceipt().default(ReadReceiptOptions.NONE),
-	userId: uuid('user_id')
-		.notNull()
-		.unique()
-		.references(() => user.id, { onDelete: 'cascade' })
+	key: text('key').notNull(),
+	description: text('description'),
+	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+	revoked: boolean('revoked').default(false),
+	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
 });
 
-export const scope = pgEnum('scope', ['global', 'user']);
+const scope = pgEnum('scope', ['global', 'user']);
 export const stats = pgTable('stats', {
 	id: serial('id').primaryKey(),
 	scope: scope(),
@@ -92,9 +102,10 @@ export const stats = pgTable('stats', {
 		.references(() => user.id, { onDelete: 'cascade' })
 });
 
-export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
+export type UserSettings = typeof userSettings.$inferSelect;
+export type Session = typeof session.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;
 export type Secret = typeof secret.$inferSelect;
-export type UserSettings = typeof userSettings.$inferSelect;
+export type APIKey = typeof apiKey.$inferSelect;
 export type Stats = typeof stats.$inferSelect;

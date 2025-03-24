@@ -66,8 +66,8 @@ export const actions: Actions = {
 				form,
 				{
 					status: 'error',
-					title: 'Secret expired',
-					description: 'The secret is no longer available.'
+					title: m.sad_arable_canary_mop(),
+					description: m.stale_slow_halibut_spur()
 				},
 				{
 					status: 401
@@ -106,7 +106,7 @@ export const actions: Actions = {
 					form,
 					{
 						status: 'error',
-						title: 'Wrong password!',
+						title: m.flat_novel_alpaca_scold(),
 						description: m.icy_heavy_toucan_harbor({
 							amount: MAX_PASSWORD_ATTEMPTS - result.passwordAttempts
 						})
@@ -172,7 +172,7 @@ export const actions: Actions = {
 			}
 		}
 
-		// We set the retrievedAt date instead of instantly deleting the entry since we rely on some of the date for file downloads.
+		// We set the retrievedAt date instead of instantly deleting the entry since we rely on some of the data for file downloads.
 		// A cron job is cleaning up the DB and files
 		await db
 			.update(secretSchema)

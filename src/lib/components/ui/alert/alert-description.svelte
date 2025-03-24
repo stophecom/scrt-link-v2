@@ -9,6 +9,9 @@
 	export { className as class };
 </script>
 
-<div class={cn('text-sm [&_p]:leading-relaxed [&>a]:underline', className)} {...$$restProps}>
+<div
+	class={cn('text-sm break-words [&_p]:leading-relaxed [&>a]:underline', className)}
+	{...$$restProps}
+>
 	<slot />
 </div>

@@ -13,6 +13,7 @@ const defaultLimits = {
 	[SecretType.REDIRECT]: false,
 	[SecretType.SNAP]: false,
 	[SecretType.NEOGRAM]: false,
+	apiAccess: false,
 	passwordAllowed: false,
 	readReceiptsAllowed: false,
 	expirationOptionsAllowed: false,
@@ -36,6 +37,7 @@ const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: false,
 			[SecretType.NEOGRAM]: false,
+			apiAccess: false,
 			passwordAllowed: false,
 			readReceiptsAllowed: false,
 			expirationOptionsAllowed: false,
@@ -62,6 +64,7 @@ const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: true,
 			[SecretType.NEOGRAM]: true,
+			apiAccess: false,
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptionsAllowed: true,
@@ -75,6 +78,7 @@ const plans = () => [
 		contents: [
 			m.new_still_dingo_create({ limit: formatBytes(100 * GB) }),
 			m.active_mellow_swan_list({ amount: 30 }),
+			m.blue_jumpy_shell_climb(),
 			m.still_busy_starfish_dare()
 		],
 		limits: {
@@ -83,6 +87,7 @@ const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: true,
 			[SecretType.NEOGRAM]: true,
+			apiAccess: true,
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptionsAllowed: true,
