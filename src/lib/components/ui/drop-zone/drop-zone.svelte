@@ -133,7 +133,7 @@
 
 	<div
 		id="overlay"
-		class="pointer-events-none fixed top-0 left-0 z-50 flex h-full w-full items-end justify-center rounded-lg bg-black {isOver
+		class="pointer-events-none fixed top-0 left-0 z-50 flex h-full w-full items-end justify-center rounded-lg bg-[#000000] {isOver
 			? 'flex'
 			: 'hidden'}"
 	>
