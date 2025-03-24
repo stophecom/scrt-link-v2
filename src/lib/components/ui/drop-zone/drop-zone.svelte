@@ -133,12 +133,13 @@
 
 	<div
 		id="overlay"
-		class="pointer-events-none fixed top-0 left-0 flex h-full w-full items-end justify-center rounded-lg bg-black opacity-0"
-		style={isOver ? 'opacity: 1;' : ''}
+		class="pointer-events-none fixed top-0 left-0 z-50 flex h-full w-full items-end justify-center rounded-lg bg-black {isOver
+			? 'flex'
+			: 'hidden'}"
 	>
 		<img class="absolute h-full w-full object-cover" alt="Snoop Dogg" src={gif} />
 		<div
-			class="absolute w-full bg-linear-to-b from-transparent to-black p-12 pb-16 text-center text-6xl font-bold text-white uppercase md:text-8xl"
+			class="absolute w-full bg-linear-to-b from-transparent to-black p-12 pb-16 text-center text-6xl font-bold text-[#ffffff] uppercase md:text-8xl"
 		>
 			Drop it like it's hot
 		</div>
