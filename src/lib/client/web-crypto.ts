@@ -195,8 +195,8 @@ export const generateKeyPair = async () =>
 	);
 
 // Export (public) key as PEM
-const pemHeader = '-----BEGIN PUBLIC KEY-----';
-const pemFooter = '-----END PUBLIC KEY-----';
+export const pemHeader = '-----BEGIN PUBLIC KEY-----';
+export const pemFooter = '-----END PUBLIC KEY-----';
 
 export const exportPublicKey = async (key: CryptoKey) => {
 	const exported = await crypto.subtle.exportKey('spki', key);

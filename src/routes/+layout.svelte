@@ -20,6 +20,11 @@
 
 			enableAutoPageviews();
 		}
+
+		console.info(
+			'%c🤫\nSo follow sparks that light your mind,\nFor those who seek, are those who find.\n\nUse promo code HIDDENTREASURE during checkout and get a nice surprise!',
+			'font-size: 16px;color: #ff0083'
+		);
 	});
 </script>
 

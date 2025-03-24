@@ -58,7 +58,7 @@ You can trigger the cron job locally with:
 ```bash
 curl --request POST \
      --url 'http://localhost:5173/api/v1/cron' \
-     --header 'Authorization: Bearer API_SECRET_KEY'
+     --header 'Authorization: Bearer CRON_SECRET'
 
 ```
 
@@ -76,12 +76,20 @@ pnpm dlx shadcn-svelte@latest add form
 Translations are done with [Paraglide.js by Inlang](https://inlang.com/m/gerre34r/library-inlang-paraglideJs)
 
 ```bash
+# See project.inlang/settings.json for configurations
 # Edit your messages in messages/en.json
 # Consider installing the Sherlock IDE Extension
-# Visit /demo/paraglide route to view the demo
-pnpm inlang:machine-translate # Machine translate missing keys
-pnpm inlang:lint
-pnpm inlang:editor # Opens visual editor
+pnpm machine-translate # Machine translate missing keys
+
+```
+
+### Usage
+
+```ts
+import { m } from '$lib/paraglide/messages.js';
+
+// Sherlock IDE Extensions helps managing strings
+const someString = m.elegant_muddy_wren_value();
 ```
 
 ## Authentication
@@ -138,6 +146,74 @@ stripe trigger payment_intent.succeeded
 
 In order to ship with confidence we run a set of tests during and after the deployment.
 See `playwright-tests-published.yml` for more info.
+
+## API
+
+Since all secrets are encrypted on the client side, the API relies on proper client-side handling. Therefore, API validation is not very strict.
+
+### Authentication
+
+You can get an API key (bearer token) on the account page. (With proper access rights - see plans.)
+
+### Endpoints
+
+> /api/v1/secrets
+
+Used to create secrets programmatically. Use client-module for convenience.
+
+```bash
+# example.http
+
+# Post Secret
+POST http://scrt.link/api/v1/secrets HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{apiAccessToken}}
+
+{
+  "secretIdHash": "480bda04dbf90e580fe1124ff050ad1481509478521dc12242173294d9fec4be",
+  "publicKey": "-----BEGIN PUBLIC KEY-----\nMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEbR5G6VDGfn8kPSE7y8MHY9PaWdgej1zz8nv6mN202pgOzuOzh221LoSFRprLhPqn9ykO+ZmvEMYVZa6+Wfk5GhEZpHl4QtJOGxH8rLhKqbLTJiBsLyXK0xm1u2N/UO1X\n-----END PUBLIC KEY-----",
+  "meta": "XYZ", # Encrypted
+  "content": "XYZ", # Encrypted
+  "password": "my-secret-password", # Optional. Can be omitted.
+  "expiresIn": 3600000 # Time in ms.
+}
+
+```
+
+### Client Module
+
+```bash
+# Build esm module and host statically at https://scrt.link/client-module.js
+pnpm build-client-module
+
+```
+
+Usage in Node.js / Browser:
+
+```html
+<script type="module">
+	import { scrtLink } from 'https://scrt.link/client-module.js';
+
+	// Instantiate client with API key.
+	// API key can be generated on the account page with an active "Top Secret" plan.
+	const scrtLinkClient = scrtLink(
+		'ak_NcOWw69xw7XDjMK6QSYrw4LDlMOKYMK2F8Oqw4hoeMKiwrk5FcOLY1pqwqscdcOQ'
+	);
+
+	scrtLinkClient.createSecret('Some confidential information…').then((response) => {
+		console.log(response);
+	});
+</script>
+```
+
+```json
+// Example response
+{
+	"secretLink": "http://localhost:5173/de/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
+	"receiptId": "D0waygL3",
+	"expiresIn": 86400000
+}
+```
 
 ## Error Handling
 
