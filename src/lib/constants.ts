@@ -6,6 +6,9 @@ export const getBaseUrl = () => {
 		case 'preview': {
 			return `https://${VERCEL_URL}`;
 		}
+		case 'staging': {
+			return `https://dev.scrt.link`;
+		}
 		case 'production': {
 			return `https://${VERCEL_PROJECT_PRODUCTION_URL}`;
 		}
