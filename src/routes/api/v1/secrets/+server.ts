@@ -8,6 +8,18 @@ import { user } from '$lib/server/db/schema';
 import { saveSecret } from '$lib/server/secrets';
 import { secretFormSchema } from '$lib/validators/formSchemas';
 
+// Handle CORS
+export async function OPTIONS() {
+	return new Response(null, {
+		status: 204,
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Methods': 'POST, OPTIONS',
+			'Access-Control-Allow-Headers': 'Content-Type'
+		}
+	});
+}
+
 export const POST: RequestHandler = async ({ request }) => {
 	const authorizationHeader = request.headers.get('authorization');
 	const receivedChecksum = request.headers.get('x-checksum');
