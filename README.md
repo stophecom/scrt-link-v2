@@ -45,7 +45,6 @@ To create a production version of your app:
 ```bash
 pnpm run build
 
-pnpm run postbuild # Creates sitemap.xml
 ```
 
 ## Cron
@@ -149,7 +148,7 @@ See `playwright-tests-published.yml` for more info.
 
 ## API
 
-Since all secrets are encrypted on the client side, the API relies on proper client-side handling. Therefore, API validation is not very strict.
+Since all secrets need to be encrypted on the client, the API relies on proper client-side handling. Therefore, API validation is not very strict.
 
 ### Authentication
 
@@ -159,10 +158,11 @@ You can get an API key (bearer token) on the account page. (With proper access r
 
 > /api/v1/secrets
 
-Used to create secrets programmatically. Use client-module for convenience.
+Used to create secrets programmatically. To interact with the API, use the client-module. (See below)
 
 ```bash
 # example.http
+# IMPORTANT. The following is just for documentation purposes. Use the client-module to interact with the API.
 
 # Post Secret
 POST http://scrt.link/api/v1/secrets HTTP/1.1
@@ -182,12 +182,6 @@ Authorization: Bearer {{apiAccessToken}}
 
 ### Client Module
 
-```bash
-# Build esm module and host statically at https://scrt.link/client-module.js
-pnpm build-client-module
-
-```
-
 Usage in Node.js / Browser:
 
 ```html
@@ -198,9 +192,7 @@ Usage in Node.js / Browser:
 	const client = scrtLink('ak_NcOWw69xw7XDjMK6QSYrw4LDlMOKYMK2F8Oqw4hoeMKiwrk5FcOLY1pqwqscdcOQ');
 
 	// Basic usage
-	client.createSecret('Some confidential information…').then((response) => {
-		console.log(response);
-	});
+	client.createSecret('Some confidential information…').then(console.log);
 
 	// With options
 	client
@@ -210,9 +202,7 @@ Usage in Node.js / Browser:
 			expiresIn: 86400000,
 			locale: 'de',
 		})
-		.then((response) => {
-			console.log(response);
-		});
+		.then(console.log);
 </script>
 ```
 
@@ -224,6 +214,22 @@ Example response:
 	"receiptId": "D0waygL3",
 	"expiresIn": 86400000
 }
+```
+
+#### Development
+
+```bash
+# The esm module is built during deployment as part of postbuild and saved in the /static folder.
+# If you need to make adjustments, see $lib/client/client-module.ts
+# Build the module locally with:
+esbuild src/lib/client/client-module.ts --bundle --format=esm --minify --outfile=static/client-module.js
+
+# For vercel:
+esbuild src/lib/client/client-module.ts --bundle --format=esm --minify --outfile=.vercel/output/static/client-module.js
+
+# Shortcut
+pnpm build-client-module
+
 ```
 
 ## Error Handling
