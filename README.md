@@ -192,22 +192,33 @@ Usage in Node.js / Browser:
 
 ```html
 <script type="module">
-	import { scrtLink } from 'https://scrt.link/client-module.js';
+	import { scrtLink } from 'https://scrt.link/api/v1/client-module';
 
 	// Instantiate client with API key.
-	// API key can be generated on the account page with an active "Top Secret" plan.
-	const scrtLinkClient = scrtLink(
-		'ak_NcOWw69xw7XDjMK6QSYrw4LDlMOKYMK2F8Oqw4hoeMKiwrk5FcOLY1pqwqscdcOQ'
-	);
+	const client = scrtLink('ak_NcOWw69xw7XDjMK6QSYrw4LDlMOKYMK2F8Oqw4hoeMKiwrk5FcOLY1pqwqscdcOQ');
 
-	scrtLinkClient.createSecret('Some confidential information…').then((response) => {
+	// Basic usage
+	client.createSecret('Some confidential information…').then((response) => {
 		console.log(response);
 	});
+
+	// With options
+	client
+		.createSecret('https://example.com', {
+			secretType: 'redirect' // text | redirect | neogram
+			password: 'foobar123'
+			expiresIn: 123,
+			locale: 'de',
+		})
+		.then((response) => {
+			console.log(response);
+		});
 </script>
 ```
 
+Example response:
+
 ```json
-// Example response
 {
 	"secretLink": "http://localhost:5173/de/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
 	"receiptId": "D0waygL3",

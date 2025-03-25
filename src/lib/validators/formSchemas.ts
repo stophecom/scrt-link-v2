@@ -148,12 +148,13 @@ export const apiKeyFormSchema = () =>
 		description: z.string().max(50).optional()
 	});
 
+// @todo infer types by default
 export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = ReturnType<typeof emailFormSchema>;
 export type EmailVerificationCodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
-export type SecretFormSchema = ReturnType<typeof secretFormSchema>;
+export type SecretFormSchema = z.infer<ReturnType<typeof secretFormSchema>>;
 export type UserFormSchema = ReturnType<typeof userFormSchema>;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;

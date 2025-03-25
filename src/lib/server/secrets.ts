@@ -1,5 +1,4 @@
 import { sql } from 'drizzle-orm';
-import { type Infer } from 'sveltekit-superforms';
 
 import { generateRandomUrlSafeString, scryptHash } from '$lib/crypto';
 import type { SecretFormSchema } from '$lib/validators/formSchemas';
@@ -9,7 +8,7 @@ import { secret, stats } from './db/schema';
 
 type SaveSecret = {
 	userId?: string;
-	secretRequest: Infer<SecretFormSchema>;
+	secretRequest: SecretFormSchema;
 };
 export const saveSecret = async ({ userId, secretRequest }: SaveSecret) => {
 	const { content, password, secretIdHash, meta, expiresIn, publicKey } = secretRequest;

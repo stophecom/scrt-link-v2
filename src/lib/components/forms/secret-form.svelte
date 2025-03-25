@@ -2,7 +2,7 @@
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { type Infer, intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod } from 'sveltekit-superforms/adapters';
 
 	import { MASTER_PASSWORD_LENGTH, SECRET_ID_LENGTH } from '$lib/client/constants';
@@ -37,7 +37,7 @@
 	};
 
 	export type SecretFormProps = {
-		form: SuperValidated<Infer<SecretFormSchema>>;
+		form: SuperValidated<SecretFormSchema>;
 		user: LayoutServerData['user'];
 		secretType: SecretType;
 		successMessage?: string;
@@ -77,7 +77,7 @@
 			encryptedContent = await encryptString(encryptedContent, masterKey);
 
 			// Set data to be posted
-			const jsonPayload: Infer<SecretFormSchema> = {
+			const jsonPayload: SecretFormSchema = {
 				secretIdHash,
 				meta: encryptedMeta,
 				content: encryptedContent,
