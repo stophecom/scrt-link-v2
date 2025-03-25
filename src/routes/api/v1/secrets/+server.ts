@@ -59,5 +59,14 @@ export const POST: RequestHandler = async ({ request }) => {
 		secretRequest: validation.data
 	});
 
-	return json({ receiptId, expiresIn });
+	return json(
+		{ receiptId, expiresIn },
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods': 'POST, OPTIONS',
+				'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Checksum'
+			}
+		}
+	);
 };
