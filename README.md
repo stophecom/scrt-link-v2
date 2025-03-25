@@ -207,7 +207,7 @@ Usage in Node.js / Browser:
 		.createSecret('https://example.com', {
 			secretType: 'redirect' // text | redirect | neogram
 			password: 'foobar123'
-			expiresIn: 123,
+			expiresIn: 86400000,
 			locale: 'de',
 		})
 		.then((response) => {
@@ -220,7 +220,7 @@ Example response:
 
 ```json
 {
-	"secretLink": "http://localhost:5173/de/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
+	"secretLink": "https://scrt.link/de/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
 	"receiptId": "D0waygL3",
 	"expiresIn": 86400000
 }
