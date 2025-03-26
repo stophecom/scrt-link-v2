@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import prettyBytes from 'pretty-bytes';
 
-import { getLocale, type Locale } from '$lib/paraglide/runtime';
+import { getLocale, type Locale, localizeHref } from '$lib/paraglide/runtime';
 
 export const DEFAULT_LOCALE = 'en';
 
@@ -22,15 +22,14 @@ export const formatCurrency = (
 
 export const formatNumber = (amount: number) => new Intl.NumberFormat(getLocale()).format(amount);
 
-export const getLocalizedUrl = (location: string | URL, locale: string) => {
-	const path = location === '/' ? '' : location; // Remove trailing slash for home path
-	return locale === DEFAULT_LOCALE ? path : `/${locale}${path}`;
+export const getLocalizedUrl = (location: string, locale: string) => {
+	return localizeHref(location, { locale });
 };
 
 type CustomRedirect = typeof redirect;
 export const redirectLocalized: CustomRedirect = (status, location) => {
 	const locale = getLocale();
-	return redirect(status, getLocalizedUrl(location, locale));
+	return redirect(status, getLocalizedUrl(location as string, locale));
 };
 
 export const getAbsoluteLocalizedUrl = (baseUrl: string, location: string, locale?: Locale) => {
