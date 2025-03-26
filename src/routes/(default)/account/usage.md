@@ -9,7 +9,7 @@ The client module provides a simple and convenient way to interact with the scrt
 	import { scrtLink } from 'https://scrt.link/api/v1/client-module';
 
 	// Instantiate client with API key.
-	const client = scrtLink('ak_NcOWw69xw7XDjMK6QSYrw4LDlMOKYMK2F8Oqw4hoeMKiwrk5FcOLY1pqwqscdcOQ');
+	const client = scrtLink('<your-api-key>');
 
 	// Basic usage
 	client.createSecret('Some confidential information…').then(console.log);
@@ -33,7 +33,7 @@ Example response:
 	import { scrtLink } from 'https://scrt.link/api/v1/client-module';
 
 	// Instantiate client with API key.
-	const client = scrtLink('ak_NcOWw69xw7XDjMK6QSYrw4LDlMOKYMK2F8Oqw4hoeMKiwrk5FcOLY1pqwqscdcOQ');
+	const client = scrtLink('<your-api-key>');
 
 	// Example with all options
 	client
