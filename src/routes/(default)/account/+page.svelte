@@ -25,6 +25,7 @@
 
 	import type { LayoutServerData } from '../../$types';
 	import type { PageServerData } from './$types';
+	import usageMarkdown from './usage.md?raw';
 
 	let { data }: { data: PageServerData & LayoutServerData } = $props();
 
@@ -83,17 +84,6 @@
 		</Card>
 	{/if}
 
-	<Card class="mb-6" title={m.vivid_house_flea_zap()} description={m.wacky_key_vole_roam()}>
-		<SettingsForm {user} form={data.settingsForm} />
-	</Card>
-
-	<Card class="mb-6" title={m.shy_smug_crow_sing()} description={m.left_patchy_piranha_foster()}>
-		<div class="mb-2">
-			<ThemeForm form={data.themeForm} />
-		</div>
-		<DarkModeSwitcher variant="outline" />
-	</Card>
-
 	<Card class="mb-6" title={m.novel_proud_anaconda_zoom()}>
 		<Tooltip.Root>
 			<Tooltip.Trigger>
@@ -134,30 +124,56 @@
 			>
 		</div>
 	</Card>
-	{#if planLimits.apiAccess}
-		<Card class="mb-6" title={'API keys'}>
-			{#each data.apiKeys as item}
-				<div class="mb-3 grid grid-cols-[100px_1fr_min-content_min-content] gap-2 overflow-hidden">
-					<div
-						class="max-w-full items-center justify-center self-center justify-self-center truncate text-sm"
-					>
-						{item.description}
-					</div>
-					<Input type="text" value={item.key} disabled />
-					<CopyButton variant="outline" text={item.key}></CopyButton>
 
-					<form class="flex justify-center" method="post" use:enhance action="?/revokeAPIToken">
-						<input type="hidden" name="keyId" value={item.id} />
-						<Button type="submit" variant="ghost" class="text-destructive"
-							><Trash class="me-2 h-4 w-4" />{m.tense_spicy_jannes_hug()}</Button
+	<Card class="mb-6" title={m.vivid_house_flea_zap()} description={m.wacky_key_vole_roam()}>
+		<SettingsForm {user} form={data.settingsForm} />
+	</Card>
+
+	<Card class="mb-6" title={m.shy_smug_crow_sing()} description={m.left_patchy_piranha_foster()}>
+		<div class="mb-2">
+			<ThemeForm form={data.themeForm} />
+		</div>
+		<DarkModeSwitcher variant="outline" />
+	</Card>
+
+	{#if planLimits.apiAccess}
+		<Card
+			class="mb-6"
+			title={m.super_funny_jackal_pause()}
+			description={m.patchy_swift_fish_cuddle()}
+		>
+			<h3 class="mt-6 text-xl font-semibold">{m.actual_keen_rooster_find()}</h3>
+			<ApiTokenForm {user} form={data.apiKeyForm} />
+
+			{#if data.apiKeys.length}
+				<h3 class="mt-6 mb-2 text-xl font-semibold">{m.lost_slimy_pelican_achieve()}</h3>
+				{#each data.apiKeys as item}
+					<div
+						class="bg-background/60 border-border mb-3 grid grid-cols-[100px_1fr] gap-2 overflow-hidden border p-2 px-4 sm:grid-cols-[100px_1fr_min-content_min-content]"
+					>
+						<div
+							class="max-w-full items-center justify-center self-center justify-self-start truncate text-sm"
 						>
-					</form>
-				</div>
-			{/each}
+							{item.description}
+						</div>
+						<Input type="text" value={item.key} disabled />
+						<div class="col-span-2 flex justify-end">
+							<CopyButton variant="ghost" text={item.key}></CopyButton>
+
+							<form class="flex justify-center" method="post" use:enhance action="?/revokeAPIToken">
+								<input type="hidden" name="keyId" value={item.id} />
+								<Button type="submit" variant="ghost" class="text-destructive"
+									><Trash class="me-2 h-4 w-4" />{m.tense_spicy_jannes_hug()}</Button
+								>
+							</form>
+						</div>
+					</div>
+				{/each}
+			{/if}
 
 			<Separator class="my-6" />
 
-			<ApiTokenForm {user} form={data.apiKeyForm} />
+			<Markdown markdown={usageMarkdown} format />
 		</Card>
 	{/if}
 
