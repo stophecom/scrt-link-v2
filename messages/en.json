@@ -291,7 +291,7 @@
 	"lost_mellow_oryx_bask": "We use this information solely to provide you with a personalized experience.",
 	"dizzy_light_pigeon_animate": "The primary email address has been verified. It can't be changed.",
 	"mild_noble_orangutan_compose": "Email:",
-	"good_wacky_alligator_dare": "change",
+	"good_wacky_alligator_dare": "manage",
 	"hour_royal_moose_kiss": "You can use an email address different from your primary one.",
 	"agent_smart_dragonfly_dream": "All end-to-end encrypted",
 	"quick_sweet_angelfish_lend": "View all plans",
@@ -319,7 +319,7 @@
 	"minor_noble_cowfish_relish": "Name must contain at least {number} characters.",
 	"brave_gross_cougar_gulp": "Message must contain at least {number} characters.'",
 	"soft_proof_mink_pinch": "Message must contain at least {number} characters.",
-	"weird_ok_sparrow_praise": "My current plan:",
+	"weird_ok_sparrow_praise": "Subscription:",
 	"bad_white_baboon_zap": "Terms Of Service",
 	"strong_left_lynx_absorb": "Tl;dr: Pretty much standard.",
 	"pretty_low_dove_transform": "Acceptable Use Policy",
@@ -377,6 +377,5 @@
 	"patchy_swift_fish_cuddle": "Use the API to programmatically create secrets — right from your own application.",
 	"super_funny_jackal_pause": "API",
 	"aloof_such_mare_dance": "edit",
-	"spry_every_kangaroo_flip": "Edit name",
-	"fun_petty_goose_breathe": "Anonymous"
+	"spry_every_kangaroo_flip": "Edit name"
 }

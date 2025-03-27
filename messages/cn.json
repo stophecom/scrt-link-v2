@@ -291,7 +291,7 @@
 	"lost_mellow_oryx_bask": "我们仅使用此信息为您提供个性化体验。",
 	"dizzy_light_pigeon_animate": "主电子邮件地址已验证，无法更改。",
 	"mild_noble_orangutan_compose": "电子邮件：",
-	"good_wacky_alligator_dare": "更改",
+	"good_wacky_alligator_dare": "管理",
 	"hour_royal_moose_kiss": "您可以使用与主邮箱不同的电子邮件地址。",
 	"agent_smart_dragonfly_dream": "所有内容均为端到端加密",
 	"quick_sweet_angelfish_lend": "查看所有套餐",
@@ -319,7 +319,7 @@
 	"minor_noble_cowfish_relish": "名称必须至少包含 {number} 个字符。",
 	"brave_gross_cougar_gulp": "消息必须至少包含 {number} 个字符。",
 	"soft_proof_mink_pinch": "消息必须至少包含 {number} 个字符。",
-	"weird_ok_sparrow_praise": "我的当前套餐：",
+	"weird_ok_sparrow_praise": "订阅 :",
 	"bad_white_baboon_zap": "服务条款",
 	"strong_left_lynx_absorb": "简要概述：基本标准。",
 	"pretty_low_dove_transform": "可接受使用政策",
@@ -369,6 +369,5 @@
 	"real_fluffy_clownfish_fetch": "我的 API 密钥",
 	"sleek_heavy_shad_exhale": "API 密钥已保存",
 	"cool_white_frog_scold": "API 密钥已撤销！",
-	"blue_jumpy_shell_climb": "API 访问",
-	"fun_petty_goose_breathe": "匿名"
+	"blue_jumpy_shell_climb": "API 访问"
 }
