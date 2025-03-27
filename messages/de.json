@@ -291,7 +291,7 @@
 	"lost_mellow_oryx_bask": "Wir verwenden diese Informationen ausschließlich, um dir eine personalisierte Erfahrung zu bieten.",
 	"dizzy_light_pigeon_animate": "Die primäre E-Mail-Adresse wurde bestätigt. Sie kann nicht geändert werden.",
 	"mild_noble_orangutan_compose": "E-Mail:",
-	"good_wacky_alligator_dare": "verwalten",
+	"good_wacky_alligator_dare": "ändern",
 	"hour_royal_moose_kiss": "Du kannst eine andere E-Mail-Adresse als deine primäre verwenden.",
 	"agent_smart_dragonfly_dream": "Alles Ende-zu-Ende verschlüsselt",
 	"quick_sweet_angelfish_lend": "Alle Pläne anzeigen",
@@ -319,7 +319,7 @@
 	"minor_noble_cowfish_relish": "Der Name muss mindestens {number} Zeichen enthalten.",
 	"brave_gross_cougar_gulp": "Die Nachricht muss mindestens {number} Zeichen enthalten.",
 	"soft_proof_mink_pinch": "Die Nachricht muss mindestens {number} Zeichen enthalten.",
-	"weird_ok_sparrow_praise": "Abonnement:",
+	"weird_ok_sparrow_praise": "Mein aktueller Plan:",
 	"bad_white_baboon_zap": "Nutzungsbedingungen",
 	"strong_left_lynx_absorb": "Tl;dr: Ziemlich standardmäßig.",
 	"pretty_low_dove_transform": "Akzeptable Nutzungsrichtlinien",
@@ -371,5 +371,12 @@
 	"real_fluffy_clownfish_fetch": "Mein API-Schlüssel",
 	"sleek_heavy_shad_exhale": "API-Schlüssel gespeichert",
 	"cool_white_frog_scold": "API-Schlüssel widerrufen!",
-	"blue_jumpy_shell_climb": "API-Zugang"
+	"blue_jumpy_shell_climb": "API-Zugang",
+	"actual_keen_rooster_find": "API-Schlüssel erstellen",
+	"lost_slimy_pelican_achieve": "API-Schlüssel",
+	"patchy_swift_fish_cuddle": "Verwenden Sie die API, um programmgesteuert Geheimnisse zu erstellen – direkt aus Ihrer eigenen Anwendung.",
+	"super_funny_jackal_pause": "API",
+	"aloof_such_mare_dance": "bearbeiten",
+	"spry_every_kangaroo_flip": "Namen bearbeiten",
+	"fun_petty_goose_breathe": "Anonym"
 }

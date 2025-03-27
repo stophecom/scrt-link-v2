@@ -291,7 +291,7 @@
 	"lost_mellow_oryx_bask": "Usamos esta información únicamente para brindarte una experiencia personalizada.",
 	"dizzy_light_pigeon_animate": "La dirección de correo electrónico principal ha sido verificada. No se puede cambiar.",
 	"mild_noble_orangutan_compose": "Correo electrónico:",
-	"good_wacky_alligator_dare": "administrar",
+	"good_wacky_alligator_dare": "cambiar",
 	"hour_royal_moose_kiss": "Puedes usar una dirección de correo electrónico diferente a la principal.",
 	"agent_smart_dragonfly_dream": "Todo cifrado de extremo a extremo",
 	"quick_sweet_angelfish_lend": "Ver todos los planes",
@@ -319,7 +319,7 @@
 	"minor_noble_cowfish_relish": "El nombre debe contener al menos {number} caracteres.",
 	"brave_gross_cougar_gulp": "El mensaje debe contener al menos {number} caracteres.",
 	"soft_proof_mink_pinch": "El mensaje debe contener al menos {number} caracteres.",
-	"weird_ok_sparrow_praise": "Suscripción:",
+	"weird_ok_sparrow_praise": "Mi plan actual:",
 	"bad_white_baboon_zap": "Términos del servicio",
 	"strong_left_lynx_absorb": "Resumen: Bastante estándar.",
 	"pretty_low_dove_transform": "Política de uso aceptable",
@@ -371,5 +371,12 @@
 	"real_fluffy_clownfish_fetch": "Mi clave API",
 	"sleek_heavy_shad_exhale": "Clave API guardada",
 	"cool_white_frog_scold": "¡Clave API revocada!",
-	"blue_jumpy_shell_climb": "Acceso a la API"
+	"blue_jumpy_shell_climb": "Acceso a la API",
+	"actual_keen_rooster_find": "Crear una clave API",
+	"lost_slimy_pelican_achieve": "Claves API",
+	"patchy_swift_fish_cuddle": "Utilice la API para crear secretos mediante programación, directamente desde su propia aplicación.",
+	"super_funny_jackal_pause": "API",
+	"aloof_such_mare_dance": "editar",
+	"spry_every_kangaroo_flip": "Editar nombre",
+	"fun_petty_goose_breathe": "Anónimo"
 }

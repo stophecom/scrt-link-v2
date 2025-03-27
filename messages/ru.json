@@ -291,7 +291,7 @@
 	"lost_mellow_oryx_bask": "Мы используем эту информацию исключительно для персонализации вашего опыта.",
 	"dizzy_light_pigeon_animate": "Основной адрес электронной почты подтвержден. Его нельзя изменить.",
 	"mild_noble_orangutan_compose": "Электронная почта:",
-	"good_wacky_alligator_dare": "управлять",
+	"good_wacky_alligator_dare": "изменить",
 	"hour_royal_moose_kiss": "Вы можете использовать другой адрес электронной почты, отличный от основного.",
 	"agent_smart_dragonfly_dream": "Полностью зашифровано сквозным шифрованием",
 	"quick_sweet_angelfish_lend": "Посмотреть все тарифы",
@@ -319,7 +319,7 @@
 	"minor_noble_cowfish_relish": "Имя должно содержать не менее {number} символов.",
 	"brave_gross_cougar_gulp": "Сообщение должно содержать не менее {number} символов.",
 	"soft_proof_mink_pinch": "Сообщение должно содержать не менее {number} символов.",
-	"weird_ok_sparrow_praise": "Подписка:",
+	"weird_ok_sparrow_praise": "Мой текущий план:",
 	"bad_white_baboon_zap": "Условия обслуживания",
 	"strong_left_lynx_absorb": "Кратко: Стандартные условия.",
 	"pretty_low_dove_transform": "Политика допустимого использования",
@@ -371,5 +371,12 @@
 	"real_fluffy_clownfish_fetch": "Мой API-ключ",
 	"sleek_heavy_shad_exhale": "API-ключ сохранён",
 	"cool_white_frog_scold": "API-ключ отозван!",
-	"blue_jumpy_shell_climb": "Доступ к API"
+	"blue_jumpy_shell_climb": "Доступ к API",
+	"actual_keen_rooster_find": "Создать API-ключ",
+	"lost_slimy_pelican_achieve": "API-ключи",
+	"patchy_swift_fish_cuddle": "Используйте API для программного создания секретов — прямо из вашего собственного приложения.",
+	"super_funny_jackal_pause": "API",
+	"aloof_such_mare_dance": "редактировать",
+	"spry_every_kangaroo_flip": "Изменить имя",
+	"fun_petty_goose_breathe": "Анонимный"
 }
