@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type FormOptions, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
@@ -10,16 +10,18 @@
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
-		form: SuperValidated<Infer<UserFormSchema>>;
+		form: SuperValidated<UserFormSchema>;
+		onSubmit?: FormOptions['onSubmit'];
 	};
 
-	let { form: formProp }: Props = $props();
+	let { form: formProp, onSubmit = $bindable() }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zodClient(userFormSchema()),
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates
 		invalidateAll: 'force',
+		onSubmit: onSubmit,
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
