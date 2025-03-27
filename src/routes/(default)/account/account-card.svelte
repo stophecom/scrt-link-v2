@@ -28,7 +28,7 @@
 <Card class="mb-6" title={m.novel_proud_anaconda_zoom()}>
 	<div class="flex items-center py-1">
 		{@render renderLabel('Name:')}
-		{form.data.name}
+		{form.data.name || 'Anonymous'}
 		<Dialog.Root bind:open>
 			(<Dialog.Trigger class="inline-block underline">{m.aloof_such_mare_dance()}</Dialog.Trigger>)
 			<Dialog.Content class="sm:max-w-[425px]">
