@@ -33,7 +33,11 @@ export const user = pgTable('user', {
 	role: role().default(Role.USER),
 	subscriptionTier: subscriptionTier().default(TierOptions.CONFIDENTIAL),
 	preferences: jsonb('preferences'),
-	emailVerified: boolean('email_verified')
+	emailVerified: boolean('email_verified'),
+	createdAt: timestamp('created_att', { mode: 'date' }).defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date' })
+		.notNull()
+		.$onUpdate(() => new Date())
 });
 
 // Check secretSettings for reference
