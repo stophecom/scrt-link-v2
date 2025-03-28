@@ -58,6 +58,27 @@ export const userSettings = pgTable('user_settings', {
 		.references(() => user.id, { onDelete: 'cascade' })
 });
 
+export const whiteLabelSite = pgTable('white_label_site', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	customDomain: text('custom_domain').unique(),
+	name: text('name'),
+	locale: text('locale'),
+	title: text('name').default('Share a secret'),
+	lead: text('lead').default('…with a link that only works one time and then self-destructs.'),
+	theme: jsonb('theme'),
+	logo: text('logo').default(
+		'https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png'
+	),
+	createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date' })
+		.notNull()
+		.$onUpdate(() => new Date()),
+	userId: uuid('user_id')
+		.notNull()
+		.unique()
+		.references(() => user.id, { onDelete: 'cascade' })
+});
+
 export const session = pgTable('session', {
 	id: text('id').primaryKey(),
 	userId: uuid('user_id')
