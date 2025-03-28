@@ -32,5 +32,8 @@ src/lib/paraglide
 
 temp.*
 
+# Backups
+/backups
+
 # Client module
 static/client-module.js
