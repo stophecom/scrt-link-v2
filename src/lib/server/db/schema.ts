@@ -13,14 +13,14 @@ import {
 
 import { ReadReceiptOptions, Role, TierOptions } from '../../data/enums';
 
-const subscriptionTier = pgEnum('subscription_tier', [
+export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,
 	TierOptions.SECRET,
 	TierOptions.TOP_SECRET,
 	TierOptions.SECRET_SERVICE
 ]);
 
-const role = pgEnum('role', [Role.USER, Role.ADMIN]);
+export const role = pgEnum('role', [Role.USER, Role.ADMIN]);
 
 export const user = pgTable('user', {
 	id: uuid('id').defaultRandom().primaryKey().unique(),
@@ -37,7 +37,7 @@ export const user = pgTable('user', {
 });
 
 // Check secretSettings for reference
-const readReceipt = pgEnum('read_receipt', [
+export const readReceipt = pgEnum('read_receipt', [
 	ReadReceiptOptions.NONE,
 	ReadReceiptOptions.EMAIL,
 	ReadReceiptOptions.NTFY
@@ -92,7 +92,7 @@ export const apiKey = pgTable('api_key', {
 	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
 });
 
-const scope = pgEnum('scope', ['global', 'user']);
+export const scope = pgEnum('scope', ['global', 'user']);
 export const stats = pgTable('stats', {
 	id: serial('id').primaryKey(),
 	scope: scope(),
