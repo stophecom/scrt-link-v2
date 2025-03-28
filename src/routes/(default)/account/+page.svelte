@@ -15,6 +15,7 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import { Role } from '$lib/data/enums';
 	import { getPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -73,6 +74,10 @@
 				>
 			</div>
 		</Card>
+	{/if}
+
+	{#if user.role === Role.ADMIN}
+		<Button variant="outline" class="mb-6" href={localizeHref('/admin')}>Admin Panel</Button>
 	{/if}
 
 	<AccountCard {user} form={data.userForm} />

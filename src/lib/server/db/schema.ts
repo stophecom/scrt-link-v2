@@ -121,7 +121,7 @@ export const scope = pgEnum('scope', ['global', 'user']);
 export const stats = pgTable('stats', {
 	id: serial('id').primaryKey(),
 	scope: scope(),
-	totalSecrets: integer().default(1),
+	totalSecrets: integer('total_secrets').default(1),
 	userId: uuid('user_id')
 		.unique()
 		.references(() => user.id, { onDelete: 'cascade' })
