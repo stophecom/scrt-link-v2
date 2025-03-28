@@ -10,8 +10,10 @@
 <Page title="Admin" lead="Insights and Playground">
 	<Card title="Top Users" description="Users with the most created secrets">
 		{#each data.userStats as item}
-			{item.user?.email}:
-			{item.stats.totalSecrets}
+			<div>
+				{item.user?.email}:
+				{item.stats.totalSecrets}
+			</div>
 		{/each}
 	</Card>
 </Page>
