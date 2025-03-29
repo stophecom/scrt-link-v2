@@ -5,13 +5,15 @@ import {
 	revokeAPIToken,
 	saveSettings,
 	saveTheme,
-	saveUser
+	saveUser,
+	saveWhiteLabelSite
 } from '$lib/server/form/actions';
 import {
 	apiKeyFormValidator,
 	settingsFormValidator,
 	themeFormValidator,
-	userFormValidator
+	userFormValidator,
+	whiteLabelFormValidator
 } from '$lib/server/form/validators';
 import { getActiveApiKeys } from '$lib/server/user';
 
@@ -32,7 +34,8 @@ export const load: PageServerLoad = async (event) => {
 		settingsForm: await settingsFormValidator(user),
 		userForm: await userFormValidator(user),
 		apiKeys: apiKeys,
-		apiKeyForm: await apiKeyFormValidator()
+		apiKeyForm: await apiKeyFormValidator(),
+		whiteLabelForm: await whiteLabelFormValidator(user)
 	};
 };
 
@@ -41,6 +44,7 @@ export const actions: Actions = {
 	saveTheme: saveTheme,
 	saveSettings: saveSettings,
 	saveUser: saveUser,
+	saveWhiteLabelSite: saveWhiteLabelSite,
 	createAPIToken: createAPIToken,
 	revokeAPIToken: revokeAPIToken,
 	logout: logout

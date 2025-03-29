@@ -5,6 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { MAX_API_KEYS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
+import { getPlanLimits } from '$lib/data/plans';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
@@ -14,7 +15,8 @@ import {
 	apiKey,
 	emailVerificationRequest,
 	user as userSchema,
-	userSettings
+	userSettings,
+	whiteLabelSite
 } from '$lib/server/db/schema';
 import {
 	apiKeyFormSchema,
@@ -25,7 +27,8 @@ import {
 	settingsFormSchema,
 	signInFormSchema,
 	themeFormSchema,
-	userFormSchema
+	userFormSchema,
+	whiteLabelSiteSchema
 } from '$lib/validators/formSchemas';
 
 import {
@@ -569,4 +572,65 @@ export const revokeAPIToken: Action = async (event) => {
 		status: 'success',
 		title: m.cool_white_frog_scold()
 	});
+};
+
+export const saveWhiteLabelSite: Action = async (event) => {
+	const form = await superValidate(event.request, zod(whiteLabelSiteSchema()));
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	const planLimits = getPlanLimits(user?.subscriptionTier);
+
+	if (!planLimits.whiteLabel) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Not allowed'
+			},
+			{ status: 405 }
+		);
+	}
+
+	const { themeColor, locale, customDomain, name, title, lead, logo } = form.data;
+
+	await db
+		.insert(whiteLabelSite)
+		.values({
+			locale: locale,
+			customDomain,
+			name,
+			title,
+			lead,
+			logo,
+			userId: user.id,
+			theme: { themeColor: themeColor }
+		})
+
+		.onConflictDoUpdate({
+			target: whiteLabelSite.userId,
+			set: {
+				locale,
+				customDomain,
+				name,
+				title,
+				lead,
+				logo,
+				theme: { themeColor: themeColor }
+			}
+		});
+
+	return message(form, {
+		status: 'success',
+		description: 'Successfully saved.'
+	});
+
+	return { form };
 };

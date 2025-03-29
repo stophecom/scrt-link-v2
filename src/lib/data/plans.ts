@@ -17,7 +17,8 @@ const defaultLimits = {
 	passwordAllowed: false,
 	readReceiptsAllowed: false,
 	expirationOptionsAllowed: false,
-	expirationOptionsExtended: false
+	expirationOptionsExtended: false,
+	whiteLabel: false
 };
 
 const plans = () => [
@@ -41,7 +42,8 @@ const plans = () => [
 			passwordAllowed: false,
 			readReceiptsAllowed: false,
 			expirationOptionsAllowed: false,
-			expirationOptionsExtended: false
+			expirationOptionsExtended: false,
+			whiteLabel: false
 		}
 	},
 	{
@@ -68,7 +70,8 @@ const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptionsAllowed: true,
-			expirationOptionsExtended: false
+			expirationOptionsExtended: false,
+			whiteLabel: false
 		}
 	},
 	{
@@ -91,7 +94,33 @@ const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptionsAllowed: true,
-			expirationOptionsExtended: true
+			expirationOptionsExtended: true,
+			whiteLabel: false
+		}
+	},
+	{
+		name: TierOptions.SECRET_SERVICE,
+		icon: Rocket,
+		title: 'Everything in Top Secret, as your own service.',
+		promotion: 'For IT-businesses, enterprise customer support teams',
+		contents: [
+			'Use your own domain',
+			'Your own logo',
+			'Customize experience',
+			m.new_still_dingo_create({ limit: formatBytes(1 * GB) })
+		],
+		limits: {
+			[SecretType.TEXT]: 100_000,
+			[SecretType.FILE]: 1 * GB,
+			[SecretType.REDIRECT]: true,
+			[SecretType.SNAP]: true,
+			[SecretType.NEOGRAM]: true,
+			apiAccess: true,
+			passwordAllowed: true,
+			readReceiptsAllowed: true,
+			expirationOptionsAllowed: true,
+			expirationOptionsExtended: true,
+			whiteLabel: true
 		}
 	}
 ];

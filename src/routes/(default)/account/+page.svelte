@@ -24,6 +24,7 @@
 	import type { PageServerData } from './$types';
 	import AccountCard from './account-card.svelte';
 	import usageMarkdown from './usage.md?raw';
+	import WhiteLabelCard from './white-label-card.svelte';
 
 	let { data }: { data: PageServerData & LayoutServerData } = $props();
 
@@ -92,6 +93,10 @@
 		</div>
 		<DarkModeSwitcher variant="outline" />
 	</Card>
+
+	{#if planLimits.whiteLabel}
+		<WhiteLabelCard {user} form={data.whiteLabelForm} />
+	{/if}
 
 	{#if planLimits.apiAccess}
 		<Card

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { pemFooter, pemHeader } from '$lib/client/web-crypto';
+import { getSupportedLocales } from '$lib/data/supportedLocales';
 import { m } from '$lib/paraglide/messages.js';
 
 import { ReadReceiptOptions, ThemeOptions } from '../data/enums';
@@ -90,6 +91,17 @@ export const userFormSchema = () =>
 			.max(30)
 	});
 
+export const whiteLabelSiteSchema = () =>
+	z.object({
+		customDomain: z.string().max(30),
+		locale: z.enum(getSupportedLocales() as [string, ...string[]]),
+		name: z.string().max(30),
+		title: z.string().max(50),
+		lead: z.string().max(150),
+		themeColor: z.string(),
+		logo: z.string()
+	});
+
 export const settingsFormSchema = () =>
 	z
 		.object({
@@ -161,3 +173,4 @@ export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;
 export type RevealSecretFormSchema = ReturnType<typeof revealSecretFormSchema>;
 export type ContactFormSchema = ReturnType<typeof contactFormSchema>;
 export type ApiTokenFormSchema = ReturnType<typeof apiKeyFormSchema>;
+export type WhiteLabelSiteSchema = z.infer<ReturnType<typeof whiteLabelSiteSchema>>;

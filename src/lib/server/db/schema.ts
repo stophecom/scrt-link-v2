@@ -63,7 +63,7 @@ export const whiteLabelSite = pgTable('white_label_site', {
 	customDomain: text('custom_domain').unique(),
 	name: text('name'),
 	locale: text('locale'),
-	title: text('name').default('Share a secret'),
+	title: text('title').default('Share a secret'),
 	lead: text('lead').default('…with a link that only works one time and then self-destructs.'),
 	theme: jsonb('theme'),
 	logo: text('logo').default(
