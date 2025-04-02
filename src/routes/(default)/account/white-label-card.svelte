@@ -5,11 +5,9 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 	import type { WhiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
-	let { user, form }: { user: App.Locals['user']; form: SuperValidated<WhiteLabelSiteSchema> } =
-		$props();
+	let { form }: { form: SuperValidated<WhiteLabelSiteSchema> } = $props();
 </script>
 
-{user?.subscriptionTier}
 <Card
 	class="mb-6"
 	title="White-Label"
