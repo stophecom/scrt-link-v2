@@ -26,6 +26,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.0.6
         version: 4.0.6(vite@5.4.11(@types/node@22.13.0)(lightningcss@1.29.1))
+      '@tanstack/svelte-query':
+        specifier: ^5.71.1
+        version: 5.71.1(svelte@5.20.5)
       arctic:
         specifier: ^2.3.3
         version: 2.3.3
@@ -1844,6 +1847,14 @@ packages:
     resolution: {integrity: sha512-O25vZ/URWbZ2JHdk2o8wH7jOKqEGCsYmX3GwGmYS5DjE4X3mpf93a72Rn7VRnefldNauBzr5z2hfZptmBNtTUQ==}
     peerDependencies:
       vite: ^5.2.0 || ^6
+
+  '@tanstack/query-core@5.71.1':
+    resolution: {integrity: sha512-4+ZswCHOfJX+ikhXNoocamTUmJcHtB+Ljjz/oJkC7/eKB5IrzEwR4vEwZUENiPi+wISucJHR5TUbuuJ26w3kdQ==}
+
+  '@tanstack/svelte-query@5.71.1':
+    resolution: {integrity: sha512-GcNoy2lyyqRzKroMmioSraGjt3sANnGjRA9bR8Bj3pg5DSDUqzqulvPgEK4pu68vNLBxvxBE7xrQS8Mz1rMnpQ==}
+    peerDependencies:
+      svelte: ^3.54.0 || ^4.0.0 || ^5.0.0
 
   '@testing-library/dom@10.4.0':
     resolution: {integrity: sha512-pemlzrSESWbdAloYml3bAJMEfNh1Z7EduzqPKprCH5S341frlpYnUEW0H72dLxa6IsYr+mPno20GiSm+h9dEdQ==}
@@ -6216,6 +6227,13 @@ snapshots:
       lightningcss: 1.29.1
       tailwindcss: 4.0.6
       vite: 5.4.11(@types/node@22.13.0)(lightningcss@1.29.1)
+
+  '@tanstack/query-core@5.71.1': {}
+
+  '@tanstack/svelte-query@5.71.1(svelte@5.20.5)':
+    dependencies:
+      '@tanstack/query-core': 5.71.1
+      svelte: 5.20.5
 
   '@testing-library/dom@10.4.0':
     dependencies:

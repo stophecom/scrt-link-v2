@@ -7,6 +7,7 @@ import { MAX_API_KEYS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { getPlanLimits } from '$lib/data/plans';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
+import { addDomainToVercel, removeDomainFromVercelProject, validDomainRegex } from '$lib/domains';
 import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import * as auth from '$lib/server/auth';
@@ -601,6 +602,36 @@ export const saveWhiteLabelSite: Action = async (event) => {
 
 	const { themeColor, locale, customDomain, name, title, lead, logo } = form.data;
 
+	if (!validDomainRegex.test(customDomain)) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Invalid domain',
+				description: `The domain you entered doesn’t appear to be valid. Please provide a valid APEX domain or subdomain that you own. Example: proton.me`
+			},
+			{ status: 405 }
+		);
+	}
+
+	try {
+		const [existing] = await db
+			.select()
+			.from(whiteLabelSite)
+			.where(eq(whiteLabelSite.userId, user.id));
+
+		// If the domain changed, we remove the existing one from vercel
+		if (existing.customDomain && existing.customDomain !== customDomain) {
+			await removeDomainFromVercelProject(existing.customDomain);
+		}
+
+		// Adding domain to vercel
+		const response = await addDomainToVercel(customDomain);
+		console.log(JSON.stringify(response));
+	} catch (e) {
+		console.error(e);
+	}
+
 	await db
 		.insert(whiteLabelSite)
 		.values({
@@ -631,6 +662,4 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		status: 'success',
 		description: 'Successfully saved.'
 	});
-
-	return { form };
 };
