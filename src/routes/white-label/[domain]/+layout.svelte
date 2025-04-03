@@ -1,0 +1,31 @@
+<script lang="ts">
+	import { ModeWatcher } from 'mode-watcher';
+	import { type Snippet } from 'svelte';
+
+	import NavigationProgress from '$lib/components/elements/navigation-progress.svelte';
+	import { appName } from '$lib/data/app';
+	import { getLocale } from '$lib/paraglide/runtime';
+
+	import type { LayoutData } from './$types';
+
+	let { children }: { data: LayoutData; children: Snippet } = $props();
+</script>
+
+<svelte:head>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+	<link rel="manifest" href="/manifest.json" />
+	<meta property="og:locale" content={getLocale()} />
+	<meta property="og:site_name" content={appName} />
+	<meta name="msapplication-TileColor" content="#da532c" />
+	<meta name="theme-color" content="#ffffff" />
+
+	<meta name="robots" content="noindex" />
+</svelte:head>
+
+<NavigationProgress />
+
+{@render children()}
+
+<ModeWatcher />

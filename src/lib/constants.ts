@@ -1,5 +1,5 @@
-import { VERCEL_PROJECT_PRODUCTION_URL, VERCEL_URL } from '$env/static/private';
-import { PUBLIC_ENV } from '$env/static/public';
+import { VERCEL_URL } from '$env/static/private';
+import { PUBLIC_ENV, PUBLIC_PRODUCTION_URL } from '$env/static/public';
 
 export const getBaseUrl = () => {
 	switch (PUBLIC_ENV) {
@@ -10,7 +10,7 @@ export const getBaseUrl = () => {
 			return `https://dev.scrt.link`;
 		}
 		case 'production': {
-			return `https://${VERCEL_PROJECT_PRODUCTION_URL}`;
+			return `https://${PUBLIC_PRODUCTION_URL}`;
 		}
 		default: {
 			return `http://localhost:5173`;

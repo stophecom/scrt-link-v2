@@ -2,6 +2,7 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { createGuardHook } from 'svelte-guard';
 
+import { paraglideMiddleware } from '$lib/paraglide/server';
 import * as auth from '$lib/server/auth.js';
 
 const guards = import.meta.glob('./routes/**/-guard.*');
@@ -27,8 +28,6 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 
 	return resolve(event);
 };
-
-import { paraglideMiddleware } from '$lib/paraglide/server';
 
 // creating a handle to use the paraglide middleware
 const paraglideHandle: Handle = ({ event, resolve }) =>

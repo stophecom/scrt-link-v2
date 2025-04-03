@@ -2,7 +2,7 @@
 	import Flame from 'lucide-svelte/icons/flame';
 	import Reply from 'lucide-svelte/icons/reply';
 	import { tick } from 'svelte';
-	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
@@ -25,7 +25,7 @@
 	import type { Meta } from './secret-form.svelte';
 
 	type Props = {
-		form: SuperValidated<Infer<RevealSecretFormSchema>>;
+		form: SuperValidated<RevealSecretFormSchema>;
 		secretIdHash: string;
 		masterKey: string;
 		showPasswordInput: boolean;
