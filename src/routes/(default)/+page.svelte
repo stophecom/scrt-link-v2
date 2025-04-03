@@ -60,7 +60,7 @@
 
 <Page title={m.lucky_warm_mayfly_engage()} lead={m.aloof_quaint_snail_pave()}>
 	<div class="mb-12">
-		<CreateSecret form={data.secretForm} user={data.user} baseUrl={data.baseUrl} />
+		<CreateSecret form={data.secretForm} user={data.user} />
 	</div>
 	<Section title={m.full_minor_fireant_accept()} lead={m.dirty_bright_robin_earn()}>
 		<IntersectionObserver let:intersecting top={-100} once={true}>

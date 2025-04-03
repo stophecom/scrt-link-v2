@@ -3,12 +3,11 @@
 	import { type Snippet } from 'svelte';
 
 	import NavigationProgress from '$lib/components/elements/navigation-progress.svelte';
-	import { appName } from '$lib/data/app';
 	import { getLocale } from '$lib/paraglide/runtime';
 
 	import type { LayoutData } from './$types';
 
-	let { children }: { data: LayoutData; children: Snippet } = $props();
+	let { children, data }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
 <svelte:head>
@@ -17,7 +16,7 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 	<link rel="manifest" href="/manifest.json" />
 	<meta property="og:locale" content={getLocale()} />
-	<meta property="og:site_name" content={appName} />
+	<meta property="og:site_name" content={data.domain} />
 	<meta name="msapplication-TileColor" content="#da532c" />
 	<meta name="theme-color" content="#ffffff" />
 

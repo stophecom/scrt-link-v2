@@ -27,7 +27,6 @@
 
 	type Props = {
 		form: SecretFormProps['form'];
-		baseUrl: LayoutServerData['baseUrl'];
 		user: LayoutServerData['user'];
 		secretType?: SecretType;
 		hideUsps?: boolean;

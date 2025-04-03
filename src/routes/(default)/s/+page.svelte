@@ -1,9 +1,13 @@
 <script lang="ts">
+	import Page from '$lib/components/page/page.svelte';
 	import SPage from '$lib/components/page/s-page.svelte';
+	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 </script>
 
-<SPage form={data.form} />
+<Page title={m.each_light_mare_bump()} lead={m.warm_clean_horse_seek()}>
+	<SPage form={data.form} />
+</Page>

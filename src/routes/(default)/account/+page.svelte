@@ -95,7 +95,7 @@
 	</Card>
 
 	{#if planLimits.whiteLabel}
-		<WhiteLabelCard {user} form={data.whiteLabelForm} />
+		<WhiteLabelCard form={data.whiteLabelForm} />
 	{/if}
 
 	{#if planLimits.apiAccess}

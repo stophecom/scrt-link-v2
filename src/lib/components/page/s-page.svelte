@@ -6,10 +6,8 @@
 	import { SECRET_ID_LENGTH } from '$lib/client/constants';
 	import { sha256Hash } from '$lib/client/web-crypto';
 	import RevealSecretForm from '$lib/components/forms/reveal-secret-form.svelte';
-	import Page from '$lib/components/page/page.svelte';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import { Spinner } from '$lib/components/ui/spinner';
-	import { m } from '$lib/paraglide/messages.js';
 	import type { RevealSecretFormSchema } from '$lib/validators/formSchemas';
 
 	let isLoading = $state(true);
@@ -45,14 +43,12 @@
 	});
 </script>
 
-<Page title={m.each_light_mare_bump()} lead={m.warm_clean_horse_seek()}>
-	{#if isLoading}
-		<div class="flex min-h-48 items-center justify-center">
-			<Spinner />
-		</div>
-	{:else if error}
-		<Alert class="my-6" title="Error" variant="destructive">{error}</Alert>
-	{:else}
-		<RevealSecretForm {form} {masterKey} {secretIdHash} {showPasswordInput} />
-	{/if}
-</Page>
+{#if isLoading}
+	<div class="flex min-h-48 items-center justify-center">
+		<Spinner />
+	</div>
+{:else if error}
+	<Alert class="my-6" title="Error" variant="destructive">{error}</Alert>
+{:else}
+	<RevealSecretForm {form} {masterKey} {secretIdHash} {showPasswordInput} />
+{/if}
