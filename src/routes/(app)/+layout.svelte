@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../app.css';
+	import '../../app.css';
 
 	import { ModeWatcher } from 'mode-watcher';
 	import { onMount, type Snippet } from 'svelte';
@@ -45,6 +45,7 @@
 
 <NavigationProgress />
 
+foooeee
 {@render children()}
 
 <ModeWatcher />

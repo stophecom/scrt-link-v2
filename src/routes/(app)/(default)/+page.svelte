@@ -12,10 +12,10 @@
 	import Accordion from '$lib/components/ui/accordion';
 	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
+	import { shortFaq } from '$lib/data/faq';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	import { shortFaq } from '../../lib/data/faq';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();

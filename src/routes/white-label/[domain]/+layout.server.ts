@@ -16,13 +16,14 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 		throw error(500, `No data for ${params.domain} found.`);
 	}
 
-	const { title, lead, logo } = result;
+	const { title, lead, logo, theme } = result;
 
 	return {
 		user: locals.user,
 		domain: params.domain,
 		title,
 		lead,
-		logo
+		logo,
+		theme
 	};
 };

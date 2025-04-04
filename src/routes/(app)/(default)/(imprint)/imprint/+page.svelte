@@ -1,10 +1,9 @@
 <script lang="ts">
 	import Page from '$lib/components/page/page.svelte';
 	import Markdown from '$lib/components/ui/markdown';
+	import { legalMenu } from '$lib/data/menu';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
-
-	import { legalMenu } from '../../../../lib/data/menu';
 </script>
 
 <Page title={m.broad_green_hamster_exhale()} lead={m.solid_lofty_nuthatch_devour()}>
