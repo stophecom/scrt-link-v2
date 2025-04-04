@@ -17,7 +17,6 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	import type { LayoutServerData } from '../../../routes/$types';
 	import { getSecretTypes } from '../../data/secretSettings';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';
@@ -27,7 +26,7 @@
 
 	type Props = {
 		form: SecretFormProps['form'];
-		user: LayoutServerData['user'];
+		user: App.Locals['user'];
 		secretType?: SecretType;
 		hideUsps?: boolean;
 	};

@@ -1,17 +1,17 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import { page } from '$app/state';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	type Props = {
+		name?: string | null;
 		title: string;
 		lead?: string | null;
 		logo?: string | null;
 		children: Snippet;
 	};
 
-	let { title, lead, logo, children }: Props = $props();
+	let { name, title, lead, logo, children }: Props = $props();
 </script>
 
 <div class="container min-h-screen pt-8 pb-16">
@@ -20,13 +20,15 @@
 			{#if logo}
 				<img src={logo} alt={title} />
 			{:else}
-				{page.url.host}
+				<div class="py-2 font-bold">
+					{name}
+				</div>
 			{/if}
 		</a>
 	</div>
 
 	<h1
-		class="gradient-text font-display mb-1 text-5xl leading-tight font-extrabold text-pretty md:text-6xl"
+		class="text-primary font-display mb-1 text-5xl leading-tight font-extrabold text-pretty md:text-6xl"
 	>
 		{title}
 	</h1>

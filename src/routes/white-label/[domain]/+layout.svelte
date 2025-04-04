@@ -25,8 +25,10 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<NavigationProgress />
+<div style="--color-primary: {data.theme?.primaryColor}">
+	<NavigationProgress />
 
-{@render children()}
+	{@render children()}
 
-<ModeWatcher />
+	<ModeWatcher />
+</div>

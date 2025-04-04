@@ -7,8 +7,13 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<WhiteLabelPage title={data?.title || 'Your title'} lead={data?.lead} logo={data?.logo}>
+<WhiteLabelPage
+	name={data?.name}
+	title={data?.title || 'Your title'}
+	lead={data?.lead}
+	logo={data?.logo}
+>
 	<div class="mb-12">
-		<CreateSecret form={data.secretForm} user={data.user} />
+		<CreateSecret form={data.secretForm} user={data.user} hideUsps />
 	</div>
 </WhiteLabelPage>

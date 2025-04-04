@@ -98,7 +98,7 @@ export const whiteLabelSiteSchema = () =>
 		name: z.string().max(30),
 		title: z.string().max(50),
 		lead: z.string().max(150),
-		themeColor: z.string(),
+		primaryColor: z.string(),
 		logo: z.string()
 	});
 

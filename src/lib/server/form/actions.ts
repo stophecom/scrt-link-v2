@@ -600,7 +600,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		);
 	}
 
-	const { themeColor, locale, customDomain, name, title, lead, logo } = form.data;
+	const { primaryColor, locale, customDomain, name, title, lead, logo } = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(
@@ -642,7 +642,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			lead,
 			logo,
 			userId: user.id,
-			theme: { themeColor: themeColor }
+			theme: { primaryColor: primaryColor }
 		})
 
 		.onConflictDoUpdate({
@@ -654,7 +654,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 				title,
 				lead,
 				logo,
-				theme: { themeColor: themeColor }
+				theme: { primaryColor: primaryColor }
 			}
 		});
 

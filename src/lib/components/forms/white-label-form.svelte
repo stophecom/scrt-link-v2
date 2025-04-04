@@ -123,11 +123,11 @@
 			<Text label="Page lead" bind:value={$formData.lead} {...$constraints.lead} type="text" />
 		</Form.Field>
 
-		<Form.Field {form} name="themeColor">
+		<Form.Field {form} name="primaryColor">
 			<Text
 				label="Theme color"
-				bind:value={$formData.themeColor}
-				{...$constraints.themeColor}
+				bind:value={$formData.primaryColor}
+				{...$constraints.primaryColor}
 				type="color"
 			/>
 		</Form.Field>

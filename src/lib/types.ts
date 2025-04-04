@@ -11,6 +11,11 @@ export type BlogPostMeta = {
 	published: boolean;
 };
 
+type ColorValueHex = `#${string}`;
+export type Theme = {
+	primaryColor: ColorValueHex;
+};
+
 // Vercel Domain API
 export type DomainVerificationStatusProps =
 	| 'Valid Configuration'
