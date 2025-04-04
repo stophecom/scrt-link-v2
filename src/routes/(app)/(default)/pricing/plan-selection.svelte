@@ -13,8 +13,8 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
+	import type { Plan } from '../../../api/v1/plans/+server';
 	import type { LayoutServerData } from '../../$types';
-	import type { Plan } from '../../api/v1/plans/+server';
 	import CurrencySwitcher from './currency-switcher.svelte';
 	import PlanView from './plan.svelte';
 

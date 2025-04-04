@@ -6,7 +6,7 @@ import { getBaseUrl } from '$lib/constants';
 import { getAbsoluteLocalizedUrl } from '$lib/i18n';
 import { getActiveSubscription, getStripePortalUrl } from '$lib/server/stripe';
 
-import type { Plan } from '../../api/v1/plans/+server';
+import type { Plan } from '../../../api/v1/plans/+server';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, url, locals }) => {

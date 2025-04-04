@@ -26,7 +26,6 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { type SecretFormSchema, secretFormSchema } from '$lib/validators/formSchemas';
 
-	import type { LayoutServerData } from '../../../routes/$types';
 	import { getExpiresInOptions } from '../../data/secretSettings';
 	import UpgradeNotice from '../elements/upgrade-notice.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
@@ -38,7 +37,7 @@
 
 	export type SecretFormProps = {
 		form: SuperValidated<SecretFormSchema>;
-		user: LayoutServerData['user'];
+		user: App.Locals['user'];
 		secretType: SecretType;
 		successMessage?: string;
 		masterKey: string;
