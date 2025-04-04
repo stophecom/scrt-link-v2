@@ -60,9 +60,14 @@ export const helpMenu = () => [
 		href: '/contact',
 		label: m.early_bright_salmon_comfort()
 	},
+
 	{
 		href: '/faq',
 		label: m.few_awful_chipmunk_trust()
+	},
+	{
+		href: '/developers',
+		label: m.salty_sea_insect_fry()
 	},
 	{
 		href: githubUrl,

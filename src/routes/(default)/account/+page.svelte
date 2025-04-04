@@ -23,7 +23,6 @@
 	import type { LayoutServerData } from '../../$types';
 	import type { PageServerData } from './$types';
 	import AccountCard from './account-card.svelte';
-	import usageMarkdown from './usage.md?raw';
 	import WhiteLabelCard from './white-label-card.svelte';
 
 	let { data }: { data: PageServerData & LayoutServerData } = $props();
@@ -135,7 +134,7 @@
 
 			<Separator class="my-6" />
 
-			<Markdown markdown={usageMarkdown} format />
+			<Button variant="outline" href={localizeHref('/developers')}>Read the documentation</Button>
 		</Card>
 	{/if}
 
