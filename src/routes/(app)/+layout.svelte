@@ -45,7 +45,6 @@
 
 <NavigationProgress />
 
-foooeee
 {@render children()}
 
 <ModeWatcher />
