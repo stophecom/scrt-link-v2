@@ -378,5 +378,14 @@
 	"super_funny_jackal_pause": "API",
 	"aloof_such_mare_dance": "edit",
 	"spry_every_kangaroo_flip": "Edit name",
-	"salty_sea_insect_fry": "Developers"
+	"salty_sea_insect_fry": "Developers",
+	"dizzy_sour_liger_treasure": "Failed to add domain. Contact support.",
+	"less_dirty_jurgen_kick": "Invalid domain",
+	"zippy_ornate_pelican_greet": "The domain you entered doesn’t appear to be valid. Please provide a valid APEX domain or subdomain that you own. Example: proton.me",
+	"lime_curly_capybara_bend": "Successfully saved.",
+	"busy_even_hawk_inspire": "Not allowed",
+	"small_house_goldfish_belong": "Add a custom domain like example.com or secret.example.com.",
+	"awful_house_lizard_pick": "Pending verification",
+	"spicy_jolly_gibbon_glow": "Custom domain",
+	"blue_weird_osprey_ask": "Set the following record on your DNS provider to continue:"
 }

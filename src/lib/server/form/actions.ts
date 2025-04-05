@@ -594,7 +594,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			form,
 			{
 				status: 'error',
-				title: 'Not allowed'
+				title: m.busy_even_hawk_inspire()
 			},
 			{ status: 405 }
 		);
@@ -607,8 +607,8 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			form,
 			{
 				status: 'error',
-				title: 'Invalid domain',
-				description: `The domain you entered doesn’t appear to be valid. Please provide a valid APEX domain or subdomain that you own. Example: proton.me`
+				title: m.less_dirty_jurgen_kick(),
+				description: m.zippy_ornate_pelican_greet()
 			},
 			{ status: 405 }
 		);
@@ -627,9 +627,19 @@ export const saveWhiteLabelSite: Action = async (event) => {
 
 		// Adding domain to vercel
 		const response = await addDomainToVercel(customDomain);
-		console.log(JSON.stringify(response));
+		if (response?.error) {
+			throw Error(JSON.stringify(response));
+		}
 	} catch (e) {
 		console.error(e);
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.dizzy_sour_liger_treasure()
+			},
+			{ status: 404 }
+		);
 	}
 
 	await db
@@ -644,7 +654,6 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			userId: user.id,
 			theme: { primaryColor: primaryColor }
 		})
-
 		.onConflictDoUpdate({
 			target: whiteLabelSite.userId,
 			set: {
@@ -660,6 +669,6 @@ export const saveWhiteLabelSite: Action = async (event) => {
 
 	return message(form, {
 		status: 'success',
-		description: 'Successfully saved.'
+		description: m.lime_curly_capybara_bend()
 	});
 };

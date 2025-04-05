@@ -77,30 +77,34 @@
 
 		<Form.Field {form} name="customDomain">
 			<Text
-				label="Custom Domain"
+				label={m.spicy_jolly_gibbon_glow()}
 				bind:value={$formData.customDomain}
 				{...$constraints.customDomain}
 				type="text"
 			/>
-			<Form.Description
-				>Add a custom domain like example.com or secret.example.com.
-			</Form.Description>
+			<Form.Description>{m.small_house_goldfish_belong()}</Form.Description>
 		</Form.Field>
 
 		<Alert
 			class="relative"
-			title={$queryResult.data?.message}
-			variant={$queryResult.data?.verified ? 'success' : 'default'}
+			title={$queryResult.data?.message || m.awful_house_lizard_pick()}
+			variant={$queryResult.isError
+				? 'destructive'
+				: $queryResult.data?.verified
+					? 'success'
+					: 'default'}
 		>
 			<Spinner
 				class="absolute top-5 right-5 h-4 w-4 transition-opacity {$queryResult.isFetching
 					? 'opacity-100'
 					: 'opacity-0'}"
 			/>
-			{#if !$queryResult.data?.verified}
-				<div class="mb-4">Set the following record on your DNS provider to continue:</div>
-
+			{#if $queryResult.isError}
+				{$queryResult.error.message}
+			{:else if !$queryResult.data?.verified}
 				{#if $queryResult?.data?.instructions}
+					<div class="mb-4">{m.blue_weird_osprey_ask()}</div>
+
 					<div class="grid grid-cols-[min-content_min-content_1fr] gap-x-4">
 						<div class="font-semibold">Type</div>
 						<div class="font-semibold">Name</div>
