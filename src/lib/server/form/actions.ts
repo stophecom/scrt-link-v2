@@ -628,18 +628,22 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		// Adding domain to vercel
 		const response = await addDomainToVercel(customDomain);
 		if (response?.error) {
+			// The error code  "domain_already_in_use" is expected, We therefore exclude it from handling.
+			if (response.error?.code !== 'domain_already_in_use') {
+				return message(
+					form,
+					{
+						status: 'error',
+						title: m.dizzy_sour_liger_treasure()
+					},
+					{ status: 404 }
+				);
+			}
+
 			throw Error(JSON.stringify(response));
 		}
 	} catch (e) {
 		console.error(e);
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.dizzy_sour_liger_treasure()
-			},
-			{ status: 404 }
-		);
 	}
 
 	await db
