@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
+	import { SquareArrowUpRight } from 'lucide-svelte';
 	import { derived, writable } from 'svelte/store';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -8,15 +9,18 @@
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { m } from '$lib/paraglide/messages.js';
-	import { type WhiteLabelSiteSchema, whiteLabelSiteSchema } from '$lib/validators/formSchemas';
+	import { localizeHref } from '$lib/paraglide/runtime';
+	import { type WhiteLabelMetaSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
 	import type { DomainStatusResponse } from '../../../routes/api/v1/domain-status/[name]/+server';
 	import Alert from '../ui/alert/alert.svelte';
+	import Button from '../ui/button/button.svelte';
+	import Separator from '../ui/separator/separator.svelte';
 	import Spinner from '../ui/spinner/spinner.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
-		form: SuperValidated<WhiteLabelSiteSchema>;
+		form: SuperValidated<WhiteLabelMetaSchema>;
 	};
 
 	let { form: formProp }: Props = $props();
@@ -39,7 +43,7 @@
 	);
 
 	const form = superForm(formProp, {
-		validators: zodClient(whiteLabelSiteSchema()),
+		validators: zodClient(whiteLabelMetaSchema()),
 
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates
@@ -70,9 +74,14 @@
 </script>
 
 <FormWrapper message={$message}>
-	<form method="POST" use:enhance action="?/saveWhiteLabelSite">
+	<form method="POST" use:enhance action="?/saveWhiteLabelMeta">
 		<Form.Field {form} name="name">
-			<Text label="Brand name" bind:value={$formData.name} {...$constraints.name} type="text" />
+			<Text
+				label="App or brand name"
+				bind:value={$formData.name}
+				{...$constraints.name}
+				type="text"
+			/>
 		</Form.Field>
 
 		<Form.Field {form} name="customDomain">
@@ -119,23 +128,19 @@
 				{/if}
 			{/if}
 		</Alert>
-
-		<Form.Field {form} name="title">
-			<Text label="Page title" bind:value={$formData.title} {...$constraints.title} type="text" />
-		</Form.Field>
-		<Form.Field {form} name="lead">
-			<Text label="Page lead" bind:value={$formData.lead} {...$constraints.lead} type="text" />
-		</Form.Field>
-
-		<Form.Field {form} name="primaryColor">
-			<Text
-				label="Theme color"
-				bind:value={$formData.primaryColor}
-				{...$constraints.primaryColor}
-				type="color"
-			/>
-		</Form.Field>
-
-		<Form.Button delayed={$delayed}>{m.caring_light_tiger_taste()}</Form.Button>
+		<div class="pt-4">
+			<Form.Button delayed={$delayed}>{m.caring_light_tiger_taste()}</Form.Button>
+		</div>
+		<Separator class="my-4" />
+		<div>
+			<Button variant="outline" href={localizeHref(`/white-label/${$formData.customDomain}/edit`)}
+				>Edit theme</Button
+			>
+			{#if $queryResult.isSuccess}
+				<Button variant="outline" href={`https://${$formData.customDomain}`}
+					>Preview <SquareArrowUpRight class="ms-2 h-5 w-5" /></Button
+				>
+			{/if}
+		</div>
 	</form>
 </FormWrapper>

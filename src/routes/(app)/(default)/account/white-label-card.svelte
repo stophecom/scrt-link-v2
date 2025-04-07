@@ -3,9 +3,9 @@
 
 	import WhiteLabelForm from '$lib/components/forms/white-label-form.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
-	import type { WhiteLabelSiteSchema } from '$lib/validators/formSchemas';
+	import type { WhiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
-	let { form }: { form: SuperValidated<WhiteLabelSiteSchema> } = $props();
+	let { form }: { form: SuperValidated<WhiteLabelMetaSchema> } = $props();
 </script>
 
 <Card

@@ -91,11 +91,15 @@ export const userFormSchema = () =>
 			.max(30)
 	});
 
-export const whiteLabelSiteSchema = () =>
+export const whiteLabelMetaSchema = () =>
 	z.object({
 		customDomain: z.string().max(30),
-		locale: z.enum(getSupportedLocales() as [string, ...string[]]),
 		name: z.string().max(30),
+		locale: z.enum(getSupportedLocales() as [string, ...string[]])
+	});
+
+export const whiteLabelSiteSchema = () =>
+	z.object({
 		title: z.string().max(50),
 		lead: z.string().max(150),
 		primaryColor: z.string(),
@@ -173,4 +177,5 @@ export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;
 export type RevealSecretFormSchema = z.infer<ReturnType<typeof revealSecretFormSchema>>;
 export type ContactFormSchema = ReturnType<typeof contactFormSchema>;
 export type ApiTokenFormSchema = ReturnType<typeof apiKeyFormSchema>;
+export type WhiteLabelMetaSchema = z.infer<ReturnType<typeof whiteLabelMetaSchema>>;
 export type WhiteLabelSiteSchema = z.infer<ReturnType<typeof whiteLabelSiteSchema>>;

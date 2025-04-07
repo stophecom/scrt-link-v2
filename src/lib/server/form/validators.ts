@@ -3,10 +3,8 @@ import { type Infer, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { ReadReceiptOptions, ThemeOptions } from '$lib/data/enums';
-import { DEFAULT_LOCALE } from '$lib/i18n';
 import { db } from '$lib/server/db';
-import { userSettings, whiteLabelSite } from '$lib/server/db/schema';
-import type { Theme } from '$lib/types';
+import { userSettings } from '$lib/server/db/schema';
 import {
 	apiKeyFormSchema,
 	type EmailFormSchema,
@@ -18,8 +16,7 @@ import {
 	type SignInFormSchema,
 	signInFormSchema,
 	themeFormSchema,
-	userFormSchema,
-	whiteLabelSiteSchema
+	userFormSchema
 } from '$lib/validators/formSchemas';
 
 export const secretFormValidator = async () => await superValidate(zod(secretFormSchema()));
@@ -88,26 +85,3 @@ export const apiKeyFormValidator = async () =>
 	await superValidate(zod(apiKeyFormSchema()), {
 		id: 'api-token-form'
 	});
-
-export const whiteLabelFormValidator = async (user: App.Locals['user']) => {
-	if (!user) {
-		throw new Error('User is undefined.');
-	}
-
-	const [whiteLabel] = await db
-		.select()
-		.from(whiteLabelSite)
-		.where(eq(whiteLabelSite.userId, user.id));
-
-	return await superValidate(
-		{
-			name: whiteLabel?.name || '',
-			customDomain: whiteLabel?.customDomain || '',
-			title: whiteLabel?.title || '',
-			lead: whiteLabel?.lead || '',
-			locale: whiteLabel?.locale || DEFAULT_LOCALE,
-			primaryColor: (whiteLabel?.theme as Theme)?.primaryColor || '#000000'
-		},
-		zod(whiteLabelSiteSchema())
-	);
-};

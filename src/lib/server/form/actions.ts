@@ -29,6 +29,7 @@ import {
 	signInFormSchema,
 	themeFormSchema,
 	userFormSchema,
+	whiteLabelMetaSchema,
 	whiteLabelSiteSchema
 } from '$lib/validators/formSchemas';
 
@@ -575,8 +576,8 @@ export const revokeAPIToken: Action = async (event) => {
 	});
 };
 
-export const saveWhiteLabelSite: Action = async (event) => {
-	const form = await superValidate(event.request, zod(whiteLabelSiteSchema()));
+export const saveWhiteLabelMeta: Action = async (event) => {
+	const form = await superValidate(event.request, zod(whiteLabelMetaSchema()));
 	if (!form.valid) {
 		return fail(400, { form });
 	}
@@ -600,7 +601,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		);
 	}
 
-	const { primaryColor, locale, customDomain, name, title, lead, logo } = form.data;
+	const { locale, customDomain, name } = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(
@@ -652,6 +653,53 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			locale: locale,
 			customDomain,
 			name,
+			userId: user.id
+		})
+		.onConflictDoUpdate({
+			target: whiteLabelSite.userId,
+			set: {
+				locale,
+				customDomain,
+				name
+			}
+		});
+
+	return message(form, {
+		status: 'success',
+		title: m.lime_curly_capybara_bend()
+	});
+};
+
+export const saveWhiteLabelSite: Action = async (event) => {
+	const form = await superValidate(event.request, zod(whiteLabelSiteSchema()));
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	const planLimits = getPlanLimits(user?.subscriptionTier);
+
+	if (!planLimits.whiteLabel) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.busy_even_hawk_inspire()
+			},
+			{ status: 405 }
+		);
+	}
+
+	const { title, lead, logo, primaryColor } = form.data;
+
+	await db
+		.insert(whiteLabelSite)
+		.values({
 			title,
 			lead,
 			logo,
@@ -661,18 +709,10 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		.onConflictDoUpdate({
 			target: whiteLabelSite.userId,
 			set: {
-				locale,
-				customDomain,
-				name,
 				title,
 				lead,
 				logo,
 				theme: { primaryColor: primaryColor }
 			}
 		});
-
-	return message(form, {
-		status: 'success',
-		description: m.lime_curly_capybara_bend()
-	});
 };
