@@ -82,7 +82,7 @@
 		"plausible-tracker": "^0.3.9",
 		"postgres": "^3.4.5",
 		"pretty-bytes": "^6.1.1",
-		"resend": "^4.1.1",
+		"resend": "^4.2.0",
 		"runed": "^0.23.3",
 		"stripe": "^17.7.0",
 		"svelte-email-tailwind": "^2.0.1",
