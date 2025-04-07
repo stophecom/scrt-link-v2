@@ -51,7 +51,7 @@ export const actions: Actions = {
 			// We send an email
 			const { html } = render(EmailContact, { props: { message: content, email } });
 			await sendTransactionalEmail({
-				subject: 'New message',
+				subject: `New message from ${email}`,
 				to: emailSupport,
 				html: html
 			});
