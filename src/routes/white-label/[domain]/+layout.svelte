@@ -1,10 +1,6 @@
 <script lang="ts">
-	import '../../../app.css';
-
-	import { ModeWatcher } from 'mode-watcher';
 	import { type Snippet } from 'svelte';
 
-	import NavigationProgress from '$lib/components/elements/navigation-progress.svelte';
 	import { getLocale } from '$lib/paraglide/runtime';
 
 	import type { LayoutData } from './$types';
@@ -24,10 +20,12 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<div style="--color-primary: {data.theme?.primaryColor}">
-	<NavigationProgress />
-
+<div style="--color-primary: {data.theme?.primaryColor || '#000000'}">
 	{@render children()}
 
-	<ModeWatcher />
+	<footer class="border-border bg-background border-t py-4 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
+		<div class="text-muted-foreground container flex flex-col">
+			<span class="py-2 pe-4">©{new Date().getFullYear()} {data.name}</span>
+		</div>
+	</footer>
 </div>

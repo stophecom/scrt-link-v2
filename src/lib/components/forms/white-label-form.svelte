@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
-	import { SquareArrowUpRight } from 'lucide-svelte';
+	import { Palette, SquareArrowUpRight } from 'lucide-svelte';
 	import { derived, writable } from 'svelte/store';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -132,12 +132,15 @@
 			<Form.Button delayed={$delayed}>{m.caring_light_tiger_taste()}</Form.Button>
 		</div>
 		<Separator class="my-4" />
-		<div>
-			<Button variant="outline" href={localizeHref(`/white-label/${$formData.customDomain}/edit`)}
-				>Edit theme</Button
+		<div class="flex items-center">
+			<Button
+				class="me-2"
+				variant="outline"
+				href={localizeHref(`/white-label/${$formData.customDomain}/edit`)}
+				><Palette class="me-2 h-5 w-5" /> Edit theme</Button
 			>
 			{#if $queryResult.isSuccess}
-				<Button variant="outline" href={`https://${$formData.customDomain}`}
+				<Button variant="ghost" href={`https://${$formData.customDomain}`}
 					>Preview <SquareArrowUpRight class="ms-2 h-5 w-5" /></Button
 				>
 			{/if}

@@ -647,22 +647,35 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		console.error(e);
 	}
 
-	await db
-		.insert(whiteLabelSite)
-		.values({
-			locale: locale,
-			customDomain,
-			name,
-			userId: user.id
-		})
-		.onConflictDoUpdate({
-			target: whiteLabelSite.userId,
-			set: {
-				locale,
+	try {
+		await db
+			.insert(whiteLabelSite)
+			.values({
+				locale: locale,
 				customDomain,
-				name
-			}
-		});
+				name,
+				userId: user.id
+			})
+			.onConflictDoUpdate({
+				target: whiteLabelSite.userId,
+				set: {
+					locale,
+					customDomain,
+					name
+				}
+			});
+	} catch (error) {
+		console.error(error);
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.dizzy_sour_liger_treasure(),
+				description: 'DB error'
+			},
+			{ status: 404 }
+		);
+	}
 
 	return message(form, {
 		status: 'success',

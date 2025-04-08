@@ -1,3 +1,4 @@
+import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -17,14 +18,21 @@ export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {
 		return redirectLocalized(307, '/signup');
 	}
+
+	const customDomain = event.params.domain;
+
 	const user = event.locals.user;
 
-	const validator = async () => {
-		const [whiteLabel] = await db
-			.select()
-			.from(whiteLabelSite)
-			.where(eq(whiteLabelSite.userId, user.id));
+	const [whiteLabel] = await db
+		.select()
+		.from(whiteLabelSite)
+		.where(eq(whiteLabelSite.userId, user.id));
 
+	if (whiteLabel.customDomain !== customDomain) {
+		return error(405, `Not allowed to edit site with domain ${customDomain}`);
+	}
+
+	const validator = async () => {
 		return await superValidate(
 			{
 				title: whiteLabel?.title || '',

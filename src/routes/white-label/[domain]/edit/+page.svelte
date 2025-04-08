@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { Pencil } from 'lucide-svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import CreateSecret from '$lib/components/elements/create-secret.svelte';
+	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import LanguageSwitcher from '$lib/components/ui/language-switcher';
 	import { m } from '$lib/paraglide/messages.js';
 	import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
@@ -31,48 +34,86 @@
 	});
 
 	const { form: formData, message, delayed, errors, constraints, enhance } = form;
+
+	const setFocus = (el: string) => {
+		const editableDiv = document.getElementById(el);
+		editableDiv?.focus();
+	};
 </script>
 
-<div class="container min-h-screen pt-16 pb-16">
-	<div
-		class="border-foreground mb-12 inline-flex min-w-24 items-center justify-center border border-dashed px-12 py-6 text-xl"
+{#snippet editIcon(id: string)}
+	<button
+		class="bg-background border-foreground absolute top-[50%] left-full -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed p-2"
+		onclick={() => setFocus(id)}
 	>
-		logo
+		<Pencil class="h-5 w-5" />
+	</button>
+{/snippet}
+
+<div class="container min-h-screen pb-16">
+	<div class="flex justify-end py-3">
+		<DarkModeSwitcher hideLabel variant="ghost" size="icon" />
+		<LanguageSwitcher />
 	</div>
 
-	<h1
-		contenteditable="true"
-		bind:innerHTML={$formData.title}
-		class="text-primary font-display mb-1 text-5xl leading-tight font-extrabold text-pretty md:text-6xl"
-	></h1>
+	<div class="relative mb-12 inline-flex">
+		<div
+			class="bg-background border-foreground inline-flex min-w-24 items-center justify-center border border-dashed px-12 py-6 text-xl"
+		>
+			logo
+		</div>
+		{@render editIcon('logo')}
+	</div>
 
-	<p
-		class="mb-10 text-2xl leading-snug text-pretty md:text-3xl"
-		contenteditable="true"
-		bind:innerHTML={$formData.lead}
-	></p>
+	<div class="relative">
+		<h1
+			id="title"
+			contenteditable="true"
+			bind:innerHTML={$formData.title}
+			class="text-primary font-display mb-1 text-5xl leading-tight font-extrabold text-pretty md:text-6xl"
+		></h1>
+		{@render editIcon('title')}
+	</div>
+
+	<div class="relative">
+		<p
+			id="lead"
+			class="mb-10 text-2xl leading-snug text-pretty md:text-3xl"
+			contenteditable="true"
+			bind:innerHTML={$formData.lead}
+		></p>
+		{@render editIcon('lead')}
+	</div>
 
 	<div class="mb-12">
 		<CreateSecret form={data.secretForm} user={data.user} hideUsps />
 	</div>
 
-	<pre>{$message?.description}</pre>
-	<pre>{JSON.stringify($errors)}</pre>
-	<form method="POST" use:enhance action="?/saveWhiteLabelSite">
-		<input type="hidden" name="title" value={$formData.title} />
-		<input type="hidden" name="lead" value={$formData.lead} />
+	<div class="bg-background border border-dashed p-4">
+		<h3 class="mb-3 text-2xl">Edit theme</h3>
+		<pre>{$message?.description}</pre>
 
-		<Form.Field {form} name="primaryColor">
-			<Label for="themeColor">Theme color</Label>
-			<input
-				id="themeColor"
-				class="h-10 w-10 cursor-pointer"
-				bind:value={$formData.primaryColor}
-				{...$constraints.primaryColor}
-				type="color"
-			/>
-		</Form.Field>
+		{#if Object.keys($errors).length !== 0}
+			<pre class="text-destructive">{JSON.stringify($errors)}</pre>
+		{/if}
 
-		<Form.Button delayed={$delayed}>{m.caring_light_tiger_taste()}</Form.Button>
-	</form>
+		<form method="POST" use:enhance action="?/saveWhiteLabelSite">
+			<input type="hidden" name="title" value={$formData.title} />
+			<input type="hidden" name="lead" value={$formData.lead} />
+
+			<Form.Field {form} name="primaryColor" class="flex items-center">
+				<input
+					id="themeColor"
+					name="primaryColor"
+					class="mr-3 h-10 w-10 cursor-pointer"
+					bind:value={$formData.primaryColor}
+					{...$constraints.primaryColor}
+					type="color"
+				/>
+				<Label for="themeColor">Primary color</Label>
+			</Form.Field>
+
+			<Form.Button delayed={$delayed}>{m.caring_light_tiger_taste()}</Form.Button>
+		</form>
+	</div>
 </div>

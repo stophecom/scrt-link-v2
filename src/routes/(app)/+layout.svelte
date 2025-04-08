@@ -1,12 +1,8 @@
 <script lang="ts">
-	import '../../app.css';
-
-	import { ModeWatcher } from 'mode-watcher';
 	import { onMount, type Snippet } from 'svelte';
 
 	import { PUBLIC_ENV } from '$env/static/public';
 	import { plausible } from '$lib/client/plausible';
-	import NavigationProgress from '$lib/components/elements/navigation-progress.svelte';
 	import { appName } from '$lib/data/app';
 	import { getLocale } from '$lib/paraglide/runtime';
 
@@ -43,8 +39,4 @@
 	{/if}
 </svelte:head>
 
-<NavigationProgress />
-
 {@render children()}
-
-<ModeWatcher />
