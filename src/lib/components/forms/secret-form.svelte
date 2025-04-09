@@ -50,6 +50,7 @@
 		secretType
 	}: SecretFormProps = $props();
 
+	// @todo need to handle white-label case
 	const planLimits = getPlanLimits(user?.subscriptionTier);
 
 	const form = superForm(formProp, {

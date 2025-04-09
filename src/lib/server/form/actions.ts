@@ -728,4 +728,9 @@ export const saveWhiteLabelSite: Action = async (event) => {
 				theme: { primaryColor: primaryColor }
 			}
 		});
+
+	return message(form, {
+		status: 'success',
+		title: 'Success'
+	});
 };

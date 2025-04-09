@@ -20,12 +20,13 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<div style="--color-primary: {data.theme?.primaryColor || '#000000'}">
+<div class="min-h-screen" style="--color-primary: {data.theme?.primaryColor || '#000000'}">
 	{@render children()}
 
 	<footer class="border-border bg-background border-t py-4 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
-		<div class="text-muted-foreground container flex flex-col">
-			<span class="py-2 pe-4">©{new Date().getFullYear()} {data.name}</span>
+		<div class="text-muted-foreground container flex items-center justify-between">
+			<span class="py-2 pe-4">©{new Date().getFullYear()} {data.name} </span>
+			<small>powered by <a href="https://scrt.link">scrt.link</a></small>
 		</div>
 	</footer>
 </div>

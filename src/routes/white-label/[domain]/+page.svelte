@@ -3,10 +3,12 @@
 	import WhiteLabelPage from '$lib/components/page/white-label-page.svelte';
 
 	import type { PageData } from './$types';
+	import Header from './header.svelte';
 
 	let { data }: { data: PageData } = $props();
 </script>
 
+<Header />
 <WhiteLabelPage
 	name={data?.name}
 	title={data?.title || 'Your title'}

@@ -141,7 +141,7 @@
 			>
 			{#if $queryResult.isSuccess}
 				<Button variant="ghost" href={`https://${$formData.customDomain}`}
-					>Preview <SquareArrowUpRight class="ms-2 h-5 w-5" /></Button
+					>{$formData.customDomain} <SquareArrowUpRight class="ms-2 h-5 w-5" /></Button
 				>
 			{/if}
 		</div>
