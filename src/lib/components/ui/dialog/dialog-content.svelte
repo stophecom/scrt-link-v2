@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { Dialog as DialogPrimitive } from 'bits-ui';
 	import X from 'lucide-svelte/icons/x';
+	import { fly } from 'svelte/transition';
 
-	import { cn, flyAndScale } from '$lib/client/utils';
+	import { cn } from '$lib/client/utils';
 
 	import * as Dialog from './index.js';
 
 	type $$Props = DialogPrimitive.ContentProps;
 
 	let className: $$Props['class'] = undefined;
-	export let transition: $$Props['transition'] = flyAndScale;
+	export let transition: $$Props['transition'] = fly;
 	export let transitionConfig: $$Props['transitionConfig'] = {
-		duration: 200
+		duration: 200,
+		y: 200
 	};
 	export { className as class };
 </script>
@@ -22,7 +24,7 @@
 		{transition}
 		{transitionConfig}
 		class={cn(
-			'bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border p-6 shadow-lg sm:rounded-lg md:w-full',
+			'bg-background border-border fixed bottom-0 left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] gap-4 p-6 shadow-lg sm:top-[50%] sm:bottom-auto sm:translate-y-[-50%] sm:rounded-lg sm:border md:w-full',
 			className
 		)}
 		{...$$restProps}
