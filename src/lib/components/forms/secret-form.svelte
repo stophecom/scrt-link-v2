@@ -14,9 +14,9 @@
 		generateRandomUrlSafeString,
 		sha256Hash
 	} from '$lib/client/web-crypto';
-	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
+	import FileUpload from '$lib/components/forms/form-fields/secret-file-upload.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
