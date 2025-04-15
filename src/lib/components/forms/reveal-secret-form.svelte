@@ -211,7 +211,9 @@
 				<NeogramRevelation neogram={content} />
 			{:else}
 				<!-- Secret Type: Text -->
-				{content}
+				<div class="whitespace-pre">
+					{content}
+				</div>
 				<div class="flex items-center justify-end pt-2">
 					<Button href={localizeHref('/')} class="mr-2" size="sm" variant="ghost">
 						<Flame class="mr-2 h-4 w-4" /> {m.left_cool_raven_zap()}</Button
