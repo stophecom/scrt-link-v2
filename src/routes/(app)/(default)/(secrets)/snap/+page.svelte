@@ -10,10 +10,5 @@
 </script>
 
 <Page title={m.awake_big_halibut_view()} lead={m.misty_north_hedgehog_breathe()}>
-	<CreateSecret
-		form={data.secretForm}
-		user={data.user}
-		baseUrl={data.baseUrl}
-		secretType={SecretType.SNAP}
-	/>
+	<CreateSecret form={data.secretForm} user={data.user} secretType={SecretType.SNAP} />
 </Page>

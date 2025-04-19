@@ -10,10 +10,5 @@
 </script>
 
 <Page title={'Neogram'} lead={m.white_tame_clownfish_scoop()}>
-	<CreateSecret
-		form={data.secretForm}
-		user={data.user}
-		baseUrl={data.baseUrl}
-		secretType={SecretType.NEOGRAM}
-	/>
+	<CreateSecret form={data.secretForm} user={data.user} secretType={SecretType.NEOGRAM} />
 </Page>

@@ -10,10 +10,5 @@
 </script>
 
 <Page title={m.sad_zippy_squirrel_scoop()} lead={m.pretty_clear_pig_dare()}>
-	<CreateSecret
-		form={data.secretForm}
-		user={data.user}
-		baseUrl={data.baseUrl}
-		secretType={SecretType.FILE}
-	/>
+	<CreateSecret form={data.secretForm} user={data.user} secretType={SecretType.FILE} />
 </Page>
