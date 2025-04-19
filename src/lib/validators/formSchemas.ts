@@ -102,8 +102,9 @@ export const whiteLabelSiteSchema = () =>
 	z.object({
 		title: z.string().max(50),
 		lead: z.string().max(150),
+		imprint: z.string(),
 		primaryColor: z.string(),
-		logo: z.string()
+		logo: z.string().nullable()
 	});
 
 export const settingsFormSchema = () =>

@@ -38,6 +38,7 @@ export const load: PageServerLoad = async (event) => {
 				title: whiteLabel?.title || '',
 				lead: whiteLabel?.lead || '',
 				logo: whiteLabel?.logo || '',
+				imprint: whiteLabel?.imprint || '',
 				primaryColor: (whiteLabel.theme as Theme)?.primaryColor || '#000000'
 			},
 			zod(whiteLabelSiteSchema()),
@@ -55,5 +56,5 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	saveWhiteLabelSite: saveWhiteLabelSite,
-	postSecret: postSecret
+	postSecret: postSecret // Not enabled
 };

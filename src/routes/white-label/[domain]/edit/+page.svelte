@@ -5,11 +5,13 @@
 
 	import CreateSecret from '$lib/components/elements/create-secret.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
+	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import PageLead from '$lib/components/page/page-lead.svelte';
 	import PageTitle from '$lib/components/page/page-title.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import Markdown from '$lib/components/ui/markdown';
 	import Spinner from '$lib/components/ui/spinner/spinner.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -46,12 +48,11 @@
 		delayed,
 		errors,
 		constraints,
-		enhance: enhanceWhiteLabel
+		enhance: enhanceWhiteLabel,
+		submit
 	} = form;
 
-	const submitForm = () => {
-		form.submit();
-	};
+	let logoUrl = $derived($formData.logo);
 
 	$effect(() => {
 		if ($message) {
@@ -62,9 +63,11 @@
 			}, 2000);
 		}
 
-		// Track changes
-		void $formData.logo;
-		submitForm();
+		// When logo changes, we submit form
+		if (logoUrl || logoUrl === null) {
+			console.log(logoUrl);
+			submit();
+		}
 	});
 </script>
 
@@ -73,10 +76,11 @@
 		<Button href={localizeHref('/account')} size="icon" variant="ghost">
 			<ChevronLeft class=" h-5 w-5" />
 		</Button>
-		<Button class="min-w-0 shrink" variant="ghost" href={`https://${data.domain}`}>
+		<Button class="min-w-0 shrink" variant="ghost" href={`https://${data.domain}`} target="_blank">
 			<span class="block truncate">{data.domain}</span>
 			<SquareArrowUpRight class="ms-2 h-5 w-5" />
 		</Button>
+
 		{#if $delayed}
 			<Spinner class="h-5 w-5" />
 		{/if}
@@ -91,7 +95,11 @@
 
 <div class="container pt-28 pb-16">
 	<div class="relative mb-12 inline-flex h-32 w-56">
-		<FileUpload bind:fileUrl={$formData.logo} />
+		<FileUpload
+			bind:fileKey={$formData.logo}
+			labelButton={m.ago_crisp_kangaroo_grasp()}
+			labelDropzone={m.jolly_formal_tapir_gleam()}
+		/>
 	</div>
 
 	<PageTitle title={m.lucky_warm_mayfly_engage()} />
@@ -108,7 +116,9 @@
 		</div>
 	</div>
 
-	<div class="bg-background border border-dashed p-4">
+	<Markdown format={true} markdown={$formData.imprint} />
+
+	<div class="bg-background mt-4 border border-dashed p-4">
 		<h3 class="mb-3 text-2xl">Edit theme</h3>
 		<pre>{$message?.description}</pre>
 
@@ -128,10 +138,19 @@
 					class="mr-3 h-10 w-10 cursor-pointer"
 					bind:value={$formData.primaryColor}
 					{...$constraints.primaryColor}
-					onchange={() => submitForm()}
+					onchange={() => submit()}
 					type="color"
 				/>
 				<Label for="themeColor">Primary color</Label>
+			</Form.Field>
+			<Form.Field {form} name="imprint">
+				<Textarea
+					bind:value={$formData.imprint}
+					label="Imprint"
+					onchange={() => submit()}
+					placeholder="Markdown"
+					{...$constraints.imprint}
+				/>
 			</Form.Field>
 		</form>
 	</div>

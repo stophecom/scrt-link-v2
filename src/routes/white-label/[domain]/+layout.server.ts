@@ -17,7 +17,7 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 		throw error(500, `No data for ${params.domain} found.`);
 	}
 
-	const { name, title, lead, logo, theme } = result;
+	const { name, title, lead, logo, imprint, theme } = result;
 
 	return {
 		user: locals.user,
@@ -26,6 +26,7 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 		lead,
 		logo,
 		name,
+		imprint,
 		theme: theme as Theme
 	};
 };

@@ -14,9 +14,13 @@
 	import { m } from '$lib/paraglide/messages.js';
 
 	type Props = {
-		fileUrl?: string;
+		fileKey?: string | null;
+		onSuccess?: (url: string) => void;
+		onReset?: () => void;
+		labelButton?: string;
+		labelDropzone?: string;
 	};
-	let { fileUrl = $bindable() }: Props = $props();
+	let { fileKey = $bindable(), labelButton, labelDropzone }: Props = $props();
 
 	let selectedFile: File | null = $state(null);
 	let error = $state('');
@@ -25,7 +29,9 @@
 	let imageSrc = $derived(
 		selectedFile && (selectedFile as File)?.type.startsWith('image/')
 			? URL.createObjectURL(selectedFile)
-			: undefined
+			: fileKey
+				? `https://${PUBLIC_S3_CDN_BUCKET}.${PUBLIC_S3_ENDPOINT}/${fileKey}`
+				: undefined
 	);
 
 	let controller: AbortController | undefined;
@@ -33,7 +39,6 @@
 		controller = new AbortController();
 		loading = true;
 
-		const bucket = PUBLIC_S3_CDN_BUCKET;
 		const signal = controller.signal;
 
 		const extension = getFileExtension(file);
@@ -54,7 +59,7 @@
 			}
 		});
 
-		fileUrl = `https://${bucket}.${PUBLIC_S3_ENDPOINT}/${fileName}`;
+		fileKey = fileName;
 		loading = false;
 	};
 
@@ -66,7 +71,6 @@
 	const reset = () => {
 		controller?.abort();
 		selectedFile = null;
-		fileUrl = '';
 	};
 
 	onDestroy(() => {
@@ -74,15 +78,9 @@
 	});
 </script>
 
-{#if selectedFile || fileUrl}
+{#if imageSrc}
 	<div class="relative">
-		{#if fileUrl || imageSrc}
-			<img
-				class="max-h-full max-w-full min-w-28 md:min-w-32"
-				src={fileUrl || imageSrc}
-				alt="Logo"
-			/>
-		{/if}
+		<img class="max-h-full max-w-full min-w-28 md:min-w-32" src={imageSrc} alt="Logo" />
 
 		{#if loading}
 			<div
@@ -100,6 +98,7 @@
 				aria-label="Delete"
 				on:click={() => {
 					reset();
+					fileKey = null;
 				}}
 			>
 				<Trash class="text-destructive h-4 w-4" />
@@ -109,8 +108,8 @@
 	</div>
 {:else}
 	<DropZone
-		labelButton={'Select logo'}
-		labelDropzone={'Drop or select a logo'}
+		{labelButton}
+		{labelDropzone}
 		maxFileSize={10 * MB}
 		{onDrop}
 		accept="image/*"

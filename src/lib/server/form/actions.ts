@@ -711,7 +711,9 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		);
 	}
 
-	const { title, lead, logo, primaryColor } = form.data;
+	const { title, lead, logo, imprint, primaryColor } = form.data;
+
+	// @todo Delete logo/app icon on S3
 
 	await db
 		.insert(whiteLabelSite)
@@ -719,6 +721,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			title,
 			lead,
 			logo,
+			imprint,
 			userId: user.id,
 			theme: { primaryColor: primaryColor }
 		})
@@ -728,6 +731,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 				title,
 				lead,
 				logo,
+				imprint,
 				theme: { primaryColor: primaryColor }
 			}
 		});

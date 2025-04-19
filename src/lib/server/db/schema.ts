@@ -65,6 +65,7 @@ export const whiteLabelSite = pgTable('white_label_site', {
 	locale: text('locale'),
 	title: text('title').default('Share a secret'),
 	lead: text('lead').default('…with a link that only works one time and then self-destructs.'),
+	imprint: text('imprint'),
 	theme: jsonb('theme'),
 	logo: text('logo').default(
 		'https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png'
