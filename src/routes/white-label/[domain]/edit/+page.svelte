@@ -70,7 +70,7 @@
 
 <Header class="bg-background border-border fixed top-0 left-0 z-10 w-full border-b">
 	<div class="flex items-center">
-		<Button href={localizeHref('/account')} size="icon" variant="ghost" class="me-2">
+		<Button href={localizeHref('/account')} size="icon" variant="ghost">
 			<ChevronLeft class=" h-5 w-5" />
 		</Button>
 		<Button class="min-w-0 shrink" variant="ghost" href={`https://${data.domain}`}>
@@ -101,7 +101,7 @@
 		<CreateSecret form={data.secretForm} user={data.user} hideUsps />
 		<div class="bg-background/70 absolute top-0 left-0 h-full w-full">
 			<div
-				class="text-muted absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 text-7xl font-bold uppercase"
+				class="text-muted absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 text-5xl font-bold uppercase sm:text-7xl"
 			>
 				{m.fresh_tough_bullock_snap()}
 			</div>
