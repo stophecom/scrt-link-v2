@@ -122,7 +122,7 @@
 <div
 	class="hover:shadow-black-200/50 border-foreground bg-background/70 text-foreground dz:rounded-lg dz:border-dashed dz:text-foreground dz:shadow-none dz:hover:shadow-lg relative rounded-2xl border transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-hidden hover:border-solid"
 >
-	<div class="flex flex-col items-center justify-center p-2 sm:p-4">
+	<div class="flex h-full flex-col items-center justify-center p-2 sm:p-4">
 		<div class="mb-1 flex pt-1">
 			<ArrowUpFromLine class="h-5 w-5" />
 		</div>

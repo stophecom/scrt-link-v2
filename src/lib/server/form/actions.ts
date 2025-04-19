@@ -684,7 +684,10 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 };
 
 export const saveWhiteLabelSite: Action = async (event) => {
-	const form = await superValidate(event.request, zod(whiteLabelSiteSchema()));
+	const form = await superValidate(event.request, zod(whiteLabelSiteSchema()), {
+		id: 'white-label-site-form'
+	});
+
 	if (!form.valid) {
 		return fail(400, { form });
 	}

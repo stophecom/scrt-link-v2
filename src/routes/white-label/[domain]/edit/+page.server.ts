@@ -32,7 +32,7 @@ export const load: PageServerLoad = async (event) => {
 		return error(405, `Not allowed to edit site with domain ${customDomain}`);
 	}
 
-	const validator = async () => {
+	const whiteLabelSiteFormValidator = async () => {
 		return await superValidate(
 			{
 				title: whiteLabel?.title || '',
@@ -40,12 +40,15 @@ export const load: PageServerLoad = async (event) => {
 				logo: whiteLabel?.logo || '',
 				primaryColor: (whiteLabel.theme as Theme)?.primaryColor || '#000000'
 			},
-			zod(whiteLabelSiteSchema())
+			zod(whiteLabelSiteSchema()),
+			{
+				id: 'white-label-site-form'
+			}
 		);
 	};
 
 	return {
-		whiteLabelSiteForm: await validator(),
+		whiteLabelSiteForm: await whiteLabelSiteFormValidator(),
 		secretForm: await secretFormValidator()
 	};
 };

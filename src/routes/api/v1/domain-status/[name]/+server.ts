@@ -1,4 +1,4 @@
-import { json } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 
 import { getConfigResponse, getDomainResponse, getSubdomain } from '$lib/domains';
 import { type DomainResponse } from '$lib/types';
@@ -10,7 +10,11 @@ export type DomainStatusResponse = {
 	verified?: boolean;
 	instructions?: DomainResponse['verification'];
 };
-export const GET = async ({ params }: RequestEvent) => {
+export const GET = async ({ params, locals }: RequestEvent) => {
+	if (!locals.user) {
+		error(405, 'Not allowed. You need to be signed in.');
+	}
+
 	const domain = params.name;
 
 	const [domainJson, configJson] = await Promise.all([

@@ -1,20 +1,22 @@
 <script lang="ts">
-	import { CheckCircle2, Pencil, SquareArrowUpRight } from 'lucide-svelte';
+	import { CheckCircle2, ChevronLeft, SquareArrowUpRight } from 'lucide-svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import CreateSecret from '$lib/components/elements/create-secret.svelte';
+	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Spinner from '$lib/components/ui/spinner/spinner.svelte';
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 	import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
 	import Header from '../header.svelte';
 	import type { PageData } from './$types';
 
-	let { data }: { data: PageData; success: boolean } = $props();
+	let { data }: { data: PageData } = $props();
 
 	let success = $state(false);
 
@@ -36,12 +38,15 @@
 		}
 	});
 
-	const { form: formData, message, delayed, errors, constraints, enhance } = form;
+	const {
+		form: formData,
+		message,
+		delayed,
+		errors,
+		constraints,
+		enhance: enhanceWhiteLabel
+	} = form;
 
-	const setFocus = (el: string) => {
-		const editableDiv = document.getElementById(el);
-		editableDiv?.focus();
-	};
 	const submitForm = () => {
 		form.submit();
 	};
@@ -54,20 +59,18 @@
 				success = false;
 			}, 2000);
 		}
+
+		// Track changes
+		void $formData.logo;
+		submitForm();
 	});
 </script>
 
-{#snippet editIcon(id: string)}
-	<button
-		class="bg-background border-foreground absolute top-[50%] right-0 -translate-y-1/2 rounded-full border border-dashed p-2"
-		onclick={() => setFocus(id)}
-	>
-		<Pencil class="h-5 w-5" />
-	</button>
-{/snippet}
-
 <Header class="bg-background border-border fixed top-0 left-0 z-10 w-full border-b">
 	<div class="flex items-center">
+		<Button href={localizeHref('/account')} size="icon" variant="ghost" class="me-2">
+			<ChevronLeft class=" h-5 w-5" />
+		</Button>
 		<Button class="min-w-0 shrink" variant="ghost" href={`https://${data.domain}`}>
 			<span class="block truncate">{data.domain}</span>
 			<SquareArrowUpRight class="ms-2 h-5 w-5" />
@@ -85,35 +88,23 @@
 </Header>
 
 <div class="container pt-28 pb-16">
-	<div class="relative mb-12 inline-flex">
-		<div
-			class="bg-background border-foreground inline-flex min-w-24 items-center justify-center border border-dashed px-12 py-6 text-xl"
-		>
-			{m.novel_suave_pigeon_treasure()}
-		</div>
-		{@render editIcon('logo')}
+	<div class="relative mb-12 inline-flex h-32 w-56">
+		<FileUpload bind:fileUrl={$formData.logo} />
 	</div>
 
 	<div class="relative">
 		<h1
-			id="title"
-			contenteditable="true"
-			bind:innerHTML={$formData.title}
-			onblur={() => submitForm()}
 			class="text-primary font-display mb-1 pe-6 text-5xl leading-tight font-extrabold text-pretty md:text-6xl"
-		></h1>
-		{@render editIcon('title')}
+		>
+			{m.lucky_warm_mayfly_engage()}
+		</h1>
 	</div>
 
 	<div class="relative">
-		<p
-			id="lead"
-			class="mb-10 pe-6 text-2xl leading-snug text-pretty md:text-3xl"
-			contenteditable="true"
-			onblur={() => submitForm()}
-			bind:innerHTML={$formData.lead}
-		></p>
-		{@render editIcon('lead')}
+		<p class="mb-10 pe-6 text-2xl leading-snug text-pretty md:text-3xl">
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html m.aloof_quaint_snail_pave()}
+		</p>
 	</div>
 
 	<div class="mb-12">
@@ -128,9 +119,10 @@
 			<pre class="text-destructive">{JSON.stringify($errors)}</pre>
 		{/if}
 
-		<form method="POST" use:enhance action="?/saveWhiteLabelSite">
+		<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite">
 			<input type="hidden" name="title" value={$formData.title} />
 			<input type="hidden" name="lead" value={$formData.lead} />
+			<input type="hidden" name="logo" value={$formData.logo} />
 
 			<Form.Field {form} name="primaryColor" class="flex items-center">
 				<input

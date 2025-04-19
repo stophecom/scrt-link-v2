@@ -10,7 +10,7 @@ axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
 type SignedUrlGetResponse = {
 	url: string;
 };
-type PresignedPostResponse = { url: string; fields: Record<string, string> };
+export type PresignedPostResponse = { url: string; fields: Record<string, string> };
 
 type Chunk = {
 	key: string;
@@ -38,7 +38,6 @@ export interface SecretFile extends FileMeta, FileReference {
 type HandleFileEncryptionAndUpload = {
 	controllers: Map<number, AbortController>;
 	file: File;
-	bucket: string;
 	masterKey: string;
 	privateKey: CryptoKey;
 	chunkSize: number;
@@ -47,7 +46,6 @@ type HandleFileEncryptionAndUpload = {
 export const handleFileEncryptionAndUpload = async ({
 	controllers,
 	file,
-	bucket,
 	masterKey,
 	privateKey,
 	chunkSize,
@@ -78,11 +76,16 @@ export const handleFileEncryptionAndUpload = async ({
 		const fileName = crypto.randomUUID();
 		const signature = await signMessage(fileName, privateKey);
 
-		await uploadFileChunk({
+		const fileNameHashed = await sha256Hash(fileName);
+		const { url, fields } = await api<PresignedPostResponse>(
+			`/secrets/files?file=${fileNameHashed}`
+		);
+
+		await uploadFileToS3({
 			signal,
-			bucket,
-			chunk: encryptedFile,
-			fileName: await sha256Hash(fileName),
+			url,
+			fields,
+			blob: encryptedFile,
 			size: chunkFileSize,
 			progressCallback: (p) => {
 				progressOfEachChunk[i] = p;
@@ -101,26 +104,22 @@ export const handleFileEncryptionAndUpload = async ({
 	});
 };
 
-type UploadFileChunkParams = {
+type UploadFileToS3Params = {
 	signal: AbortSignal;
-	bucket: string;
-	chunk: Blob;
-	fileName: string;
+	blob: Blob;
 	size: number;
 	progressCallback: (progress: number) => void;
-};
+} & PresignedPostResponse;
 
-const uploadFileChunk = async ({
+export const uploadFileToS3 = async ({
 	signal,
-	bucket,
-	chunk,
+	url,
+	fields,
+	blob,
 	size,
-	fileName,
 	progressCallback
-}: UploadFileChunkParams): Promise<void> => {
+}: UploadFileToS3Params): Promise<void> => {
 	progressCallback(0);
-	// Get presigned S3 post URL
-	const { url, fields } = await api<PresignedPostResponse>(`/files?file=${fileName}`);
 
 	// Prepare form data
 	const formData = new FormData();
@@ -130,16 +129,15 @@ const uploadFileChunk = async ({
 		}
 		formData.append(key, value);
 	});
-	formData.append('Content-type', 'application/octet-stream'); // Setting content type a binary file.
-	formData.append('file', chunk);
+
+	formData.append('file', blob);
 
 	// Post file to S3
-	// @todo Unclear why we have to append bucket here.
 	// Using axios b/c of built-in progress callback
 	await axios.request({
 		signal,
 		method: 'POST',
-		url: `${url}/${bucket}`,
+		url: url,
 		data: formData,
 		onUploadProgress: (p) => {
 			progressCallback(p.loaded / (p.total || size));
@@ -156,7 +154,7 @@ const chunkDownload = async ({
 	const keyHash = await sha256Hash(key);
 
 	const { url } = await api<SignedUrlGetResponse>(
-		`/files/${key}`,
+		`/secrets/files/${key}`,
 		{ method: 'POST' },
 		{ secretIdHash, bucket, keyHash, signature }
 	);
@@ -212,4 +210,10 @@ export const handleFileChunksDownload = (file: SecretFile) => {
 	});
 
 	return decryptionStream;
+};
+
+export const getFileExtension = (file: File): string | null => {
+	const name = file.name;
+	const parts = name.split('.');
+	return parts.length > 1 ? (parts.pop()?.toLowerCase() ?? null) : null;
 };

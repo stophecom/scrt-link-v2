@@ -57,7 +57,6 @@
 		const chunks = await handleFileEncryptionAndUpload({
 			controllers,
 			file,
-			bucket,
 			masterKey,
 			privateKey,
 			chunkSize,

@@ -16,9 +16,12 @@
 
 <div class="container min-h-screen pt-8 pb-16">
 	<div>
-		<a class="inline-flex" href={localizeHref('/')}>
+		<a
+			class="inline-flex max-h-28 min-h-20 max-w-44 min-w-28 items-center md:max-h-32 md:min-w-32"
+			href={localizeHref('/')}
+		>
 			{#if logo}
-				<img src={logo} alt={title} />
+				<img src={logo} alt={title} class="w-full" />
 			{:else}
 				<div class="py-2 font-bold">
 					{name}
