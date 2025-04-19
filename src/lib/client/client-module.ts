@@ -2,8 +2,6 @@
 
 import { SecretType } from '$lib/data/enums';
 import { DAY } from '$lib/data/units';
-import { DEFAULT_LOCALE, getLocalizedUrl } from '$lib/i18n';
-import type { Locale } from '$lib/paraglide/runtime';
 
 import { MASTER_PASSWORD_LENGTH, SECRET_ID_LENGTH } from './constants';
 import {
@@ -22,7 +20,6 @@ type Options = {
 	secretType?: SecretType.TEXT | SecretType.NEOGRAM | SecretType.NEOGRAM;
 	password?: string;
 	expiresIn?: number;
-	locale: Locale;
 };
 export const scrtLink = (apiKey: string) => {
 	if (!apiKey) {
@@ -31,9 +28,9 @@ export const scrtLink = (apiKey: string) => {
 
 	const createSecret = async (
 		secret: string,
-		options: Options = { secretType: SecretType.TEXT, expiresIn: 7 * DAY, locale: DEFAULT_LOCALE }
+		options: Options = { secretType: SecretType.TEXT, expiresIn: 7 * DAY }
 	) => {
-		const { secretType, password, expiresIn, locale } = options;
+		const { secretType, password, expiresIn } = options;
 
 		let encryptedContent = secret;
 		let encryptedMeta = JSON.stringify({
@@ -83,7 +80,7 @@ export const scrtLink = (apiKey: string) => {
 			return data;
 		}
 
-		const secretLink = `${BASE_URL}${getLocalizedUrl('/s', locale)}#${masterKey}`;
+		const secretLink = `${BASE_URL}/s#${masterKey}`;
 		return { secretLink: secretLink, ...data };
 	};
 

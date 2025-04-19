@@ -13,7 +13,6 @@
 	import { privacyUsps } from '$lib/data/app';
 	import type { SecretType } from '$lib/data/enums';
 	import { secretMenu } from '$lib/data/menu';
-	import { getAbsoluteLocalizedUrl } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -34,7 +33,7 @@
 
 	let masterKey = $state('');
 	let successMessage = $state('');
-	let link: string = $derived(`${getAbsoluteLocalizedUrl(page.url.origin, '/s')}#${masterKey}`);
+	let link: string = $derived(`${page.url.origin}/s#${masterKey}`);
 
 	onNavigate(() => {
 		// Make sure we force a reset. This causes the SecretForm to mount again which is what we want.

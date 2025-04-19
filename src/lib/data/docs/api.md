@@ -30,7 +30,7 @@ Example response:
 
 ```json
 {
-	"secretLink": "https://scrt.link/de/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
+	"secretLink": "https://scrt.link/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
 	"receiptId": "D0waygL3",
 	"expiresIn": 86400000
 }
@@ -51,7 +51,6 @@ Example response:
 			secretType: 'redirect' // text | redirect | neogram
 			password: 'foobar123'
 			expiresIn: 86400000,
-			locale: 'de',
 		})
 		.then(console.log);
 </script>
