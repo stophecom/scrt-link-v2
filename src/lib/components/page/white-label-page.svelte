@@ -3,6 +3,9 @@
 
 	import { localizeHref } from '$lib/paraglide/runtime';
 
+	import PageLead from './page-lead.svelte';
+	import PageTitle from './page-title.svelte';
+
 	type Props = {
 		name?: string | null;
 		title: string;
@@ -16,31 +19,21 @@
 
 <div class="container min-h-screen pt-8 pb-16">
 	<div>
-		<a
-			class="inline-flex max-h-28 min-h-20 max-w-44 min-w-28 items-center md:max-h-32 md:min-w-32"
-			href={localizeHref('/')}
-		>
+		<a class="mb-12 inline-flex h-32 w-56 items-center" href={localizeHref('/')}>
 			{#if logo}
-				<img src={logo} alt={title} class="w-full" />
+				<img src={logo} alt={title} class="max-h-full max-w-full object-contain" />
 			{:else}
-				<div class="py-2 font-bold">
+				<div class="py-2 text-4xl font-bold">
 					{name}
 				</div>
 			{/if}
 		</a>
 	</div>
 
-	<h1
-		class="text-primary font-display mb-1 text-5xl leading-tight font-extrabold text-pretty md:text-6xl"
-	>
-		{title}
-	</h1>
+	<PageTitle {title} />
 
 	{#if lead}
-		<p class="mb-10 text-2xl leading-snug text-pretty md:text-3xl">
-			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			{@html lead}
-		</p>
+		<PageLead {lead} />
 	{/if}
 
 	{@render children?.()}

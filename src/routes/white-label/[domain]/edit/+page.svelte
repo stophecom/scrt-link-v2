@@ -5,6 +5,8 @@
 
 	import CreateSecret from '$lib/components/elements/create-secret.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
+	import PageLead from '$lib/components/page/page-lead.svelte';
+	import PageTitle from '$lib/components/page/page-title.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import Label from '$lib/components/ui/label/label.svelte';
@@ -92,23 +94,18 @@
 		<FileUpload bind:fileUrl={$formData.logo} />
 	</div>
 
-	<div class="relative">
-		<h1
-			class="text-primary font-display mb-1 pe-6 text-5xl leading-tight font-extrabold text-pretty md:text-6xl"
-		>
-			{m.lucky_warm_mayfly_engage()}
-		</h1>
-	</div>
+	<PageTitle title={m.lucky_warm_mayfly_engage()} />
+	<PageLead lead={m.aloof_quaint_snail_pave()} />
 
-	<div class="relative">
-		<p class="mb-10 pe-6 text-2xl leading-snug text-pretty md:text-3xl">
-			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			{@html m.aloof_quaint_snail_pave()}
-		</p>
-	</div>
-
-	<div class="mb-12">
+	<div class="relative mb-12">
 		<CreateSecret form={data.secretForm} user={data.user} hideUsps />
+		<div class="bg-background/70 absolute top-0 left-0 h-full w-full">
+			<div
+				class="text-muted absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 text-7xl font-bold uppercase"
+			>
+				{m.fresh_tough_bullock_snap()}
+			</div>
+		</div>
 	</div>
 
 	<div class="bg-background border border-dashed p-4">
