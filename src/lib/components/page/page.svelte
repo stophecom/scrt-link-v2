@@ -43,7 +43,7 @@
 	<PageTitle {title} />
 
 	{#if lead}
-		<PageLead {lead} />
+		<PageLead {lead} renderAsHtml />
 	{/if}
 
 	{#if markNotTranslated && getLocale() !== 'en'}

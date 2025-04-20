@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
 
+	import { m } from '$lib/paraglide/messages.js';
 	import { getLocale } from '$lib/paraglide/runtime';
 
 	import type { LayoutData } from './$types';
@@ -26,7 +27,7 @@
 	<footer class="border-border bg-background border-t py-4 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
 		<div class="text-muted-foreground container flex items-center justify-between">
 			<span class="py-2 pe-4">©{new Date().getFullYear()} {data.name} </span>
-			<small>powered by <a href="https://scrt.link">scrt.link</a></small>
+			<small>{m.empty_spicy_firefox_fade()} <a href="https://scrt.link">scrt.link</a></small>
 		</div>
 	</footer>
 </div>

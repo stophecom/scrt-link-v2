@@ -10,6 +10,7 @@ import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { addDomainToVercel, removeDomainFromVercelProject, validDomainRegex } from '$lib/domains';
 import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
+import { getLocale, locales } from '$lib/paraglide/runtime';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import {
@@ -19,6 +20,7 @@ import {
 	userSettings,
 	whiteLabelSite
 } from '$lib/server/db/schema';
+import type { LocalizedWhiteLabelMessage } from '$lib/types';
 import {
 	apiKeyFormSchema,
 	emailFormSchema,
@@ -693,6 +695,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 	}
 
 	const user = event.locals.user;
+	const locale = getLocale();
 
 	if (!user) {
 		return redirectLocalized(307, '/signup');
@@ -711,30 +714,47 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		);
 	}
 
-	const { title, lead, logo, imprint, primaryColor } = form.data;
+	const { title, lead, description, imprint, primaryColor, logo } = form.data;
+
+	const [existingWhiteLabelSite] = await db
+		.select()
+		.from(whiteLabelSite)
+		.where(eq(whiteLabelSite.userId, user.id));
 
 	// @todo Delete logo/app icon on S3
 
-	await db
-		.insert(whiteLabelSite)
-		.values({
-			title,
-			lead,
+	// We store page content, such as title, lead, description as JSON.
+	// We therefor allow translating user content.
+	let messagesJson: LocalizedWhiteLabelMessage = locales.reduce((acc, locale) => {
+		acc[locale] = {};
+		return acc;
+	}, {} as LocalizedWhiteLabelMessage);
+
+	console.log('form json', form.data);
+
+	if (!existingWhiteLabelSite) {
+		messagesJson[locale] = { ...messagesJson[locale], title, lead, description, imprint };
+
+		await db.insert(whiteLabelSite).values({
 			logo,
-			imprint,
 			userId: user.id,
-			theme: { primaryColor: primaryColor }
-		})
-		.onConflictDoUpdate({
-			target: whiteLabelSite.userId,
-			set: {
-				title,
-				lead,
-				logo,
-				imprint,
-				theme: { primaryColor: primaryColor }
-			}
+			theme: { primaryColor },
+			messages: messagesJson
 		});
+	} else {
+		messagesJson = (existingWhiteLabelSite.messages || messagesJson) as LocalizedWhiteLabelMessage;
+		messagesJson[locale] = { title, lead, description, imprint };
+
+		await db
+			.update(whiteLabelSite)
+			.set({
+				logo,
+				userId: user.id,
+				theme: { primaryColor },
+				messages: messagesJson
+			})
+			.where(eq(whiteLabelSite.userId, user.id));
+	}
 
 	return message(form, {
 		status: 'success',

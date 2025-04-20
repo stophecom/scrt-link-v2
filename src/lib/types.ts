@@ -1,3 +1,5 @@
+import type { Locale } from './paraglide/runtime';
+
 export type BlogCategory = 'product' | 'tech' | 'privacy';
 
 export type BlogPostMeta = {
@@ -75,3 +77,13 @@ export interface DomainVerificationResponse {
 		reason: string;
 	}[];
 }
+
+// WhiteLabel messages (translations we store in DB as JSON)
+export type WhiteLabelMessage = {
+	title?: string;
+	lead?: string;
+	description?: string;
+	imprint?: string;
+};
+
+export type LocalizedWhiteLabelMessage = Record<Locale, WhiteLabelMessage>;

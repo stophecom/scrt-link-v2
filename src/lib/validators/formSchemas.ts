@@ -100,11 +100,13 @@ export const whiteLabelMetaSchema = () =>
 
 export const whiteLabelSiteSchema = () =>
 	z.object({
-		title: z.string().max(50),
-		lead: z.string().max(150),
-		imprint: z.string(),
+		title: z.string().max(50).optional(),
+		lead: z.string().max(150).optional(),
+		description: z.string().max(5000).optional(),
+		imprint: z.string().optional(),
 		primaryColor: z.string(),
-		logo: z.string().nullable()
+		logo: z.string().nullable(),
+		appIcon: z.string().nullable()
 	});
 
 export const settingsFormSchema = () =>

@@ -231,6 +231,15 @@ pnpm build-client-module
 
 ```
 
+## User image handling
+
+We store images for white label sites on S3 and serve optimized images via [imagx](https://dashboard.imgix.com/).
+
+```bash
+# Imgix image CDN
+PUBLIC_IMGIX_CDN_URL="scrt-link.imgix.net"
+```
+
 ## Error Handling
 
 We use SvelteKit recommendation: https://svelte.dev/docs/kit/errors
