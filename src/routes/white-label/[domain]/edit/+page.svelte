@@ -3,12 +3,12 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import CreateSecret from '$lib/components/elements/create-secret.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import PageLead from '$lib/components/page/page-lead.svelte';
 	import PageTitle from '$lib/components/page/page-title.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Card from '$lib/components/ui/card/card.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Markdown from '$lib/components/ui/markdown';
@@ -65,35 +65,60 @@
 
 		// When logo changes, we submit form
 		if (logoUrl || logoUrl === null) {
-			console.log(logoUrl);
 			submit();
 		}
 	});
 </script>
 
-<Header class="bg-background border-border fixed top-0 left-0 z-10 w-full border-b">
-	<div class="flex items-center">
-		<Button href={localizeHref('/account')} size="icon" variant="ghost">
-			<ChevronLeft class=" h-5 w-5" />
-		</Button>
-		<Button class="min-w-0 shrink" variant="ghost" href={`https://${data.domain}`} target="_blank">
-			<span class="block truncate">{data.domain}</span>
-			<SquareArrowUpRight class="ms-2 h-5 w-5" />
-		</Button>
+<div class="h-16">
+	<div class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b">
+		<div class="container flex h-full items-center justify-between">
+			<Button href={localizeHref('/account')} size="icon" variant="ghost">
+				<ChevronLeft class=" h-5 w-5" />
+			</Button>
 
-		{#if $delayed}
-			<Spinner class="h-5 w-5" />
-		{/if}
+			<Form.Field {form} name="primaryColor" class="flex items-center">
+				<Label class="inline-flex cursor-pointer items-center" for="themeColor">
+					<input
+						id="themeColor"
+						name="primaryColor"
+						class="mr-3 h-10 w-10 cursor-pointer"
+						bind:value={$formData.primaryColor}
+						{...$constraints.primaryColor}
+						onchange={() => submit()}
+						type="color"
+					/>
+					Primary color</Label
+				>
+			</Form.Field>
 
-		<CheckCircle2
-			class="text-success h-5 w-5 transition-opacity duration-1000 ease-in-out {success
-				? 'opacity-100'
-				: 'opacity-0'}"
-		/>
+			<div class="ms-auto flex items-center">
+				{#if $delayed}
+					<Spinner class="h-5 w-5" />
+				{/if}
+
+				<CheckCircle2
+					class="text-success h-5 w-5 transition-opacity duration-1000 ease-in-out {success
+						? 'opacity-100'
+						: 'opacity-0'}"
+				/>
+				<Button
+					class="min-w-0 shrink"
+					variant="ghost"
+					href={`https://${data.domain}`}
+					target="_blank"
+				>
+					<span class="block truncate">{data.domain}</span>
+					<SquareArrowUpRight class="ms-2 h-5 w-5" />
+				</Button>
+			</div>
+		</div>
 	</div>
-</Header>
+</div>
 
-<div class="container pt-28 pb-16">
+<Header />
+
+<div class="container pt-8 pb-16">
 	<div class="relative mb-12 inline-flex h-32 w-56">
 		<FileUpload
 			bind:fileKey={$formData.logo}
@@ -105,16 +130,21 @@
 	<PageTitle title={m.lucky_warm_mayfly_engage()} />
 	<PageLead lead={m.aloof_quaint_snail_pave()} />
 
-	<div class="relative mb-12">
-		<CreateSecret form={data.secretForm} user={data.user} hideUsps />
-		<div class="bg-background/70 absolute top-0 left-0 h-full w-full">
+	<Card class="mb-12">
+		<div class="bg-muted mb-4 h-9 w-1/2"></div>
+		<div class="bg-background relative mb-4 h-36 w-full sm:h-40">
 			<div
-				class="text-muted absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 text-5xl font-bold uppercase sm:text-7xl"
+				class="text-muted absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-6 text-4xl font-bold uppercase sm:text-5xl"
 			>
 				{m.fresh_tough_bullock_snap()}
 			</div>
 		</div>
-	</div>
+
+		<div class="flex justify-between">
+			<div class="bg-muted h-12 w-1/3 sm:w-1/5"></div>
+			<div class="bg-primary h-12 w-1/2 rounded-md sm:w-1/4"></div>
+		</div>
+	</Card>
 
 	<Markdown format={true} markdown={$formData.imprint} />
 
@@ -130,19 +160,8 @@
 			<input type="hidden" name="title" value={$formData.title} />
 			<input type="hidden" name="lead" value={$formData.lead} />
 			<input type="hidden" name="logo" value={$formData.logo} />
+			<input type="hidden" name="primaryColor" value={$formData.primaryColor} />
 
-			<Form.Field {form} name="primaryColor" class="flex items-center">
-				<input
-					id="themeColor"
-					name="primaryColor"
-					class="mr-3 h-10 w-10 cursor-pointer"
-					bind:value={$formData.primaryColor}
-					{...$constraints.primaryColor}
-					onchange={() => submit()}
-					type="color"
-				/>
-				<Label for="themeColor">Primary color</Label>
-			</Form.Field>
 			<Form.Field {form} name="imprint">
 				<Textarea
 					bind:value={$formData.imprint}

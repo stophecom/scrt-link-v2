@@ -137,7 +137,7 @@
 				class="me-2"
 				variant="outline"
 				href={localizeHref(`/white-label/${$formData.customDomain}/edit`)}
-				><Palette class="me-2 h-5 w-5" /> Edit theme</Button
+				><Palette class="me-2 h-5 w-5" />{m.home_witty_piranha_peek()}</Button
 			>
 			{#if $queryResult.isSuccess}
 				<Button variant="ghost" href={`https://${$formData.customDomain}`}

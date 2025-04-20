@@ -6,9 +6,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirectLocalized } from '$lib/i18n';
 import { db } from '$lib/server/db';
 import { whiteLabelSite } from '$lib/server/db/schema';
-import { postSecret } from '$lib/server/form/actions';
 import { saveWhiteLabelSite } from '$lib/server/form/actions';
-import { secretFormValidator } from '$lib/server/form/validators';
 import type { Theme } from '$lib/types';
 import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
@@ -49,12 +47,10 @@ export const load: PageServerLoad = async (event) => {
 	};
 
 	return {
-		whiteLabelSiteForm: await whiteLabelSiteFormValidator(),
-		secretForm: await secretFormValidator()
+		whiteLabelSiteForm: await whiteLabelSiteFormValidator()
 	};
 };
 
 export const actions: Actions = {
-	saveWhiteLabelSite: saveWhiteLabelSite,
-	postSecret: postSecret // Not enabled
+	saveWhiteLabelSite: saveWhiteLabelSite
 };
