@@ -20,7 +20,8 @@ import {
 	userSettings,
 	whiteLabelSite
 } from '$lib/server/db/schema';
-import type { LocalizedWhiteLabelMessage } from '$lib/types';
+import type { LocalizedWhiteLabelMessage, Theme } from '$lib/types';
+import { dropUndefinedValuesFromObject } from '$lib/utlis';
 import {
 	apiKeyFormSchema,
 	emailFormSchema,
@@ -687,7 +688,8 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 
 export const saveWhiteLabelSite: Action = async (event) => {
 	const form = await superValidate(event.request, zod(whiteLabelSiteSchema()), {
-		id: 'white-label-site-form'
+		id: 'white-label-site-form',
+		strict: true // Prevent null coercion - used for logo/appIcon
 	});
 
 	if (!form.valid) {
@@ -714,7 +716,8 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		);
 	}
 
-	const { title, lead, description, imprint, primaryColor, logo } = form.data;
+	// Reminder: All form data is optional
+	const { title, lead, description, imprint, primaryColor, logo, appIcon } = form.data;
 
 	const [existingWhiteLabelSite] = await db
 		.select()
@@ -725,32 +728,39 @@ export const saveWhiteLabelSite: Action = async (event) => {
 
 	// We store page content, such as title, lead, description as JSON.
 	// We therefor allow translating user content.
-	let messagesJson: LocalizedWhiteLabelMessage = locales.reduce((acc, locale) => {
-		acc[locale] = {};
-		return acc;
-	}, {} as LocalizedWhiteLabelMessage);
+	const messagesJson =
+		(existingWhiteLabelSite.messages as LocalizedWhiteLabelMessage) ||
+		locales.reduce((acc, locale) => {
+			acc[locale] = {};
+			return acc;
+		}, {} as LocalizedWhiteLabelMessage);
 
-	console.log('form json', form.data);
+	// Prepare theme
+	const themeJson = existingWhiteLabelSite.theme as Theme;
+	Object.assign(themeJson, dropUndefinedValuesFromObject({ primaryColor }));
 
+	// If non existent, create new entry
 	if (!existingWhiteLabelSite) {
-		messagesJson[locale] = { ...messagesJson[locale], title, lead, description, imprint };
+		messagesJson[locale] = { title, lead, description, imprint };
 
 		await db.insert(whiteLabelSite).values({
-			logo,
+			...dropUndefinedValuesFromObject({ logo, appIcon }),
 			userId: user.id,
-			theme: { primaryColor },
+			theme: themeJson,
 			messages: messagesJson
 		});
 	} else {
-		messagesJson = (existingWhiteLabelSite.messages || messagesJson) as LocalizedWhiteLabelMessage;
-		messagesJson[locale] = { title, lead, description, imprint };
+		Object.assign(
+			messagesJson[locale],
+			dropUndefinedValuesFromObject({ title, lead, description, imprint })
+		);
 
 		await db
 			.update(whiteLabelSite)
 			.set({
-				logo,
+				...dropUndefinedValuesFromObject({ logo, appIcon }),
 				userId: user.id,
-				theme: { primaryColor },
+				theme: themeJson,
 				messages: messagesJson
 			})
 			.where(eq(whiteLabelSite.userId, user.id));

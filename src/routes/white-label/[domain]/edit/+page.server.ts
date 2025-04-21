@@ -40,8 +40,8 @@ export const load: PageServerLoad = async (event) => {
 				description:
 					(whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.description || '',
 				imprint: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.imprint || '',
-				logo: whiteLabel?.logo || '',
-				appIcon: whiteLabel?.appIcon || '',
+				logo: whiteLabel?.logo || undefined,
+				appIcon: whiteLabel?.appIcon || undefined,
 				primaryColor: (whiteLabel.theme as Theme)?.primaryColor || '#000000'
 			},
 			zod(whiteLabelSiteSchema()),

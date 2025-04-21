@@ -22,7 +22,7 @@
 	};
 	let { fileKey = $bindable(), labelButton, labelDropzone }: Props = $props();
 
-	let selectedFile: File | null = $state(null);
+	let selectedFile: File | undefined = $state(undefined);
 	let error = $state('');
 	let loading = $state(false);
 
@@ -70,7 +70,7 @@
 
 	const reset = () => {
 		controller?.abort();
-		selectedFile = null;
+		selectedFile = undefined;
 	};
 
 	onDestroy(() => {

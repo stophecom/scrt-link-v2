@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CheckCircle2, ChevronLeft, SquareArrowUpRight } from 'lucide-svelte';
+	import { CheckCircle2, ChevronLeft, Pencil, SquareArrowUpRight } from 'lucide-svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
@@ -8,6 +8,7 @@
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import PageLead from '$lib/components/page/page-lead.svelte';
 	import PageTitle from '$lib/components/page/page-title.svelte';
+	import { buttonVariants } from '$lib/components/ui/button';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
@@ -84,6 +85,47 @@
 					<ChevronLeft class="me-2 h-5 w-5" /> Account
 				</Button>
 
+				<Form.Field {form} name="primaryColor" class="flex items-center">
+					<input
+						id="themeColor"
+						name="primaryColor"
+						class="mr-3 h-10 w-10 cursor-pointer"
+						bind:value={$formData.primaryColor}
+						{...$constraints.primaryColor}
+						onchange={() => submit()}
+						type="color"
+					/><Label class="sr-only" for="themeColor">Primary color</Label>
+				</Form.Field>
+
+				<Dialog.Root>
+					<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
+						><Pencil class="me-2 h-4 w-4" /> Edit Meta</Dialog.Trigger
+					>
+
+					<Dialog.Content class="sm:max-w-[600px]">
+						<Dialog.Header>
+							<Dialog.Title>Edit Meta</Dialog.Title>
+						</Dialog.Header>
+
+						<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite">
+							<div class="mb-4">
+								<FileUpload
+									bind:fileKey={$formData.appIcon}
+									labelButton={'Select app icon (square)'}
+									labelDropzone={'Drop or select app icon (square)'}
+								/>
+							</div>
+							<Dialog.Footer>
+								<Dialog.Close>
+									<Form.Button delayed={$delayed} class="ml-auto"
+										>{m.caring_light_tiger_taste()}</Form.Button
+									>
+								</Dialog.Close>
+							</Dialog.Footer>
+						</form>
+					</Dialog.Content>
+				</Dialog.Root>
+
 				<div class="ms-auto flex items-center">
 					{#if $delayed}
 						<Spinner class="h-5 w-5" />
@@ -159,27 +201,21 @@
 					</Dialog.Header>
 
 					<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite">
-						<Form.Field {form} name="primaryColor" class="flex items-center">
-							<Label class="inline-flex cursor-pointer items-center" for="themeColor">
-								<input
-									id="themeColor"
-									name="primaryColor"
-									class="mr-3 h-10 w-10 cursor-pointer"
-									bind:value={$formData.primaryColor}
-									{...$constraints.primaryColor}
-									onchange={() => submit()}
-									type="color"
-								/>
-								Primary color</Label
-							>
-						</Form.Field>
-
 						<Form.Field {form} name="title">
 							<Text
 								bind:value={$formData.title}
 								label="Title"
 								placeholder="Share a secret"
 								{...$constraints.title}
+							/>
+						</Form.Field>
+
+						<Form.Field {form} name="lead">
+							<Text
+								bind:value={$formData.lead}
+								label="Lead"
+								placeholder="with a secret..."
+								{...$constraints.lead}
 							/>
 						</Form.Field>
 
@@ -190,6 +226,7 @@
 								placeholder="Markdown"
 								{...$constraints.description}
 							/>
+							<Form.Description>You can use markdown here.</Form.Description>
 						</Form.Field>
 
 						<Form.Button delayed={$delayed} class="ml-auto"
