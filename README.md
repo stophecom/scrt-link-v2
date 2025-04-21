@@ -233,7 +233,7 @@ pnpm build-client-module
 
 ## User image handling
 
-We store images for white label sites on S3 and serve optimized images via [imagx](https://dashboard.imgix.com/).
+We store images (logo, app icons) for white label sites on S3 and serve optimized images via [imagx](https://dashboard.imgix.com/).
 
 ```bash
 # Imgix image CDN
