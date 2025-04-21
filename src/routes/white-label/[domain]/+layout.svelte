@@ -7,14 +7,24 @@
 	import type { LayoutData } from './$types';
 
 	let { children, data }: { data: LayoutData; children: Snippet } = $props();
+
+	const faviconUrl32 = data.appIcon
+		? `${data.appIcon}?auto=compress&w=32&h=32&fit=crop&fm=png`
+		: '/favicon-32x32.png';
+
+	const faviconUrl16 = data.appIcon
+		? `${data.appIcon}?auto=compress&w=16&h=16&fit=crop&fm=png`
+		: '/favicon-16x16.png';
+
+	const appleTouch = data.appIcon
+		? `${data.appIcon}?auto=compress&w=180&h=180&fit=crop&fm=png`
+		: '/apple-touch-icon.png';
 </script>
 
 <svelte:head>
-	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-	<link rel="manifest" href="/manifest.json" />
+	<link rel="apple-touch-icon" sizes="180x180" href={appleTouch} />
+	<link rel="icon" type="image/png" sizes="32x32" href={faviconUrl32} />
+	<link rel="icon" type="image/png" sizes="16x16" href={faviconUrl16} />
 	<meta property="og:locale" content={getLocale()} />
 	<meta property="og:site_name" content={data.domain} />
 

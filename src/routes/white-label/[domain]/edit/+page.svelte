@@ -108,13 +108,14 @@
 						</Dialog.Header>
 
 						<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite">
-							<div class="mb-4">
+							<div class="mb-4 max-w-40">
 								<FileUpload
 									bind:fileKey={$formData.appIcon}
 									labelButton={'Select app icon (square)'}
 									labelDropzone={'Drop or select app icon (square)'}
 								/>
 							</div>
+							<input type="hidden" name="appIcon" value={$formData.appIcon} />
 							<Dialog.Footer>
 								<Dialog.Close>
 									<Form.Button delayed={$delayed} class="ml-auto"
