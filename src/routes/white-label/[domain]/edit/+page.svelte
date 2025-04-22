@@ -160,10 +160,10 @@
 				/>
 			</Form.Field>
 
-			<div class="grid grid-cols-[40%_1fr] gap-4">
+			<div class="xs:grid-cols-[40%_1fr] grid gap-4">
 				<Form.Field {form} name="appIcon">
 					<FileUpload
-						class="aspect-square h-24 max-w-22 rounded-lg object-cover"
+						class="aspect-square h-24 max-w-24 rounded-lg object-cover"
 						label="App Icon"
 						description="App icon that is used for favicon. Recommended size: 180 x 180 pixels."
 						bind:value={$formData.appIcon}
@@ -174,7 +174,7 @@
 
 				<Form.Field {form} name="ogImage">
 					<FileUpload
-						class="aspect-[1200/630] h-24 max-w-60 rounded object-cover"
+						class="aspect-[1200/630] h-24 max-w-52 rounded object-cover"
 						label="Open Graph Image"
 						description="Open graph image is used for link previews on social media. Recommended size: 1200 x 630 pixels."
 						bind:value={$formData.ogImage}

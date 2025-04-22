@@ -96,38 +96,39 @@
 	<Form.Label>{label}</Form.Label>
 	<div>
 		{#if imageSrc}
-			<div class={'relative inline-flex'}>
-				<img
-					class={cn('max-h-full max-w-full object-contain', rest.class)}
-					src={imageSrc}
-					alt="Logo"
-				/>
+			<div class="grid grid-cols-[min-content_min-content] gap-2">
+				<div class="relative">
+					<img
+						class={cn('max-h-full max-w-full object-contain', rest.class)}
+						src={imageSrc}
+						alt="Logo"
+					/>
 
-				{#if loading}
-					<div
-						transition:fade
-						class="border-foreground bg-background text-muted-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border p-2"
-					>
-						<UploadSpinner />
-					</div>
-				{/if}
-				<div class="absolute top-0 left-full px-2">
-					<Button
-						size="icon"
-						variant="outline"
-						class="border-destructive"
-						aria-label="Delete"
-						on:click={async () => {
-							value = null;
-							reset();
-							await tick();
-							inputElement.dispatchEvent(new Event('change', { bubbles: true }));
-						}}
-					>
-						<Trash class="text-destructive h-4 w-4" />
-						<span class="sr-only">{m.least_moving_spider_roam()}</span>
-					</Button>
+					{#if loading}
+						<div
+							transition:fade
+							class="border-foreground bg-background text-muted-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border p-2"
+						>
+							<UploadSpinner />
+						</div>
+					{/if}
 				</div>
+
+				<Button
+					size="icon"
+					variant="outline"
+					class="border-destructive"
+					aria-label="Delete"
+					on:click={async () => {
+						value = null;
+						reset();
+						await tick();
+						inputElement.dispatchEvent(new Event('change', { bubbles: true }));
+					}}
+				>
+					<Trash class="text-destructive h-4 w-4" />
+					<span class="sr-only">{m.least_moving_spider_roam()}</span>
+				</Button>
 			</div>
 		{:else}
 			<div class="inline-flex">
