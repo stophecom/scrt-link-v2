@@ -13,7 +13,7 @@
 <h1
 	{...rest}
 	class={cn(
-		'gradient-text font-display mb-1 text-5xl leading-tight font-extrabold text-pretty md:text-6xl',
+		'gradient-text font-display xs:text-5xl mb-1 text-4xl leading-tight font-extrabold text-pretty md:text-6xl',
 		rest.class
 	)}
 >

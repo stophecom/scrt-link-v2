@@ -106,7 +106,8 @@ export const whiteLabelSiteSchema = () =>
 		imprint: z.string().optional(),
 		primaryColor: z.string().optional(),
 		logo: z.string().nullable().optional(),
-		appIcon: z.string().nullable().optional()
+		appIcon: z.string().nullable().optional(),
+		ogImage: z.string().nullable().optional()
 	});
 
 export const settingsFormSchema = () =>

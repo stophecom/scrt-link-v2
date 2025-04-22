@@ -17,13 +17,16 @@
 	let { name, title, lead, logo, children }: Props = $props();
 </script>
 
-<div class="container min-h-screen pt-8 pb-16">
+<div class="container min-h-screen pt-4 pb-8 sm:pt-8 sm:pb-16">
 	<div>
-		<a class="mb-12 inline-flex h-32 w-56 items-center" href={localizeHref('/')}>
+		<a
+			class="xs:mb-6 mb-4 inline-flex h-28 w-44 items-center sm:mb-12 sm:h-32 sm:w-56"
+			href={localizeHref('/')}
+		>
 			{#if logo}
 				<img src={logo} alt={title} class="max-h-full max-w-full object-contain" />
 			{:else}
-				<div class="py-2 text-4xl font-bold">
+				<div class="py-2 text-2xl font-bold sm:text-4xl">
 					{name}
 				</div>
 			{/if}

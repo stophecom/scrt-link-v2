@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ChevronDown } from 'lucide-svelte';
 	import Globe from 'lucide-svelte/icons/globe';
 
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -7,13 +8,21 @@
 	import { getLocale, type Locale, locales, setLocale } from '$lib/paraglide/runtime';
 
 	import { getSupportedLanguagesMap } from '../../../data/supportedLocales';
+
+	type Props = { showDropdownIndicator?: boolean };
+
+	let { showDropdownIndicator = false }: Props = $props();
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="outline" builders={[builder]}
-			><Globe class="mr-2 h-4 w-4" /> {getSupportedLanguagesMap(getLocale())}</Button
-		>
+		<Button variant="outline" builders={[builder]}>
+			<Globe class="mr-2 h-4 w-4" />
+			{getSupportedLanguagesMap(getLocale())}
+			{#if showDropdownIndicator}
+				<ChevronDown class="ms-2 h-4 w-4" />
+			{/if}
+		</Button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">
 		<DropdownMenu.Label>{m.wacky_bad_swallow_hack()}</DropdownMenu.Label>
