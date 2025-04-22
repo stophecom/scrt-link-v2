@@ -5,7 +5,7 @@
 </script>
 
 <div class="deviceContainer" style="width: 80%; max-width: 460px;">
-	<div class="androidPhone black portrait">
+	<div class="androidPhone black portrait shadow-2xl">
 		<div class="caseBorder"></div>
 		<div class="case"></div>
 		<div class="reflection"></div>

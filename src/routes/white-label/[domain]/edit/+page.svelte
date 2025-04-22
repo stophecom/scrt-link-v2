@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { CheckCircle2, ChevronLeft, SquareArrowUpRight } from 'lucide-svelte';
-	import SuperDebug, { superForm } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import AndroidFrame from '$lib/components/elements/android-frame.svelte';
+	import Color from '$lib/components/forms/form-fields/color.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import Label from '$lib/components/ui/label/label.svelte';
 	import LanguageSwitcher from '$lib/components/ui/language-switcher';
 	import Spinner from '$lib/components/ui/spinner/spinner.svelte';
 	import { m } from '$lib/paraglide/messages.js';
@@ -105,12 +105,8 @@
 	</div>
 </div>
 
-<div class="mx-auto grid max-w-[1000px] grid-cols-[1fr_460px] px-4 pt-8 pb-16">
+<div class="mx-auto grid items-start px-4 pt-8 pb-16 md:max-w-[1000px] md:grid-cols-[1fr_460px]">
 	<div>
-		<div class="mb-4">
-			<LanguageSwitcher showDropdownIndicator />
-		</div>
-
 		<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite" onchange={submit}>
 			<Form.Field {form} name="logo">
 				<FileUpload
@@ -122,72 +118,74 @@
 				/>
 			</Form.Field>
 
-			<Form.Field {form} name="primaryColor" class="flex items-center">
-				<input
-					id="themeColor"
-					name="primaryColor"
-					class="mr-3 h-10 w-10 cursor-pointer"
+			<div class="bg-muted my-4 rounded-sm p-4">
+				<div class="mb-4 flex justify-end">
+					<LanguageSwitcher showDropdownIndicator />
+				</div>
+				<Form.Field {form} name="title">
+					<Text
+						bind:value={$formData.title}
+						label="Title"
+						placeholder="Share a secret"
+						{...$constraints.title}
+					/>
+				</Form.Field>
+
+				<Form.Field {form} name="lead">
+					<Text
+						bind:value={$formData.lead}
+						label="Lead"
+						placeholder="with a secret..."
+						{...$constraints.lead}
+					/>
+				</Form.Field>
+
+				<Form.Field {form} name="description">
+					<Textarea
+						bind:value={$formData.description}
+						label="Description"
+						placeholder="Markdown"
+						{...$constraints.description}
+					/>
+					<Form.Description>You can use markdown here.</Form.Description>
+				</Form.Field>
+			</div>
+
+			<Form.Field {form} name="primaryColor">
+				<Color
+					label={m.last_wild_mongoose_heart()}
 					bind:value={$formData.primaryColor}
 					{...$constraints.primaryColor}
-					type="color"
-				/><Label for="themeColor">Primary color</Label>
-			</Form.Field>
-
-			<Form.Field {form} name="title">
-				<Text
-					bind:value={$formData.title}
-					label="Title"
-					placeholder="Share a secret"
-					{...$constraints.title}
 				/>
 			</Form.Field>
 
-			<Form.Field {form} name="lead">
-				<Text
-					bind:value={$formData.lead}
-					label="Lead"
-					placeholder="with a secret..."
-					{...$constraints.lead}
-				/>
-			</Form.Field>
+			<div class="grid grid-cols-[40%_1fr] gap-4">
+				<Form.Field {form} name="appIcon">
+					<FileUpload
+						class="aspect-square h-24 max-w-22 rounded-lg object-cover"
+						label="App Icon"
+						description="App icon that is used for favicon. Recommended size: 180 x 180 pixels."
+						bind:value={$formData.appIcon}
+						labelButton={'Select app icon (square)'}
+						labelDropzone={'Drop or select app icon (square)'}
+					/>
+				</Form.Field>
 
-			<Form.Field {form} name="description">
-				<Textarea
-					bind:value={$formData.description}
-					label="Description"
-					placeholder="Markdown"
-					{...$constraints.description}
-				/>
-				<Form.Description>You can use markdown here.</Form.Description>
-			</Form.Field>
-
-			<Form.Field {form} name="appIcon">
-				<FileUpload
-					class="h-24 max-w-22"
-					label="App Icon"
-					description="App icon that is used for favicon. Recommended size: 180 x 180 pixels."
-					bind:value={$formData.appIcon}
-					labelButton={'Select app icon (square)'}
-					labelDropzone={'Drop or select app icon (square)'}
-				/>
-			</Form.Field>
-
-			<Form.Field {form} name="ogImage">
-				<FileUpload
-					class="h-24 max-w-60"
-					label="Open Graph Image"
-					description="Open graph image is used for link previews on social media. Recommended size: 1200 x 630 pixels."
-					bind:value={$formData.ogImage}
-					labelButton={'Select open graph image'}
-					labelDropzone={'Drop or select open graph image'}
-				/>
-			</Form.Field>
-
-			<Form.Button delayed={$delayed} class="ml-auto">{m.caring_light_tiger_taste()}</Form.Button>
+				<Form.Field {form} name="ogImage">
+					<FileUpload
+						class="aspect-[1200/630] h-24 max-w-60 rounded object-cover"
+						label="Open Graph Image"
+						description="Open graph image is used for link previews on social media. Recommended size: 1200 x 630 pixels."
+						bind:value={$formData.ogImage}
+						labelButton={'Select open graph image'}
+						labelDropzone={'Drop or select open graph image'}
+					/>
+				</Form.Field>
+			</div>
 		</form>
 	</div>
 
-	<div class="flex flex-col items-center justify-center">
+	<div class="sticky top-0 flex flex-col items-center justify-center pt-20">
 		<h5 class="mb-2 font-bold">Live Preview</h5>
 		<AndroidFrame>
 			<iframe
@@ -208,5 +206,3 @@
 		</AndroidFrame>
 	</div>
 </div>
-
-<SuperDebug data={$formData} />
