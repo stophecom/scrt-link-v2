@@ -8,6 +8,8 @@
 	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
+	import PageLead from '$lib/components/page/page-lead.svelte';
+	import PageTitle from '$lib/components/page/page-title.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import LanguageSwitcher from '$lib/components/ui/language-switcher';
@@ -76,7 +78,7 @@
 
 <div class="h-16">
 	<div class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b">
-		<div class="mx-auto flex h-full items-center justify-between px-4 md:max-w-[1000px]">
+		<div class="mx-auto flex h-full items-center justify-between px-4 md:max-w-[1100px]">
 			<Button href={localizeHref('/account')} variant="ghost">
 				<ChevronLeft class="me-2 h-5 w-5" />
 				{m.solid_clean_insect_stir()}
@@ -106,8 +108,14 @@
 	</div>
 </div>
 
-<div class="mx-auto grid items-start px-4 pt-8 pb-16 md:max-w-[1000px] md:grid-cols-[1fr_460px]">
-	<div>
+<div
+	class="mx-auto grid items-start gap-4 px-4 pt-8 pb-16 md:max-w-[1100px] md:grid-cols-[1fr_460px]"
+>
+	<div class="pt-16">
+		<PageTitle title="Customize your page"></PageTitle>
+		<PageLead lead="Time to make it personal: Edit the content of your secret sharing website."
+		></PageLead>
+
 		<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite" onchange={submit}>
 			<Form.Field {form} name="logo">
 				<FileUpload
@@ -186,7 +194,7 @@
 		</form>
 	</div>
 
-	<div class="sticky top-0 flex flex-col items-center justify-center pt-20">
+	<div class="sticky top-0 flex flex-col items-center justify-center md:pt-44">
 		<h5 class="mb-2 font-bold">Live Preview</h5>
 		<AndroidFrame>
 			<iframe
