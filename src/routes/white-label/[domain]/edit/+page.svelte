@@ -114,7 +114,7 @@
 		<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite" onchange={submit}>
 			<Form.Field {form} name="logo">
 				<FileUpload
-					class="max-h-22 max-w-22"
+					class="h-24 max-w-22"
 					label="Logo"
 					bind:value={$formData.logo}
 					labelButton={m.ago_crisp_kangaroo_grasp()}
@@ -163,12 +163,23 @@
 
 			<Form.Field {form} name="appIcon">
 				<FileUpload
-					class="max-h-22 max-w-22"
+					class="h-24 max-w-22"
 					label="App Icon"
-					description="App icon that is used for favicon. Minimum recommended size: 180x180px."
+					description="App icon that is used for favicon. Recommended size: 180 x 180 pixels."
 					bind:value={$formData.appIcon}
 					labelButton={'Select app icon (square)'}
 					labelDropzone={'Drop or select app icon (square)'}
+				/>
+			</Form.Field>
+
+			<Form.Field {form} name="ogImage">
+				<FileUpload
+					class="h-24 max-w-60"
+					label="Open Graph Image"
+					description="Open graph image is used for link previews on social media. Recommended size: 1200 x 630 pixels."
+					bind:value={$formData.ogImage}
+					labelButton={'Select open graph image'}
+					labelDropzone={'Drop or select open graph image'}
 				/>
 			</Form.Field>
 
