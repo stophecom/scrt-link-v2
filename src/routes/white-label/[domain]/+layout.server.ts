@@ -18,15 +18,17 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 		throw error(500, `No data for ${params.domain} found.`);
 	}
 
-	const { name, appIcon, theme } = result;
+	const { name, appIcon, ogImage, theme } = result;
 
-	const baseUrl = `https://${PUBLIC_IMGIX_CDN_URL}/${appIcon}`;
+	const getImageUrl = (src: string | null) =>
+		src ? `https://${PUBLIC_IMGIX_CDN_URL}/${src}` : undefined;
 
 	return {
 		user: locals.user,
 		domain: params.domain,
 		name,
-		appIcon: appIcon ? baseUrl : undefined,
+		appIcon: getImageUrl(appIcon),
+		ogImage: getImageUrl(ogImage),
 		theme: theme as Theme
 	};
 };
