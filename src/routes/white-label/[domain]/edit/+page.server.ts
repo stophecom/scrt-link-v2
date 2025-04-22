@@ -44,10 +44,7 @@ export const load: PageServerLoad = async (event) => {
 				appIcon: whiteLabel?.appIcon || undefined,
 				primaryColor: (whiteLabel.theme as Theme)?.primaryColor || '#000000'
 			},
-			zod(whiteLabelSiteSchema()),
-			{
-				id: 'white-label-site-form'
-			}
+			zod(whiteLabelSiteSchema())
 		);
 	};
 

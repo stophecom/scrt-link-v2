@@ -688,7 +688,6 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 
 export const saveWhiteLabelSite: Action = async (event) => {
 	const form = await superValidate(event.request, zod(whiteLabelSiteSchema()), {
-		id: 'white-label-site-form',
 		strict: true // Prevent null coercion - used for logo/appIcon
 	});
 
