@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CheckCircle2, ChevronLeft, SquareArrowUpRight } from 'lucide-svelte';
+	import { CheckCircle2, ChevronLeft, ChevronUp, SquareArrowUpRight } from 'lucide-svelte';
 	import { elasticOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
@@ -15,6 +15,7 @@
 	import PageTitle from '$lib/components/page/page-title.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Form from '$lib/components/ui/form';
 	import LanguageSwitcher from '$lib/components/ui/language-switcher';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
@@ -117,20 +118,20 @@
 	class="mx-auto grid items-start gap-12 px-4 pt-8 pb-16 md:max-w-[1100px] md:grid-cols-[1fr_360px]"
 >
 	<div class="pt-16">
-		<PageTitle title="Customize your website"></PageTitle>
-		<PageLead lead="Make it yours: Customize the content of your secret sharing site."></PageLead>
+		<PageTitle title={m.misty_low_mantis_hug()}></PageTitle>
+		<PageLead lead={m.brave_ok_hound_kiss()}></PageLead>
 
 		<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite" onchange={submit}>
 			<Card
 				class="mb-6"
-				title="Logo"
-				description="For best results, use a logo with a transparent background—preferably in SVG or PNG format."
+				title={m.fair_sad_parakeet_jest()}
+				description={m.smart_direct_penguin_trust()}
 			>
 				<div class="grid grid-cols-2 gap-4">
 					<Form.Field {form} name="logo">
 						<FileUpload
 							class="h-24 max-w-22"
-							label="Logo"
+							label={m.fair_sad_parakeet_jest()}
 							bind:value={$formData.logo}
 							labelButton={m.ago_crisp_kangaroo_grasp()}
 							labelDropzone={m.jolly_formal_tapir_gleam()}
@@ -139,7 +140,7 @@
 					<Form.Field {form} name="logoDarkMode">
 						<FileUpload
 							class="h-24 max-w-22"
-							label="Logo (dark mode)"
+							label="{m.fair_sad_parakeet_jest()} {m.lofty_plain_cod_learn()}"
 							bind:value={$formData.logoDarkMode}
 							labelButton={m.ago_crisp_kangaroo_grasp()}
 							labelDropzone={m.jolly_formal_tapir_gleam()}
@@ -150,11 +151,7 @@
 				<DarkModeSwitcher variant="outline" />
 			</Card>
 
-			<Card
-				class="mb-6"
-				title="Theme"
-				description="Choose your brand color, ensuring it has good contrast for readability and accessibility."
-			>
+			<Card class="mb-6" title={m.shy_smug_crow_sing()} description={m.strong_strong_swan_hurl()}>
 				<Form.Field {form} name="primaryColor">
 					<Color
 						label={m.last_wild_mongoose_heart()}
@@ -166,13 +163,13 @@
 
 			<Card
 				class="mb-6"
-				title="Custom texts"
-				description="Create a personalized message for your audience. Be sure to include text in every language you wish to support."
+				title={m.honest_direct_tiger_surge()}
+				description={m.zany_wide_cheetah_pause()}
 			>
 				<Form.Field {form} name="title">
 					<Text
 						bind:value={$formData.title}
-						label="Title"
+						label={m.lower_inner_dog_bubble()}
 						placeholder={m.lucky_warm_mayfly_engage()}
 						{...$constraints.title}
 					/>
@@ -181,7 +178,7 @@
 				<Form.Field {form} name="lead">
 					<Text
 						bind:value={$formData.lead}
-						label="Lead"
+						label={m.nimble_away_marmot_nurture()}
 						placeholder={m.bland_spicy_penguin_fade()}
 						{...$constraints.lead}
 					/>
@@ -190,11 +187,15 @@
 				<Form.Field {form} name="description">
 					<Textarea
 						bind:value={$formData.description}
-						label="Description"
+						label={m.caring_topical_ray_commend()}
 						placeholder="Markdown"
 						{...$constraints.description}
 					/>
-					<Form.Description>You can use markdown here.</Form.Description>
+					<Form.Description
+						>{m.true_mushy_ray_treat({
+							markdown: '[markdown](https://www.markdownguide.org/basic-syntax/)'
+						})}</Form.Description
+					>
 				</Form.Field>
 
 				<Separator class="my-4" />
@@ -203,29 +204,29 @@
 
 			<Card
 				class="mb-6"
-				title="Meta images"
-				description="Add an app icon to be used as a favicon, and an Open Graph image to enhance how your site appears when shared on social media."
+				title={m.witty_main_marlin_twirl()}
+				description={m.bald_nimble_kitten_skip()}
 			>
 				<div class="xs:grid-cols-[40%_1fr] grid gap-4">
 					<Form.Field {form} name="appIcon">
 						<FileUpload
 							class="aspect-square h-24 max-w-24 rounded-lg object-cover"
-							label="App Icon"
-							description="App icon that is used for favicon. Recommended size: 180 x 180 pixels."
+							label={m.caring_jumpy_sloth_hunt()}
+							description={m.keen_stock_ladybug_forgive()}
 							bind:value={$formData.appIcon}
-							labelButton={'Select app icon (square)'}
-							labelDropzone={'Drop or select app icon (square)'}
+							labelButton={m.wide_tense_fireant_ask()}
+							labelDropzone={m.lofty_cute_stork_loop()}
 						/>
 					</Form.Field>
 
 					<Form.Field {form} name="ogImage">
 						<FileUpload
 							class="aspect-[1200/630] h-24 max-w-52 rounded object-cover"
-							label="Open Graph Image"
-							description="Open graph image is used for link previews on social media. Recommended size: 1200 x 630 pixels."
+							label={m.main_day_ant_propel()}
+							description={m.whole_watery_finch_conquer()}
 							bind:value={$formData.ogImage}
-							labelButton={'Select open graph image'}
-							labelDropzone={'Drop or select open graph image'}
+							labelButton={m.basic_tense_moose_twirl()}
+							labelDropzone={m.born_glad_fly_list()}
 						/>
 					</Form.Field>
 				</div>
@@ -233,26 +234,44 @@
 		</form>
 	</div>
 
-	<div class="sticky top-0 md:pt-34">
+	<div class="top-0 max-sm:hidden md:sticky md:pt-34">
 		<h5 class="ms-4 mb-2 font-bold">{m.teal_white_mongoose_urge()}</h5>
 		<div>
-			<AndroidFrame>
-				<iframe
-					id="iframe-preview"
-					title="Preview"
-					src={`/white-label/${data.domain}`}
-					frameborder="0"
-					width="100%"
-					height="100%"
-				></iframe>
-				{#if $delayed || showSpinner}
-					<div
-						class="bg-background/50 absolute top-0 left-0 flex h-full w-full items-center justify-center"
-					>
-						<Spinner class="h-10 w-10" />
-					</div>
-				{/if}
-			</AndroidFrame>
+			{@render renderFrame()}
 		</div>
 	</div>
 </div>
+
+<Dialog.Root>
+	<Dialog.Trigger
+		class="bg-background border-border fixed bottom-0 left-0 flex h-16 w-full items-center justify-center border-t font-medium sm:hidden"
+		>{m.teal_white_mongoose_urge()} <ChevronUp class="ms-2 h-4 w-4" />
+	</Dialog.Trigger>
+	<Dialog.Content class="overflow-y-auto sm:max-w-[425px]">
+		<Dialog.Header>
+			<Dialog.Title>{m.teal_white_mongoose_urge()}</Dialog.Title>
+		</Dialog.Header>
+
+		{@render renderFrame()}
+	</Dialog.Content>
+</Dialog.Root>
+
+{#snippet renderFrame()}
+	<AndroidFrame>
+		<iframe
+			id="iframe-preview"
+			title="Preview"
+			src={`/white-label/${data.domain}`}
+			frameborder="0"
+			width="100%"
+			height="100%"
+		></iframe>
+		{#if $delayed || showSpinner}
+			<div
+				class="bg-background/50 absolute top-0 left-0 flex h-full w-full items-center justify-center"
+			>
+				<Spinner class="h-10 w-10" />
+			</div>
+		{/if}
+	</AndroidFrame>
+{/snippet}
