@@ -47,6 +47,8 @@
 		{/if}
 	{/each}
 
+	<meta property="og:url" content={page.url.href} />
+	<meta property="og:type" content="website" />
 	<meta property="og:image" content={`${page.url.origin}/og-image.png`} />
 	<meta property="og:image:type" content="image/png" />
 	<meta property="og:image:width" content="1200" />

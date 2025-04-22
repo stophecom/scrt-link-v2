@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
 
+	import { page } from '$app/state';
 	import { m } from '$lib/paraglide/messages.js';
 	import { getLocale } from '$lib/paraglide/runtime';
 
@@ -31,6 +32,9 @@
 	<link rel="icon" type="image/png" sizes="16x16" href={faviconUrl16} />
 	<meta property="og:locale" content={getLocale()} />
 	<meta property="og:site_name" content={data.domain} />
+
+	<meta property="og:url" content={page.url.href} />
+	<meta property="og:type" content="website" />
 
 	<meta property="og:image" content={ogImage} />
 	<meta property="og:image:type" content="image/png" />
