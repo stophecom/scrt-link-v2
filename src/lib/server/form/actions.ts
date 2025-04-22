@@ -716,7 +716,8 @@ export const saveWhiteLabelSite: Action = async (event) => {
 	}
 
 	// Reminder: All form data is optional
-	const { title, lead, description, imprint, primaryColor, logo, appIcon, ogImage } = form.data;
+	const { title, lead, description, imprint, primaryColor, logo, logoDarkMode, appIcon, ogImage } =
+		form.data;
 
 	const [existingWhiteLabelSite] = await db
 		.select()
@@ -743,7 +744,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		messagesJson[locale] = { title, lead, description, imprint };
 
 		await db.insert(whiteLabelSite).values({
-			...dropUndefinedValuesFromObject({ logo, appIcon, ogImage }),
+			...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
 			userId: user.id,
 			theme: themeJson,
 			messages: messagesJson
@@ -757,7 +758,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		await db
 			.update(whiteLabelSite)
 			.set({
-				...dropUndefinedValuesFromObject({ logo, appIcon, ogImage }),
+				...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
 				userId: user.id,
 				theme: themeJson,
 				messages: messagesJson

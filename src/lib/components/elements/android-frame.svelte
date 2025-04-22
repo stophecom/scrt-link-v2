@@ -4,11 +4,10 @@
 	let { children }: { children: Snippet } = $props();
 </script>
 
-<div class="deviceContainer" style="width: 80%; max-width: 460px;">
+<div class="deviceContainer">
 	<div class="androidPhone black portrait shadow-2xl">
 		<div class="caseBorder"></div>
 		<div class="case"></div>
-		<div class="reflection"></div>
 		<div class="screen"></div>
 		<div class="camera"></div>
 		<div class="speaker"></div>
@@ -40,14 +39,7 @@
 		background: rgba(0, 0, 0, 0);
 		box-shadow: inset 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
 	}
-	.black .reflection {
-		background: linear-gradient(
-			135deg,
-			rgba(255, 255, 255, 0.1) 0%,
-			rgba(255, 255, 255, 0.2) 50%,
-			rgba(255, 255, 255, 0) 51%
-		);
-	}
+
 	.black .camera {
 		background: radial-gradient(#555 0%, #777 80%);
 	}
@@ -77,17 +69,6 @@
 		width: 100%;
 		height: 100%;
 		top: 0px;
-	}
-
-	.androidPhone.portrait .reflection {
-		width: 107%;
-		height: 120%;
-		position: absolute;
-		top: -10%;
-		left: -3%;
-		z-index: 7;
-		border-radius: 10%/5%;
-		pointer-events: none;
 	}
 
 	.androidPhone.portrait .caseBorder {

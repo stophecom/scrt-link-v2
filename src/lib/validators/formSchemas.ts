@@ -100,12 +100,13 @@ export const whiteLabelMetaSchema = () =>
 
 export const whiteLabelSiteSchema = () =>
 	z.object({
-		title: z.string().max(50).optional(),
-		lead: z.string().max(150).optional(),
-		description: z.string().max(5000).optional(),
-		imprint: z.string().optional(),
+		title: z.string().max(50).nullable().optional(),
+		lead: z.string().max(150).nullable().optional(),
+		description: z.string().max(5000).nullable().optional(),
+		imprint: z.string().nullable().optional(),
 		primaryColor: z.string().optional(),
 		logo: z.string().nullable().optional(),
+		logoDarkMode: z.string().nullable().optional(),
 		appIcon: z.string().nullable().optional(),
 		ogImage: z.string().nullable().optional()
 	});

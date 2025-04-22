@@ -41,6 +41,7 @@ export const load: PageServerLoad = async (event) => {
 					(whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.description || '',
 				imprint: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.imprint || '',
 				logo: whiteLabel?.logo || undefined,
+				logoDarkMode: whiteLabel?.logoDarkMode || undefined,
 				appIcon: whiteLabel?.appIcon || undefined,
 				ogImage: whiteLabel?.ogImage || undefined,
 				primaryColor: (whiteLabel.theme as Theme)?.primaryColor || '#000000'

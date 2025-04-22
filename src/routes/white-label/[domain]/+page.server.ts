@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
+import { PUBLIC_IMGIX_CDN_URL } from '$env/static/public';
 import { getLocale } from '$lib/paraglide/runtime';
 import { db } from '$lib/server/db';
 import { whiteLabelSite } from '$lib/server/db/schema';
@@ -22,13 +23,17 @@ export const load: PageServerLoad = async ({ params }) => {
 		throw error(500, `No data for ${params.domain} found.`);
 	}
 
+	const getLogo = (fileName: string | undefined | null) =>
+		fileName ? `https://${PUBLIC_IMGIX_CDN_URL}/${fileName}?auto=compress` : undefined;
+
 	return {
 		secretForm: await secretFormValidator(),
 		title: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.title || '',
 		lead: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.lead || '',
 		description: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.description || '',
 		imprint: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.imprint || '',
-		logo: whiteLabel?.logo
+		logo: getLogo(whiteLabel?.logo),
+		logoDarkMode: getLogo(whiteLabel?.logoDarkMode)
 	};
 };
 

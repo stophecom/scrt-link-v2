@@ -66,6 +66,7 @@ export const whiteLabelSite = pgTable('white_label_site', {
 	theme: jsonb('theme'),
 	messages: jsonb('messages'),
 	logo: text('logo'),
+	logoDarkMode: text('logo_dark_mode'),
 	appIcon: text('app_icon'),
 	ogImage: text('og_image'),
 	createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),

@@ -80,10 +80,10 @@ export interface DomainVerificationResponse {
 
 // WhiteLabel messages (translations we store in DB as JSON)
 export type WhiteLabelMessage = {
-	title?: string;
-	lead?: string;
-	description?: string;
-	imprint?: string;
+	title?: string | null;
+	lead?: string | null;
+	description?: string | null;
+	imprint?: string | null;
 };
 
 export type LocalizedWhiteLabelMessage = Record<Locale, WhiteLabelMessage>;

@@ -80,7 +80,7 @@
 		"drizzle-zod": "^0.6.1",
 		"highlight.js": "^11.11.1",
 		"jwt-decode": "^4.0.0",
-		"mode-watcher": "^0.5.0",
+		"mode-watcher": "^1.0.2",
 		"plausible-tracker": "^0.3.9",
 		"postgres": "^3.4.5",
 		"pretty-bytes": "^6.1.1",

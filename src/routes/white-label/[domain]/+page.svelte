@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { PUBLIC_IMGIX_CDN_URL } from '$env/static/public';
+	import { mode } from 'mode-watcher';
+
 	import CreateSecret from '$lib/components/elements/create-secret.svelte';
 	import WhiteLabelPage from '$lib/components/page/white-label-page.svelte';
 	import Markdown from '$lib/components/ui/markdown';
@@ -10,9 +11,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const logo = data?.logo
-		? `https://${PUBLIC_IMGIX_CDN_URL}/${data.logo}?auto=compress`
-		: undefined;
+	let logo = $derived(mode.current === 'dark' ? data.logoDarkMode : data.logo);
 </script>
 
 <Header />
@@ -20,7 +19,7 @@
 	name={data?.name}
 	{logo}
 	title={data?.title || m.lucky_warm_mayfly_engage()}
-	lead={data?.lead || m.aloof_quaint_snail_pave()}
+	lead={data?.lead || m.bland_spicy_penguin_fade()}
 >
 	<div class="mb-12">
 		<CreateSecret form={data.secretForm} user={data.user} hideUsps />
