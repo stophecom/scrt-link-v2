@@ -8,7 +8,7 @@ import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { getPlanLimits } from '$lib/data/plans';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { addDomainToVercel, removeDomainFromVercelProject, validDomainRegex } from '$lib/domains';
-import { redirectLocalized } from '$lib/i18n';
+import { formatDateTime, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import { getLocale, locales } from '$lib/paraglide/runtime';
 import * as auth from '$lib/server/auth';
@@ -57,13 +57,17 @@ export const postSecret: Action = async (event) => {
 	const user = event.locals.user;
 
 	try {
-		const { receiptId, expiresIn } = await saveSecret({
+		const { receiptId, expiresIn, expiresAt } = await saveSecret({
 			userId: user?.id,
 			secretRequest: form.data
 		});
 
+		const expirationPeriod =
+			getExpiresInOptions().find((item) => item.value === expiresIn)?.label || '';
+		const expirationDate = formatDateTime(new Date(expiresAt));
+
 		const expirationMessage = m.real_actual_cockroach_type({
-			time: getExpiresInOptions().find((item) => item.value === expiresIn)?.label || ''
+			time: `${expirationPeriod}: ${expirationDate}`
 		});
 
 		const readReceiptMessage = m.deft_lucky_quail_pause({ receiptId });

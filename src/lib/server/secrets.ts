@@ -21,16 +21,19 @@ export const saveSecret = async ({ userId, secretRequest }: SaveSecret) => {
 	// Attach user to secret, if exists
 	const receiptId = generateRandomUrlSafeString(8);
 
-	await db.insert(secret).values({
-		secretIdHash,
-		meta,
-		content,
-		passwordHash,
-		expiresAt: new Date(Date.now() + expiresIn),
-		publicKey,
-		receiptId,
-		userId: userId
-	});
+	const [result] = await db
+		.insert(secret)
+		.values({
+			secretIdHash,
+			meta,
+			content,
+			passwordHash,
+			expiresAt: new Date(Date.now() + expiresIn),
+			publicKey,
+			receiptId,
+			userId: userId
+		})
+		.returning();
 
 	// Global stats
 	await db
@@ -55,5 +58,5 @@ export const saveSecret = async ({ userId, secretRequest }: SaveSecret) => {
 			});
 	}
 
-	return { receiptId, expiresIn };
+	return { receiptId, expiresIn, expiresAt: result.expiresAt };
 };

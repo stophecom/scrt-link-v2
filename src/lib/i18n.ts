@@ -42,3 +42,12 @@ export const formatDate = (date: Date) =>
 		month: 'long',
 		day: 'numeric'
 	}).format(new Date(date));
+
+export const formatDateTime = (date: Date) =>
+	new Intl.DateTimeFormat(getLocale(), {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+		hour: 'numeric',
+		minute: '2-digit'
+	}).format(new Date(date));

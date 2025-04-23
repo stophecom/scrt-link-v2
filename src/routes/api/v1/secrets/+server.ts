@@ -66,10 +66,10 @@ export const POST: RequestHandler = async ({ request }) => {
 		return jsonWithCors({ error: 'Checksum mismatch.' }, { status: 400 });
 	}
 
-	const { receiptId, expiresIn } = await saveSecret({
+	const { receiptId, expiresIn, expiresAt } = await saveSecret({
 		userId: matchingApiKey.user?.id,
 		secretRequest: validation.data
 	});
 
-	return jsonWithCors({ receiptId, expiresIn });
+	return jsonWithCors({ receiptId, expiresIn, expiresAt });
 };
