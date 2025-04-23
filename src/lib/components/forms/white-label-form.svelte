@@ -97,11 +97,7 @@
 		<Alert
 			class="relative"
 			title={$queryResult.data?.message || m.awful_house_lizard_pick()}
-			variant={$queryResult.isError
-				? 'destructive'
-				: $queryResult.data?.verified
-					? 'success'
-					: 'default'}
+			variant={$queryResult.isError ? 'destructive' : 'default'}
 		>
 			<Spinner
 				class="absolute top-5 right-5 h-4 w-4 transition-opacity {$queryResult.isFetching
