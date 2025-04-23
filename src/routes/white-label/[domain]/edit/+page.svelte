@@ -18,6 +18,7 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Form from '$lib/components/ui/form';
 	import LanguageSwitcher from '$lib/components/ui/language-switcher';
+	import Markdown from '$lib/components/ui/markdown';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import Spinner from '$lib/components/ui/spinner/spinner.svelte';
 	import { m } from '$lib/paraglide/messages.js';
@@ -191,11 +192,13 @@
 						placeholder="Markdown"
 						{...$constraints.description}
 					/>
-					<Form.Description
-						>{m.true_mushy_ray_treat({
-							markdown: '[markdown](https://www.markdownguide.org/basic-syntax/)'
-						})}</Form.Description
-					>
+					<Form.Description>
+						<Markdown
+							markdown={m.true_mushy_ray_treat({
+								markdown: '[markdown](https://www.markdownguide.org/basic-syntax/)'
+							})}
+						/>
+					</Form.Description>
 				</Form.Field>
 
 				<Separator class="my-4" />
