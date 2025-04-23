@@ -1,6 +1,6 @@
 import type { Reroute } from '@sveltejs/kit';
 
-import { PUBLIC_PRODUCTION_URL } from '$env/static/public';
+import { isOriginalHost } from '$lib/app-routing';
 import { deLocalizeUrl } from '$lib/paraglide/runtime';
 
 // We use reroute (rewrite) for
@@ -17,22 +17,10 @@ export const reroute: Reroute = (request) => {
 		return deLocalizeUrl(request.url).pathname;
 	}
 
-	// Handle all possible production domains.
-	// Preview domain regex (e.g. scrt-link-v2-caqr8zo1g-stophe.vercel.app)
-	const regex = /^[a-zA-Z0-9-]+-stophe\.vercel\.app$/;
-
 	// We need to exclude requests to api routes
 	const regexApiRoute = /^\/api.*$/;
 
-	if (
-		host === 'localhost:5173' ||
-		host === PUBLIC_PRODUCTION_URL ||
-		host === `www.${PUBLIC_PRODUCTION_URL}` ||
-		host === `dev.${PUBLIC_PRODUCTION_URL}` ||
-		host === `scrt-link-v2.vercel.app` ||
-		regex.test(host) ||
-		regexApiRoute.test(originalUrl.pathname)
-	) {
+	if (isOriginalHost(host) || regexApiRoute.test(originalUrl.pathname)) {
 		return deLocalizeUrl(request.url).pathname;
 	}
 
