@@ -7,6 +7,7 @@
 	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
 
 	import { emailSupport } from '../../data/app';
+	import Container from '../ui/container/container.svelte';
 	import Head from './head.svelte';
 	import PageLead from './page-lead.svelte';
 	import PageTitle from './page-title.svelte';
@@ -19,6 +20,7 @@
 		metaKeywords?: string;
 		markNotTranslated?: boolean;
 		children: Snippet;
+		wide?: boolean;
 	};
 
 	let {
@@ -28,12 +30,13 @@
 		metaDescription = m.elegant_muddy_wren_value(),
 		metaKeywords = m.wise_honest_otter_jump(),
 		markNotTranslated,
-		children
+		children,
+		wide
 	}: Props = $props();
 </script>
 
 <Head title={metaTitle || title} {metaDescription} {metaKeywords} />
-<div class="container min-h-screen pt-8 pb-16">
+<Container variant={wide ? 'wide' : 'default'} class="min-h-screen pt-8 pb-16">
 	<div>
 		<a class="inline-flex" href={localizeHref('/')}>
 			<Logo class="h-28 w-28 md:h-32 md:w-32" />
@@ -55,4 +58,4 @@
 		</Alert>
 	{/if}
 	{@render children?.()}
-</div>
+</Container>

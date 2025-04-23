@@ -15,6 +15,7 @@
 	import PageTitle from '$lib/components/page/page-title.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
+	import Container from '$lib/components/ui/container/container.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Form from '$lib/components/ui/form';
 	import LanguageSwitcher from '$lib/components/ui/language-switcher';
@@ -84,7 +85,7 @@
 
 <div class="h-16">
 	<div class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b">
-		<div class="mx-auto flex h-full items-center justify-between px-4 md:max-w-[1100px]">
+		<Container variant="wide" class=" flex h-full items-center justify-between">
 			<Button href={localizeHref('/account')} variant="ghost">
 				<ChevronLeft class="me-2 h-5 w-5" />
 				{m.solid_clean_insect_stir()}
@@ -111,13 +112,11 @@
 					<SquareArrowUpRight class="ms-2 h-5 w-5" />
 				</Button>
 			</div>
-		</div>
+		</Container>
 	</div>
 </div>
 
-<div
-	class="mx-auto grid items-start gap-12 px-4 pt-8 pb-16 md:max-w-[1100px] md:grid-cols-[1fr_360px]"
->
+<Container variant="wide" class=" grid items-start gap-12 pt-8 pb-16 md:grid-cols-[1fr_360px]">
 	<div class="pt-16">
 		<PageTitle title={m.misty_low_mantis_hug()}></PageTitle>
 		<PageLead lead={m.brave_ok_hound_kiss()}></PageLead>
@@ -243,7 +242,7 @@
 			{@render renderFrame()}
 		</div>
 	</div>
-</div>
+</Container>
 
 <Dialog.Root>
 	<Dialog.Trigger
