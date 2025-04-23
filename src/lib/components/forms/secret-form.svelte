@@ -113,13 +113,10 @@
 	const { form: formData, message, delayed, constraints, enhance } = form;
 
 	// We need to convert number (expiration timeout) to string, since radio input only supports string.
-	const expiresInOptions = getExpiresInOptions(planLimits.expirationOptionsExtended).map(
-		(option) => ({
-			disabled: !planLimits.expirationOptionsAllowed,
-			...option,
-			value: String(option.value)
-		})
-	);
+	const expiresInOptions = getExpiresInOptions(planLimits.expirationOptions).map((option) => ({
+		...option,
+		value: String(option.value)
+	}));
 	const expiresInProxy = intProxy(form, 'expiresIn'); // Cast string to number
 
 	let privateKey: CryptoKey | undefined = $state();
@@ -256,7 +253,7 @@
 					label={m.noble_whole_hornet_evoke()}
 				/>
 			</Form.Fieldset>
-			{#if (!planLimits.expirationOptionsAllowed || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}
+			{#if (!planLimits.expirationOptions.length || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}
 				<UpgradeNotice {user} />
 			{/if}
 		</div>

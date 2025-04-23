@@ -1,9 +1,10 @@
-import { Plane, Rocket, Send } from 'lucide-svelte';
+import { Factory, Plane, Rocket, Send } from 'lucide-svelte';
 
 import { formatBytes } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 
 import { SecretType, TierOptions } from './enums';
+import { expiresInOptions, expiresInOptionsExtended } from './secretSettings';
 import { GB, MB } from './units';
 
 // Defaults for visitors without account
@@ -16,8 +17,7 @@ const defaultLimits = {
 	apiAccess: false,
 	passwordAllowed: false,
 	readReceiptsAllowed: false,
-	expirationOptionsAllowed: false,
-	expirationOptionsExtended: false,
+	expirationOptions: [] as number[],
 	whiteLabel: false
 };
 
@@ -41,8 +41,7 @@ const plans = () => [
 			apiAccess: false,
 			passwordAllowed: false,
 			readReceiptsAllowed: false,
-			expirationOptionsAllowed: false,
-			expirationOptionsExtended: false,
+			expirationOptions: [],
 			whiteLabel: false
 		}
 	},
@@ -69,8 +68,7 @@ const plans = () => [
 			apiAccess: false,
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
-			expirationOptionsAllowed: true,
-			expirationOptionsExtended: false,
+			expirationOptions: expiresInOptions,
 			whiteLabel: false
 		}
 	},
@@ -93,14 +91,13 @@ const plans = () => [
 			apiAccess: true,
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
-			expirationOptionsAllowed: true,
-			expirationOptionsExtended: true,
+			expirationOptions: expiresInOptionsExtended,
 			whiteLabel: false
 		}
 	},
 	{
 		name: TierOptions.SECRET_SERVICE,
-		icon: Rocket,
+		icon: Factory,
 		title: 'Everything in Top Secret, as your own service.',
 		promotion: 'For IT-businesses, enterprise customer support teams',
 		contents: [
@@ -118,8 +115,7 @@ const plans = () => [
 			apiAccess: true,
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
-			expirationOptionsAllowed: true,
-			expirationOptionsExtended: true,
+			expirationOptions: expiresInOptionsExtended,
 			whiteLabel: true
 		}
 	}

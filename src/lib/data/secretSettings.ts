@@ -3,7 +3,10 @@ import { m } from '$lib/paraglide/messages.js';
 import { ReadReceiptOptions, SecretType, ThemeOptions } from './enums';
 import { DAY, MIN } from './units';
 
-export const getExpiresInOptions = (extended?: boolean) => {
+export const expiresInOptions = [10 * MIN, 60 * MIN, DAY, 7 * DAY];
+export const expiresInOptionsExtended = [...expiresInOptions, 30 * DAY];
+
+export const getExpiresInOptions = (availableOptions?: number[]) => {
 	const options = [
 		{
 			value: 10 * MIN, // Time period in milliseconds
@@ -23,10 +26,12 @@ export const getExpiresInOptions = (extended?: boolean) => {
 		},
 		{
 			value: 30 * DAY,
-			label: `${m.curly_few_parrot_savor({ amount: 30 })} ${!extended ? `${m.vexed_dirty_loris_bump()}` : ''}`,
-			disabled: !extended
+			label: m.curly_few_parrot_savor({ amount: 30 })
 		}
-	];
+	].map((item) => ({
+		...item,
+		disabled: !availableOptions?.find((option) => option === item.value)
+	}));
 
 	return options;
 };
