@@ -15,27 +15,33 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
+	import Container from '../ui/container/container.svelte';
 	import DarkModeSwitcher from './dark-mode-switcher.svelte';
 
-	type Props = { user: App.Locals['user']; minimal?: boolean };
+	type Props = { user: App.Locals['user']; minimal?: boolean; wide?: boolean; business?: boolean };
 
-	let { user, minimal }: Props = $props();
+	let { user, minimal, wide, business }: Props = $props();
+
+	let persistHeader = $derived(minimal || business);
 
 	const showAnnouncement = new PersistedState<boolean>('showAnnouncement', true);
 </script>
 
-<IntersectionObserver let:intersecting bottom={minimal ? 0 : 100}>
+<IntersectionObserver let:intersecting bottom={persistHeader ? 0 : 100}>
 	<header class="relative z-10 {showAnnouncement.current ? 'h-[104px]' : 'h-16'}">
 		<div
 			class="fixed top-0 left-0 {showAnnouncement.current
 				? 'h-[104px]'
-				: 'h-16'} w-full transition duration-300 ease-in-out {intersecting
+				: 'h-16'} w-full transition duration-300 ease-in-out {intersecting && !persistHeader
 				? 'bg-transparent'
 				: 'bg-background shadow-sm'}"
 		>
 			{#if showAnnouncement.current}
 				<div class="bg-primary text-primary-foreground">
-					<div class="container flex h-10 items-center text-xs sm:text-sm">
+					<Container
+						variant={wide ? 'wide' : 'default'}
+						class=" flex h-10 items-center text-xs sm:text-sm"
+					>
 						{m.stale_ago_mongoose_zoom()}
 						<a
 							class="after:bg-primary-foreground before:bg-primary-foreground relative ms-2 inline-block py-2 before:absolute before:bottom-2 before:left-0 before:h-[1px] before:w-full before:opacity-50 after:absolute after:bottom-2 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
@@ -49,13 +55,13 @@
 							><X class="h-5 w-5" /><span class="sr-only">{m.steep_brave_sloth_list()}</span
 							></button
 						>
-					</div>
+					</Container>
 				</div>
 			{/if}
-			<div class="container flex h-16 items-center">
+			<Container variant={wide ? 'wide' : 'default'} class="flex h-16 items-center">
 				<a
 					class="flex items-center py-2 transition duration-150 ease-in-out {intersecting &&
-					!minimal
+					!persistHeader
 						? 'translate-x-4 scale-150 opacity-0'
 						: 'scale-100 opacity-100'}"
 					href={localizeHref('/')}
@@ -64,14 +70,19 @@
 					<span class="sr-only">{m.red_trite_turkey_flip()}</span>
 					<span
 						class="p-2 text-lg font-semibold transition delay-100 duration-150 ease-in-out {intersecting &&
-						!minimal
+						!persistHeader
 							? 'hidden translate-x-4 scale-150 opacity-0'
 							: 'visible translate-x-0 scale-100 opacity-100'}">{appName}</span
 					>
+					{#if business}
+						<span class="bg-foreground text-background inline-flex rounded-md px-2 py-1 text-xs"
+							>business</span
+						>
+					{/if}
 				</a>
 
 				<div class="ml-auto grid grid-flow-col items-center gap-2">
-					{#if !minimal && user}
+					{#if !persistHeader && user}
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger asChild let:builder
 								><Button builders={[builder]} variant="ghost" size="icon">
@@ -126,7 +137,7 @@
 						<Button href={localizeHref('/signup')}>{m.large_smart_badger_beam()}</Button>
 					{/if}
 				</div>
-			</div>
+			</Container>
 		</div>
 	</header>
 </IntersectionObserver>

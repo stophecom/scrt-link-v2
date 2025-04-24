@@ -15,7 +15,7 @@
 </script>
 
 <div
-	class={cn('border-border bg-card w-full rounded border px-4 py-6 shadow-lg md:p-8', rest.class)}
+	class={cn('border-border bg-card w-full  rounded border px-4 py-6 shadow-lg md:p-8', rest.class)}
 >
 	{#if title}
 		<CardTitle>

@@ -50,7 +50,7 @@
 {#if successMessage}
 	<div
 		in:fade
-		class="border-primary bg-card relative mb-2 flex min-h-[290px] w-full flex-col items-stretch rounded border px-4 py-6 shadow-lg md:p-8"
+		class="border-primary bg-card relative mb-2 flex min-h-[290px] w-full flex-col items-stretch overflow-hidden rounded border px-4 py-6 shadow-lg md:p-8"
 	>
 		<Check class="text-primary absolute top-6 right-6 h-8 w-8 sm:top-8 sm:right-8" />
 		<div>
