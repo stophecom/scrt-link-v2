@@ -8,13 +8,10 @@
 	import { copyText } from '$lib/client/utils';
 	import SecretForm, { type SecretFormProps } from '$lib/components/forms/secret-form.svelte';
 	import Card from '$lib/components/ui/card';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { privacyUsps } from '$lib/data/app';
 	import type { SecretType } from '$lib/data/enums';
-	import { secretMenu } from '$lib/data/menu';
 	import { m } from '$lib/paraglide/messages.js';
-	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import { getSecretTypes } from '../../data/secretSettings';
 	import Button from '../ui/button/button.svelte';
@@ -82,26 +79,6 @@
 					{#each getSecretTypes().slice(0, 4) as secretTypeItem}
 						<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
 					{/each}
-
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger asChild let:builder>
-							<Button
-								builders={[builder]}
-								variant="ghost"
-								class="h-10 rounded-sm text-base font-medium"
-							>
-								...
-								<span class="sr-only">{m.zany_male_robin_pull()}</span></Button
-							></DropdownMenu.Trigger
-						>
-						<DropdownMenu.Content class="w-56">
-							{#each secretMenu().slice(4) as menuItem}
-								<DropdownMenu.Item href={localizeHref(menuItem.href)}>
-									<menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</DropdownMenu.Item
-								>
-							{/each}
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
 				</Tabs.List>
 				<Tabs.Content {value}>
 					<SecretForm
