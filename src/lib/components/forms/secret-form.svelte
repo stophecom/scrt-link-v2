@@ -5,6 +5,7 @@
 	import { intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod } from 'sveltekit-superforms/adapters';
 
+	import { page } from '$app/state';
 	import { MASTER_PASSWORD_LENGTH, SECRET_ID_LENGTH } from '$lib/client/constants';
 	import { plausible } from '$lib/client/plausible';
 	import {
@@ -91,6 +92,7 @@
 				trackEvent('SecretCreation', {
 					props: {
 						secretType: secretType,
+						whiteLabelDomain: page.url.host,
 						withPassword: !!$formData.password,
 						subscriptionTier: user?.subscriptionTier || 'none'
 					}
