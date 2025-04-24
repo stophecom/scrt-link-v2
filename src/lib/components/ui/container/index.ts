@@ -1,6 +1,6 @@
 import { tv, type VariantProps } from 'tailwind-variants';
 
-import Container from './container.svelte';
+import Root from './container.svelte';
 
 export const containerVariants = tv({
 	base: 'container',
@@ -17,4 +17,4 @@ export const containerVariants = tv({
 
 export type Variant = VariantProps<typeof containerVariants>['variant'];
 
-export { Container };
+export { Root as Container };

@@ -7,6 +7,7 @@
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import { Container } from '$lib/components/ui/container';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { appName } from '$lib/data/app';
 	import { TierOptions } from '$lib/data/enums';
@@ -15,7 +16,6 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
-	import Container from '../ui/container/container.svelte';
 	import DarkModeSwitcher from './dark-mode-switcher.svelte';
 
 	type Props = { user: App.Locals['user']; minimal?: boolean; wide?: boolean; business?: boolean };
@@ -25,14 +25,19 @@
 	let persistHeader = $derived(minimal || business);
 
 	const showAnnouncement = new PersistedState<boolean>('showAnnouncement', true);
+
+	const headerHeight = $derived(showAnnouncement.current ? '104px' : '64px');
+
+	$effect(() => {
+		document.documentElement.style.setProperty('--header-height', headerHeight);
+	});
 </script>
 
 <IntersectionObserver let:intersecting bottom={persistHeader ? 0 : 100}>
-	<header class="relative z-10 {showAnnouncement.current ? 'h-[104px]' : 'h-16'}">
+	<header class="relative z-10 h-[var(--header-height)]">
 		<div
-			class="fixed top-0 left-0 {showAnnouncement.current
-				? 'h-[104px]'
-				: 'h-16'} w-full transition duration-300 ease-in-out {intersecting && !persistHeader
+			class="fixed top-0 left-0 h-[var(--header-height)] w-full transition duration-300 ease-in-out {intersecting &&
+			!persistHeader
 				? 'bg-transparent'
 				: 'bg-background shadow-sm'}"
 		>

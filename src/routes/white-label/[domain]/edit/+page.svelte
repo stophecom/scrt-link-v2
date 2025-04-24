@@ -15,7 +15,7 @@
 	import PageTitle from '$lib/components/page/page-title.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
-	import Container from '$lib/components/ui/container/container.svelte';
+	import { Container } from '$lib/components/ui/container';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Form from '$lib/components/ui/form';
 	import LanguageSwitcher from '$lib/components/ui/language-switcher';

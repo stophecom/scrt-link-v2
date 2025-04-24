@@ -4,12 +4,12 @@
 	import UrlExplained from '$lib/assets/images/illustrations/url-explained.svg?component';
 	import CreateSecret from '$lib/components/elements/create-secret.svelte';
 	import HowItWorks from '$lib/components/elements/how-it-works.svelte';
-	import Section from '$lib/components/elements/section.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import Page from '$lib/components/page/page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
+	import { Section } from '$lib/components/ui/section';
 	import { shortFaq } from '$lib/data/faq';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';

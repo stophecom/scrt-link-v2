@@ -1,8 +1,8 @@
 <script lang="ts">
 	import PoweredByStripe from '$lib/assets/images/PoweredByStripe.svg?component';
-	import Section from '$lib/components/elements/section.svelte';
 	import Page from '$lib/components/page/page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
+	import { Section } from '$lib/components/ui/section';
 	import accountAndBilling from '$lib/data/faq/accountAndBilling';
 	import { m } from '$lib/paraglide/messages.js';
 
