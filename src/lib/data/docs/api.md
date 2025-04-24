@@ -2,7 +2,7 @@ This documentation is intended for developers who want to interact with the serv
 
 To use the API, you’ll need an active [subscription](/pricing) that unlocks this feature and allows you to generate an access (bearer) token from your [account page](/account).
 
-## ⚠️ API Limitations
+## 💡 API Limitations
 
 Due to the complexity of handling end-to-end encrypted files, **only text-based secrets** (Text, Redirect, Neogram) **are supported** via the API.
 

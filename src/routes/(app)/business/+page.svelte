@@ -1,13 +1,21 @@
 <script lang="ts">
+	import { Code } from 'lucide-svelte';
+
 	import CreateSecret from '$lib/components/elements/create-secret.svelte';
+	import FeatureCard from '$lib/components/elements/feature-card.svelte';
 	import Hero from '$lib/components/elements/hero.svelte';
 	import HowItWorks from '$lib/components/elements/how-it-works.svelte';
 	import Section from '$lib/components/elements/section.svelte';
+	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import Head from '$lib/components/page/head.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
+	import Markdown from '$lib/components/ui/markdown';
+	import { businessFeatures } from '$lib/data/app';
+	import clientModule from '$lib/data/docs/client-module.md?raw';
+	import clientModuleResponse from '$lib/data/docs/client-module-response.md?raw';
 	import { shortFaq } from '$lib/data/faq';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -30,6 +38,50 @@
 			<Button size="lg" variant="outline" href={localizeHref('/')}>Design yours</Button>
 		</div>
 	</Hero>
+
+	<Section
+		title="Business features"
+		lead="Security and privacy for confidential data you share within your company."
+	>
+		<IntersectionObserver let:intersecting top={-50} once={true}>
+			<div
+				class="grid grid-rows-6 gap-4 sm:grid-cols-2 sm:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
+			>
+				{#each businessFeatures() as step, i}
+					<div
+						style="transition-delay: {i * 100}ms;"
+						class="flex transition-all {intersecting
+							? 'translate-y-0 scale-100 opacity-100 duration-700'
+							: 'translate-y-20 scale-90 opacity-0'}"
+					>
+						<FeatureCard Icon={step.icon} title={step.title} description={step.description} />
+					</div>
+				{/each}
+			</div>
+		</IntersectionObserver>
+	</Section>
+
+	<Section title="Integrate everywhere" lead="Developer first">
+		<div class="mb-4 grid grid-cols-2 gap-4">
+			<div>
+				<h4 class="text-lg font-semibold">Usage</h4>
+				<p>Client Module</p>
+				<div class="border-border border p-2 text-sm">
+					<Markdown markdown={clientModule} formatCode />
+				</div>
+			</div>
+			<div>
+				<h4 class="text-lg font-semibold">Response (JSON)</h4>
+				<div class="border-border border p-2 text-sm">
+					<Markdown markdown={clientModuleResponse} formatCode />
+				</div>
+			</div>
+		</div>
+
+		<Button href={localizeHref('/developers')}
+			><Code class="me-2 h-4 w-4" /> View API-Documentation</Button
+		>
+	</Section>
 
 	<div class="grid grid-cols-[1fr_400px]">
 		<div>
