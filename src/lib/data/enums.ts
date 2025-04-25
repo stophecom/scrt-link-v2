@@ -30,3 +30,9 @@ export enum ThemeOptions {
 	BLUE = 'blue',
 	TEAL = 'teal'
 }
+
+export enum SupportedCurrency {
+	USD = 'usd',
+	EUR = 'eur',
+	CHF = 'chf'
+}

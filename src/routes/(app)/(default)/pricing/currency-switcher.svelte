@@ -1,31 +1,16 @@
 <script lang="ts">
 	import Globe from 'lucide-svelte/icons/globe';
-	import { onMount } from 'svelte';
 
-	import { afterNavigate, goto } from '$app/navigation';
-	import { supportedCurrencies } from '$lib/client/constants';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import { SupportedCurrency } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 
-	let activeCurrency = $state('usd');
-
-	const setCurrencyFromUrl = () => {
-		let params = new URLSearchParams(document.location.search);
-		let currencyFromUrl = params.get('currency');
-
-		if (currencyFromUrl && supportedCurrencies.includes(currencyFromUrl)) {
-			activeCurrency = currencyFromUrl;
-		}
+	type Props = {
+		activeCurrency: SupportedCurrency;
 	};
 
-	onMount(() => {
-		setCurrencyFromUrl();
-	});
-
-	afterNavigate(() => {
-		setCurrencyFromUrl();
-	});
+	let { activeCurrency = $bindable() }: Props = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -38,12 +23,12 @@
 		<DropdownMenu.Label>{m.gross_smart_toucan_borrow()}</DropdownMenu.Label>
 		<DropdownMenu.Separator />
 		<DropdownMenu.RadioGroup
-			value={activeCurrency}
+			value={activeCurrency as string}
 			onValueChange={async (value) => {
-				await goto(`?currency=${value}`);
+				activeCurrency = value as SupportedCurrency;
 			}}
 		>
-			{#each supportedCurrencies as currency}
+			{#each Object.values(SupportedCurrency) as currency}
 				<DropdownMenu.RadioItem value={currency} class="uppercase"
 					>{currency}</DropdownMenu.RadioItem
 				>

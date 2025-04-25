@@ -1,4 +1,4 @@
-import { Factory, Plane, Rocket, Send } from 'lucide-svelte';
+import { Plane, Rocket, Send, ShieldCheck } from 'lucide-svelte';
 
 import { formatBytes } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
@@ -97,14 +97,19 @@ const plans = () => [
 	},
 	{
 		name: TierOptions.SECRET_SERVICE,
-		icon: Factory,
-		title: 'Everything in Top Secret, as your own service.',
-		promotion: 'For IT-businesses, enterprise customer support teams',
+		icon: ShieldCheck,
+		title: 'Your own secret sharing service:',
 		contents: [
-			'Use your own domain',
-			'Your own logo',
-			'Customize experience',
-			m.new_still_dingo_create({ limit: formatBytes(1 * GB) })
+			'Custom domain',
+			'Your logo and theme',
+			m.stale_fine_turkey_praise(),
+			m.loose_chunky_duck_intend(),
+			m.new_still_dingo_create({ limit: formatBytes(1 * GB) }),
+			m.long_tired_monkey_rest(),
+			m.blue_jumpy_shell_climb(),
+			m.slimy_livid_pelican_gleam(),
+			m.active_mellow_swan_list({ amount: 30 }),
+			m.still_busy_starfish_dare()
 		],
 		limits: {
 			[SecretType.TEXT]: 100_000,

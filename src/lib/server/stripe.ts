@@ -16,22 +16,35 @@ export type StripeCustomerWithSubscription = StripeCustomer & {
 
 export default stripeInstance;
 
-export const getActiveProducts = async () => {
+export const getActiveProducts = async (allowSecretService: boolean) => {
 	const { data } = await stripeInstance.products.list({ active: true });
 
 	// We filter by predefined products (TierOptions).
 	// TierOptions.Confidential is the free option not covered on Stripe
 	return data.filter(
-		(item) => item.name === TierOptions.SECRET || item.name === TierOptions.TOP_SECRET
+		(item) =>
+			item.name === TierOptions.SECRET ||
+			item.name === TierOptions.TOP_SECRET ||
+			(item.name === TierOptions.SECRET_SERVICE && allowSecretService)
 	);
 };
 
-export const getActivePrices = async (productId: string, currency: string) =>
-	await stripeInstance.prices.list({
+export const getActivePrices = async (productId: string) => {
+	const { data } = await stripeInstance.prices.list({
 		product: productId,
-		active: true,
-		currency: currency
+		active: true
 	});
+
+	const prices = await Promise.all(
+		data.map((item) =>
+			stripeInstance.prices.retrieve(item.id, {
+				expand: ['currency_options']
+			})
+		)
+	);
+	console.log(prices);
+	return prices;
+};
 
 const getCustomerWithSubscription = async (stripeCustomerId: string) =>
 	(await stripeInstance.customers.retrieve(stripeCustomerId, {

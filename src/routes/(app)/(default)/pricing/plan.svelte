@@ -4,6 +4,7 @@
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
 	import { cn } from '$lib/client/utils';
+	import type { SupportedCurrency } from '$lib/data/enums';
 	import { getPlanContents } from '$lib/data/plans';
 	import { formatCurrency } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
@@ -11,7 +12,7 @@
 	type Props = {
 		name: string;
 		priceUnitAmount?: number;
-		currency?: string;
+		currency?: SupportedCurrency;
 		billingInfo?: string;
 		showYearlyPrice?: boolean;
 		isActiveProduct?: boolean;

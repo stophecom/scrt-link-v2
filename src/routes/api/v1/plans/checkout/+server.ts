@@ -1,6 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import type Stripe from 'stripe';
 
+import { TRIAL_PERIOD_DAYS } from '$lib/client/constants';
 import { getBaseUrl } from '$lib/constants';
 import { getAbsoluteLocalizedUrl } from '$lib/i18n';
 import stripeInstance from '$lib/server/stripe';
@@ -17,7 +18,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 	}
 
 	const body = await request.json();
-	const { priceId } = body;
+	const { priceId, currency } = body;
 
 	try {
 		// Create Checkout Sessions from body params.
@@ -26,6 +27,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 			mode: 'subscription',
 			allow_promotion_codes: true,
 			customer: locals.user.stripeCustomerId,
+			currency: currency,
 			line_items: [
 				{
 					price: priceId,
@@ -33,6 +35,10 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 					quantity: 1
 				}
 			],
+			// Add 7 day trial
+			subscription_data: {
+				trial_period_days: TRIAL_PERIOD_DAYS
+			},
 			// {CHECKOUT_SESSION_ID} is a string literal; do not change it!
 			// the actual Session ID is returned in the query parameter when your customer
 			// is redirected to the success page.
