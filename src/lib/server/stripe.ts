@@ -42,7 +42,7 @@ export const getActivePrices = async (productId: string) => {
 			})
 		)
 	);
-	console.log(prices);
+
 	return prices;
 };
 
