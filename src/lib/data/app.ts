@@ -42,19 +42,19 @@ export const businessFeatures = () => [
 		description: `Integrate secure sharing directly into your workflows and applications with our client module (REST API).`
 	},
 	{
-		title: 'Usage statistics',
-		icon: ChartColumn,
-		description: `Set custom expiration times, view limits, IP restrictions, and additional authentication layers.`
-	},
-	{
 		title: 'Invisible infrastructure',
 		icon: Zap,
-		description: `Instead of being a consumer-facing app, become a secure sharing backend powering your other workflows.`
+		description: `The service runs on industry-leading infrastructure. We do the heavy lifting.`
 	},
 	{
-		title: 'Compliance Ready',
+		title: 'Compliance ready',
+		icon: ChartColumn,
+		description: `Fully GDPR and CCPA compliant, with strong data protection.`
+	},
+	{
+		title: 'Setup in 5min',
 		icon: ShieldCheck,
-		description: `Match your company's look and feel with custom colors and domain support (secure.company.com).`
+		description: `Start protecting your customers' most sensitive data immediately.`
 	}
 ];
 
@@ -72,11 +72,11 @@ export const securityFeatures = () => [
 	{
 		title: 'Minimal attack surface',
 		icon: ChartColumn,
-		description: `Set custom expiration times, view limits, IP restrictions, and additional authentication layers.`
+		description: `Set custom expiration times and additional authentication layers.`
 	},
 	{
 		title: 'Trusted infrastructure',
 		icon: Zap,
-		description: `Our infrastructure is hosted by trusted industry leaders: Vercel for the website & Postgres Database, and Flow Swiss AG for object storage (Files).`
+		description: `Our infrastructure is hosted by trusted industry leaders: Vercel for the API, website & Postgres Database, and Flow Swiss AG for object storage.`
 	}
 ];

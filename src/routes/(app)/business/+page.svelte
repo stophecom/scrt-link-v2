@@ -25,17 +25,19 @@
 
 {#snippet cta()}
 	<div>
-		<Button class="me-2" size="lg" variant="default" target="_blank" href="https://br3f.com"
+		<Button class="me-2" size="lg" variant="default" href={localizeHref('/pricing')}
+			>Get started</Button
+		>
+		<Button size="lg" variant="outline" target="_blank" href="https://br3f.com"
 			>Visit demo page</Button
 		>
-		<Button size="lg" variant="outline" href={localizeHref('/')}>Design yours</Button>
 	</div>
 {/snippet}
 
 <PageWrapper metaTitle={'foo'} metaDescription={'sdf'} metaKeywords={'sdf'}>
 	<Hero
-		title={'Secure sharing infrastructure for businesses'}
-		lead={'Zero-trust architecture for sharing sensitive information with one-time links that self-destruct after viewing.'}
+		title={'Secure sharing infrastructure for your business'}
+		lead={'Help your customers share confidential data in the most secure way possible: <span class="gradient-text">End-to-end encrypted. Ephemeral. Without a trace</span>.'}
 		class="pt-12"
 		{cta}
 	>
@@ -46,12 +48,7 @@
 		</AndroidFrame>
 	</Hero>
 
-	<Section
-		wide
-		variant="neutral"
-		title="Business features"
-		lead="Security and privacy for confidential data you share within your company."
-	>
+	<Section wide variant="neutral" title="Business features" lead="Build upon your trusted brand.">
 		<IntersectionObserver let:intersecting top={-50} once={true}>
 			<div
 				class="grid grid-rows-6 gap-4 sm:grid-cols-2 sm:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
@@ -70,7 +67,12 @@
 		</IntersectionObserver>
 	</Section>
 
-	<Section wide variant="card" title="Integrate with ease" lead="Developer first">
+	<Section
+		wide
+		variant="card"
+		title="Integrate with ease"
+		lead="Seamlessly connect your tools, data, and workflows in minutes."
+	>
 		<ApiPreview />
 
 		<Button href={localizeHref('/developers')}
@@ -81,7 +83,7 @@
 	<Section
 		wide
 		title="Security"
-		lead={`Our philosophy is "the less we know, the better." We assume that no entity (internal or external) is inherently trustworthy. This simple principle is at the heart of our project, allowing you to exchange information online in a truly secure and private way.`}
+		lead={`Our philosophy is "the less we know, the better." We assume that no entity (internal or external) is inherently trustworthy. This simple principle is at the heart of our product, allowing you to exchange information online in a truly secure and private way.`}
 	>
 		<IntersectionObserver let:intersecting top={-50} once={true}>
 			<div class="grid grid-rows-4 gap-4 sm:grid-cols-2 sm:grid-rows-2">
@@ -127,6 +129,7 @@
 	</Section>
 
 	<Section wide variant="contrast" title={'Still undecided?'} lead={'Schedule a call'}
-		>// contact</Section
+		>// Zero-trust architecture for sharing sensitive information with one-time links that
+		self-destruct after viewing.</Section
 	>
 </PageWrapper>

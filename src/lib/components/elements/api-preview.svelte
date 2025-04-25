@@ -17,7 +17,7 @@
 
 <div class="mb-4 grid gap-6 md:grid-cols-2">
 	{@render renderBox(
-		'Usage',
+		'Connect to the API',
 		'The provided client module enables a simple and convenient way to interact with the API.',
 		clientModule
 	)}

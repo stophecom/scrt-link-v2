@@ -31,7 +31,7 @@
 			<h2 class="font-display mb-4 text-3xl font-bold md:text-4xl">{title}</h2>
 		{/if}
 		{#if lead}
-			<p class="mb-8 text-lg leading-normal md:text-xl">{lead}</p>
+			<p class="mb-8 text-lg leading-normal text-pretty md:text-xl">{lead}</p>
 		{/if}
 		{@render children?.()}
 	</Container>
