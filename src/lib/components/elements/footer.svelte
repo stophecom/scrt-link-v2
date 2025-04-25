@@ -6,12 +6,13 @@
 
 	import { uptimerobotUrl } from '../../data/app';
 	import { aboutMenu, helpMenu, imprintMenu, secretMenu } from '../../data/menu';
+	import Container from '../ui/container/container.svelte';
 	import LanguageSwitcher from '../ui/language-switcher';
 	import FooterMenu from '../ui/menu';
 </script>
 
 <footer class="border-border bg-background border-t pt-14 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
-	<div class="container flex flex-col">
+	<Container variant="wide" class="flex flex-col">
 		<div class="w-full md:flex">
 			<div class="min-w-52 shrink-0 pr-10 pb-10">
 				<div class="flex items-center">
@@ -53,5 +54,5 @@
 				<LanguageSwitcher />
 			</div>
 		</div>
-	</div>
+	</Container>
 </footer>

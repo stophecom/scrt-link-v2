@@ -6,8 +6,8 @@ export const containerVariants = tv({
 	base: 'container',
 	variants: {
 		variant: {
-			default: '',
-			wide: 'max-w-[1100px]'
+			default: 'max-w-[var(--breakpoint-md)]',
+			wide: 'max-w-[var(--breakpoint-lg)]'
 		}
 	},
 	defaultVariants: {

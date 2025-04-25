@@ -4,6 +4,8 @@
 	import CountDown from '$lib/components/ui/count-down';
 	import { m } from '$lib/paraglide/messages.js';
 
+	import Container from '../ui/container/container.svelte';
+
 	type Props = { imageUrl?: string };
 
 	let { imageUrl }: Props = $props();
@@ -12,7 +14,7 @@
 </script>
 
 <div class="bg-background fixed top-0 left-0 z-50 h-full w-full p-3">
-	<div class="container grid h-full grid-rows-[min-content_1fr]">
+	<Container class="grid h-full grid-rows-[min-content_1fr]">
 		<div class="pb-2">
 			{#if imageUrl}
 				<CountDown
@@ -42,5 +44,5 @@
 				class="bg-muted flex max-h-[min(100%,_600px)] min-h-0 max-w-full animate-pulse items-center justify-center"
 			></div>
 		{/if}
-	</div>
+	</Container>
 </div>

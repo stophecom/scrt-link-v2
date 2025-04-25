@@ -18,9 +18,9 @@
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
 	import DarkModeSwitcher from './dark-mode-switcher.svelte';
 
-	type Props = { user: App.Locals['user']; minimal?: boolean; wide?: boolean; business?: boolean };
+	type Props = { user: App.Locals['user']; minimal?: boolean; business?: boolean };
 
-	let { user, minimal, wide, business }: Props = $props();
+	let { user, minimal, business }: Props = $props();
 
 	let persistHeader = $derived(minimal || business);
 
@@ -43,10 +43,7 @@
 		>
 			{#if showAnnouncement.current}
 				<div class="bg-primary text-primary-foreground">
-					<Container
-						variant={wide ? 'wide' : 'default'}
-						class=" flex h-10 items-center text-xs sm:text-sm"
-					>
+					<Container variant={'wide'} class=" flex h-10 items-center text-xs sm:text-sm">
 						{m.stale_ago_mongoose_zoom()}
 						<a
 							class="after:bg-primary-foreground before:bg-primary-foreground relative ms-2 inline-block py-2 before:absolute before:bottom-2 before:left-0 before:h-[1px] before:w-full before:opacity-50 after:absolute after:bottom-2 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
@@ -63,7 +60,7 @@
 					</Container>
 				</div>
 			{/if}
-			<Container variant={wide ? 'wide' : 'default'} class="flex h-16 items-center">
+			<Container variant={'wide'} class="flex h-16 items-center">
 				<a
 					class="flex items-center py-2 transition duration-150 ease-in-out {intersecting &&
 					!persistHeader
