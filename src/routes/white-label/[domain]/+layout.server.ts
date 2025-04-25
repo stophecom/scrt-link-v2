@@ -18,10 +18,13 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 		throw error(500, `No data for ${params.domain} found.`);
 	}
 
-	const { name, appIcon, ogImage, theme } = result;
+	const { name, logo, logoDarkMode, appIcon, ogImage, theme } = result;
 
 	const getImageUrl = (src: string | null) =>
 		src ? `https://${PUBLIC_IMGIX_CDN_URL}/${src}` : undefined;
+
+	const getLogo = (fileName: string | undefined | null) =>
+		fileName ? `https://${PUBLIC_IMGIX_CDN_URL}/${fileName}?auto=compress&w=300` : undefined;
 
 	return {
 		user: locals.user,
@@ -29,6 +32,8 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 		name,
 		appIcon: getImageUrl(appIcon),
 		ogImage: getImageUrl(ogImage),
+		logo: getLogo(logo),
+		logoDarkMode: getLogo(logoDarkMode),
 		theme: theme as Theme
 	};
 };
