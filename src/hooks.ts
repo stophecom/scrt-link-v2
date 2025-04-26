@@ -24,7 +24,7 @@ export const reroute: Reroute = (request) => {
 		return deLocalizeUrl(request.url).pathname;
 	}
 
-	// For custom domains (white label case), we reroute to /white-label/[domain]
+	// For custom domains (white-label case), we reroute to /white-label/[domain]
 	// Note that we have to deLocalize the original path
 	originalUrl.pathname = `/white-label/${host}${deLocalizeUrl(originalUrl).pathname}`;
 
