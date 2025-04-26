@@ -2,6 +2,7 @@
 	import Page from '$lib/components/page/page.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
+	import imprint from '$lib/data/imprint.md?raw';
 	import { legalMenu } from '$lib/data/menu';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -9,10 +10,7 @@
 
 <Page title={m.broad_green_hamster_exhale()} lead={m.solid_lofty_nuthatch_devour()}>
 	<Container class="prose">
-		SANTiHANS GmbH<br />
-		CH-4056 Basel<br />
-		UID: CHE-244.875.499 <br />
-		<a href="mailto:info@santihans.com">info@santihans.com</a>
+		<Markdown markdown={imprint} />
 
 		<h2>{m.even_icy_shell_compose()}</h2>
 		<ul>

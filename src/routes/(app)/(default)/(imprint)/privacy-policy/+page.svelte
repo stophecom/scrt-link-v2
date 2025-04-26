@@ -3,6 +3,7 @@
 	import Page from '$lib/components/page/page.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
+	import imprint from '$lib/data/imprint.md?raw';
 	import { m } from '$lib/paraglide/messages.js';
 </script>
 
@@ -13,5 +14,7 @@
 >
 	<Container>
 		<Markdown markdown={markdownDocument} format />
+
+		<Markdown markdown={imprint} />
 	</Container>
 </Page>
