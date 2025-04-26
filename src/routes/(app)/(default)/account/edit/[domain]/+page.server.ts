@@ -13,14 +13,12 @@ import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async (event) => {
-	if (!event.locals.user) {
+export const load: PageServerLoad = async ({ locals }) => {
+	if (!locals.user) {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const customDomain = event.params.domain;
-
-	const user = event.locals.user;
+	const user = locals.user;
 	const locale = getLocale();
 
 	const [whiteLabel] = await db
@@ -28,8 +26,8 @@ export const load: PageServerLoad = async (event) => {
 		.from(whiteLabelSite)
 		.where(eq(whiteLabelSite.userId, user.id));
 
-	if (whiteLabel.customDomain !== customDomain) {
-		return error(405, `Not allowed to edit site with domain ${customDomain}`);
+	if (!whiteLabel) {
+		return error(404, 'No white-label website found.');
 	}
 
 	const whiteLabelSiteFormValidator = async () => {
@@ -51,6 +49,7 @@ export const load: PageServerLoad = async (event) => {
 	};
 
 	return {
+		domain: whiteLabel.customDomain,
 		whiteLabelSiteForm: await whiteLabelSiteFormValidator()
 	};
 };
