@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Plus, User, X } from 'lucide-svelte';
+	import { Plus, ShieldCheck, User, X } from 'lucide-svelte';
 	import Plane from 'lucide-svelte/icons/plane';
 	import Rocket from 'lucide-svelte/icons/rocket';
 	import { PersistedState } from 'runed';
@@ -117,7 +117,8 @@
 									>{Array.from(user.email)[0]}</Avatar.Fallback
 								>
 							</Avatar.Root>
-							{#if user.subscriptionTier === TierOptions.SECRET || user.subscriptionTier === TierOptions.TOP_SECRET}
+
+							{#if user.subscriptionTier && [TierOptions.SECRET, TierOptions.TOP_SECRET, TierOptions.SECRET_SERVICE].includes(user.subscriptionTier)}
 								<div
 									class="border-background bg-primary text-primary-foreground absolute -right-[2px] -bottom-[2px] rounded-full border p-[3px]"
 								>
@@ -126,6 +127,9 @@
 									{/if}
 									{#if user.subscriptionTier === TierOptions.TOP_SECRET}
 										<Rocket class="h-3 w-3" />
+									{/if}
+									{#if user.subscriptionTier === TierOptions.SECRET_SERVICE}
+										<ShieldCheck class="h-3 w-3" />
 									{/if}
 								</div>
 							{/if}
