@@ -2,6 +2,7 @@
 	import PoweredByStripe from '$lib/assets/images/PoweredByStripe.svg?component';
 	import Page from '$lib/components/page/page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
+	import Container from '$lib/components/ui/container/container.svelte';
 	import { Section } from '$lib/components/ui/section';
 	import accountAndBilling from '$lib/data/faq/accountAndBilling';
 	import { m } from '$lib/paraglide/messages.js';
@@ -12,14 +13,14 @@
 </script>
 
 <Page title={m.moving_quaint_buzzard_trip()} lead={m.slimy_next_shad_fall()}>
-	<div class="sm:py-10">
+	<Container class="sm:py-10">
 		{#if data.plans}
 			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
 		{/if}
-	</div>
+	</Container>
 
 	<Section title={m.few_awful_chipmunk_trust()} lead={m.pretty_factual_piranha_hug()}>
 		<Accordion items={accountAndBilling()} />
+		<div><PoweredByStripe class="w-[180px]" /></div>
 	</Section>
-	<div><PoweredByStripe class="w-[180px]" /></div>
 </Page>

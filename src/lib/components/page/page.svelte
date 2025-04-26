@@ -57,6 +57,6 @@
 				<a href="mailto:{emailSupport}">{emailSupport}</a>
 			</Alert>
 		{/if}
-		{@render children?.()}
 	</Container>
+	{@render children?.()}
 </PageWrapper>

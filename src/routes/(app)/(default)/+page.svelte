@@ -9,6 +9,7 @@
 	import Accordion from '$lib/components/ui/accordion';
 	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
+	import Container from '$lib/components/ui/container/container.svelte';
 	import { Section } from '$lib/components/ui/section';
 	import { shortFaq } from '$lib/data/faq';
 	import { m } from '$lib/paraglide/messages.js';
@@ -20,9 +21,9 @@
 </script>
 
 <Page title={m.lucky_warm_mayfly_engage()} lead={m.aloof_quaint_snail_pave()}>
-	<div class="mb-12">
+	<Container class="mb-12">
 		<CreateSecret form={data.secretForm} user={data.user} />
-	</div>
+	</Container>
 	<Section title={m.full_minor_fireant_accept()} lead={m.dirty_bright_robin_earn()}>
 		<HowItWorks />
 	</Section>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Page from '$lib/components/page/page.svelte';
+	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 	import { legalMenu } from '$lib/data/menu';
 	import { m } from '$lib/paraglide/messages.js';
@@ -7,7 +8,7 @@
 </script>
 
 <Page title={m.broad_green_hamster_exhale()} lead={m.solid_lofty_nuthatch_devour()}>
-	<div class="prose">
+	<Container class="prose">
 		SANTiHANS GmbH<br />
 		CH-4056 Basel<br />
 		UID: CHE-244.875.499 <br />
@@ -25,5 +26,5 @@
 		</ul>
 
 		<Markdown markdown={m.happy_petty_osprey_zap({ link: '[flow.swiss](https://flow.swiss)' })} />
-	</div>
+	</Container>
 </Page>

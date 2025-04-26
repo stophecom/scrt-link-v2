@@ -83,6 +83,7 @@
 	});
 </script>
 
+<!-- Header -->
 <div class="h-16">
 	<div class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b">
 		<Container variant="wide" class=" flex h-full items-center justify-between">
@@ -117,6 +118,7 @@
 </div>
 
 <Container variant="wide" class=" grid items-start gap-12 pt-8 pb-16 md:grid-cols-[1fr_360px]">
+	<!-- Left -->
 	<div class="pt-16">
 		<PageTitle title={m.misty_low_mantis_hug()}></PageTitle>
 		<PageLead lead={m.brave_ok_hound_kiss()}></PageLead>
@@ -236,6 +238,7 @@
 		</form>
 	</div>
 
+	<!-- Right -->
 	<div class="top-0 max-sm:hidden md:sticky md:pt-34">
 		<h5 class="ms-4 mb-2 font-bold">{m.teal_white_mongoose_urge()}</h5>
 		<div>
