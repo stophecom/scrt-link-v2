@@ -1,9 +1,12 @@
 <script lang="ts">
 	import PoweredByStripe from '$lib/assets/images/PoweredByStripe.svg?component';
+	import FeatureCard from '$lib/components/elements/feature-card.svelte';
+	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import Page from '$lib/components/page/page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { Section } from '$lib/components/ui/section';
+	import { subscriptionFeatures } from '$lib/data/app';
 	import accountAndBilling from '$lib/data/faq/accountAndBilling';
 	import { m } from '$lib/paraglide/messages.js';
 
@@ -18,6 +21,23 @@
 			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
 		{/if}
 	</Container>
+
+	<Section wide variant="card">
+		<IntersectionObserver let:intersecting top={-50} once={true}>
+			<div class="grid grid-rows-3 gap-4 md:grid-cols-3 md:grid-rows-1">
+				{#each subscriptionFeatures() as step, i}
+					<div
+						style="transition-delay: {i * 100}ms;"
+						class="flex transition-all {intersecting
+							? 'translate-y-0 scale-100 opacity-100 duration-700'
+							: 'translate-y-20 scale-90 opacity-0'}"
+					>
+						<FeatureCard Icon={step.icon} title={step.title} description={step.description} />
+					</div>
+				{/each}
+			</div>
+		</IntersectionObserver>
+	</Section>
 
 	<Section title={m.few_awful_chipmunk_trust()} lead={m.pretty_factual_piranha_hug()}>
 		<Accordion items={accountAndBilling()} />

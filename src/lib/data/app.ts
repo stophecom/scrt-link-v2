@@ -1,7 +1,18 @@
-import { ChartColumn, Code, Globe, Lock, Palette, ShieldCheck, Zap } from 'lucide-svelte';
-import Flame from 'lucide-svelte/icons/flame';
-import LockKeyhole from 'lucide-svelte/icons/lock-keyhole';
-import ShieldPlus from 'lucide-svelte/icons/shield-plus';
+import {
+	ChartColumn,
+	Clock4,
+	Code,
+	Flame,
+	Globe,
+	Infinity as InfinityIcon,
+	Lock,
+	LockKeyhole,
+	Palette,
+	ShieldCheck,
+	ShieldEllipsisIcon,
+	ShieldPlus,
+	Zap
+} from 'lucide-svelte';
 
 import { m } from '$lib/paraglide/messages.js';
 
@@ -22,6 +33,24 @@ export const privacyUsps = () => [
 	{
 		icon: Flame,
 		text: m.mean_smug_loris_cherish()
+	}
+];
+
+export const subscriptionFeatures = () => [
+	{
+		title: m.crazy_big_kangaroo_attend(),
+		icon: Clock4,
+		description: m.best_inner_grizzly_revive()
+	},
+	{
+		title: m.fine_basic_tapir_charm(),
+		icon: InfinityIcon,
+		description: m.ok_free_turtle_kiss()
+	},
+	{
+		title: m.icy_topical_hare_peel(),
+		icon: ShieldEllipsisIcon,
+		description: m.legal_sleek_robin_engage()
 	}
 ];
 
