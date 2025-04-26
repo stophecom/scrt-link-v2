@@ -14,7 +14,7 @@
 	import { SupportedCurrency } from '$lib/data/enums';
 	import { formatCurrency, formatDate } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
-	import { localizeHref } from '$lib/paraglide/runtime';
+	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
 
 	import type { Plan } from '../../../api/v1/plans/+server';
 	import type { LayoutServerData } from '../../$types';
@@ -30,7 +30,12 @@
 
 	let showYearlyPrice = $state(true);
 
-	const currency = new PersistedState<SupportedCurrency>('currency', SupportedCurrency.USD);
+	// Negotiate default currency
+	const locale = getLocale();
+	const currency = new PersistedState<SupportedCurrency>(
+		'currency',
+		locale === 'fr' || locale === 'de' ? SupportedCurrency.EUR : SupportedCurrency.USD
+	);
 
 	const isSubscriptionCanceled = subscription && !!subscription?.cancel_at;
 
@@ -120,7 +125,7 @@
 	{@render subscriptionInfo('destructive', m.aware_tangy_giraffe_dial(), m.last_jolly_stork_gasp())}
 {/if}
 
-<div class="lg:-mx-20">
+<div>
 	<div class="grid gap-6 sm:grid-cols-3 sm:gap-3 lg:gap-4">
 		<PlanView name="Confidential">
 			{#if !user}
