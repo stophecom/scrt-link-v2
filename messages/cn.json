@@ -245,7 +245,7 @@
 	"royal_odd_ox_read": "我们直接在您的设备上对您的秘密进行加密。加密密钥永远不会被存储，而是成为链接的一部分。没有完整的链接，任何人（包括我们）都无法解密您的秘密。",
 	"flat_zany_baboon_adapt": "端到端加密",
 	"happy_plain_panther_fry": "了解更多安全信息",
-	"equal_elegant_herring_yell": "我们直接在您的浏览器中生成一个随机加密密钥来加密您的秘密。此密钥不会被传输到服务器。",
+	"equal_elegant_herring_yell": "加密密钥永远不会传输到服务器。",
 	"slimy_next_shad_fall": "简单的套餐，公平的价格。",
 	"moving_quaint_buzzard_trip": "定价",
 	"pretty_factual_piranha_hug": "关于套餐和定价的常见问题。",

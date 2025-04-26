@@ -245,7 +245,7 @@
 	"royal_odd_ox_read": "Nous chiffrons votre secret directement sur votre appareil. La clé de chiffrement n'est jamais stockée ; elle fait partie du lien lui-même. Sans le lien complet, personne—y compris nous—ne pourra jamais décrypter votre secret.",
 	"flat_zany_baboon_adapt": "Chiffrement de bout en bout",
 	"happy_plain_panther_fry": "En savoir plus sur la sécurité",
-	"equal_elegant_herring_yell": "Nous générons une clé de chiffrement aléatoire directement dans votre navigateur pour chiffrer votre secret. Cette clé n'est jamais transmise au serveur.",
+	"equal_elegant_herring_yell": "La clé de chiffrement n'est jamais transmise au serveur.",
 	"slimy_next_shad_fall": "Des plans simples, des prix justes.",
 	"moving_quaint_buzzard_trip": "Tarification",
 	"pretty_factual_piranha_hug": "Questions fréquemment posées sur les plans et la tarification.",

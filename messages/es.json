@@ -245,7 +245,7 @@
 	"royal_odd_ox_read": "Ciframos tu secreto directamente en tu dispositivo. La clave de cifrado nunca se almacena; en su lugar, se convierte en parte del enlace. Sin el enlace completo, nadie, incluyendo nosotros, podrá descifrar tu secreto.",
 	"flat_zany_baboon_adapt": "Cifrado de extremo a extremo",
 	"happy_plain_panther_fry": "Más información sobre seguridad",
-	"equal_elegant_herring_yell": "Generamos una clave de cifrado aleatoria directamente en tu navegador para cifrar tu secreto. Esta clave nunca se transmite al servidor.",
+	"equal_elegant_herring_yell": "La clave de cifrado nunca se transmite al servidor.",
 	"slimy_next_shad_fall": "Planes simples, precios justos.",
 	"moving_quaint_buzzard_trip": "Precios",
 	"pretty_factual_piranha_hug": "Preguntas frecuentes sobre planes y precios.",
