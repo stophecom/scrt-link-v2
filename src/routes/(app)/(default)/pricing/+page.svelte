@@ -16,7 +16,7 @@
 </script>
 
 <Page wide title={m.moving_quaint_buzzard_trip()} lead={m.slimy_next_shad_fall()}>
-	<Container variant="wide" class="sm:py-10">
+	<Container variant="wide" class="mb-6 sm:py-10">
 		{#if data.plans}
 			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
 		{/if}

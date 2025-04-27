@@ -34,9 +34,9 @@
 </script>
 
 <IntersectionObserver let:intersecting bottom={persistHeader ? 0 : 100}>
-	<header class="relative z-10 h-[var(--header-height)]">
+	<header class="relative z-10 h-[var(--header-height)] transition-all">
 		<div
-			class="fixed top-0 left-0 h-[var(--header-height)] w-full transition duration-300 ease-in-out {intersecting &&
+			class="fixed top-0 left-0 h-[var(--header-height)] w-full transition transition-all duration-300 ease-in-out {intersecting &&
 			!persistHeader
 				? 'bg-transparent'
 				: 'bg-background shadow-sm'}"
