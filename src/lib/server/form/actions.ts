@@ -246,9 +246,7 @@ export const loginWithPassword: Action = async (event) => {
 		}
 
 		// Create session
-		const sessionToken = auth.generateSessionToken();
-		const session = await auth.createSession(sessionToken, result.id);
-		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+		await auth.createSession(event, result.id);
 
 		event.cookies.delete('email_verification', { path: '/' });
 	} catch (e) {
@@ -366,9 +364,7 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 		});
 
 		// Create session
-		const sessionToken = auth.generateSessionToken();
-		const session = await auth.createSession(sessionToken, userId);
-		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+		await auth.createSession(event, userId);
 
 		// Cleanup DB and Cookies
 		await deleteEmailVerificationRequests(email);

@@ -40,9 +40,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		});
 
 		// Create session
-		const sessionToken = auth.generateSessionToken();
-		const session = await auth.createSession(sessionToken, userId);
-		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+		await auth.createSession(event, userId);
 
 		return new Response(null, {
 			status: 302,

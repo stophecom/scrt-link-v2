@@ -19,12 +19,9 @@ type Preferences = {
 
 export const sessionCookieName = 'auth-session';
 
-export function generateSessionToken() {
-	return generateBase64Token();
-}
-
-export async function createSession(token: string, userId: string) {
-	const hash = await sha256Hash(token);
+export async function createSession(event: RequestEvent, userId: string) {
+	const sessionToken = generateBase64Token();
+	const hash = await sha256Hash(sessionToken);
 	const sessionId = hash;
 	const session: table.Session = {
 		id: sessionId,
@@ -32,7 +29,8 @@ export async function createSession(token: string, userId: string) {
 		expiresAt: new Date(Date.now() + DAY_IN_MS * 30)
 	};
 	await db.insert(table.session).values(session);
-	return session;
+
+	setSessionTokenCookie(event, sessionToken, session.expiresAt);
 }
 
 export async function validateSessionToken(token: string) {
