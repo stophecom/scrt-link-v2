@@ -6,6 +6,7 @@ import { STRIPE_WEBHOOK_SECRET } from '$env/static/private';
 import { TierOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
 import { user, whiteLabelSite } from '$lib/server/db/schema';
+import { removeContactFromAudience } from '$lib/server/resend';
 import stripeInstance from '$lib/server/stripe';
 import { getEnumFromString } from '$lib/typescript-helpers';
 
@@ -58,12 +59,24 @@ export const POST: RequestHandler = async ({ request }) => {
 						}
 					}
 
-					await db
+					const [userResult] = await db
 						.update(user)
 						.set({
 							subscriptionTier: purchasedTier
 						})
-						.where(eq(user.stripeCustomerId, subscription.customer as string));
+						.where(eq(user.stripeCustomerId, subscription.customer as string))
+						.returning();
+
+					// We remove customer from Resend MQL list
+					try {
+						const result = await removeContactFromAudience({ email: userResult.email });
+
+						if (result.error) {
+							throw Error(result.error.message);
+						}
+					} catch (error) {
+						console.error(error);
+					}
 
 					console.log('✅ Subscription active:', event.type);
 				} catch (e) {
