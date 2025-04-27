@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { CheckCircle2, ChevronLeft, ChevronUp, SquareArrowUpRight } from 'lucide-svelte';
+	import {
+		CheckCircle2,
+		ChevronLeft,
+		ChevronUp,
+		CircleAlert,
+		SquareArrowUpRight
+	} from 'lucide-svelte';
+	import { tick } from 'svelte';
 	import { elasticOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
@@ -9,10 +16,12 @@
 	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
 	import Color from '$lib/components/forms/form-fields/color.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
+	import Switch from '$lib/components/forms/form-fields/switch.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import PageLead from '$lib/components/page/page-lead.svelte';
 	import PageTitle from '$lib/components/page/page-title.svelte';
+	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import { Container } from '$lib/components/ui/container';
@@ -83,47 +92,73 @@
 	});
 </script>
 
-<!-- Header -->
-<div class="h-16">
-	<div class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b">
-		<Container variant="wide" class=" flex h-full items-center justify-between">
-			<Button href={localizeHref('/account')} variant="ghost">
-				<ChevronLeft class="me-2 h-5 w-5" />
-				{m.solid_clean_insect_stir()}
-			</Button>
-
-			<div class="ms-auto flex items-center">
-				{#if $delayed}
-					<Spinner class="h-5 w-5" />
-				{/if}
-
-				{#if showSuccess}
-					<div in:scale={{ easing: elasticOut, duration: 1000 }}>
-						<CheckCircle2 class="text-success h-6 w-6" />
-					</div>
-				{/if}
-
-				<Button
-					class="min-w-0 shrink"
-					variant="ghost"
-					href={`https://${data.domain}`}
-					target="_blank"
-				>
-					<span class="block truncate">{data.domain}</span>
-					<SquareArrowUpRight class="ms-2 h-5 w-5" />
+<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite" onchange={submit}>
+	<!-- Header -->
+	<div class="h-16">
+		<div class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b">
+			<Container variant="wide" class=" flex h-full items-center justify-between">
+				<Button href={localizeHref('/account')} variant="ghost">
+					<ChevronLeft class="me-2 h-5 w-5" />
+					{m.solid_clean_insect_stir()}
 				</Button>
-			</div>
-		</Container>
+
+				<div class="ms-auto flex items-center">
+					<Form.Field {form} name="published" class="py-4">
+						<Switch
+							bind:checked={$formData.published}
+							label={'Published'}
+							onCheckedChange={async () => {
+								await tick();
+								submit();
+							}}
+						/>
+					</Form.Field>
+
+					<div class="flex min-w-8 justify-center">
+						{#if $delayed}
+							<Spinner class="h-5 w-5" />
+						{/if}
+
+						{#if showSuccess}
+							<div in:scale={{ easing: elasticOut, duration: 1000 }}>
+								{#if $message?.status === 'success'}
+									<CheckCircle2 class="text-success h-6 w-6" />
+								{/if}
+								{#if $message?.status === 'error'}
+									<CircleAlert class="text-destructive h-6 w-6" />
+								{/if}
+							</div>
+						{/if}
+					</div>
+
+					<Button
+						class="min-w-0 shrink"
+						variant="ghost"
+						href={`https://${data.domain}`}
+						target="_blank"
+					>
+						<span class="block truncate">{data.domain}</span>
+						<SquareArrowUpRight class="ms-2 h-5 w-5" />
+					</Button>
+				</div>
+			</Container>
+		</div>
 	</div>
-</div>
 
-<Container variant="wide" class=" grid items-start gap-12 pt-8 pb-16 md:grid-cols-[1fr_360px]">
-	<!-- Left -->
-	<div class="pt-16">
-		<PageTitle title={m.misty_low_mantis_hug()}></PageTitle>
-		<PageLead lead={m.brave_ok_hound_kiss()}></PageLead>
+	<Container variant="wide" class=" grid items-start gap-12 pt-8 pb-16 md:grid-cols-[1fr_360px]">
+		<!-- Left -->
+		<div class="pt-16">
+			<PageTitle title={m.misty_low_mantis_hug()}></PageTitle>
+			<PageLead lead={m.brave_ok_hound_kiss()}></PageLead>
 
-		<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite" onchange={submit}>
+			{#if $message && $message.status === 'error'}
+				<div class="py-3">
+					<Alert title={$message.title} variant="destructive">
+						{$message.description}
+					</Alert>
+				</div>
+			{/if}
+
 			<Card
 				class="mb-6"
 				title={m.fair_sad_parakeet_jest()}
@@ -235,17 +270,17 @@
 					</Form.Field>
 				</div>
 			</Card>
-		</form>
-	</div>
-
-	<!-- Right -->
-	<div class="top-0 max-sm:hidden md:sticky md:pt-34">
-		<h5 class="ms-4 mb-2 font-bold">{m.teal_white_mongoose_urge()}</h5>
-		<div>
-			{@render renderFrame()}
 		</div>
-	</div>
-</Container>
+
+		<!-- Right -->
+		<div class="top-0 max-sm:hidden md:sticky md:pt-34">
+			<h5 class="ms-4 mb-2 font-bold">{m.teal_white_mongoose_urge()}</h5>
+			<div>
+				{@render renderFrame()}
+			</div>
+		</div>
+	</Container>
+</form>
 
 <Dialog.Root>
 	<Dialog.Trigger

@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
+import { isOriginalHost } from '$lib/app-routing';
 import { getLocale } from '$lib/paraglide/runtime';
 import { db } from '$lib/server/db';
 import { whiteLabelSite } from '$lib/server/db/schema';
@@ -10,7 +11,7 @@ import type { LocalizedWhiteLabelMessage } from '$lib/types';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, url }) => {
 	const locale = getLocale();
 
 	const [whiteLabel] = await db
@@ -20,6 +21,10 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	if (!whiteLabel) {
 		throw error(500, `No data for ${params.domain} found.`);
+	}
+
+	if (!isOriginalHost(url.host) && !whiteLabel.published) {
+		throw error(403, `Page is not published.`);
 	}
 
 	return {

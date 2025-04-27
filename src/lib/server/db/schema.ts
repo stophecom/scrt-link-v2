@@ -61,6 +61,7 @@ export const userSettings = pgTable('user_settings', {
 export const whiteLabelSite = pgTable('white_label_site', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	customDomain: text('custom_domain').unique(),
+	published: boolean('published'),
 	name: text('name'),
 	locale: text('locale'),
 	theme: jsonb('theme'),

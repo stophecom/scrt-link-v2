@@ -681,15 +681,26 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			form,
 			{
 				status: 'error',
-				title: m.busy_even_hawk_inspire()
+				title: m.busy_even_hawk_inspire(),
+				description: `Please upgrade to perform this action.`
 			},
 			{ status: 405 }
 		);
 	}
 
 	// Reminder: All form data is optional
-	const { title, lead, description, imprint, primaryColor, logo, logoDarkMode, appIcon, ogImage } =
-		form.data;
+	const {
+		title,
+		lead,
+		description,
+		imprint,
+		primaryColor,
+		logo,
+		logoDarkMode,
+		appIcon,
+		ogImage,
+		published
+	} = form.data;
 
 	const [existingWhiteLabelSite] = await db
 		.select()
@@ -717,6 +728,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 
 		await db.insert(whiteLabelSite).values({
 			...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
+			published: published,
 			userId: user.id,
 			theme: themeJson,
 			messages: messagesJson
@@ -731,6 +743,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			.update(whiteLabelSite)
 			.set({
 				...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
+				published: published,
 				userId: user.id,
 				theme: themeJson,
 				messages: messagesJson

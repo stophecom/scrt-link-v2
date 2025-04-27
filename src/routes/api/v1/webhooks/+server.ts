@@ -5,7 +5,7 @@ import Stripe from 'stripe';
 import { STRIPE_WEBHOOK_SECRET } from '$env/static/private';
 import { TierOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
-import { user } from '$lib/server/db/schema';
+import { user, whiteLabelSite } from '$lib/server/db/schema';
 import stripeInstance from '$lib/server/stripe';
 import { getEnumFromString } from '$lib/typescript-helpers';
 
@@ -72,12 +72,24 @@ export const POST: RequestHandler = async ({ request }) => {
 			} else if (['canceled', 'unpaid'].includes(subscription.status)) {
 				// We downgrade only after a subscription has got the status canceled or unpaid.
 				// We don't consider the other statuses.
-				await db
+				const [userResult] = await db
 					.update(user)
 					.set({
 						subscriptionTier: TierOptions.CONFIDENTIAL
 					})
-					.where(eq(user.stripeCustomerId, subscription.customer as string));
+					.where(eq(user.stripeCustomerId, subscription.customer as string))
+					.returning();
+
+				// We unpublish any white-label website.
+				// Wrapped in try/catch since might not exist.
+				try {
+					await db
+						.update(whiteLabelSite)
+						.set({ published: false })
+						.where(eq(whiteLabelSite.userId, userResult.id));
+				} catch (error) {
+					console.error(error);
+				}
 			}
 
 			break;

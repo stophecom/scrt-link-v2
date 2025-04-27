@@ -1,4 +1,4 @@
-import { Plane, Rocket, Send, ShieldCheck } from 'lucide-svelte';
+import { Factory, Plane, Rocket, Send } from 'lucide-svelte';
 
 import { formatBytes } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
@@ -97,7 +97,7 @@ const plans = () => [
 	},
 	{
 		name: TierOptions.SECRET_SERVICE,
-		icon: ShieldCheck,
+		icon: Factory,
 		title: 'Your own secret sharing service:',
 		contents: [
 			'Custom domain',

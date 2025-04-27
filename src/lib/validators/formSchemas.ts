@@ -108,7 +108,8 @@ export const whiteLabelSiteSchema = () =>
 		logo: z.string().nullable().optional(),
 		logoDarkMode: z.string().nullable().optional(),
 		appIcon: z.string().nullable().optional(),
-		ogImage: z.string().nullable().optional()
+		ogImage: z.string().nullable().optional(),
+		published: z.boolean().optional().default(false)
 	});
 
 export const settingsFormSchema = () =>
