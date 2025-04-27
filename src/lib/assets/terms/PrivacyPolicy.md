@@ -101,8 +101,7 @@ Third parties we currently use include:
 
 - Plausible - https://plausible.io/
 - Stripe - https://stripe.com/
-- Twilio - https://www.twilio.com/
-- Mailjet - https://www.mailjet.com/
+- Resend - https://resend.com/
 
 ### Your Rights and Controlling Your Personal Information
 

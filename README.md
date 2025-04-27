@@ -253,6 +253,7 @@ Expected errors are returned with `error(404, 'Some message')` and might be show
 - PostgreSQL (Database)
 - Drizzle (ORM)
 - Inlang/Paraglide (i18n)
+- Resend (Email)
 
 ## Infrastructure
 
