@@ -1,12 +1,9 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { ArcticFetchError, OAuth2RequestError, type OAuth2Tokens } from 'arctic';
-import { eq } from 'drizzle-orm';
 
 import * as auth from '$lib/server/auth';
 import { google } from '$lib/server/auth';
-import { db } from '$lib/server/db';
-import * as table from '$lib/server/db/schema';
-import stripeInstance from '$lib/server/stripe';
+import { createOrUpdateUser } from '$lib/server/user';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const storedState = event.cookies.get('google_oauth_state') ?? null;
@@ -34,53 +31,17 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		const googleUser: UserInfoResponse = await response.json();
 
 		// Create or update user
-		const [user] = await db
-			.insert(table.user)
-			.values({
-				googleId: googleUser.sub,
-				emailVerified: googleUser.email_verified,
-				picture: googleUser.picture,
-				name: googleUser.name,
-				email: googleUser.email
-			})
-			.onConflictDoUpdate({
-				target: table.user.email,
-				set: {
-					googleId: googleUser.sub,
-					emailVerified: googleUser.email_verified,
-					picture: googleUser.picture,
-					name: googleUser.name,
-					email: googleUser.email
-				}
-			})
-			.returning();
-
-		// Conditionally add user settings
-		await db
-			.insert(table.userSettings)
-			.values({
-				userId: user.id,
-				email: user.email
-			})
-			.onConflictDoNothing({
-				target: table.userSettings.userId
-			});
-
-		// In case a user doesn't have a stripe account, we create one
-		if (!user.stripeCustomerId) {
-			const stripeCustomer = await stripeInstance.customers.create({
-				email: user.email
-			});
-
-			await db
-				.update(table.user)
-				.set({ stripeCustomerId: stripeCustomer.id })
-				.where(eq(table.user.id, user.id));
-		}
+		const { userId } = await createOrUpdateUser({
+			email: googleUser.email,
+			emailVerified: googleUser.email_verified || false,
+			googleId: googleUser.sub,
+			picture: googleUser.picture,
+			name: googleUser.name
+		});
 
 		// Create session
 		const sessionToken = auth.generateSessionToken();
-		const session = await auth.createSession(sessionToken, user.id);
+		const session = await auth.createSession(sessionToken, userId);
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 
 		return new Response(null, {

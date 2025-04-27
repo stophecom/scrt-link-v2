@@ -44,8 +44,7 @@ import {
 import { checkIfUserExists, checkIsEmailVerified } from '../helpers';
 import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '../rate-limit';
 import { saveSecret } from '../secrets';
-import stripeInstance from '../stripe';
-import { getActiveApiKeys } from '../user';
+import { createOrUpdateUser, getActiveApiKeys } from '../user';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod(secretFormSchema()));
@@ -250,6 +249,7 @@ export const loginWithPassword: Action = async (event) => {
 		const sessionToken = auth.generateSessionToken();
 		const session = await auth.createSession(sessionToken, result.id);
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+
 		event.cookies.delete('email_verification', { path: '/' });
 	} catch (e) {
 		console.error(e);
@@ -358,44 +358,16 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 		}
 
 		// All check passed. We create or update user and session.
-		const [userResult] = await db
-			.insert(userSchema)
-			.values({ email, emailVerified: true })
-			.onConflictDoUpdate({
-				target: userSchema.email,
-				set: { emailVerified: true }
-			})
-			.returning();
 
-		// In case a user doesn't have a stripe account, we create one
-		if (!userResult.stripeCustomerId) {
-			const stripeCustomer = await stripeInstance.customers.create({
-				email: userResult.email
-			});
-
-			await db
-				.update(userSchema)
-				.set({ stripeCustomerId: stripeCustomer.id })
-				.where(eq(userSchema.id, userResult.id));
-		}
-
-		// Add user settings
-		await db
-			.insert(userSettings)
-			.values({
-				userId: userResult.id,
-				email: userResult.email
-			})
-			.onConflictDoUpdate({
-				target: userSettings.userId,
-				set: {
-					email: userResult.email
-				}
-			});
+		// Create or update user
+		const { userId } = await createOrUpdateUser({
+			email: email,
+			emailVerified: true
+		});
 
 		// Create session
 		const sessionToken = auth.generateSessionToken();
-		const session = await auth.createSession(sessionToken, userResult.id);
+		const session = await auth.createSession(sessionToken, userId);
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 
 		// Cleanup DB and Cookies
