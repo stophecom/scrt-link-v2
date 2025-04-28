@@ -75,8 +75,8 @@ importers:
         specifier: ^17.7.0
         version: 17.7.0
       svelte-email-tailwind:
-        specifier: ^2.0.1
-        version: 2.0.1(vite@5.4.11(@types/node@22.13.0)(lightningcss@1.29.1))
+        specifier: ^2.1.1
+        version: 2.1.1(vite@5.4.11(@types/node@22.13.0)(lightningcss@1.29.1))
       svelte-exmarkdown:
         specifier: ^4.0.2
         version: 4.0.2(svelte@5.20.5)
@@ -1727,10 +1727,6 @@ packages:
   '@sqlite.org/sqlite-wasm@3.48.0-build4':
     resolution: {integrity: sha512-hI6twvUkzOmyGZhQMza1gpfqErZxXRw6JEsiVjUbo7tFanVD+8Oil0Ih3l2nGzHdxPI41zFmfUQG7GHqhciKZQ==}
     hasBin: true
-
-  '@steveninety/html-to-text@9.0.5':
-    resolution: {integrity: sha512-N+VHwfWJf7tG9u2fvWg3qIPzWwbmSWLlocHJoxkFW0WqfYjki2uO6EMM2H02Lt+nyzdETo76C6d4DlfMpeU2oQ==}
-    engines: {node: '>=14'}
 
   '@stripe/stripe-js@5.10.0':
     resolution: {integrity: sha512-PTigkxMdMUP6B5ISS7jMqJAKhgrhZwjprDqR1eATtFfh0OpKVNp110xiH+goeVdrJ29/4LeZJR4FaHHWstsu0A==}
@@ -4038,8 +4034,8 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
 
-  svelte-email-tailwind@2.0.1:
-    resolution: {integrity: sha512-44mzrQ7SPIllh9K/ilSxVPPvc4xcwuZXal1JCia3/ZqHDA9ryne0QGptgqcu46BF1KUIt92rQEn+RzYz37gW5w==}
+  svelte-email-tailwind@2.1.1:
+    resolution: {integrity: sha512-4KmskzAr9ydHbfWfz1MppSJigVt7+BIyRJlfavsDnU+j89bqEtV8DXHRu8l1xY3DMphapnoznn6BMkxMQzHczw==}
 
   svelte-eslint-parser@0.43.0:
     resolution: {integrity: sha512-GpU52uPKKcVnh8tKN5P4UZpJ/fUDndmq7wfsvoVXsyP+aY0anol7Yqo01fyrlaWGMFfm4av5DyrjlaXdLRJvGA==}
@@ -6128,14 +6124,6 @@ snapshots:
       tslib: 2.8.1
 
   '@sqlite.org/sqlite-wasm@3.48.0-build4': {}
-
-  '@steveninety/html-to-text@9.0.5':
-    dependencies:
-      '@selderee/plugin-htmlparser2': 0.11.0
-      deepmerge: 4.3.1
-      dom-serializer: 2.0.0
-      htmlparser2: 8.0.2
-      selderee: 0.11.0
 
   '@stripe/stripe-js@5.10.0': {}
 
@@ -8580,11 +8568,10 @@ snapshots:
     transitivePeerDependencies:
       - picomatch
 
-  svelte-email-tailwind@2.0.1(vite@5.4.11(@types/node@22.13.0)(lightningcss@1.29.1)):
+  svelte-email-tailwind@2.1.1(vite@5.4.11(@types/node@22.13.0)(lightningcss@1.29.1)):
     dependencies:
-      '@steveninety/html-to-text': 9.0.5
       '@sveltejs/vite-plugin-svelte': 4.0.4(svelte@5.20.5)(vite@5.4.11(@types/node@22.13.0)(lightningcss@1.29.1))
-      pretty: 2.0.0
+      html-to-text: 9.0.5
       resend: 2.0.0
       svelte: 5.20.5
       svelte-persisted-store: 0.12.0(svelte@5.20.5)
