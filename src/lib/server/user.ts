@@ -6,6 +6,7 @@ import { db } from './db';
 import { apiKey, type User, user as userSchema, userSettings } from './db/schema';
 import { addContactToAudience } from './resend';
 import stripeInstance from './stripe';
+import { sendWelcomeEmail } from './transactional-email';
 
 export const createOrUpdateUser = async ({
 	email,
@@ -51,7 +52,6 @@ export const createOrUpdateUser = async ({
 		});
 
 	// We add user to MQL list on Resend
-
 	try {
 		const result = await addContactToAudience({ email });
 
@@ -60,6 +60,13 @@ export const createOrUpdateUser = async ({
 		}
 	} catch (error) {
 		console.error(`Failed to add contact to Resend.`, JSON.stringify(error));
+	}
+
+	// Send welcome email
+	try {
+		await sendWelcomeEmail(email, name || '');
+	} catch (error) {
+		console.error(`Failed to send welcome email.`, JSON.stringify(error));
 	}
 
 	return { userId: userResult.id };

@@ -1,15 +1,13 @@
 import { error } from '@sveltejs/kit';
 import { eq, sql } from 'drizzle-orm';
-import { render } from 'svelte/server';
 import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { verifyPassword } from '$lib/crypto';
-import EmailReadReceipt from '$lib/emails/email-read-receipt.svelte';
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret as secretSchema, user as userSchema, userSettings } from '$lib/server/db/schema';
-import sendTransactionalEmail from '$lib/server/resend';
+import { sendReidReceiptEmail } from '$lib/server/transactional-email';
 import { revealSecretFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -138,13 +136,7 @@ export const actions: Actions = {
 						throw Error('No email for read receipt.');
 					}
 
-					const { html } = render(EmailReadReceipt, { props: { receiptId } });
-					await sendTransactionalEmail({
-						subject: m.spry_bald_guppy_cry(),
-						to: email,
-						html: html
-					});
-					console.log(`Send read receipt to ${email}.`);
+					await sendReidReceiptEmail(email, receiptId);
 				}
 
 				// Send receipt via ntfy

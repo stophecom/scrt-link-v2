@@ -30,27 +30,27 @@
 		<Container class="py-12">
 			<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />
 
-			<Heading class="text-primary text-4xl ">{name ? 'Hi {name}' : 'Hi'}</Heading>
+			<Heading class="text-primary text-4xl ">{name ? 'Hi {name}' : 'Hi there'}</Heading>
 
 			<Text class="mb-4 text-xl leading-snug"
-				>Welcome aboard! We're here to help you share confidential information in the most secure
-				way possible: <strong>End-to-end encrypted. Ephemeral. Without a trace.</strong>
+				>{m.royal_watery_lionfish_glow()}
+				<strong>{m.stock_round_finch_support()}</strong>
 			</Text>
 
 			<Text class="mb-10 text-lg">
-				Stop worrying about leaks or breaches. Whether it's passwords, access tokens, sensitive
-				notes or documents, we've got you covered. Need extra security? Explore our premium plans
-				for advanced protection.</Text
+				{m.curly_aqua_carp_arrive()}</Text
 			>
 
 			<Button
 				class="bg-primary text-primary-foreground inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap "
-				href={`${getBaseUrl()}?`}>Share a secret</Button
+				href={`${getBaseUrl()}?utm_source=email&utm_medium=welcome&utm_campaign=new_signup`}
+				>{m.royal_lofty_ocelot_cuddle()}</Button
 			>
 
 			<Button
 				class="bg-background text-foreground border-foreground inline-flex items-center justify-center rounded-md border  px-4 py-2 text-sm font-medium whitespace-nowrap "
-				href={`${getBaseUrl()}?`}>See plans</Button
+				href={`${getBaseUrl()}/pricing?utm_source=email&utm_medium=welcome&utm_campaign=new_signup`}
+				>{m.antsy_moving_hare_bloom()}</Button
 			>
 
 			<Hr class="border-border mt-8" />

@@ -1,15 +1,12 @@
 import { type Action, error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { render } from 'svelte/server';
 
-import EmailOtpVerification from '$lib/emails/email-otp-verification.svelte';
 import { redirectLocalized } from '$lib/i18n';
-import { m } from '$lib/paraglide/messages.js';
 import { type EmailVerificationRequest, emailVerificationRequest } from '$lib/server/db/schema';
 
 import { generateOtp, scryptHash } from '../crypto';
 import { db } from './db';
-import sendTransactionalEmail from './resend';
+import { sendVerificationEmail } from './transactional-email';
 
 export const createEmailVerificationRequestAndRedirect = async (
 	event: Parameters<Action>[0],
@@ -48,13 +45,3 @@ export async function createEmailVerificationRequest(
 export async function deleteEmailVerificationRequests(email: string) {
 	return await db.delete(emailVerificationRequest).where(eq(emailVerificationRequest.email, email));
 }
-
-export const sendVerificationEmail = async (email: string, code: string) => {
-	const { html } = render(EmailOtpVerification, { props: { code } });
-	await sendTransactionalEmail({
-		subject: m.sunny_this_falcon_coax(),
-		to: email,
-		html: html
-	});
-	console.log(`To ${email}: Your verification code is ${code}`);
-};

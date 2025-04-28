@@ -1,14 +1,11 @@
 import { type Actions, error } from '@sveltejs/kit';
 import { fail } from '@sveltejs/kit';
-import { render } from 'svelte/server';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { RECAPTCHA_SERVER_KEY } from '$env/static/private';
-import { emailSupport } from '$lib/data/app';
-import EmailContact from '$lib/emails/email-contact.svelte';
 import { m } from '$lib/paraglide/messages.js';
-import sendTransactionalEmail from '$lib/server/resend';
+import { sendContactEmail } from '$lib/server/transactional-email';
 import { contactFormSchema } from '$lib/validators/formSchemas';
 
 import type { PageServerLoad } from './$types';
@@ -49,12 +46,7 @@ export const actions: Actions = {
 
 		try {
 			// We send an email
-			const { html } = render(EmailContact, { props: { message: content, email } });
-			await sendTransactionalEmail({
-				subject: `New message from ${email}`,
-				to: emailSupport,
-				html: html
-			});
+			await sendContactEmail(email, content);
 		} catch (e) {
 			console.error(e);
 			error(400, 'Something went wrong.');
