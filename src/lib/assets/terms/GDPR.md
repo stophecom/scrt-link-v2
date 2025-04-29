@@ -51,7 +51,7 @@ Data shared:
 - Email address
 - Name (if available)
 
-[Resend GDPR Compliance](https://resend.com/legal/data-processing-addendum)
+[Resend GDPR Compliance](https://www.resend.com/security/gdpr)
 
 ---
 
