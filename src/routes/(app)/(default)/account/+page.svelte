@@ -79,7 +79,10 @@
 		{/if}
 
 		{#if user.role === Role.ADMIN}
-			<Button variant="outline" class="mb-6" href={localizeHref('/admin')}>Admin Panel</Button>
+			<Button variant="outline" class="me-2 mb-6" href={localizeHref('/admin')}>Admin Panel</Button>
+			<Button variant="outline" class="mb-6" href={localizeHref('/admin/email-previews')}
+				>Email Previews</Button
+			>
 		{/if}
 
 		<AccountCard {user} form={data.userForm} />

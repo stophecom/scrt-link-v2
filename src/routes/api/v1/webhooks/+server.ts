@@ -8,6 +8,7 @@ import { db } from '$lib/server/db';
 import { user, whiteLabelSite } from '$lib/server/db/schema';
 import { removeContactFromAudience } from '$lib/server/resend';
 import stripeInstance from '$lib/server/stripe';
+import { sendSubscriptionTrialStartEmail } from '$lib/server/transactional-email';
 import { getEnumFromString } from '$lib/typescript-helpers';
 
 const webhookSecret: string = STRIPE_WEBHOOK_SECRET!;
@@ -67,6 +68,15 @@ export const POST: RequestHandler = async ({ request }) => {
 						.where(eq(user.stripeCustomerId, subscription.customer as string))
 						.returning();
 
+					// We send purchase confirmation email
+					if (subscription.status === 'trialing') {
+						await sendSubscriptionTrialStartEmail(
+							userResult.email,
+							purchasedTier,
+							userResult.name || ''
+						);
+					}
+
 					// We remove customer from Resend MQL list
 					try {
 						const result = await removeContactFromAudience({ email: userResult.email });
@@ -94,7 +104,7 @@ export const POST: RequestHandler = async ({ request }) => {
 					.returning();
 
 				// We unpublish any white-label website.
-				// Wrapped in try/catch since might not exist.
+				// Wrapped in try/catch since such a site might not exist.
 				try {
 					await db
 						.update(whiteLabelSite)
