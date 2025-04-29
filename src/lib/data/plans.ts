@@ -98,10 +98,10 @@ const plans = () => [
 	{
 		name: TierOptions.SECRET_SERVICE,
 		icon: Factory,
-		title: 'Your own secret sharing service:',
+		title: m.heavy_helpful_mallard_push(),
 		contents: [
-			'Custom domain',
-			'Your logo and theme',
+			m.knotty_shy_bobcat_build(),
+			m.only_close_okapi_express(),
 			m.stale_fine_turkey_praise(),
 			m.loose_chunky_duck_intend(),
 			m.new_still_dingo_create({ limit: formatBytes(10 * MB) }),
