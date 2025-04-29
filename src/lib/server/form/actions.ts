@@ -41,10 +41,14 @@ import {
 	createEmailVerificationRequestAndRedirect,
 	deleteEmailVerificationRequests
 } from '../email-verification';
-import { checkIfUserExists, checkIsEmailVerified } from '../helpers';
 import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '../rate-limit';
 import { saveSecret } from '../secrets';
-import { createOrUpdateUser, getActiveApiKeys } from '../user';
+import {
+	checkIfUserExists,
+	checkIsEmailVerified,
+	createOrUpdateUser,
+	getActiveApiKeys
+} from '../user';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod(secretFormSchema()));
