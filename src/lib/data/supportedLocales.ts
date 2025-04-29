@@ -7,7 +7,7 @@ const map: Record<Locale, string> = {
 	fr: 'Français',
 	es: 'Español',
 	ru: 'Русский',
-	cn: '中文(简体)'
+	'zh-CN': '中文(简体)'
 };
 
 export const getSupportedLocales = () => {
