@@ -101,6 +101,17 @@ const imprint = () => ({
 	label: m.basic_cool_fish_conquer()
 });
 
+const sla = () => ({
+	href: '/sla',
+	label: 'SLA'
+});
+
 // Menus
-export const legalMenu = () => [tos(), cookiePolicy(), privacyPolicy(), acceptableUsePolicy()];
+export const legalMenu = () => [
+	tos(),
+	cookiePolicy(),
+	privacyPolicy(),
+	acceptableUsePolicy(),
+	sla()
+];
 export const imprintMenu = () => [imprint(), privacyPolicy(), cookiePolicy()];

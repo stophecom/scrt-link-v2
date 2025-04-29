@@ -11,10 +11,12 @@ import {
 	ShieldCheck,
 	ShieldEllipsisIcon,
 	ShieldPlus,
+	Timer,
 	Zap
 } from 'lucide-svelte';
 
 import { m } from '$lib/paraglide/messages.js';
+import { localizeHref } from '$lib/paraglide/runtime';
 
 export const appName = 'scrt.link';
 export const emailSupport = 'support@scrt.link';
@@ -56,34 +58,34 @@ export const subscriptionFeatures = () => [
 
 export const businessFeatures = () => [
 	{
-		title: 'Your domain',
+		title: m.red_noisy_beaver_roar(),
 		icon: Globe,
-		description: `Set your custom domain or subdomain (company.com or secure.company.com).`
+		description: m.teary_broad_vole_feel({ domain: 'example.com', subdomain: 'share.example.com' })
 	},
 	{
-		title: 'Custom branding',
+		title: m.free_less_trout_peel(),
 		icon: Palette,
-		description: `Match your company's look and feel with custom colors, logo and more.`
+		description: m.sweet_topical_gull_strive()
 	},
 	{
-		title: 'API access',
+		title: m.few_away_tadpole_hope(),
 		icon: Code,
-		description: `Integrate secure sharing directly into your workflows and applications with our client module (REST API).`
+		description: m.these_moving_fireant_pull()
 	},
 	{
-		title: 'Invisible infrastructure',
+		title: m.wide_zany_piranha_flow(),
 		icon: Zap,
-		description: `The service runs on industry-leading infrastructure. We do the heavy lifting.`
+		description: m.loved_awful_okapi_revive({ SLA: `[SLA](${localizeHref('/sla')})` })
 	},
 	{
-		title: 'Compliance ready',
-		icon: ChartColumn,
-		description: `Fully GDPR and CCPA compliant, with strong data protection.`
-	},
-	{
-		title: 'Setup in 5min',
+		title: m.ago_direct_squid_bless(),
 		icon: ShieldCheck,
-		description: `Start protecting your customers' most sensitive data immediately.`
+		description: m.proof_seemly_eagle_cry()
+	},
+	{
+		title: m.dull_round_javelina_cheer(),
+		icon: Timer,
+		description: m.spare_grand_dove_fry()
 	}
 ];
 

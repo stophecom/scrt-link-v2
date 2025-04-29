@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { type Icon as IconType } from 'lucide-svelte';
 
+	import Markdown from '../ui/markdown';
+
 	type Props = {
 		Icon: typeof IconType;
 		title: string;
@@ -20,7 +22,7 @@
 			{title}
 		</h4>
 		<p class="">
-			{description}
+			<Markdown markdown={description} />
 		</p>
 	</div>
 </div>

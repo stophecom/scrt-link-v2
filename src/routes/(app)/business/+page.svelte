@@ -48,7 +48,12 @@
 		</AndroidFrame>
 	</Hero>
 
-	<Section wide variant="neutral" title="Business features" lead="Build upon your trusted brand.">
+	<Section
+		wide
+		variant="neutral"
+		title="Business features"
+		lead="Build on your trusted brand. Add secure communication to potentially insecure channels."
+	>
 		<IntersectionObserver let:intersecting top={-50} once={true}>
 			<div
 				class="grid grid-rows-6 gap-4 sm:grid-cols-2 sm:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
