@@ -1,5 +1,3 @@
-## Privacy Policy
-
 Your privacy is important to us. It is SANTiHANS GmbH's policy to respect your privacy and comply with any applicable law and regulation regarding any personal information we may collect about you, including across our website, [https://scrt.link](https://scrt.link), and other sites we own and operate.
 
 Personal information is any information about you which can be used to identify you. This includes information about you as a person (such as name, address, and date of birth), your devices, payment details, and even information about how you use a website or online service.
@@ -10,7 +8,7 @@ This policy is effective as of 31 May 2021.
 
 Last updated: 31 May 2021
 
-### Information We Collect
+## Information We Collect
 
 Information we collect falls into one of two categories: “voluntarily provided” information and “automatically collected” information.
 
@@ -18,7 +16,7 @@ Information we collect falls into one of two categories: “voluntarily provided
 
 “Automatically collected” information refers to any information automatically sent by your devices in the course of accessing our products and services.
 
-#### Log Data
+### Log Data
 
 When you visit our website, our servers may automatically log the standard data provided by your web browser. It may include your device’s Internet Protocol (IP) address, your browser type and version, the pages you visit, the time and date of your visit, the time spent on each page, and other details about your visit.
 
@@ -26,7 +24,7 @@ Additionally, if you encounter certain errors while using the site, we may autom
 
 Please be aware that while this information may not be personally identifying by itself, it may be possible to combine it with other data to personally identify individual persons.
 
-#### Personal Information
+### Personal Information
 
 We may ask for personal information — for example, when you register an account or when you contact us — which may include one or more of the following:
 
@@ -34,21 +32,21 @@ We may ask for personal information — for example, when you register an accoun
 - Email
 - Phone/mobile number
 
-#### User-Generated Content
+### User-Generated Content
 
 We consider “user-generated content” to be materials (text, image and/or video content) voluntarily supplied to us by our users for the purpose of publication, processing, or usage on our platform. All user-generated content is associated with the account or email address used to submit the materials.
 
 Please be aware that any content you submit for the purpose of publication will be public after posting (and subsequent review or vetting process). Once published, it may be accessible to third parties not covered under this privacy policy.
 
-#### Transaction Data
+### Transaction Data
 
 Transaction data refers to data that accumulates over the normal course of operation on our platform. This may include transaction records, stored files, user profiles, analytics data and other metrics, as well as other types of information, created or generated, as users interact with our services.
 
-#### Legitimate Reasons for Processing Your Personal Information
+### Legitimate Reasons for Processing Your Personal Information
 
 We only collect and use your personal information when we have a legitimate reason for doing so. In which instance, we only collect personal information that is reasonably necessary to provide our services to you.
 
-#### Collection and Use of Information
+### Collection and Use of Information
 
 We may collect personal information from you when you do any of the following on our website:
 
@@ -65,7 +63,7 @@ We may collect, hold, use, and disclose information for the following purposes, 
 
 We may combine voluntarily provided and automatically collected personal information with general information or research data we receive from other trusted sources. For example, If you provide us with your location, we may combine this with general information about currency and language to provide you with an enhanced experience of our site and service.
 
-#### Security of Your Personal Information
+### Security of Your Personal Information
 
 When we collect and process personal information, and while we retain this information, we will protect it within commercially acceptable means to prevent loss and theft, as well as unauthorized access, disclosure, copying, use, or modification.
 
@@ -73,17 +71,17 @@ Although we will do our best to protect the personal information you provide to 
 
 You are responsible for selecting any password and its overall security strength, ensuring the security of your own information within the bounds of our services. For example, ensuring any passwords associated with accessing your personal information and accounts are secure and confidential.
 
-#### How Long We Keep Your Personal Information
+### How Long We Keep Your Personal Information
 
 We keep your personal information only for as long as we need to. This time period may depend on what we are using your information for, in accordance with this privacy policy. For example, if you have provided us with personal information as part of creating an account with us, we may retain this information for the duration your account exists on our system. If your personal information is no longer required for this purpose, we will delete it or make it anonymous by removing all details that identify you.
 
 However, if necessary, we may retain your personal information for our compliance with a legal, accounting, or reporting obligation or for archiving purposes in the public interest, scientific, or historical research purposes or statistical purposes.
 
-### Children’s Privacy
+## Children’s Privacy
 
 We do not aim any of our products or services directly at children under the age of 13, and we do not knowingly collect personal information about children under 13.
 
-### Disclosure of Personal Information to Third Parties
+## Disclosure of Personal Information to Third Parties
 
 We may disclose personal information to:
 
@@ -103,7 +101,7 @@ Third parties we currently use include:
 - Stripe - https://stripe.com/
 - Resend - https://resend.com/
 
-### Your Rights and Controlling Your Personal Information
+## Your Rights and Controlling Your Personal Information
 
 **Your choice:** By providing personal information to us, you understand we will collect, hold, use, and disclose your personal information in accordance with this privacy policy. You do not have to provide personal information to us, however, if you do not, it may affect your use of our website or the products and/or services offered on or through it.
 
@@ -123,21 +121,21 @@ Third parties we currently use include:
 
 **Unsubscribe:** To unsubscribe from our email database or opt-out of communications (including marketing communications), please contact us using the details provided in this privacy policy, or opt-out using the opt-out facilities provided in the communication. We may need to request specific information from you to help us confirm your identity.
 
-### Use of Cookies
+## Use of Cookies
 
 We use “cookies” to collect information about you and your activity across our site. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit, so we can understand how you use our site. This helps us serve you content based on preferences you have specified.
 
 Please refer to our Cookie Policy for more information.
 
-### Business Transfers
+## Business Transfers
 
 If we or our assets are acquired, or in the unlikely event that we go out of business or enter bankruptcy, we would include data, including your personal information, among the assets transferred to any parties who acquire us. You acknowledge that such transfers may occur, and that any parties who acquire us may, to the extent permitted by applicable law, continue to use your personal information according to this policy, which they will be required to assume as it is the basis for any ownership or use rights we have over such information.
 
-### Limits of Our Policy
+## Limits of Our Policy
 
 Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and policies of those sites, and cannot accept responsibility or liability for their respective privacy practices.
 
-### Changes to This Policy
+## Changes to This Policy
 
 At our discretion, we may change our privacy policy to reflect updates to our business processes, current acceptable practices, or legislative or regulatory changes. If we decide to change this privacy policy, we will post the changes here at the same link by which you are accessing this privacy policy.
 
@@ -145,45 +143,45 @@ If the changes are significant, or if required by applicable law, we will contac
 
 If required by law, we will get your permission or give you the opportunity to opt in to or opt out of, as applicable, any new uses of your personal information.
 
-### Additional Disclosures for Australian Privacy Act Compliance (AU)
+## Additional Disclosures for Australian Privacy Act Compliance (AU)
 
-#### International Transfers of Personal Information
+### International Transfers of Personal Information
 
 Where the disclosure of your personal information is solely subject to Australian privacy laws, you acknowledge that some third parties may not be regulated by the Privacy Act and the Australian Privacy Principles in the Privacy Act. You acknowledge that if any such third party engages in any act or practice that contravenes the Australian Privacy Principles, it would not be accountable under the Privacy Act, and you will not be able to seek redress under the Privacy Act.
 
-### Additional Disclosures for General Data Protection Regulation (GDPR) Compliance (EU)
+## Additional Disclosures for General Data Protection Regulation (GDPR) Compliance (EU)
 
-#### Data Controller / Data Processor
+### Data Controller / Data Processor
 
 The GDPR distinguishes between organisations that process personal information for their own purposes (known as “data controllers”) and organizations that process personal information on behalf of other organizations (known as “data processors”). We, SANTiHANS GmbH, located at the address provided in our Contact Us section, are a Data Controller and/or Processor with respect to the personal information you provide to us.
 
-#### Legal Bases for Processing Your Personal Information
+### Legal Bases for Processing Your Personal Information
 
 We will only collect and use your personal information when we have a legal right to do so. In which case, we will collect and use your personal information lawfully, fairly, and in a transparent manner. If we seek your consent to process your personal information, and you are under 16 years of age, we will seek your parent or legal guardian’s consent to process your personal information for that specific purpose.
 
 Our lawful bases depend on the services you use and how you use them. This means we only collect and use your information on the following grounds:
 
-##### Consent From You
+#### Consent From You
 
 Where you give us consent to collect and use your personal information for a specific purpose. You may withdraw your consent at any time using the facilities we provide; however this will not affect any use of your information that has already taken place. When you contact us, you may consent to your name and email address being used so we can respond to your enquiry. While you may request that we delete your contact details at any time, we cannot recall any email we have already sent. If you have any further enquiries about how to withdraw your consent, please feel free to enquire using the details provided in the Contact Us section of this privacy policy.
 
-##### Performance of a Contract or Transaction
+#### Performance of a Contract or Transaction
 
 Where you have entered into a contract or transaction with us, or in order to take preparatory steps prior to our entering into a contract or transaction with you. For example, if you purchase a product, service, or subscription from us, we may need to use your personal and payment information in order to process and deliver your order.
 
-##### Our Legitimate Interests
+#### Our Legitimate Interests
 
 Where we assess it is necessary for our legitimate interests, such as for us to provide, operate, improve and communicate our services. We consider our legitimate interests to include research and development, understanding our audience, marketing and promoting our services, measures taken to operate our services efficiently, marketing analysis, and measures taken to protect our legal rights and interests.
 
-##### Compliance with Law
+#### Compliance with Law
 
 In some cases, we may have a legal obligation to use or keep your personal information. Such cases may include (but are not limited to) court orders, criminal investigations, government requests, and regulatory obligations. If you have any further enquiries about how we retain personal information in order to comply with the law, please feel free to enquire using the details provided in the Contact Us section of this privacy policy.
 
-#### International Transfers Outside of the European Economic Area (EEA)
+### International Transfers Outside of the European Economic Area (EEA)
 
 We will ensure that any transfer of personal information from countries in the European Economic Area (EEA) to countries outside the EEA will be protected by appropriate safeguards, for example by using standard data protection clauses approved by the European Commission, or the use of binding corporate rules or other legally accepted means.
 
-#### Your Rights and Controlling Your Personal Information
+### Your Rights and Controlling Your Personal Information
 
 **Restrict:** You have the right to request that we restrict the processing of your personal information if (i) you are concerned about the accuracy of your personal information; (ii) you believe your personal information has been unlawfully processed; (iii) you need us to maintain the personal information solely for the purpose of a legal claim; or (iv) we are in the process of considering your objection in relation to processing on the basis of legitimate interests.
 
@@ -193,35 +191,35 @@ We will ensure that any transfer of personal information from countries in the E
 
 **Deletion:** You may have a right to request that we delete the personal information we hold about you at any time, and we will take reasonable steps to delete your personal information from our current records. If you ask us to delete your personal information, we will let you know how the deletion affects your use of our website or products and services. There may be exceptions to this right for specific legal reasons which, if applicable, we will set out for you in response to your request. If you terminate or delete your account, we will delete your personal information within 3 days of the deletion of your account. Please be aware that search engines and similar third parties may still retain copies of your personal information that has been made public at least once, like certain profile information and public comments, even after you have deleted the information from our services or deactivated your account.
 
-### Additional Disclosures for California Compliance (US)
+## Additional Disclosures for California Compliance (US)
 
 Under California Civil Code Section 1798.83, if you live in California and your business relationship with us is mainly for personal, family, or household purposes, you may ask us about the information we release to other organizations for their marketing purposes.
 
 To make such a request, please contact us using the details provided in this privacy policy with “Request for California privacy information” in the subject line. You may make this type of request once every calendar year. We will email you a list of categories of personal information we revealed to other organisations for their marketing purposes in the last calendar year, along with their names and addresses. Not all personal information shared in this way is covered by Section 1798.83 of the California Civil Code.
 
-#### Do Not Track
+### Do Not Track
 
 Some browsers have a “Do Not Track” feature that lets you tell websites that you do not want to have your online activities tracked. At this time, we do not respond to browser “Do Not Track” signals.
 
 We adhere to the standards outlined in this privacy policy, ensuring we collect and process personal information lawfully, fairly, transparently, and with legitimate, legal reasons for doing so.
 
-#### Cookies and Pixels
+### Cookies and Pixels
 
 At all times, you may decline cookies from our site if your browser permits. Most browsers allow you to activate settings on your browser to refuse the setting of all or some cookies. Accordingly, your ability to limit cookies is based only on your browser’s capabilities. Please refer to the Cookies section of this privacy policy for more information.
 
-#### CCPA-permitted financial incentives
+### CCPA-permitted financial incentives
 
 In accordance with your right to non-discrimination, we may offer you certain financial incentives permitted by the CCPA that can result in different prices, rates, or quality levels for the goods or services we provide.
 
 Any CCPA-permitted financial incentive we offer will reasonably relate to the value of your personal information, and we will provide written terms that describe clearly the nature of such an offer. Participation in a financial incentive program requires your prior opt-in consent, which you may revoke at any time.
 
-#### California Notice of Collection
+### California Notice of Collection
 
 In the past 12 months, we have collected the following categories of personal information enumerated in the California Consumer Privacy Act:
 
 For more information on information we collect, including the sources we receive information from, review the “Information We Collect” section. We collect and use these categories of personal information for the business purposes described in the “Collection and Use of Information” section, including to provide and manage our Service.
 
-#### Right to Know and Delete
+### Right to Know and Delete
 
 If you are a California resident, you have rights to delete your personal information we collected and know certain information about our data practices in the preceding 12 months. In particular, you have the right to request the following from us:
 
@@ -234,12 +232,12 @@ If you are a California resident, you have rights to delete your personal inform
 
 To exercise any of these rights, please contact us using the details provided in this privacy policy.
 
-#### Shine the Light
+### Shine the Light
 
 If you are a California resident, in addition to the rights discussed above, you have the right to request information from us regarding the manner in which we share certain personal information as defined by California’s “Shine the Light” with third parties and affiliates for their own direct marketing purposes.
 
 To receive this information, send us a request using the contact details provided in this privacy policy. Requests must include “California Privacy Rights Request” in the first line of the description and include your name, street address, city, state, and ZIP code.
 
-### Contact Us
+## Contact Us
 
 For any questions or concerns regarding your privacy, you may contact us using the following details:

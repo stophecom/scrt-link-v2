@@ -1,4 +1,4 @@
-## Cookie Policy
+Last Updated April 29, 2025
 
 We use cookies to help improve your experience of our website at [https://scrt.link](https://scrt.link). This cookie policy is part of SANTiHANS GmbH's privacy policy. It covers the use of cookies between your device and our site.
 
@@ -6,7 +6,7 @@ We also provide basic information on third-party services we may use, who may al
 
 If you don’t wish to accept cookies from us, you should instruct your browser to refuse cookies from [https://scrt.link](https://scrt.link). In such a case, we may be unable to provide you with some of your desired content and services.
 
-### What is a cookie?
+## What is a cookie?
 
 A cookie is a small piece of data that a website stores on your device when you visit. It typically contains information about the website itself, a unique identifier that allows the site to recognize your web browser when you return, additional data that serves the cookie’s purpose, and the lifespan of the cookie itself.
 
@@ -16,27 +16,27 @@ Cookies set by the website you are visiting are usually referred to as first-par
 
 Cookies set by other sites and companies (i.e. third parties) are called third-party cookies They can be used to track you on other websites that use the same third-party service.
 
-### Types of cookies and how we use them
+## Types of cookies and how we use them
 
-#### Essential cookies
+### Essential cookies
 
 Essential cookies are crucial to your experience of a website, enabling core features like user logins, account management, shopping carts, and payment processing.
 
 We use essential cookies to enable certain functions on our website.
 
-#### Performance cookies
+### Performance cookies
 
 Performance cookies track how you use a website during your visit. Typically, this information is anonymous and aggregated, with information tracked across all site users. They help companies understand visitor usage patterns, identify and diagnose problems or errors their users may encounter, and make better strategic decisions in improving their audience’s overall website experience. These cookies may be set by the website you’re visiting (first-party) or by third-party services. They do not collect personal information about you.
 
 We do not use this type of cookie on our site.
 
-#### Functionality cookies
+### Functionality cookies
 
 Functionality cookies are used to collect information about your device and any settings you may configure on the website you’re visiting (like language and time zone settings). With this information, websites can provide you with customized, enhanced, or optimized content and services. These cookies may be set by the website you’re visiting (first-party) or by third-party services.
 
 We do not use this type of cookie on our site.
 
-#### Targeting/advertising cookies
+### Targeting/advertising cookies
 
 Targeting/advertising cookies help determine what promotional content is most relevant and appropriate to you and your interests. Websites may use them to deliver targeted advertising or limit the number of times you see an advertisement. This helps companies improve the effectiveness of their campaigns and the quality of content presented to you. These cookies may be set by the website you’re visiting (first-party) or by third-party services. Targeting/advertising cookies set by third-parties may be used to track you on other websites that use the same third-party service.
 

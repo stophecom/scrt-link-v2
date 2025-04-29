@@ -103,7 +103,7 @@ const imprint = () => ({
 
 const sla = () => ({
 	href: '/sla',
-	label: 'SLA'
+	label: 'Service Level Agreement (SLA)'
 });
 
 const gdpr = () => ({

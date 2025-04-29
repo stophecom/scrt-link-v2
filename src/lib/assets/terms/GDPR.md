@@ -1,3 +1,5 @@
+Last updated April 29, 2025
+
 At scrt.link, we take your privacy seriously and handle all personally identifiable information with care, in accordance with the General Data Protection Regulation (GDPR).
 
 This document outlines how we collect, use, and manage personal data. For more details, please refer to our [Terms of Service](/terms-of-service) and [Privacy Policy](/privacy-policy).
@@ -95,9 +97,3 @@ You have the right to:
 - Object to or restrict the processing of your data
 
 To exercise any of these rights, please email us at: **support@scrt.link**
-
----
-
-_Last updated: April 29, 2025_
-
----

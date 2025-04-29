@@ -1,4 +1,4 @@
-## Acceptable Use Policy
+Last Updated April 29, 2025
 
 This acceptable use policy covers the products, services, and technologies (collectively referred to as the “Products”) provided by SANTiHANS GmbH under any ongoing agreement. It’s designed to protect us, our customers, and the general Internet community from unethical, irresponsible, and illegal activity.
 
@@ -6,13 +6,13 @@ SANTiHANS GmbH customers found engaging in activities prohibited by this accepta
 
 This policy was last reviewed on 31 May 2021\.
 
-### Fair use
+## Fair use
 
 We provide our facilities with the assumption your use will be “business as usual”, as per our offer schedule. If your use is considered to be excessive, then additional fees may be charged, or capacity may be restricted.
 
 We are opposed to all forms of abuse, discrimination, rights infringement, and/or any action that harms or disadvantages any group, individual, or resource. We expect our customers and, where applicable, their users (“end-users”) to likewise engage our Products with similar intent.
 
-### Customer accountability
+## Customer accountability
 
 We regard our customers as being responsible for their own actions as well as for the actions of anyone using our Products with the customer’s permission. This responsibility also applies to anyone using our Products on an unauthorized basis as a result of the customer’s failure to put in place reasonable security measures.
 
@@ -20,9 +20,9 @@ By accepting Products from us, our customers agree to ensure adherence to this p
 
 If a customer — or their end-user or anyone using our Products as a result of the customer — violates our acceptable use policy, we reserve the right to terminate any Products associated with the offending account or the account itself or take any remedial or preventative action we deem appropriate, without notice. To the extent permitted by law, no credit will be available for interruptions of service resulting from any violation of our acceptable use policy.
 
-### Prohibited activity
+## Prohibited activity
 
-#### Copyright infringement and access to unauthorized material
+### Copyright infringement and access to unauthorized material
 
 Our Products must not be used to transmit, distribute or store any material in violation of any applicable law. This includes but isn’t limited to:
 
@@ -31,7 +31,7 @@ Our Products must not be used to transmit, distribute or store any material in v
 
 The customer is solely responsible for all material they input, upload, disseminate, transmit, create or publish through or on our Products, and for obtaining legal permission to use any works included in such material.
 
-#### SPAM and unauthorized message activity
+### SPAM and unauthorized message activity
 
 Our Products must not be used for the purpose of sending unsolicited bulk or commercial messages in violation of the laws and regulations applicable to your jurisdiction (“spam”). This includes but isn’t limited to sending spam, soliciting customers from spam sent from other service providers, and collecting replies to spam sent from other service providers.
 
@@ -41,7 +41,7 @@ We prohibit the use of email lists, telephone number lists or databases purchase
 
 This spam and unauthorized message activity policy applies to messages sent using our Products, or to messages sent from any network by the customer or any person on the customer’s behalf, that directly or indirectly refer the recipient to a site hosted via our Products.
 
-#### Unethical, exploitative, and malicious activity
+### Unethical, exploitative, and malicious activity
 
 Our Products must not be used for the purpose of advertising, transmitting, or otherwise making available any software, program, product, or service designed to violate this acceptable use policy, or the acceptable use policy of other service providers. This includes but isn’t limited to facilitating the means to send spam and the initiation of network sniffing, pinging, packet spoofing, flooding, mail-bombing, and denial-of-service attacks.
 
@@ -63,11 +63,11 @@ Other activities considered unethical, exploitative, and malicious include:
 
 Our Products may not be used by any person or entity, which is involved with or suspected of involvement in activities or causes relating to illegal gambling; terrorism; narcotics trafficking; arms trafficking or the proliferation, development, design, manufacture, production, stockpiling, or use of nuclear, chemical or biological weapons, weapons of mass destruction, or missiles; in each case including any affiliation with others whatsoever who support the above such activities or causes.
 
-#### Unauthorized use of SANTiHANS GmbH property
+### Unauthorized use of SANTiHANS GmbH property
 
 We prohibit the impersonation of SANTiHANS GmbH, the representation of a significant business relationship with SANTiHANS GmbH, or ownership of any SANTiHANS GmbH property (including our Products and brand) for the purpose of fraudulently gaining service, custom, patronage, or user trust.
 
-### About this policy
+## About this policy
 
 This policy outlines a non-exclusive list of activities and intent we deem unacceptable and incompatible with our brand.
 
