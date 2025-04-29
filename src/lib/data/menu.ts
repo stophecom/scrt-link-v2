@@ -106,12 +106,18 @@ const sla = () => ({
 	label: 'SLA'
 });
 
+const gdpr = () => ({
+	href: '/gdpr',
+	label: 'GDPR'
+});
+
 // Menus
 export const legalMenu = () => [
 	tos(),
 	cookiePolicy(),
 	privacyPolicy(),
 	acceptableUsePolicy(),
-	sla()
+	sla(),
+	gdpr()
 ];
-export const imprintMenu = () => [imprint(), privacyPolicy(), cookiePolicy()];
+export const imprintMenu = () => [imprint(), gdpr(), privacyPolicy(), cookiePolicy()];
