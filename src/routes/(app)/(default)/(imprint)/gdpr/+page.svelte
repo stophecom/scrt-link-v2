@@ -1,5 +1,5 @@
 <script lang="ts">
-	import markdownDocument from '$lib/assets/terms/gdpr.md?raw';
+	import markdownDocument from '$lib/assets/terms/GDPR.md?raw';
 	import Page from '$lib/components/page/page.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
