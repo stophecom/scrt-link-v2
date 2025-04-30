@@ -1,9 +1,9 @@
 import {
-	ChartColumn,
 	Clock4,
 	Code,
 	Flame,
 	Globe,
+	Handshake,
 	Infinity as InfinityIcon,
 	Lock,
 	LockKeyhole,
@@ -12,6 +12,7 @@ import {
 	ShieldEllipsisIcon,
 	ShieldPlus,
 	Timer,
+	Trash2,
 	Zap
 } from 'lucide-svelte';
 
@@ -91,23 +92,23 @@ export const businessFeatures = () => [
 
 export const securityFeatures = () => [
 	{
-		title: 'End-to-End Encryption',
+		title: m.tasty_free_mallard_bloom(),
 		icon: Lock,
-		description: `All secrets are encrypted using AES-256-GCM (Advanced Encryption Standard - Galois/Counter Mode). The encryption key is never stored, but added to the secret link itself.`
+		description: m.misty_giant_snake_swim()
 	},
 	{
-		title: 'Permanent deletion',
-		icon: Code,
-		description: `After a secret has been viewed, we delete it permanently from our database. We regularly wipe our storage.`
+		title: m.grand_vivid_newt_dash(),
+		icon: Trash2,
+		description: m.true_whole_quail_dust()
 	},
 	{
-		title: 'Minimal attack surface',
-		icon: ChartColumn,
-		description: `Set custom expiration times and additional authentication layers.`
+		title: m.basic_sound_rabbit_believe(),
+		icon: Handshake,
+		description: m.proof_every_gadfly_edit()
 	},
 	{
-		title: 'Trusted infrastructure',
+		title: m.minor_top_reindeer_cherish(),
 		icon: Zap,
-		description: `Our infrastructure is hosted by trusted industry leaders: Vercel for the API, website & Postgres Database, and Flow Swiss AG for object storage.`
+		description: m.cozy_top_ocelot_work()
 	}
 ];

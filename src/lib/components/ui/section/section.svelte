@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { type Icon as IconType } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
@@ -9,6 +10,7 @@
 
 	type Props = {
 		variant?: Variant;
+		Icon?: typeof IconType;
 		title?: string;
 		lead?: string;
 		wide?: boolean;
@@ -17,6 +19,7 @@
 
 	let {
 		variant = 'default',
+		Icon,
 		title,
 		lead,
 		wide,
@@ -27,6 +30,12 @@
 
 <section {...rest} class={cn(sectionVariants({ variant }), rest.class)}>
 	<Container variant={wide ? 'wide' : 'default'}>
+		{#if Icon}
+			<div class="mb-4">
+				<Icon class="h-16 w-16" strokeWidth="1.4px" />
+			</div>
+		{/if}
+
 		{#if title}
 			<h2 class="font-display mb-4 text-3xl font-bold md:text-4xl">{title}</h2>
 		{/if}

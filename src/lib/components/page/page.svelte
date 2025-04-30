@@ -35,7 +35,7 @@
 	}: Props = $props();
 </script>
 
-<PageWrapper metaTitle={metaTitle || title} {metaDescription} {metaKeywords}>
+<PageWrapper metaTitle={metaTitle || title} {metaDescription} {metaKeywords} class="pb-16">
 	<Container variant={wide ? 'wide' : 'default'}>
 		<div>
 			<a class="inline-flex" href={localizeHref('/')}>

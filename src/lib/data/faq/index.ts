@@ -1,6 +1,7 @@
 import { m } from '$lib/paraglide/messages.js';
 
 import accountAndBilling from './accountAndBilling';
+import business from './business';
 import general from './general';
 import product from './product';
 import securityAndPrivacy from './securityAndPrivacy';
@@ -8,6 +9,7 @@ import securityAndPrivacy from './securityAndPrivacy';
 export const faqCategories = () => [
 	{ id: 'general', title: m.proof_north_walrus_ask() },
 	{ id: 'product', title: m.great_stock_poodle_link() },
+	{ id: 'business', title: 'Business' },
 	{
 		id: 'securityAndPrivacy',
 		title: m.gaudy_ago_firefox_tickle()
@@ -21,6 +23,7 @@ export const faqCategories = () => [
 export const faq = () => [
 	...general(),
 	...product(),
+	...business(),
 	...securityAndPrivacy(),
 	...accountAndBilling()
 ];
