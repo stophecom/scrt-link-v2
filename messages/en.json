@@ -487,5 +487,14 @@
 	"lower_fine_okapi_imagine": "Visit demo page",
 	"day_maroon_poodle_slurp": "Secure Data Sharing for Business",
 	"odd_fuzzy_bulldog_flip": "Secure communication, end-to-end encrypted messages, one-time secret, sharing infrastructure, confidential exchange, secure message sharing, encrypted link sharing, zero-access encryption, privacy-first platform, self-destructing messages, secure file transfer, ephemeral messaging, open source privacy tools, encrypted API, sensitive data sharing, secure collaboration, private communication, secure secrets delivery, zero-knowledge sharing, trustless sharing",
-	"helpful_fair_beaver_accept": "Why should my business use scrt.link?"
+	"helpful_fair_beaver_accept": "Why should my business use scrt.link?",
+	"moving_ornate_bird_pat": "scrt.link helps your team share credentials, sensitive  documents, access links, or other personal information—without exposing it to risk. It eliminates unsafe email attachments, insecure chat messages, and unnecessary retention of sensitive content, replacing them with ephemeral, encrypted links you control.",
+	"gaudy_jumpy_jurgen_grow": "How secure is scrt.link?",
+	"super_east_wasp_dash": "Very. We use end-to-end encryption and industry-leading infrastructure. Secrets are encrypted in the browser before upload and are never stored in readable form. After viewing, they are permanently deleted from our servers.",
+	"novel_that_lionfish_gasp": "Can we integrate scrt.link into our internal tools or workflows?",
+	"fluffy_early_finch_wish": "Yes. scrt.link offers simple means to interact with API that lets you generate secrets programmatically. It’s ideal for CI/CD pipelines, credential rotation, onboarding flows, or internal admin tools.",
+	"awake_best_rooster_pick": "What about compliance?",
+	"heavy_spry_kudu_belong": "We are GDPR/CCPA compliant. We keep personal data requirements at a minimum. In fact, for website users (guests), we don't collect any personal data at all.",
+	"minor_topical_bat_pet": "It it possible to white-label or customize the experience?",
+	"lime_alert_gibbon_ascend": "Yes. Business customers can create their own version of scrt.link in just minutes: Customize branding, domain and content. This ensures added trust and a seamless experience for your clients and teams."
 }
