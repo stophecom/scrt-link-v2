@@ -84,7 +84,7 @@
 	>
 		<ApiPreview />
 
-		<Button href={localizeHref('/developers')}
+		<Button variant="outline" href={localizeHref('/developers')}
 			><Code class="me-2 h-4 w-4" /> {m.this_sleek_toucan_radiate()}</Button
 		>
 	</Section>
@@ -119,9 +119,9 @@
 		<div class="mb-6 max-w-prose">
 			<HowItWorks />
 		</div>
-		<div class="self-center">
+		<div class="flex">
 			<Dialog.Root>
-				<Dialog.Trigger class={buttonVariants({ variant: 'default', size: 'lg' })}
+				<Dialog.Trigger class={buttonVariants({ variant: 'outline', size: 'lg' })}
 					>{m.vexed_brief_mouse_dream()}</Dialog.Trigger
 				>
 				<Dialog.Content class="">
