@@ -52,6 +52,7 @@ Example response:
 			secretType: 'redirect' // text | redirect | neogram
 			password: 'foobar123'
 			expiresIn: 86400000,
+			host: 'br3f.com' // White-label
 		})
 		.then(console.log);
 </script>

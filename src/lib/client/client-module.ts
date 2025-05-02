@@ -13,13 +13,15 @@ import {
 } from './web-crypto';
 
 // http://localhost:5173
-const BASE_URL = 'https://scrt.link';
+const PROTOCOL = 'https';
+const DEFAULT_HOST = 'scrt.link';
 
 // Only text based secrets are supported via API.
 type Options = {
 	secretType?: SecretType.TEXT | SecretType.NEOGRAM | SecretType.NEOGRAM;
 	password?: string;
 	expiresIn?: number;
+	host?: string;
 };
 export const scrtLink = (apiKey: string) => {
 	if (!apiKey) {
@@ -28,9 +30,9 @@ export const scrtLink = (apiKey: string) => {
 
 	const createSecret = async (
 		secret: string,
-		options: Options = { secretType: SecretType.TEXT, expiresIn: 7 * DAY }
+		options: Options = { secretType: SecretType.TEXT, expiresIn: 7 * DAY, host: DEFAULT_HOST }
 	) => {
-		const { secretType, password, expiresIn } = options;
+		const { secretType, password, expiresIn, host } = options;
 
 		let encryptedContent = secret;
 		let encryptedMeta = JSON.stringify({
@@ -63,12 +65,13 @@ export const scrtLink = (apiKey: string) => {
 
 		const checksum = await sha256Hash(body);
 
-		const res = await fetch(`${BASE_URL}/api/v1/secrets`, {
+		const res = await fetch(`${PROTOCOL}://${DEFAULT_HOST}/api/v1/secrets`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${apiKey}`,
-				'X-Checksum': checksum
+				'X-Checksum': checksum,
+				...(host ? { 'X-Host': host } : {})
 			},
 			body: body
 		});
@@ -80,7 +83,7 @@ export const scrtLink = (apiKey: string) => {
 			return data;
 		}
 
-		const secretLink = `${BASE_URL}/s#${masterKey}`;
+		const secretLink = `${PROTOCOL}://${host}/s#${masterKey}`;
 		return { secretLink: secretLink, ...data };
 	};
 

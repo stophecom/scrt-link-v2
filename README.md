@@ -200,6 +200,7 @@ Usage in Node.js / Browser:
 			secretType: 'redirect' // text | redirect | neogram
 			password: 'foobar123'
 			expiresIn: 86400000,
+			host: 'br3f.com', // For white-label / business
 		})
 		.then(console.log);
 </script>

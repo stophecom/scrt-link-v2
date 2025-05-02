@@ -4,10 +4,12 @@ import { eq } from 'drizzle-orm';
 
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
-import { secret } from '$lib/server/db/schema';
+import { secret, whiteLabelSite } from '$lib/server/db/schema';
 
-export const POST: RequestHandler = async ({ params }) => {
+export const POST: RequestHandler = async ({ params, url }) => {
 	const secretId = params.id;
+
+	const host = url.host;
 
 	try {
 		if (!secretId) {
@@ -27,6 +29,18 @@ export const POST: RequestHandler = async ({ params }) => {
 		if (result?.retrievedAt) {
 			throw Error(`This secret has already been accessed and therefore no longer exists.`);
 		}
+
+		if (result?.whiteLabelSiteId) {
+			const [whiteLabelResult] = await db
+				.select()
+				.from(whiteLabelSite)
+				.where(eq(whiteLabelSite.id, secret.whiteLabelSiteId));
+
+			if (host !== whiteLabelResult.customDomain) {
+				throw Error(`Host mismatch. The secret can't get accessed from this host.`);
+			}
+		}
+
 		return json({ isPasswordProtected: !!result.passwordHash });
 	} catch (e) {
 		console.error(e);

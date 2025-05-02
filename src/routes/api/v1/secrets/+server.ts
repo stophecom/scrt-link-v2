@@ -11,7 +11,7 @@ import { secretFormSchema } from '$lib/validators/formSchemas';
 const corsHeaders = {
 	'Access-Control-Allow-Origin': '*',
 	'Access-Control-Allow-Methods': 'POST, OPTIONS',
-	'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Checksum'
+	'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Checksum, X-Host'
 };
 
 type JsonWithCors = typeof json;
@@ -32,6 +32,7 @@ export async function OPTIONS() {
 export const POST: RequestHandler = async ({ request }) => {
 	const authorizationHeader = request.headers.get('authorization');
 	const receivedChecksum = request.headers.get('x-checksum');
+	const host = request.headers.get('x-host') || undefined;
 
 	if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
 		return jsonWithCors({ error: 'No API bearer token provided.' }, { status: 403 });
@@ -68,7 +69,8 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	const { receiptId, expiresIn, expiresAt } = await saveSecret({
 		userId: matchingApiKey.user?.id,
-		secretRequest: validation.data
+		secretRequest: validation.data,
+		host
 	});
 
 	return jsonWithCors({ receiptId, expiresIn, expiresAt });

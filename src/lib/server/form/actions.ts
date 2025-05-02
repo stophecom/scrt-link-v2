@@ -53,6 +53,8 @@ import {
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod(secretFormSchema()));
 
+	const host = event.url.host;
+
 	if (!form.valid) {
 		return fail(400, { form });
 	}
@@ -62,7 +64,8 @@ export const postSecret: Action = async (event) => {
 	try {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
 			userId: user?.id,
-			secretRequest: form.data
+			secretRequest: form.data,
+			host
 		});
 
 		const expirationPeriod =
