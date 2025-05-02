@@ -106,7 +106,10 @@ export const secret = pgTable('secret', {
 	passwordAttempts: smallint('password_attempts').notNull().default(0),
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
 	retrievedAt: timestamp('retrieved_at', { withTimezone: true, mode: 'date' }),
-	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
+	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }),
+	whiteLabelSiteId: uuid('white_label_site_id').references(() => whiteLabelSite.id, {
+		onDelete: 'cascade'
+	})
 });
 
 export const apiKey = pgTable('api_key', {
@@ -118,11 +121,12 @@ export const apiKey = pgTable('api_key', {
 	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
 });
 
-export const scope = pgEnum('scope', ['global', 'user']);
+export const scope = pgEnum('scope', ['global', 'user', 'whiteLabel']);
 export const stats = pgTable('stats', {
 	id: serial('id').primaryKey(),
 	scope: scope(),
 	totalSecrets: integer('total_secrets').default(1),
+	whiteLabelSiteId: uuid('white_label_site_id').references(() => whiteLabelSite.id),
 	userId: uuid('user_id')
 		.unique()
 		.references(() => user.id, { onDelete: 'cascade' })
