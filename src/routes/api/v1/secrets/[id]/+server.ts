@@ -34,7 +34,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 			const [whiteLabelResult] = await db
 				.select()
 				.from(whiteLabelSite)
-				.where(eq(whiteLabelSite.id, secret.whiteLabelSiteId));
+				.where(eq(whiteLabelSite.id, result.whiteLabelSiteId));
 
 			if (host !== whiteLabelResult.customDomain) {
 				throw Error(`Host mismatch. The secret can't get accessed from this host.`);

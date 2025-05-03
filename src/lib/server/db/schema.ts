@@ -126,7 +126,9 @@ export const stats = pgTable('stats', {
 	id: serial('id').primaryKey(),
 	scope: scope(),
 	totalSecrets: integer('total_secrets').default(1),
-	whiteLabelSiteId: uuid('white_label_site_id').references(() => whiteLabelSite.id),
+	whiteLabelSiteId: uuid('white_label_site_id')
+		.unique()
+		.references(() => whiteLabelSite.id),
 	userId: uuid('user_id')
 		.unique()
 		.references(() => user.id, { onDelete: 'cascade' })
