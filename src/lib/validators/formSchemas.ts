@@ -4,7 +4,7 @@ import { pemFooter, pemHeader } from '$lib/client/web-crypto';
 import { getSupportedLocales } from '$lib/data/supportedLocales';
 import { m } from '$lib/paraglide/messages.js';
 
-import { ReadReceiptOptions, ThemeOptions } from '../data/enums';
+import { ReadReceiptOptions, SecretType, ThemeOptions } from '../data/enums';
 import { getExpiresInOptions } from '../data/secretSettings';
 
 // We return functions in order for translations to work as expected.
@@ -95,7 +95,12 @@ export const whiteLabelMetaSchema = () =>
 	z.object({
 		customDomain: z.string().max(30),
 		name: z.string().max(30),
-		locale: z.enum(getSupportedLocales() as [string, ...string[]])
+		locale: z.enum(getSupportedLocales() as [string, ...string[]]),
+		enabledSecretTypes: z
+			.array(z.nativeEnum(SecretType))
+			.refine((value) => value.some((item) => item), {
+				message: 'You have to select at least one item.'
+			})
 	});
 
 export const whiteLabelSiteSchema = () =>

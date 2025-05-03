@@ -8,6 +8,7 @@
 	import { api } from '$lib/api';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import * as Form from '$lib/components/ui/form';
+	import { getSecretTypes } from '$lib/data/secretSettings';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type WhiteLabelMetaSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
@@ -17,6 +18,7 @@
 	import Button from '../ui/button/button.svelte';
 	import Separator from '../ui/separator/separator.svelte';
 	import Spinner from '../ui/spinner/spinner.svelte';
+	import Checkboxes from './form-fields/checkboxes.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
@@ -83,6 +85,15 @@
 				type="text"
 			/>
 		</Form.Field>
+
+		<Form.Fieldset {form} name="enabledSecretTypes">
+			<Checkboxes
+				label={'Enabled secret types'}
+				description={'Select all the secrets you want to enable on your site. '}
+				bind:value={$formData.enabledSecretTypes}
+				items={getSecretTypes()}
+			/>
+		</Form.Fieldset>
 
 		<Form.Field {form} name="customDomain">
 			<Text

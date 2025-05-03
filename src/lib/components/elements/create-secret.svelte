@@ -84,7 +84,7 @@
 			<SecretForm {form} {user} secretType={secretTypes[0]} bind:masterKey bind:successMessage />
 		{:else}
 			<Tabs.Root value="text" let:value>
-				<Tabs.List>
+				<Tabs.List class="max-w-full overflow-scroll">
 					{#each enabledSecretTypes as secretTypeItem}
 						<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
 					{/each}

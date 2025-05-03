@@ -44,7 +44,8 @@ export const load: PageServerLoad = async (event) => {
 			{
 				name: whiteLabel?.name || '',
 				customDomain: whiteLabel?.customDomain || '',
-				locale: whiteLabel?.locale || DEFAULT_LOCALE
+				locale: whiteLabel?.locale || DEFAULT_LOCALE,
+				enabledSecretTypes: whiteLabel?.enabledSecretTypes
 			},
 			zod(whiteLabelMetaSchema())
 		);

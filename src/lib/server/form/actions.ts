@@ -583,7 +583,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		);
 	}
 
-	const { locale, customDomain, name } = form.data;
+	const { locale, customDomain, name, enabledSecretTypes } = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(
@@ -636,6 +636,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 				locale: locale,
 				customDomain,
 				name,
+				enabledSecretTypes,
 				userId: user.id
 			})
 			.onConflictDoUpdate({
@@ -643,7 +644,8 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 				set: {
 					locale,
 					customDomain,
-					name
+					name,
+					enabledSecretTypes
 				}
 			});
 	} catch (error) {

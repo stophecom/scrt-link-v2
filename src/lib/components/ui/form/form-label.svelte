@@ -15,7 +15,7 @@
 
 <Label
 	{...$labelAttrs}
-	class={cn('data-fs-error:text-destructive p-1', className)}
+	class={cn('data-fs-error:text-destructive inline-flex cursor-pointer py-1', className)}
 	{...$$restProps}
 >
 	<slot {labelAttrs} />
