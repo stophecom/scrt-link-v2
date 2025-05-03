@@ -208,7 +208,10 @@
 					<FileRevelation {progress} {fileMeta} />
 				{/if}
 			{:else if isNeogram}
-				<NeogramRevelation neogram={content} />
+				<NeogramRevelation
+					neogram={content}
+					neogramDestructionTimer={metaParsed?.neogramDestructionTimer}
+				/>
 			{:else}
 				<!-- Secret Type: Text -->
 				<div class="whitespace-pre">

@@ -29,11 +29,14 @@
 
 	import { getExpiresInOptions } from '../../data/secretSettings';
 	import UpgradeNotice from '../elements/upgrade-notice.svelte';
+	import Input from '../ui/input/input.svelte';
+	import Label from '../ui/label/label.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	export type Meta = Partial<FileMeta> & {
 		secretType: SecretType;
+		neogramDestructionTimer?: number;
 	};
 
 	export type SecretFormProps = {
@@ -51,6 +54,8 @@
 		secretType
 	}: SecretFormProps = $props();
 
+	let neogramDestructionTimer = $state(5);
+
 	// @todo need to handle white-label case
 	const planLimits = getPlanLimits(user?.subscriptionTier);
 
@@ -65,7 +70,8 @@
 			let encryptedMeta =
 				meta ||
 				JSON.stringify({
-					secretType: secretType
+					secretType: secretType,
+					neogramDestructionTimer
 				});
 
 			let encryptedContent = content;
@@ -255,6 +261,17 @@
 					label={m.noble_whole_hornet_evoke()}
 				/>
 			</Form.Fieldset>
+
+			{#if isNeogramAllowed}
+				<Label for="neogramCountdownTime">{m.due_super_halibut_snap()}</Label>
+				<Input
+					id="neogramCountdownTime"
+					class="w-44"
+					type="number"
+					bind:value={neogramDestructionTimer}
+				/>
+			{/if}
+
 			{#if (!planLimits.expirationOptions.length || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}
 				<UpgradeNotice {user} />
 			{/if}
