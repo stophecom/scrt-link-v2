@@ -262,12 +262,13 @@
 				/>
 			</Form.Fieldset>
 
-			{#if isNeogramAllowed}
+			{#if secretType === SecretType.NEOGRAM && isNeogramAllowed}
 				<Label for="neogramCountdownTime">{m.due_super_halibut_snap()}</Label>
 				<Input
 					id="neogramCountdownTime"
 					class="w-44"
 					type="number"
+					max="1000"
 					bind:value={neogramDestructionTimer}
 				/>
 			{/if}
