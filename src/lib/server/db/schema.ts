@@ -11,7 +11,7 @@ import {
 	uuid
 } from 'drizzle-orm/pg-core';
 
-import { ReadReceiptOptions, Role, TierOptions } from '../../data/enums';
+import { ReadReceiptOptions, Role, SecretType, TierOptions } from '../../data/enums';
 
 export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,
@@ -58,6 +58,14 @@ export const userSettings = pgTable('user_settings', {
 		.references(() => user.id, { onDelete: 'cascade' })
 });
 
+export const secretTypeEnum = pgEnum('secret_type_enum', [
+	SecretType.TEXT,
+	SecretType.FILE,
+	SecretType.REDIRECT,
+	SecretType.SNAP,
+	SecretType.NEOGRAM
+]);
+
 export const whiteLabelSite = pgTable('white_label_site', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	customDomain: text('custom_domain').unique(),
@@ -66,6 +74,7 @@ export const whiteLabelSite = pgTable('white_label_site', {
 	locale: text('locale'),
 	theme: jsonb('theme'),
 	messages: jsonb('messages'),
+	enabledSecretTypes: secretTypeEnum().array().notNull().default([SecretType.TEXT]),
 	logo: text('logo'),
 	logoDarkMode: text('logo_dark_mode'),
 	appIcon: text('app_icon'),

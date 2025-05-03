@@ -12,6 +12,6 @@
 
 <Page title={m.grassy_fine_puma_push()} lead={m.fun_knotty_penguin_clip()}>
 	<Container>
-		<CreateSecret form={data.secretForm} user={data.user} secretType={SecretType.REDIRECT} />
+		<CreateSecret form={data.secretForm} user={data.user} secretTypes={[SecretType.REDIRECT]} />
 	</Container>
 </Page>

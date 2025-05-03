@@ -12,6 +12,6 @@
 
 <Page title={m.light_these_quail_sing()} lead={m.swift_small_gecko_drum()}>
 	<Container>
-		<CreateSecret form={data.secretForm} user={data.user} secretType={SecretType.TEXT} />
+		<CreateSecret form={data.secretForm} user={data.user} secretTypes={[SecretType.TEXT]} />
 	</Container>
 </Page>

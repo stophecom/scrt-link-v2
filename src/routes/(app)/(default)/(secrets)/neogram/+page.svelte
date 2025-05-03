@@ -12,6 +12,6 @@
 
 <Page title={'Neogram'} lead={m.white_tame_clownfish_scoop()}>
 	<Container>
-		<CreateSecret form={data.secretForm} user={data.user} secretType={SecretType.NEOGRAM} />
+		<CreateSecret form={data.secretForm} user={data.user} secretTypes={[SecretType.NEOGRAM]} />
 	</Container>
 </Page>

@@ -96,8 +96,8 @@
 	<!-- Header -->
 	<div class="h-16">
 		<div class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b">
-			<Container variant="wide" class=" flex h-full items-center justify-between">
-				<Button href={localizeHref('/account')} variant="ghost">
+			<Container variant="wide" class="flex h-full items-center justify-between">
+				<Button href={localizeHref('/account')} variant="ghost" class="ps-2">
 					<ChevronLeft class="me-2 h-5 w-5" />
 					{m.solid_clean_insect_stir()}
 				</Button>

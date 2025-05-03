@@ -96,7 +96,7 @@ const plans = () => [
 		}
 	},
 	{
-		name: TierOptions.SECRET_SERVICE,
+		name: TierOptions.SECRET_SERVICE, // Only applies to the "owner"
 		icon: Factory,
 		title: m.heavy_helpful_mallard_push(),
 		contents: [
@@ -114,7 +114,7 @@ const plans = () => [
 			[SecretType.TEXT]: 100_000,
 			[SecretType.FILE]: 10 * MB,
 			[SecretType.REDIRECT]: true,
-			[SecretType.SNAP]: false,
+			[SecretType.SNAP]: true,
 			[SecretType.NEOGRAM]: true,
 			apiAccess: true,
 			passwordAllowed: true,

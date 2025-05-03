@@ -22,7 +22,12 @@
 	lead={data?.lead || m.bland_spicy_penguin_fade()}
 >
 	<div class="mb-12">
-		<CreateSecret form={data.secretForm} user={data.user} hideUsps />
+		<CreateSecret
+			form={data.secretForm}
+			user={data.user}
+			hideUsps
+			secretTypes={data.enabledSecretTypes}
+		/>
 	</div>
 
 	{#if data?.description}

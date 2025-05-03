@@ -10,7 +10,7 @@
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { privacyUsps } from '$lib/data/app';
-	import type { SecretType } from '$lib/data/enums';
+	import { SecretType } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 
 	import { getSecretTypes } from '../../data/secretSettings';
@@ -23,14 +23,24 @@
 	type Props = {
 		form: SecretFormProps['form'];
 		user: App.Locals['user'];
-		secretType?: SecretType;
 		hideUsps?: boolean;
+		secretTypes?: SecretType[];
 	};
-	let { form, user, secretType, hideUsps = false }: Props = $props();
+	let {
+		form,
+		user,
+
+		hideUsps = false,
+		secretTypes = [SecretType.TEXT, SecretType.FILE, SecretType.REDIRECT, SecretType.SNAP]
+	}: Props = $props();
 
 	let masterKey = $state('');
 	let successMessage = $state('');
 	let link: string = $derived(`${page.url.origin}/s#${masterKey}`);
+
+	let enabledSecretTypes = $derived(
+		getSecretTypes().filter(({ value }) => secretTypes.includes(value))
+	);
 
 	onNavigate(() => {
 		// Make sure we force a reset. This causes the SecretForm to mount again which is what we want.
@@ -71,12 +81,12 @@
 	>
 {:else}
 	<Card>
-		{#if secretType}
-			<SecretForm {form} {user} {secretType} bind:masterKey bind:successMessage />
+		{#if secretTypes.length === 1}
+			<SecretForm {form} {user} secretType={secretTypes[0]} bind:masterKey bind:successMessage />
 		{:else}
 			<Tabs.Root value="text" let:value>
 				<Tabs.List>
-					{#each getSecretTypes().slice(0, 4) as secretTypeItem}
+					{#each enabledSecretTypes as secretTypeItem}
 						<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
 					{/each}
 				</Tabs.List>

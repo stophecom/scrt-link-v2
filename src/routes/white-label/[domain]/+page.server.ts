@@ -32,7 +32,8 @@ export const load: PageServerLoad = async ({ params, url }) => {
 		title: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.title || '',
 		lead: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.lead || '',
 		description: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.description || '',
-		imprint: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.imprint || ''
+		imprint: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.imprint || '',
+		enabledSecretTypes: whiteLabel.enabledSecretTypes
 	};
 };
 

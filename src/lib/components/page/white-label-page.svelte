@@ -19,7 +19,7 @@
 	let { name, title, lead, logo, children }: Props = $props();
 </script>
 
-<PageWrapper>
+<PageWrapper class="pb-16">
 	<Container>
 		<div>
 			<a
