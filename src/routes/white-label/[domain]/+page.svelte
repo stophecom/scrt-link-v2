@@ -25,7 +25,7 @@
 		<CreateSecret
 			form={data.secretForm}
 			user={data.user}
-			hideUsps
+			hidePrimaryFeatureList
 			secretTypes={data.enabledSecretTypes}
 		/>
 	</div>

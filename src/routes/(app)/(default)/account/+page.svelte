@@ -30,7 +30,7 @@
 
 	const { user } = data;
 
-	const usps = [
+	const premiumFeatures = [
 		m.weary_antsy_lionfish_pat(),
 		m.shy_suave_donkey_gasp(),
 		m.this_ideal_racoon_link(),
@@ -58,7 +58,7 @@
 			>
 				<Rocket class="absolute top-5 right-5" />
 				<ul class="mb-6">
-					{#each usps as item}
+					{#each premiumFeatures as item}
 						<li class="flex items-center py-1 sm:text-lg">
 							<Check class="text-primary me-2" />
 							<Markdown markdown={item} />

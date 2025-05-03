@@ -9,7 +9,7 @@
 	import SecretForm, { type SecretFormProps } from '$lib/components/forms/secret-form.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { privacyUsps } from '$lib/data/app';
+	import { privacyFeatures } from '$lib/data/app';
 	import { SecretType } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 
@@ -18,19 +18,18 @@
 	import CopyButton from '../ui/copy-button';
 	import Markdown from '../ui/markdown';
 	import ShareButton from '../ui/share-button';
-	import Usps from './usps.svelte';
+	import PrimaryFeatureList from './primary-feature-list.svelte';
 
 	type Props = {
 		form: SecretFormProps['form'];
 		user: App.Locals['user'];
-		hideUsps?: boolean;
+		hidePrimaryFeatureList?: boolean;
 		secretTypes?: SecretType[];
 	};
 	let {
 		form,
 		user,
-
-		hideUsps = false,
+		hidePrimaryFeatureList = false,
 		secretTypes = [SecretType.TEXT, SecretType.FILE, SecretType.REDIRECT, SecretType.SNAP]
 	}: Props = $props();
 
@@ -102,7 +101,7 @@
 			</Tabs.Root>
 		{/if}
 	</Card>
-	{#if !hideUsps}
-		<Usps items={privacyUsps()} />
+	{#if !hidePrimaryFeatureList}
+		<PrimaryFeatureList items={privacyFeatures()} />
 	{/if}
 {/if}
