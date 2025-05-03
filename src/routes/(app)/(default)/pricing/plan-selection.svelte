@@ -5,6 +5,7 @@
 
 	import { goto } from '$app/navigation';
 	import { api } from '$lib/api';
+	import PoweredByStripe from '$lib/assets/images/PoweredByStripe.svg?component';
 	import { TRIAL_PERIOD_DAYS } from '$lib/client/constants';
 	import getStripe from '$lib/client/stripe';
 	import { type Variant } from '$lib/components/ui/alert';
@@ -126,7 +127,7 @@
 {/if}
 
 <div>
-	<div class="grid gap-6 sm:grid-cols-3 sm:gap-3 lg:gap-4">
+	<div class="grid gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-4 md:gap-3 lg:-mx-4 xl:-mx-24">
 		<PlanView name="Confidential">
 			{#if !user}
 				<Button class="w-full" href={localizeHref('/signup')}>{m.lofty_tasty_ray_fond()}</Button>
@@ -179,7 +180,7 @@
 		{/each}
 	</div>
 
-	<div class="flex flex-wrap">
+	<div class="flex flex-col flex-wrap items-center sm:flex-row">
 		<div class="xs:flex mr-4 items-center py-4">
 			<CurrencySwitcher bind:activeCurrency={currency.current} />
 		</div>
@@ -190,5 +191,6 @@
 				{m.day_even_beaver_cry({ percentage: yearlyPlanSavings || 0 })}
 			</div>
 		</div>
+		<div class="flex items-center py-4 sm:ms-auto"><PoweredByStripe class="w-[160px]" /></div>
 	</div>
 </div>

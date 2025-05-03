@@ -43,7 +43,7 @@
 
 <div
 	class={cn(
-		'bg-card border-border relative row-span-4 grid grid-rows-subgrid gap-4 rounded border p-4',
+		'bg-background border-border relative row-span-4 grid grid-rows-subgrid gap-4 border p-4 shadow-sm',
 		rest.class,
 		planContent.promotion && !hidePromotion ? 'border-foreground mt-6 rounded-t-none sm:mt-0' : '',
 		isActiveProduct ? 'border-primary' : ''

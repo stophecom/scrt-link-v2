@@ -1,7 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { Stripe } from 'stripe';
 
-import { Role } from '$lib/data/enums.js';
 import { getActivePrices, getActiveProducts } from '$lib/server/stripe';
 
 type PriceWithCurrencyOptions = Stripe.Price & {
@@ -23,9 +22,8 @@ export type Plan = {
 	prices: { monthly: PriceWithCurrencyOptions; yearly: PriceWithCurrencyOptions };
 };
 
-export const GET = async ({ locals }) => {
-	// Temporary guard (feature flag)
-	const products = await getActiveProducts(locals.user?.role === Role.ADMIN);
+export const GET = async () => {
+	const products = await getActiveProducts();
 
 	const getPlans = async () =>
 		Promise.all(

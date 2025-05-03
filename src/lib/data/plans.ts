@@ -105,9 +105,9 @@ const plans = () => [
 			m.only_close_okapi_express(),
 			m.formal_mealy_chipmunk_advise(),
 			m.new_still_dingo_create({ limit: formatBytes(1 * GB) }),
-			'Extra password',
+			m.ideal_low_mouse_splash(),
 			m.active_mellow_swan_list({ amount: 7 }),
-			'SLA with 99.9% Uptime'
+			m.inner_fun_mink_push()
 		],
 		limits: {
 			[SecretType.TEXT]: 100_000,

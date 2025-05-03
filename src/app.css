@@ -119,7 +119,6 @@
 	--color-*: initial;
 
 	--breakpoint-xs: 26rem; /* 416px */
-	--breakpoint-xl: initial;
 	--breakpoint-2xl: initial;
 
 	--color-border: hsl(var(--border));

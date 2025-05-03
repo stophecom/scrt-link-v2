@@ -16,7 +16,7 @@ export type StripeCustomerWithSubscription = StripeCustomer & {
 
 export default stripeInstance;
 
-export const getActiveProducts = async (allowSecretService: boolean) => {
+export const getActiveProducts = async () => {
 	const { data } = await stripeInstance.products.list({ active: true });
 
 	// We filter by predefined products (TierOptions).
@@ -25,7 +25,7 @@ export const getActiveProducts = async (allowSecretService: boolean) => {
 		(item) =>
 			item.name === TierOptions.SECRET ||
 			item.name === TierOptions.TOP_SECRET ||
-			(item.name === TierOptions.SECRET_SERVICE && allowSecretService)
+			item.name === TierOptions.SECRET_SERVICE
 	);
 };
 

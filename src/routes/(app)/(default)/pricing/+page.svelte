@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { MessageCircleQuestion } from 'lucide-svelte';
 
-	import PoweredByStripe from '$lib/assets/images/PoweredByStripe.svg?component';
 	import FeatureCard from '$lib/components/elements/feature-card.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import Page from '$lib/components/page/page.svelte';
@@ -24,7 +23,6 @@
 		{#if data.plans}
 			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
 		{/if}
-		<div><PoweredByStripe class="w-[160px]" /></div>
 	</Container>
 
 	<Section wide variant="card">
