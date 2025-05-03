@@ -95,7 +95,9 @@
 <form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite" onchange={submit}>
 	<!-- Header -->
 	<div class="h-16">
-		<div class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b">
+		<div
+			class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b shadow-[0_0_10px_0_rgba(0,0,0,0.05)]"
+		>
 			<Container variant="wide" class="flex h-full items-center justify-between">
 				<Button href={localizeHref('/account')} variant="ghost" class="ps-2">
 					<ChevronLeft class="me-2 h-5 w-5" />
@@ -246,7 +248,7 @@
 				title={m.witty_main_marlin_twirl()}
 				description={m.bald_nimble_kitten_skip()}
 			>
-				<div class="xs:grid-cols-[40%_1fr] grid gap-4">
+				<div class="grid gap-4 sm:grid-cols-[40%_1fr]">
 					<Form.Field {form} name="appIcon">
 						<FileUpload
 							class="aspect-square h-24 max-w-24 rounded-lg object-cover"
@@ -284,7 +286,7 @@
 
 <Dialog.Root>
 	<Dialog.Trigger
-		class="bg-background border-border fixed bottom-0 left-0 flex h-16 w-full items-center justify-center border-t font-medium sm:hidden"
+		class="bg-background border-border fixed bottom-0 left-0 flex h-16 w-full items-center justify-center border-t font-medium shadow-[0_0_10px_0_rgba(0,0,0,0.05)] sm:hidden"
 		>{m.teal_white_mongoose_urge()} <ChevronUp class="ms-2 h-4 w-4" />
 	</Dialog.Trigger>
 	<Dialog.Content class="overflow-y-auto sm:max-w-[425px]">

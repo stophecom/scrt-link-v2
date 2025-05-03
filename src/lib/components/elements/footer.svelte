@@ -4,7 +4,7 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	import { uptimerobotUrl } from '../../data/app';
+	import { appName, uptimerobotUrl } from '../../data/app';
 	import { aboutMenu, helpMenu, imprintMenu, secretMenu } from '../../data/menu';
 	import Container from '../ui/container/container.svelte';
 	import LanguageSwitcher from '../ui/language-switcher';
@@ -17,7 +17,7 @@
 			<div class="min-w-52 shrink-0 pr-10 pb-10">
 				<div class="flex items-center">
 					<Logo class="h-10 w-10" />
-					<span class=" text-lg font-semibold">scrt.link</span>
+					<span class=" text-lg font-semibold">{appName}</span>
 				</div>
 			</div>
 

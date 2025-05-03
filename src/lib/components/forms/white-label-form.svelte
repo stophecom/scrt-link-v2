@@ -88,8 +88,8 @@
 
 		<Form.Fieldset {form} name="enabledSecretTypes">
 			<Checkboxes
-				label={'Enabled secret types'}
-				description={'Select all the secrets you want to enable on your site. '}
+				label={m.arable_upper_parrot_lift()}
+				description={m.pink_bright_coyote_heart()}
 				bind:value={$formData.enabledSecretTypes}
 				items={getSecretTypes()}
 			/>
