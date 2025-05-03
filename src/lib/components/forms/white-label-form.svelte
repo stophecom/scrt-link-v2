@@ -36,8 +36,8 @@
 				method: 'GET'
 			});
 			return data;
-		},
-		enabled: false
+		}
+		// enabled: false
 	});
 
 	const form = superForm(formProp, {

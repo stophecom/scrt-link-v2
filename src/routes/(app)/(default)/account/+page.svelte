@@ -54,10 +54,14 @@
 >
 	<Container>
 		<Tabs.Root value="account">
-			<Tabs.List>
-				<Tabs.Trigger value="account">{m.super_flaky_wallaby_pick()}</Tabs.Trigger>
-				<Tabs.Trigger value="api">API</Tabs.Trigger>
-				<Tabs.Trigger value="whiteLabel">Secret Service</Tabs.Trigger>
+			<Tabs.List class="mb-2">
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="account"
+					>{m.super_flaky_wallaby_pick()}</Tabs.Trigger
+				>
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="api">API</Tabs.Trigger>
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="whiteLabel"
+					>Secret Service</Tabs.Trigger
+				>
 			</Tabs.List>
 			<Tabs.Content value="account">
 				{#if user.role === Role.ADMIN}
