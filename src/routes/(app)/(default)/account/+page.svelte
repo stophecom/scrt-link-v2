@@ -59,9 +59,12 @@
 					>{m.super_flaky_wallaby_pick()}</Tabs.Trigger
 				>
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="api">API</Tabs.Trigger>
-				<Tabs.Trigger class="data-[state=active]:bg-muted" value="whiteLabel"
-					>Secret Service</Tabs.Trigger
-				>
+
+				{#if user?.role === 'admin'}
+					<Tabs.Trigger class="data-[state=active]:bg-muted" value="whiteLabel"
+						>Secret Service</Tabs.Trigger
+					>
+				{/if}
 			</Tabs.List>
 			<Tabs.Content value="account">
 				{#if user.role === Role.ADMIN}
@@ -172,7 +175,7 @@
 					<Separator class="my-6" />
 
 					<Button variant="outline" href={localizeHref('/developers')}
-						>Read the documentation</Button
+						>{m.deft_bright_insect_attend()}</Button
 					>
 				</Card>
 			</Tabs.Content>
