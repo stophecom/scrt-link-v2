@@ -29,7 +29,7 @@ const accountAndBilling = () => [
 		id: 'end-subscription',
 		category: 'accountAndBilling',
 		heading: m.smart_sunny_butterfly_persist(),
-		body: m.spry_late_snake_quiz()
+		body: m.mild_away_warthog_twirl()
 	}
 ];
 export default accountAndBilling;

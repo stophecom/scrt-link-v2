@@ -1,25 +1,30 @@
 <script lang="ts">
+	import { MessageCircleQuestion } from 'lucide-svelte';
+
 	import PoweredByStripe from '$lib/assets/images/PoweredByStripe.svg?component';
 	import FeatureCard from '$lib/components/elements/feature-card.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import Page from '$lib/components/page/page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
+	import Button from '$lib/components/ui/button/button.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { Section } from '$lib/components/ui/section';
 	import { subscriptionFeatures } from '$lib/data/app';
 	import accountAndBilling from '$lib/data/faq/accountAndBilling';
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import PlanSelection from './plan-selection.svelte';
 
 	let { data } = $props();
 </script>
 
-<Page wide title={m.moving_quaint_buzzard_trip()} lead={m.slimy_next_shad_fall()}>
+<Page wide title={m.moving_quaint_buzzard_trip()} lead={m.slimy_next_shad_fall()} class="pb-0">
 	<Container variant="wide" class="mb-6 sm:py-10">
 		{#if data.plans}
 			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
 		{/if}
+		<div><PoweredByStripe class="w-[160px]" /></div>
 	</Container>
 
 	<Section wide variant="card">
@@ -41,6 +46,15 @@
 
 	<Section title={m.few_awful_chipmunk_trust()} lead={m.pretty_factual_piranha_hug()}>
 		<Accordion items={accountAndBilling()} />
-		<div><PoweredByStripe class="w-[180px]" /></div>
+	</Section>
+
+	<Section
+		wide
+		Icon={MessageCircleQuestion}
+		variant="contrast"
+		title={m.same_tidy_macaw_sail()}
+		lead={m.least_gross_midge_thrive()}
+	>
+		<Button size="lg" href={localizeHref('/contact')}>{m.acidic_extra_vulture_enchant()}</Button>
 	</Section>
 </Page>
