@@ -32,7 +32,27 @@ export const secretMenu = () => [
 	}
 ];
 
-export const aboutMenu = () => [
+export const productMenu = () => [
+	{
+		href: '/business',
+		label: 'For business'
+	},
+	{
+		href: '/pricing',
+		label: m.same_that_cowfish_trip()
+	},
+	{
+		href: '/developers',
+		label: m.salty_sea_insect_fry()
+	},
+	{
+		href: githubUrl,
+		externalLink: true,
+		label: 'Github'
+	}
+];
+
+export const companyMenu = () => [
 	{
 		href: '/about',
 		label: m.sour_sound_porpoise_bloom()
@@ -46,10 +66,6 @@ export const aboutMenu = () => [
 		label: m.warm_spry_jay_stir()
 	},
 	{
-		href: '/pricing',
-		label: m.same_that_cowfish_trip()
-	},
-	{
 		href: '/blog',
 		label: m.such_last_giraffe_cut()
 	}
@@ -60,19 +76,13 @@ export const helpMenu = () => [
 		href: '/contact',
 		label: m.early_bright_salmon_comfort()
 	},
-
 	{
 		href: '/faq',
 		label: m.few_awful_chipmunk_trust()
 	},
 	{
-		href: '/developers',
-		label: m.salty_sea_insect_fry()
-	},
-	{
-		href: githubUrl,
-		externalLink: true,
-		label: 'Github'
+		href: '/imprint',
+		label: m.civil_dizzy_gopher_glow()
 	}
 ];
 

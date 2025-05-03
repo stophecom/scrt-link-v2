@@ -116,7 +116,7 @@
 		title={m.helpful_teary_earthworm_grasp()}
 		lead={m.dirty_bright_robin_earn()}
 	>
-		<div class="mb-6 max-w-prose">
+		<div class="mb-6 max-w-3xl">
 			<HowItWorks />
 		</div>
 		<div class="flex">

@@ -5,7 +5,7 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import { appName, uptimerobotUrl } from '../../data/app';
-	import { aboutMenu, helpMenu, imprintMenu, secretMenu } from '../../data/menu';
+	import { companyMenu, helpMenu, imprintMenu, productMenu, secretMenu } from '../../data/menu';
 	import Container from '../ui/container/container.svelte';
 	import LanguageSwitcher from '../ui/language-switcher';
 	import FooterMenu from '../ui/menu';
@@ -21,9 +21,10 @@
 				</div>
 			</div>
 
-			<div class="mb-4 grid w-full grid-cols-2 items-start gap-4 pt-1 md:grid-cols-3">
+			<div class="mb-4 grid w-full grid-cols-2 items-start gap-4 pt-1 md:grid-cols-4">
 				<FooterMenu title={m.funny_swift_jay_promise()} menu={secretMenu()} />
-				<FooterMenu title={m.mellow_lucky_bee_jolt()} menu={aboutMenu()} />
+				<FooterMenu title={m.tiny_suave_nils_accept()} menu={productMenu()} />
+				<FooterMenu title={m.chunky_raw_osprey_dial()} menu={companyMenu()} />
 				<FooterMenu title={m.equal_away_frog_aim()} menu={helpMenu()} />
 			</div>
 		</div>
