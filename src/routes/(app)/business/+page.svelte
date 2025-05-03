@@ -13,7 +13,7 @@
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Section } from '$lib/components/ui/section';
-	import { businessFeatures, securityFeatures } from '$lib/data/app';
+	import { businessFeatures, securityFeatures, whiteLabelDemoWebsite } from '$lib/data/app';
 	import business from '$lib/data/faq/business';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -28,7 +28,7 @@
 		<Button class="me-2" size="lg" variant="default" href={localizeHref('/pricing')}
 			>{m.happy_left_llama_pout()}</Button
 		>
-		<Button size="lg" variant="outline" target="_blank" href="https://br3f.com"
+		<Button size="lg" variant="outline" target="_blank" href={whiteLabelDemoWebsite}
 			>{m.lower_fine_okapi_imagine()}</Button
 		>
 	</div>
