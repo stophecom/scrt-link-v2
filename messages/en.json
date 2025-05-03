@@ -502,5 +502,7 @@
 	"pink_bright_coyote_heart": "Select all the secret types you want to allow on your site. (Public)",
 	"only_weird_walrus_promise": "Visit scrt.link for business",
 	"slow_zesty_whale_type": "You need to enable this feature.",
-	"super_flaky_wallaby_pick": "Account"
+	"super_flaky_wallaby_pick": "Account",
+	"dark_each_pug_value": "There is already an entry with {customDomain} in the database.",
+	"ago_equal_nuthatch_expand": "Refresh"
 }

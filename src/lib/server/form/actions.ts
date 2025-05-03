@@ -1,5 +1,6 @@
 import { type Action, error, fail } from '@sveltejs/kit';
 import { and, desc, eq } from 'drizzle-orm';
+import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
@@ -650,6 +651,20 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 			});
 	} catch (error) {
 		console.error(error);
+
+		if ((error as PostgresError)?.code === '23505') {
+			setError(form, 'customDomain', m.dark_each_pug_value({ customDomain: customDomain }));
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.dizzy_sour_liger_treasure(),
+					description: m.dark_each_pug_value({ customDomain: customDomain })
+				},
+				{ status: 404 }
+			);
+		}
+
 		return message(
 			form,
 			{

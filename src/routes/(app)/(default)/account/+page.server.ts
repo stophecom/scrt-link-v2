@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { db } from '$lib/server/db';
 import { whiteLabelSite } from '$lib/server/db/schema';
@@ -45,7 +46,7 @@ export const load: PageServerLoad = async (event) => {
 				name: whiteLabel?.name || '',
 				customDomain: whiteLabel?.customDomain || '',
 				locale: whiteLabel?.locale || DEFAULT_LOCALE,
-				enabledSecretTypes: whiteLabel?.enabledSecretTypes
+				enabledSecretTypes: whiteLabel?.enabledSecretTypes || [SecretType.TEXT]
 			},
 			zod(whiteLabelMetaSchema())
 		);

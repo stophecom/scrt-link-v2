@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
-	import { Palette, SquareArrowUpRight } from 'lucide-svelte';
-	import { derived, writable } from 'svelte/store';
+	import { Palette, RefreshCcw, SquareArrowUpRight } from 'lucide-svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
@@ -30,19 +29,15 @@
 	// Queries
 	const queryClient = useQueryClient();
 
-	let intervalMs = writable(5000);
-	const queryResult = createQuery(
-		derived(intervalMs, ($intervalMs) => ({
-			queryKey: ['domain-verification'],
-			queryFn: async () => {
-				const data = await api<DomainStatusResponse>(`/domain-status/${$formData.customDomain}`, {
-					method: 'GET'
-				});
-				return data;
-			},
-			refetchInterval: $intervalMs
-		}))
-	);
+	const queryResult = createQuery({
+		queryKey: ['domain-verification'],
+		queryFn: async () => {
+			const data = await api<DomainStatusResponse>(`/domain-status/${$formData.customDomain}`, {
+				method: 'GET'
+			});
+			return data;
+		}
+	});
 
 	const form = superForm(formProp, {
 		validators: zodClient(whiteLabelMetaSchema()),
@@ -65,14 +60,6 @@
 	});
 
 	const { form: formData, message, delayed, constraints, enhance } = form;
-
-	$effect(() => {
-		if ($queryResult.data?.verified) {
-			$intervalMs = 0;
-		} else {
-			$intervalMs = 5000;
-		}
-	});
 </script>
 
 <FormWrapper message={$message}>
@@ -110,30 +97,44 @@
 			title={$queryResult.data?.message || m.awful_house_lizard_pick()}
 			variant={$queryResult.isError ? 'destructive' : 'default'}
 		>
-			<Spinner
-				class="absolute top-5 right-5 h-4 w-4 transition-opacity {$queryResult.isFetching
-					? 'opacity-100'
-					: 'opacity-0'}"
-			/>
-			{#if $queryResult.isError}
-				{$queryResult.error.message}
-			{:else if !$queryResult.data?.verified}
-				{#if $queryResult?.data?.instructions}
-					<div class="mb-4">{m.blue_weird_osprey_ask()}</div>
+			<div class="grid grid-cols-[1fr_min-content] gap-4">
+				<div>
+					{#if $queryResult.isError}
+						{$queryResult.error.message}
+					{:else if !$queryResult.data?.verified}
+						{#if $queryResult?.data?.instructions}
+							<div class="mb-4">{m.blue_weird_osprey_ask()}</div>
 
-					<div class="grid grid-cols-[min-content_min-content_1fr] gap-x-4">
-						<div class="font-semibold">Type</div>
-						<div class="font-semibold">Name</div>
-						<div class="font-semibold">Value</div>
+							<div class="grid grid-cols-[min-content_min-content_1fr] gap-x-4">
+								<div class="font-semibold">Type</div>
+								<div class="font-semibold">Name</div>
+								<div class="font-semibold">Value</div>
 
-						{#each $queryResult.data.instructions as item}
-							<div>{item.type}</div>
-							<div class="whitespace-pre-wrap">{item.domain}</div>
-							<div class="break-all">{item.value}</div>
-						{/each}
-					</div>
-				{/if}
-			{/if}
+								{#each $queryResult.data.instructions as item}
+									<div>{item.type}</div>
+									<div class="whitespace-pre-wrap">{item.domain}</div>
+									<div class="break-all">{item.value}</div>
+								{/each}
+							</div>
+						{/if}
+					{/if}
+				</div>
+				<div class="content-end">
+					<Spinner
+						class="absolute top-5 right-4 h-4 w-4 self-start transition-opacity {$queryResult.isFetching
+							? 'opacity-100'
+							: 'opacity-0'}"
+					/>
+					{#if !$queryResult.data?.verified}
+						<Button
+							variant="outline"
+							size="sm"
+							onclick={() => queryClient.fetchQuery({ queryKey: ['domain-verification'] })}
+							><RefreshCcw class="me-2 h-4 w-4" /> {m.ago_equal_nuthatch_expand()}</Button
+						>
+					{/if}
+				</div>
+			</div>
 		</Alert>
 		<div class="pt-4">
 			<Form.Button delayed={$delayed}>{m.caring_light_tiger_taste()}</Form.Button>
@@ -146,7 +147,7 @@
 				href={localizeHref(`/account/edit/${$formData.customDomain}`)}
 				><Palette class="me-2 h-5 w-5" />{m.home_witty_piranha_peek()}</Button
 			>
-			{#if $queryResult.isSuccess}
+			{#if $queryResult.data?.verified}
 				<Button variant="ghost" href={`https://${$formData.customDomain}`}
 					>{$formData.customDomain} <SquareArrowUpRight class="ms-2 h-5 w-5" /></Button
 				>
