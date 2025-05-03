@@ -32,7 +32,9 @@
 		<Container class="py-12">
 			<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />
 
-			<Heading class="text-primary text-4xl ">{name ? 'Hi {name}' : 'Hi there'}</Heading>
+			<Heading class="text-primary text-4xl "
+				>{name ? m.honest_quiet_millipede_loop({ name }) : 'Hi there'}</Heading
+			>
 
 			<Text class="mb-4 text-xl leading-snug">{m.pretty_aloof_owl_yell()}</Text>
 
@@ -42,7 +44,7 @@
 			<Button
 				class="bg-primary text-primary-foreground inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap "
 				href={`${getBaseUrl()}?utm_source=email&utm_medium=subscription&utm_campaign=new_subscription`}
-				>My account</Button
+				>{m.watery_caring_crab_trim()}</Button
 			>
 
 			<Hr class="border-border mt-8" />
