@@ -6,7 +6,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { MAX_API_KEYS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
-import { getPlanLimits } from '$lib/data/plans';
+import { getUserPlanLimits } from '$lib/data/plans';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { addDomainToVercel, removeDomainFromVercelProject, validDomainRegex } from '$lib/domains';
 import { formatDateTime, redirectLocalized } from '$lib/i18n';
@@ -571,7 +571,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const planLimits = getPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 
 	if (!planLimits.whiteLabel) {
 		return message(
@@ -698,7 +698,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const planLimits = getPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 
 	if (!planLimits.whiteLabel) {
 		return message(

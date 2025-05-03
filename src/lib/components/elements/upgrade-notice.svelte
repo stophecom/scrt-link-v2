@@ -12,7 +12,7 @@
 		user?: App.Locals['user'];
 		upgradeDescription?: string;
 	};
-	let { user, upgradeDescription, ...rest }: Props & SvelteHTMLElements['address'] = $props();
+	let { user, upgradeDescription, ...rest }: Props & SvelteHTMLElements['div'] = $props();
 
 	// Defaults
 	let title = $state(m.acidic_aqua_octopus_revive());

@@ -4,7 +4,7 @@
 
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import { getPlanLimits } from '$lib/data/plans';
+	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { apiKeyFormSchema, type ApiTokenFormSchema } from '$lib/validators/formSchemas';
 
@@ -17,7 +17,7 @@
 
 	let { user, form: formProp }: Props = $props();
 
-	const planLimits = getPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 
 	const form = superForm(formProp, {
 		validators: zodClient(apiKeyFormSchema()),

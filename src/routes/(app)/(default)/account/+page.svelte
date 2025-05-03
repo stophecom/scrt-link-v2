@@ -21,7 +21,7 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { whiteLabelDemoWebsite } from '$lib/data/app';
 	import { Role } from '$lib/data/enums';
-	import { getPlanLimits } from '$lib/data/plans';
+	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -41,7 +41,7 @@
 		m.candid_noble_cobra_fetch()
 	];
 
-	const planLimits = getPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 
 	const hidePremiumPromo = new PersistedState<boolean>('hidePremiumPromo', false);
 </script>

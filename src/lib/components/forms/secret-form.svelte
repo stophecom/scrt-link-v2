@@ -56,8 +56,7 @@
 
 	let neogramDestructionTimer = $state(5);
 
-	// @todo need to handle white-label case
-	const planLimits = getPlanLimits(user?.subscriptionTier);
+	const planLimits = getPlanLimits(page.url.host, user?.subscriptionTier);
 
 	const form = superForm(formProp, {
 		validators: zod(secretFormSchema()),

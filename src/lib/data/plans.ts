@@ -1,5 +1,6 @@
 import { Factory, Plane, Rocket, Send } from 'lucide-svelte';
 
+import { isOriginalHost } from '$lib/app-routing';
 import { formatBytes } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 
@@ -102,17 +103,15 @@ const plans = () => [
 		contents: [
 			m.knotty_shy_bobcat_build(),
 			m.only_close_okapi_express(),
-			m.stale_fine_turkey_praise(),
-			m.loose_chunky_duck_intend(),
-			m.new_still_dingo_create({ limit: formatBytes(10 * MB) }),
-			m.blue_jumpy_shell_climb(),
-			m.slimy_livid_pelican_gleam(),
-			m.active_mellow_swan_list({ amount: 30 }),
-			m.still_busy_starfish_dare()
+			m.formal_mealy_chipmunk_advise(),
+			m.new_still_dingo_create({ limit: formatBytes(1 * GB) }),
+			'Extra password',
+			m.active_mellow_swan_list({ amount: 7 }),
+			'SLA with 99.9% Uptime'
 		],
 		limits: {
 			[SecretType.TEXT]: 100_000,
-			[SecretType.FILE]: 10 * MB,
+			[SecretType.FILE]: 100 * GB,
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: true,
 			[SecretType.NEOGRAM]: true,
@@ -134,15 +133,36 @@ export const getPlanContents = (name?: string) => {
 	return plan;
 };
 
-export const getPlanLimits = (name?: string | null) => {
+export const getUserPlanLimits = (tier?: TierOptions | null) => {
 	let limits = defaultLimits;
 
-	if (name) {
-		const plan = plans().find((el) => el.name === name);
+	if (tier) {
+		const plan = plans().find((el) => el.name === tier);
 
 		if (plan?.limits) {
 			limits = plan?.limits;
 		}
 	}
 	return limits;
+};
+
+export const getPlanLimits = (host: string, tier?: TierOptions | null) => {
+	const isWhiteLabel = !isOriginalHost(host);
+
+	if (isWhiteLabel) {
+		return {
+			[SecretType.TEXT]: 100_000,
+			[SecretType.FILE]: 100 * MB,
+			[SecretType.REDIRECT]: true,
+			[SecretType.SNAP]: true,
+			[SecretType.NEOGRAM]: true,
+			apiAccess: false,
+			passwordAllowed: true,
+			readReceiptsAllowed: false,
+			expirationOptions: expiresInOptions,
+			whiteLabel: false
+		};
+	} else {
+		return getUserPlanLimits(tier);
+	}
 };
