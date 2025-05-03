@@ -149,6 +149,9 @@ export const getUserPlanLimits = (tier?: TierOptions | null) => {
 export const getPlanLimits = (host: string, tier?: TierOptions | null) => {
 	const isWhiteLabel = !isOriginalHost(host);
 
+	// We make sure the plan limits for white-label prevent the display of UpgradeNotice within secret-form.
+	// This is a workaround.
+	// @todo We should make this more less error-prone for the future.
 	if (isWhiteLabel) {
 		return {
 			[SecretType.TEXT]: 100_000,
