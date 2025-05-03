@@ -4,7 +4,7 @@ This Service Level Agreement ("SLA") describes the service availability commitme
 
 ## 1. Services Availability
 
-We commit to using commercially reasonable efforts to ensure that the scrt.link service is available 99.99% of the time in any given calendar month, excluding Excused Downtime as defined below. **Uptime** refers to the total number of minutes in which the service is up and running and available during an applicable calendar month. Service availability is calculated as:
+We commit to using commercially reasonable efforts to ensure that the scrt.link service is available 99.9% of the time in any given calendar month, excluding Excused Downtime as defined below. **Uptime** refers to the total number of minutes in which the service is up and running and available during an applicable calendar month. Service availability is calculated as:
 
 > **Uptime Percentage** = Uptime ÷ (Total minutes in month - Excused Downtime) x 100
 
@@ -23,7 +23,7 @@ These excluded events are collectively referred to as **Excused Downtime**.
 
 ## 3. Compensation for Downtime
 
-If scrt.link fails to meet the 99.99% availability target in a calendar month (excluding Excused Downtime), you will be eligible to receive a proportional extension of your service subscription based on the duration of the Unscheduled Downtime.
+If scrt.link fails to meet the 99.9% availability target in a calendar month (excluding Excused Downtime), you will be eligible to receive a proportional extension of your service subscription based on the duration of the Unscheduled Downtime.
 
 ### Compensation Formula
 
