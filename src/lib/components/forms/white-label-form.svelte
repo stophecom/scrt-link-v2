@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
-	import { Palette, RefreshCcw, SquareArrowUpRight } from 'lucide-svelte';
+	import { Palette, RefreshCcw, Save, SquareArrowUpRight } from 'lucide-svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
@@ -36,7 +36,8 @@
 				method: 'GET'
 			});
 			return data;
-		}
+		},
+		enabled: false
 	});
 
 	const form = superForm(formProp, {
@@ -59,14 +60,14 @@
 		}
 	});
 
-	const { form: formData, message, delayed, constraints, enhance } = form;
+	const { form: formData, message, delayed, constraints, enhance, errors } = form;
 </script>
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/saveWhiteLabelMeta">
 		<Form.Field {form} name="name">
 			<Text
-				label="App or brand name"
+				label={m.quaint_flaky_swan_cry()}
 				bind:value={$formData.name}
 				{...$constraints.name}
 				type="text"
@@ -97,47 +98,51 @@
 			title={$queryResult.data?.message || m.awful_house_lizard_pick()}
 			variant={$queryResult.isError ? 'destructive' : 'default'}
 		>
-			<div class="grid grid-cols-[1fr_min-content] gap-4">
-				<div>
-					{#if $queryResult.isError}
-						{$queryResult.error.message}
-					{:else if !$queryResult.data?.verified}
-						{#if $queryResult?.data?.instructions}
-							<div class="mb-4">{m.blue_weird_osprey_ask()}</div>
+			{#if !Object.values($errors).length}
+				<div class="grid grid-cols-[1fr_min-content] gap-4">
+					<div>
+						{#if $queryResult.isError}
+							{$queryResult.error.message}
+						{:else if !$queryResult.data?.verified}
+							{#if $queryResult?.data?.instructions}
+								<div class="mb-4">{m.blue_weird_osprey_ask()}</div>
 
-							<div class="grid grid-cols-[min-content_min-content_1fr] gap-x-4">
-								<div class="font-semibold">Type</div>
-								<div class="font-semibold">Name</div>
-								<div class="font-semibold">Value</div>
+								<div class="grid grid-cols-[min-content_min-content_1fr] gap-x-4">
+									<div class="font-semibold">Type</div>
+									<div class="font-semibold">Name</div>
+									<div class="font-semibold">Value</div>
 
-								{#each $queryResult.data.instructions as item}
-									<div>{item.type}</div>
-									<div class="whitespace-pre-wrap">{item.domain}</div>
-									<div class="break-all">{item.value}</div>
-								{/each}
-							</div>
+									{#each $queryResult.data.instructions as item}
+										<div>{item.type}</div>
+										<div class="whitespace-pre-wrap">{item.domain}</div>
+										<div class="break-all">{item.value}</div>
+									{/each}
+								</div>
+							{/if}
 						{/if}
-					{/if}
+					</div>
+					<div class="content-end">
+						<Spinner
+							class="absolute top-5 right-4 h-4 w-4 self-start transition-opacity {$queryResult.isFetching
+								? 'opacity-100'
+								: 'opacity-0'}"
+						/>
+						{#if !$queryResult.data?.verified}
+							<Button
+								variant="outline"
+								size="sm"
+								onclick={() => queryClient.fetchQuery({ queryKey: ['domain-verification'] })}
+								><RefreshCcw class="me-2 h-4 w-4" /> {m.ago_equal_nuthatch_expand()}</Button
+							>
+						{/if}
+					</div>
 				</div>
-				<div class="content-end">
-					<Spinner
-						class="absolute top-5 right-4 h-4 w-4 self-start transition-opacity {$queryResult.isFetching
-							? 'opacity-100'
-							: 'opacity-0'}"
-					/>
-					{#if !$queryResult.data?.verified}
-						<Button
-							variant="outline"
-							size="sm"
-							onclick={() => queryClient.fetchQuery({ queryKey: ['domain-verification'] })}
-							><RefreshCcw class="me-2 h-4 w-4" /> {m.ago_equal_nuthatch_expand()}</Button
-						>
-					{/if}
-				</div>
-			</div>
+			{/if}
 		</Alert>
 		<div class="pt-4">
-			<Form.Button delayed={$delayed}>{m.caring_light_tiger_taste()}</Form.Button>
+			<Form.Button delayed={$delayed}
+				><Save class="me-2 h-4 w-4" /> {m.caring_light_tiger_taste()}</Form.Button
+			>
 		</div>
 		<Separator class="my-4" />
 		<div class="flex items-center">
