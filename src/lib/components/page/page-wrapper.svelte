@@ -24,6 +24,6 @@
 </script>
 
 <Head title={metaTitle} {metaDescription} {metaKeywords} />
-<div {...rest} class={cn('min-h-[calc(100vh-var(--header-height))] pt-8 ', rest.class)}>
+<div {...rest} class={cn('min-h-[calc(100vh-var(--header-height))] pt-8', rest.class)}>
 	{@render children?.()}
 </div>
