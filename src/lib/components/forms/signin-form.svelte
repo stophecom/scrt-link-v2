@@ -42,6 +42,7 @@
 					bind:value={$formData.email}
 					{...$constraints.email}
 					autocomplete="username"
+					type="email"
 				/>
 			</Form.Control>
 			<Form.FieldErrors />

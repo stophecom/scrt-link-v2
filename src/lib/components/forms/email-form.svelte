@@ -38,7 +38,7 @@
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
-				<Input {...attrs} bind:value={$formData.email} {...$constraints.email} />
+				<Input {...attrs} bind:value={$formData.email} {...$constraints.email} type="email" />
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
