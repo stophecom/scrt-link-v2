@@ -99,7 +99,7 @@ const plans = () => [
 	{
 		name: TierOptions.SECRET_SERVICE, // Only applies to the "owner"
 		icon: Factory,
-		title: m.heavy_helpful_mallard_push(),
+		title: m.muddy_any_tapir_roar(),
 		contents: [
 			m.knotty_shy_bobcat_build(),
 			m.only_close_okapi_express(),
