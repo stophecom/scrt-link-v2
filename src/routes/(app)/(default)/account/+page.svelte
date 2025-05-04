@@ -185,7 +185,7 @@
 					description={m.solid_north_ostrich_cheer()}
 				>
 					{#if planLimits.whiteLabel}
-						<WhiteLabelForm form={data.whiteLabelForm} />
+						<WhiteLabelForm form={data.whiteLabelForm} whiteLabelDomain={data.whiteLabelDomain} />
 					{:else}
 						<div class="text-destructive mb-2">{m.slow_zesty_whale_type()}</div>
 						<Button href={localizeHref('/business')}>{m.only_weird_walrus_promise()}</Button>

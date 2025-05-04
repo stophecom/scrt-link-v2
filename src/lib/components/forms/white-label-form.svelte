@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import { Palette, RefreshCcw, Save, SquareArrowUpRight } from 'lucide-svelte';
+	import { derived } from 'svelte/store';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
@@ -22,23 +23,10 @@
 
 	type Props = {
 		form: SuperValidated<WhiteLabelMetaSchema>;
+		whiteLabelDomain: string | null;
 	};
 
-	let { form: formProp }: Props = $props();
-
-	// Queries
-	const queryClient = useQueryClient();
-
-	const queryResult = createQuery({
-		queryKey: ['domain-verification'],
-		queryFn: async () => {
-			const data = await api<DomainStatusResponse>(`/domain-status/${$formData.customDomain}`, {
-				method: 'GET'
-			});
-			return data;
-		}
-		// enabled: false
-	});
+	let { form: formProp, whiteLabelDomain }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zodClient(whiteLabelMetaSchema()),
@@ -61,6 +49,25 @@
 	});
 
 	const { form: formData, message, delayed, constraints, enhance, errors } = form;
+
+	// Queries
+	const queryClient = useQueryClient();
+
+	const queryResult = createQuery(
+		derived(formData, ($formData) => ({
+			queryKey: ['domain-verification'],
+			queryFn: async () => {
+				const data = await api<DomainStatusResponse>(
+					`/domain-status/${$formData.customDomain || null}`,
+					{
+						method: 'GET'
+					}
+				);
+				return data;
+			},
+			enabled: !!whiteLabelDomain
+		}))
+	);
 </script>
 
 <FormWrapper message={$message}>
@@ -93,18 +100,18 @@
 			<Form.Description>{m.small_house_goldfish_belong()}</Form.Description>
 		</Form.Field>
 
-		<Alert
-			class="relative"
-			title={$queryResult.data?.message || m.awful_house_lizard_pick()}
-			variant={$queryResult.isError ? 'destructive' : 'default'}
-		>
-			{#if !Object.values($errors).length}
-				<div class="grid grid-cols-[1fr_min-content] gap-4">
-					<div>
-						{#if $queryResult.isError}
-							{$queryResult.error.message}
-						{:else if !$queryResult.data?.verified}
-							{#if $queryResult?.data?.instructions}
+		{#if whiteLabelDomain}
+			<Alert
+				class="relative"
+				title={$queryResult.data?.message || m.awful_house_lizard_pick()}
+				variant={$queryResult.isError ? 'destructive' : 'default'}
+			>
+				{#if !Object.values($errors).length}
+					<div class="grid grid-cols-[1fr_min-content] gap-4">
+						<div>
+							{#if $queryResult.isError}
+								{$queryResult.error.message}
+							{:else if !$queryResult.data?.verified && $queryResult?.data?.instructions}
 								<div class="mb-4">{m.blue_weird_osprey_ask()}</div>
 
 								<div class="grid grid-cols-[min-content_min-content_1fr] gap-x-4">
@@ -119,26 +126,27 @@
 									{/each}
 								</div>
 							{/if}
-						{/if}
+						</div>
+						<div class="content-end">
+							<Spinner
+								class="absolute top-5 right-4 h-4 w-4 self-start transition-opacity {$queryResult.isFetching
+									? 'opacity-100'
+									: 'opacity-0'}"
+							/>
+							{#if !$queryResult.data?.verified && whiteLabelDomain}
+								<Button
+									variant="outline"
+									size="sm"
+									onclick={() => queryClient.fetchQuery({ queryKey: ['domain-verification'] })}
+									><RefreshCcw class="me-2 h-4 w-4" /> {m.ago_equal_nuthatch_expand()}</Button
+								>
+							{/if}
+						</div>
 					</div>
-					<div class="content-end">
-						<Spinner
-							class="absolute top-5 right-4 h-4 w-4 self-start transition-opacity {$queryResult.isFetching
-								? 'opacity-100'
-								: 'opacity-0'}"
-						/>
-						{#if !$queryResult.data?.verified}
-							<Button
-								variant="outline"
-								size="sm"
-								onclick={() => queryClient.fetchQuery({ queryKey: ['domain-verification'] })}
-								><RefreshCcw class="me-2 h-4 w-4" /> {m.ago_equal_nuthatch_expand()}</Button
-							>
-						{/if}
-					</div>
-				</div>
-			{/if}
-		</Alert>
+				{/if}
+			</Alert>
+		{/if}
+
 		<div class="pt-4">
 			<Form.Button delayed={$delayed}
 				><Save class="me-2 h-4 w-4" /> {m.caring_light_tiger_taste()}</Form.Button

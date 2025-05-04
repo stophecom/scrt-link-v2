@@ -35,12 +35,12 @@ export const load: PageServerLoad = async (event) => {
 
 	const apiKeys = await getActiveApiKeys(user.id);
 
-	const whiteLabelFormValidator = async () => {
-		const [whiteLabel] = await db
-			.select()
-			.from(whiteLabelSite)
-			.where(eq(whiteLabelSite.userId, user.id));
+	const [whiteLabel] = await db
+		.select()
+		.from(whiteLabelSite)
+		.where(eq(whiteLabelSite.userId, user.id));
 
+	const whiteLabelFormValidator = async () => {
 		return await superValidate(
 			{
 				name: whiteLabel?.name || '',
@@ -55,6 +55,7 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		user: user,
 		apiKeys: apiKeys,
+		whiteLabelDomain: whiteLabel?.customDomain,
 		themeForm: await themeFormValidator(user),
 		settingsForm: await settingsFormValidator(user),
 		userForm: await userFormValidator(user),
