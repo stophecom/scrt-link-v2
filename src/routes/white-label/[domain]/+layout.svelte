@@ -31,6 +31,7 @@
 	<link rel="apple-touch-icon" sizes="180x180" href={appleTouch} />
 	<link rel="icon" type="image/png" sizes="32x32" href={faviconUrl32} />
 	<link rel="icon" type="image/png" sizes="16x16" href={faviconUrl16} />
+
 	<meta property="og:locale" content={getLocale()} />
 	<meta property="og:site_name" content={data.domain} />
 

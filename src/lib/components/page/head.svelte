@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { appName } from '$lib/data/app';
 	import { DEFAULT_LOCALE, getAbsoluteLocalizedUrl } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { deLocalizeHref, locales } from '$lib/paraglide/runtime';
@@ -21,8 +20,8 @@
 </script>
 
 <svelte:head>
-	<title>{title} - {appName}</title>
-	<meta property="og:title" content="{title} - {appName}" />
+	<title>{title} - {page.url.host}</title>
+	<meta property="og:title" content="{title} - {page.url.host}" />
 	<meta name="description" content={metaDescription} />
 	<meta name="keywords" content={metaKeywords} />
 
@@ -46,12 +45,4 @@
 			/>
 		{/if}
 	{/each}
-
-	<meta property="og:url" content={page.url.href} />
-	<meta property="og:type" content="website" />
-	<meta property="og:image" content={`${page.url.origin}/og-image.png`} />
-	<meta property="og:image:type" content="image/png" />
-	<meta property="og:image:width" content="1200" />
-	<meta property="og:image:height" content="630" />
-	<meta property="og:image:alt" content={appName} />
 </svelte:head>

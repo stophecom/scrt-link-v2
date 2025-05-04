@@ -14,15 +14,13 @@
 	let { data } = $props();
 </script>
 
-<svelte:head>
-	<title>{data.meta.title}</title>
-	<meta property="og:type" content="article" />
-	<meta property="og:title" content={data.meta.title} />
-	<meta property="og:description" content={data.meta.description} />
-	<meta property="og:image" content={data.meta.ogImage} />
-</svelte:head>
-
-<Page title={data.meta.title} lead={data.meta.lead} markNotTranslated={true}>
+<Page
+	title={data.meta.title}
+	lead={data.meta.lead}
+	markNotTranslated={true}
+	metaTitle={data.meta.title}
+	metaDescription={data.meta.description}
+>
 	<Container>
 		<article class="mb-12">
 			<div class=" my-4 flex items-center justify-between py-2">
