@@ -20,7 +20,7 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { whiteLabelDemoWebsite } from '$lib/data/app';
-	import { Role } from '$lib/data/enums';
+	import { Role, TierOptions } from '$lib/data/enums';
 	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -61,12 +61,9 @@
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="api"
 					>{m.super_funny_jackal_pause()}</Tabs.Trigger
 				>
-
-				{#if user?.role === 'admin'}
-					<Tabs.Trigger class="data-[state=active]:bg-muted" value="whiteLabel"
-						>Secret Service</Tabs.Trigger
-					>
-				{/if}
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="whiteLabel"
+					>{TierOptions.SECRET_SERVICE}</Tabs.Trigger
+				>
 			</Tabs.List>
 			<Tabs.Content value="account">
 				{#if user.role === Role.ADMIN}
