@@ -743,7 +743,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		}, {} as LocalizedWhiteLabelMessage);
 
 	// Prepare theme
-	const themeJson = existingWhiteLabelSite.theme as Theme;
+	const themeJson = (existingWhiteLabelSite.theme as Theme) || {};
 	Object.assign(themeJson, dropUndefinedValuesFromObject({ primaryColor }));
 
 	// If non existent, create new entry
