@@ -24,8 +24,8 @@
 </script>
 
 {#snippet cta()}
-	<div>
-		<Button class="me-2" size="lg" variant="default" href={localizeHref('/pricing')}
+	<div class="sm:grid-cols-auto grid grid-rows-2 gap-2 sm:flex sm:grid-rows-none">
+		<Button size="lg" variant="default" href={localizeHref('/pricing')}
 			>{m.happy_left_llama_pout()}</Button
 		>
 		<Button size="lg" variant="outline" target="_blank" href={whiteLabelDemoWebsite}
@@ -45,7 +45,7 @@
 		class="pt-12"
 		{cta}
 	>
-		<AndroidFrame>
+		<AndroidFrame class="origin-top max-sm:scale-50">
 			<video autoplay loop muted>
 				<source src="/videos/scrt-link-blue-short.mp4" type="video/mp4" />
 			</video>

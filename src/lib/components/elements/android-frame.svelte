@@ -1,10 +1,12 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { SvelteHTMLElements } from 'svelte/elements';
 
-	let { children }: { children: Snippet } = $props();
+	type Props = { children: Snippet };
+	let { children, ...rest }: Props & SvelteHTMLElements['div'] = $props();
 </script>
 
-<div class="deviceContainer">
+<div class="deviceContainer" {...rest}>
 	<div class="androidPhone black portrait shadow-2xl">
 		<div class="caseBorder"></div>
 		<div class="case"></div>

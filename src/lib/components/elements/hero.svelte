@@ -19,7 +19,13 @@
 </script>
 
 <Container variant="wide">
-	<div {...rest} class={cn('grid grid-cols-[65%_1fr] gap-6 pt-20 pb-16', rest.class)}>
+	<div
+		{...rest}
+		class={cn(
+			'grid grid-rows-[min-content_250px] gap-6 overflow-hidden pt-20 pb-16 sm:grid-cols-[65%_1fr]  sm:grid-rows-none',
+			rest.class
+		)}
+	>
 		<div class="self-center">
 			<PageTitle {title} />
 
