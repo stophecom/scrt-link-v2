@@ -58,7 +58,9 @@
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="account"
 					>{m.super_flaky_wallaby_pick()}</Tabs.Trigger
 				>
-				<Tabs.Trigger class="data-[state=active]:bg-muted" value="api">API</Tabs.Trigger>
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="api"
+					>{m.super_funny_jackal_pause()}</Tabs.Trigger
+				>
 
 				{#if user?.role === 'admin'}
 					<Tabs.Trigger class="data-[state=active]:bg-muted" value="whiteLabel"
