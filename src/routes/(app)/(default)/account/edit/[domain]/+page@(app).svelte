@@ -49,6 +49,9 @@
 		// https://superforms.rocks/concepts/enhance#optimistic-updates
 		invalidateAll: 'force',
 
+		onChange() {
+			submit();
+		},
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
@@ -91,7 +94,7 @@
 	});
 </script>
 
-<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite" onchange={submit}>
+<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite">
 	<!-- Header -->
 	<div class="h-16">
 		<div

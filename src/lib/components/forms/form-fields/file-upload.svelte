@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Trash from 'lucide-svelte/icons/trash';
-	import { onDestroy, tick } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 	import { fade } from 'svelte/transition';
 
@@ -73,8 +73,6 @@
 
 		value = fileName;
 		loading = false;
-		await tick();
-		inputElement.dispatchEvent(new Event('change', { bubbles: true }));
 	};
 
 	const onDrop = async (files: File[]) => {
@@ -122,7 +120,7 @@
 					on:click={async () => {
 						value = null;
 						reset();
-						await tick();
+						// We need to trigger change event.
 						inputElement.dispatchEvent(new Event('change', { bubbles: true }));
 					}}
 				>
