@@ -38,10 +38,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 				description:
 					(whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.description || '',
 				imprint: (whiteLabel?.messages as LocalizedWhiteLabelMessage)?.[locale]?.imprint || '',
-				logo: whiteLabel?.logo || undefined,
-				logoDarkMode: whiteLabel?.logoDarkMode || undefined,
-				appIcon: whiteLabel?.appIcon || undefined,
-				ogImage: whiteLabel?.ogImage || undefined,
+				logo: whiteLabel?.logo,
+				logoDarkMode: whiteLabel?.logoDarkMode,
+				appIcon: whiteLabel?.appIcon,
+				ogImage: whiteLabel?.ogImage,
 				primaryColor: (whiteLabel.theme as Theme)?.primaryColor || '#000000',
 				published: whiteLabel.published || false
 			},

@@ -49,7 +49,6 @@
 		// https://superforms.rocks/concepts/enhance#optimistic-updates
 		invalidateAll: 'force',
 
-		onSubmit() {},
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
@@ -108,7 +107,7 @@
 					<Form.Field {form} name="published" class="py-4">
 						<Switch
 							bind:checked={$formData.published}
-							label={'Published'}
+							label={m.shy_sharp_seahorse_catch()}
 							onCheckedChange={async () => {
 								await tick();
 								submit();
