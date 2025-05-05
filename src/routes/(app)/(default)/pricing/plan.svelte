@@ -4,7 +4,7 @@
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
 	import { cn } from '$lib/client/utils';
-	import type { SupportedCurrency } from '$lib/data/enums';
+	import { type SupportedCurrency, TierOptions } from '$lib/data/enums';
 	import { getPlanContents } from '$lib/data/plans';
 	import { formatCurrency } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
@@ -57,7 +57,14 @@
 		</div>
 	{/if}
 
-	<h4 class="mb-1 text-sm font-medium">{name}</h4>
+	<h4 class="mb-1 text-sm font-medium">
+		{name}
+		{#if name === TierOptions.SECRET_SERVICE}
+			<span class="bg-foreground text-background ms-2 inline-flex rounded-md px-2 py-1 text-xs"
+				>business</span
+			>
+		{/if}
+	</h4>
 	<planContent.icon class={cn('absolute top-4 right-4', isActiveProduct ? 'text-primary' : '')} />
 	<div>
 		{#if priceUnitAmount && currency}
