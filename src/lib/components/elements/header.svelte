@@ -24,9 +24,9 @@
 
 	let persistHeader = $derived(minimal || business);
 
-	const showAnnouncement = new PersistedState<boolean>('showAnnouncement', true);
+	const showBusinessAnnouncement = new PersistedState<boolean>('showBusinessAnnouncement', true);
 
-	const headerHeight = $derived(showAnnouncement.current ? '104px' : '64px');
+	const headerHeight = $derived(showBusinessAnnouncement.current ? '104px' : '64px');
 
 	$effect(() => {
 		document.documentElement.style.setProperty('--header-height', headerHeight);
@@ -41,18 +41,18 @@
 				? 'bg-transparent'
 				: 'bg-background shadow-sm'}"
 		>
-			{#if showAnnouncement.current}
+			{#if showBusinessAnnouncement.current}
 				<div class="bg-primary text-primary-foreground">
 					<Container variant={'wide'} class=" flex h-10 items-center text-xs sm:text-sm">
-						{m.stale_ago_mongoose_zoom()}
+						<strong>{m.solid_heroic_ibex_coax()}</strong>
 						<a
 							class="after:bg-primary-foreground before:bg-primary-foreground relative ms-2 inline-block py-2 before:absolute before:bottom-2 before:left-0 before:h-[1px] before:w-full before:opacity-50 after:absolute after:bottom-2 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
-							href={localizeHref('/blog/scrt-link-version-2')}>{m.elegant_next_beaver_persist()}</a
+							href={localizeHref('/business')}>{m.soft_tame_niklas_enchant()}</a
 						>
 						<button
 							class="ml-auto block p-2"
 							onclick={() => {
-								showAnnouncement.current = false;
+								showBusinessAnnouncement.current = false;
 							}}
 							><X class="h-5 w-5" /><span class="sr-only">{m.steep_brave_sloth_list()}</span
 							></button

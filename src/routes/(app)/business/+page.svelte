@@ -47,7 +47,7 @@
 	>
 		<AndroidFrame class="origin-top max-sm:scale-50">
 			<video autoplay loop muted>
-				<source src="/videos/scrt-link-blue-short.mp4" type="video/mp4" />
+				<source src="/videos/br3f-demo.mp4" type="video/mp4" />
 			</video>
 		</AndroidFrame>
 	</Hero>
