@@ -97,14 +97,14 @@ const plans = () => [
 		}
 	},
 	{
-		name: TierOptions.SECRET_SERVICE, // Only applies to the "owner"
+		name: TierOptions.SECRET_SERVICE, // Limits apply to owner, contents apply to public. @todo refactor this.
 		icon: Factory,
 		title: m.muddy_any_tapir_roar(),
 		contents: [
 			m.knotty_shy_bobcat_build(),
 			m.only_close_okapi_express(),
 			m.formal_mealy_chipmunk_advise(),
-			m.new_still_dingo_create({ limit: formatBytes(1 * GB) }),
+			m.new_still_dingo_create({ limit: formatBytes(100 * MB) }),
 			m.ideal_low_mouse_splash(),
 			m.active_mellow_swan_list({ amount: 7 }),
 			m.inner_fun_mink_push()

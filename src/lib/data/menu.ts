@@ -35,7 +35,8 @@ export const secretMenu = () => [
 export const productMenu = () => [
 	{
 		href: '/business',
-		label: 'For business'
+		label: 'For business',
+		badge: m.heavy_inclusive_yak_skip()
 	},
 	{
 		href: '/pricing',
