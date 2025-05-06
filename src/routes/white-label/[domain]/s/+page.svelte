@@ -17,6 +17,7 @@
 <WhiteLabelPage
 	name={data?.name}
 	{logo}
+	metaTitle={m.fine_aloof_skate_ascend()}
 	title={m.each_light_mare_bump()}
 	lead={m.warm_clean_horse_seek()}
 >

@@ -17,6 +17,7 @@
 <Header />
 <WhiteLabelPage
 	name={data?.name}
+	metaTitle={m.active_polite_manatee_support()}
 	{logo}
 	title={data?.title || m.lucky_warm_mayfly_engage()}
 	lead={data?.lead || m.bland_spicy_penguin_fade()}

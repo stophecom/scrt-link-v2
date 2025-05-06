@@ -10,16 +10,17 @@
 
 	type Props = {
 		name?: string | null;
+		metaTitle: string;
 		title: string;
 		lead?: string | null;
 		logo?: string | null;
 		children: Snippet;
 	};
 
-	let { name, title, lead, logo, children }: Props = $props();
+	let { name, metaTitle, title, lead, logo, children }: Props = $props();
 </script>
 
-<PageWrapper class="pb-16">
+<PageWrapper class="pb-16" {metaTitle}>
 	<Container>
 		<div>
 			<a

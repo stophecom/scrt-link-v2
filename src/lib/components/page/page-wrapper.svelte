@@ -8,7 +8,7 @@
 	import Head from './head.svelte';
 
 	type Props = {
-		metaTitle?: string;
+		metaTitle: string;
 		metaDescription?: string;
 		metaKeywords?: string;
 		children: Snippet;
