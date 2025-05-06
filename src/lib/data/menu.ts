@@ -35,7 +35,7 @@ export const secretMenu = () => [
 export const productMenu = () => [
 	{
 		href: '/business',
-		label: 'For business',
+		label: m.great_funny_beaver_gleam(),
 		badge: m.heavy_inclusive_yak_skip()
 	},
 	{
