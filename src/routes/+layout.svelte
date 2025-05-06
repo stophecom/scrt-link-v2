@@ -4,12 +4,15 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import type { Snippet } from 'svelte';
 
+	import { Toaster } from '$lib/components/ui/sonner';
+
 	let { children }: { children: Snippet } = $props();
 </script>
 
 {@render children()}
 
 <ModeWatcher />
+<Toaster />
 
 <style>
 	/* https://nerdy.dev/6-css-snippets-every-front-end-developer-should-know-in-2025#animated-adaptive-gradient-text */

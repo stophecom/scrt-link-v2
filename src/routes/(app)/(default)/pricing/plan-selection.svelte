@@ -2,8 +2,9 @@
 	import Check from 'lucide-svelte/icons/check-circle';
 	import { PersistedState } from 'runed';
 	import { Stripe } from 'stripe';
+	import { toast } from 'svelte-sonner';
 
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { api } from '$lib/api';
 	import PoweredByStripe from '$lib/assets/images/PoweredByStripe.svg?component';
 	import { TRIAL_PERIOD_DAYS } from '$lib/client/constants';
@@ -41,7 +42,7 @@
 	const isSubscriptionCanceled = subscription && !!subscription?.cancel_at;
 
 	// We assume a subscription has only one plan associated with it.
-	const activeProduct = subscription?.items.data[0].plan.product;
+	const activeProduct = $derived(subscription?.items.data[0].plan.product);
 
 	// Get % yearly savings. We take first plan. (There should be only one)
 	const premiumPlanPrices = plans.length && plans[0].prices;
@@ -72,30 +73,41 @@
 		}
 		try {
 			// If customer has a subscription, update it.
-			if (subscription?.status === 'active') {
-				throw new Error('User has active subscription. Update on Stripe.');
-			}
+			if (subscription?.status && ['active', 'trialing'].includes(subscription.status)) {
+				// Create a Checkout Session.
+				const response = await api<{ message: string }>(
+					`/plans/checkout`,
+					{ method: 'PUT' },
+					{
+						priceId: priceId,
+						subscriptionId: subscription.id
+					}
+				);
+				await invalidateAll();
 
-			// Create a Checkout Session.
-			const response = await api<Stripe.Subscription>(
-				`/plans/checkout`,
-				{ method: 'POST' },
-				{
-					priceId: priceId,
-					currency: currency.current
+				toast.success(response.message);
+			} else {
+				// Create a Checkout Session.
+				const response = await api<Stripe.Subscription>(
+					`/plans/checkout`,
+					{ method: 'POST' },
+					{
+						priceId: priceId,
+						currency: currency.current
+					}
+				);
+				// Redirect to Checkout.
+				const stripe = await getStripe();
+				const { error } = await stripe!.redirectToCheckout({
+					// Make the id field from the Checkout Session creation API response
+					// available to this file, so you can provide it as parameter here
+					// instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+					sessionId: response.id
+				});
+
+				if (error) {
+					throw new Error(error.message as string);
 				}
-			);
-			// Redirect to Checkout.
-			const stripe = await getStripe();
-			const { error } = await stripe!.redirectToCheckout({
-				// Make the id field from the Checkout Session creation API response
-				// available to this file, so you can provide it as parameter here
-				// instead of the {{CHECKOUT_SESSION_ID}} placeholder.
-				sessionId: response.id
-			});
-
-			if (error) {
-				throw new Error(error.message as string);
 			}
 		} catch (e) {
 			console.error(e);
@@ -106,8 +118,8 @@
 {#snippet subscriptionInfo(variant: Variant, title: string, description: string)}
 	<Alert {variant} {title} class="mb-10 text-pretty">
 		{description}
-		<form class="mt-4 block" method="post" action="?/manageSubscriptionOnStripe">
-			<Button type="submit">{m.polite_super_antelope_lock()}</Button>
+		<form class="mt-2 block" method="post" action="?/manageSubscriptionOnStripe">
+			<Button variant="link" type="submit">{m.polite_super_antelope_lock()}</Button>
 		</form>
 	</Alert>
 {/snippet}
@@ -165,8 +177,7 @@
 					<div class="py-1 text-center text-xs">
 						{m.early_vexed_slug_mend({ amount: TRIAL_PERIOD_DAYS })}
 					</div>
-				{/if}
-				{#if isActiveProduct}
+				{:else if isActiveProduct}
 					{@render renderIsActivePlan()}
 					{#if subscription?.cancel_at}
 						<p class="text-destructive text-sm">
@@ -175,6 +186,11 @@
 							})}
 						</p>
 					{/if}
+				{:else}
+					<Button class="w-full" onclick={() => handleSubmit(priceId)}>Select plan</Button>
+					<div class="py-1 text-center text-xs">
+						{m.civil_formal_firefox_surge({ planName: plan.name })}
+					</div>
 				{/if}
 			</PlanView>
 		{/each}

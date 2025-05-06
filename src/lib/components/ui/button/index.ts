@@ -12,7 +12,7 @@ const buttonVariants = tv({
 			outline: 'bg-background hover:bg-muted border border-border',
 			secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
 			ghost: 'hover:bg-muted',
-			link: 'text-primary underline-offset-4 hover:underline'
+			link: 'text-primary underline-offset-4 underline !px-0 !h-auto '
 		},
 		size: {
 			default: 'h-12 px-4 py-2',
