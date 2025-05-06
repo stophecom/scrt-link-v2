@@ -57,10 +57,10 @@
 		</div>
 	{/if}
 
-	<h4 class="mb-1 text-sm font-medium">
-		{name}
+	<h4 class="mb-1 pe-8 text-sm font-medium">
+		<span class="me-2">{name}</span>
 		{#if name === TierOptions.SECRET_SERVICE}
-			<span class="bg-foreground text-background ms-2 inline-flex rounded-md px-2 py-1 text-xs"
+			<span class="bg-foreground text-background inline-flex rounded-md px-2 py-1 text-xs"
 				>business</span
 			>
 		{/if}
