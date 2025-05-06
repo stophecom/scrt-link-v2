@@ -8,7 +8,7 @@ import {
 import { RESEND_API } from '$env/static/private';
 import type { MakeOptional } from '$lib/typescript-helpers';
 
-import { appName, emailSupport } from '../data/app';
+import { appName, emailNoReply } from '../data/app';
 
 const resend = new Resend(RESEND_API);
 
@@ -19,7 +19,7 @@ const sendTransactionalEmail = async ({
 	const { error } = await resend.emails.send({
 		...options,
 		html: html,
-		from: `${appName} <${emailSupport}>`
+		from: `${appName} <${emailNoReply}>`
 	});
 
 	if (error) {

@@ -22,6 +22,7 @@ import { localizeHref } from '$lib/paraglide/runtime';
 export const appName = 'scrt.link';
 export const whiteLabelDemoWebsite = 'https://br3f.com';
 export const emailSupport = 'support@scrt.link';
+export const emailNoReply = 'no-reply@scrt.link';
 export const uptimerobotUrl = 'https://stats.uptimerobot.com/v5yqDuEr5z';
 export const githubUrl = 'https://github.com/stophecom/scrt-link-v2';
 
