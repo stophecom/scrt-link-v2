@@ -35,5 +35,9 @@ temp.*
 # Backups
 /backups
 
-# Client module
+
+
+# Client module is generated during build
 static/client-module.js
+# Local testing
+static/test.html
