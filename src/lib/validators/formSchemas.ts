@@ -52,6 +52,7 @@ export const secretFormSchema = () =>
 		publicKey: z.string().length(212).startsWith(pemHeader).endsWith(pemFooter), // See exportPublicKey() in web-crypto.ts
 		meta: z.string().max(100_000), // Validation is loose by design. Meta is encrypted on client.
 		content: z.string().min(1, m.orange_each_goldfish_amuse()).max(100_000), // Validation is loose by design. Content is encrypted on client.
+		publicNote: z.string().max(150).optional(),
 		password: z
 			.string()
 			.min(6, m.aloof_careful_trout_dine({ number: 6 }))

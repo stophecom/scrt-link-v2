@@ -63,7 +63,7 @@
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {
-			const { content, password, expiresIn, meta, secretIdHash, publicKey } = $formData;
+			const { content, password, expiresIn, meta, secretIdHash, publicKey, publicNote } = $formData;
 
 			// Encrypt secret before submitting
 			let encryptedMeta =
@@ -88,6 +88,7 @@
 				meta: encryptedMeta,
 				content: encryptedContent,
 				publicKey,
+				publicNote,
 				expiresIn,
 				password
 			};
@@ -260,6 +261,18 @@
 					label={m.noble_whole_hornet_evoke()}
 				/>
 			</Form.Fieldset>
+
+			{#if user}
+				<Form.Field {form} name="publicNote">
+					<Text
+						label={m.only_basic_buzzard_kiss()}
+						description={m.north_these_lemming_enchant()}
+						placeholder={m.this_gaudy_skate_yell()}
+						bind:value={$formData.publicNote}
+						{...$constraints.publicNote}
+					/>
+				</Form.Field>
+			{/if}
 
 			{#if secretType === SecretType.NEOGRAM && isNeogramAllowed}
 				<Label for="neogramCountdownTime">{m.due_super_halibut_snap()}</Label>

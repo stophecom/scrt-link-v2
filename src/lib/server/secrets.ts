@@ -13,7 +13,7 @@ type SaveSecret = {
 	host?: string;
 };
 export const saveSecret = async ({ userId, secretRequest, host }: SaveSecret) => {
-	const { content, password, secretIdHash, meta, expiresIn, publicKey } = secretRequest;
+	const { content, publicNote, password, secretIdHash, meta, expiresIn, publicKey } = secretRequest;
 
 	let whiteLabelSiteId;
 
@@ -40,6 +40,7 @@ export const saveSecret = async ({ userId, secretRequest, host }: SaveSecret) =>
 			secretIdHash,
 			meta,
 			content,
+			publicNote,
 			passwordHash,
 			expiresAt: new Date(Date.now() + expiresIn),
 			publicKey,

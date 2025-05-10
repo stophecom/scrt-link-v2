@@ -48,3 +48,40 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		error(400, m.pretty_swift_parrot_ask());
 	}
 };
+
+// Only available for users with account
+export const DELETE: RequestHandler = async ({ params, locals }) => {
+	// Using receipt id
+	const secretReceiptId = params.id;
+
+	if (!locals.user) {
+		error(405, 'Not allowed. You need to be signed in.');
+	}
+
+	try {
+		if (!secretReceiptId) {
+			throw Error('No secret id provided.');
+		}
+
+		const [result] = await db.select().from(secret).where(eq(secret.receiptId, secretReceiptId));
+
+		if (!result) {
+			throw Error(`No secret with receipt id ${secretReceiptId} found.`);
+		}
+
+		if (result.userId !== locals.user.id) {
+			throw Error(`User is not owner of the secret you try to delete.`);
+		}
+
+		// We update secret, and mark as retrieved.
+		await db
+			.update(secret)
+			.set({ retrievedAt: new Date(), meta: null, content: null })
+			.where(eq(secret.receiptId, secretReceiptId));
+
+		return json({ message: m.petty_alive_albatross_stir() });
+	} catch (e) {
+		console.error(e);
+		return error(400, 'Not able to destroy secret.');
+	}
+};

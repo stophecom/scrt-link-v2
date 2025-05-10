@@ -1,11 +1,11 @@
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { db } from '$lib/server/db';
-import { whiteLabelSite } from '$lib/server/db/schema';
+import { type Secret, secret, whiteLabelSite } from '$lib/server/db/schema';
 import {
 	createAPIToken,
 	logout,
@@ -15,8 +15,10 @@ import {
 	saveUser,
 	saveWhiteLabelMeta
 } from '$lib/server/form/actions';
+import { postSecret } from '$lib/server/form/actions';
 import {
 	apiKeyFormValidator,
+	secretFormValidator,
 	settingsFormValidator,
 	themeFormValidator,
 	userFormValidator
@@ -34,6 +36,26 @@ export const load: PageServerLoad = async (event) => {
 	const user = event.locals.user;
 
 	const apiKeys = await getActiveApiKeys(user.id);
+
+	let secrets: ({ destroyed: boolean } & Pick<
+		Secret,
+		'receiptId' | 'expiresAt' | 'retrievedAt' | 'publicNote'
+	>)[] = [];
+	const secretList = await db
+		.select()
+		.from(secret)
+		.where(eq(secret.userId, user.id))
+		.orderBy(desc(secret.expiresAt));
+
+	if (secretList.length) {
+		secrets = secretList.map(({ receiptId, expiresAt, retrievedAt, publicNote, meta }) => ({
+			receiptId,
+			expiresAt,
+			retrievedAt,
+			publicNote,
+			destroyed: !meta
+		}));
+	}
 
 	const [whiteLabel] = await db
 		.select()
@@ -55,7 +77,9 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		user: user,
 		apiKeys: apiKeys,
+		secrets: secrets,
 		whiteLabelDomain: whiteLabel?.customDomain,
+		secretForm: await secretFormValidator(),
 		themeForm: await themeFormValidator(user),
 		settingsForm: await settingsFormValidator(user),
 		userForm: await userFormValidator(user),
@@ -69,6 +93,7 @@ export const actions: Actions = {
 	saveTheme: saveTheme,
 	saveSettings: saveSettings,
 	saveUser: saveUser,
+	postSecret: postSecret,
 	saveWhiteLabelMeta: saveWhiteLabelMeta,
 	createAPIToken: createAPIToken,
 	revokeAPIToken: revokeAPIToken,

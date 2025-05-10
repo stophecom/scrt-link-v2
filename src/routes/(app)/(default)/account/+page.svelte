@@ -28,6 +28,7 @@
 	import type { LayoutServerData } from '../../$types';
 	import type { PageServerData } from './$types';
 	import AccountCard from './account-card.svelte';
+	import SecretsCard from './secrets-card.svelte';
 
 	let { data }: { data: PageServerData & LayoutServerData } = $props();
 
@@ -53,8 +54,9 @@
 	lead={m.gray_quiet_tern_bubble()}
 >
 	<Container>
-		<Tabs.Root value="account">
+		<Tabs.Root value="secrets">
 			<Tabs.List class="mb-2">
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="secrets">My secrets</Tabs.Trigger>
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="account"
 					>{m.super_flaky_wallaby_pick()}</Tabs.Trigger
 				>
@@ -65,6 +67,9 @@
 					>{TierOptions.SECRET_SERVICE}</Tabs.Trigger
 				>
 			</Tabs.List>
+			<Tabs.Content value="secrets">
+				<SecretsCard secrets={data.secrets} secretForm={data.secretForm} user={data.user} />
+			</Tabs.Content>
 			<Tabs.Content value="account">
 				{#if user.role === Role.ADMIN}
 					<Card class="mb-6" title="Admin">
