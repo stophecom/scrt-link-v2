@@ -535,7 +535,7 @@
 	"true_knotty_canary_work": "Receipt ID",
 	"fit_acidic_samuel_sway": "Status",
 	"top_fancy_mink_loop": "Destroy",
-	"zesty_caring_jurgen_support": "After a secret is viewed or expires, we retain minimal metadata for up to 30 days. After that, all remaining traces are permanently deleted.",
+	"zesty_caring_jurgen_support": "After a secret is viewed or expires, we retain minimal metadata for up to 7 days. After that, all remaining traces are permanently deleted.",
 	"polite_weird_chicken_buy": "Note:",
 	"round_slow_hyena_pause": "Create secret link",
 	"that_deft_alpaca_type": "Are you sure you want to destroy secret with Receipt ID **{receiptId}**?",

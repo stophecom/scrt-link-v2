@@ -100,7 +100,7 @@
 			<Table.Row>
 				<Table.Head class="w-[140px]">{m.true_knotty_canary_work()}</Table.Head>
 				<Table.Head>{m.elegant_slimy_zebra_fulfill()}</Table.Head>
-				<Table.Head>{m.fit_acidic_samuel_sway()}*</Table.Head>
+				<Table.Head>{m.fit_acidic_samuel_sway()}</Table.Head>
 				<Table.Head class="text-right">{m.top_fancy_mink_loop()}</Table.Head>
 			</Table.Row>
 		</Table.Header>

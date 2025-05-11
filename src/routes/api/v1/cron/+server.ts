@@ -66,15 +66,16 @@ export const GET: RequestHandler = async ({ request }) => {
 			}
 		}
 
-		// Delete secrets that have been retrieved older than 1 days
-		const deleteRetrievedSecretsBeforeDate = subtractDays(new Date(), 1);
+		// Delete secrets that have been retrieved older than 7 days
+		const deleteRetrievedSecretsBeforeDate = subtractDays(new Date(), 7);
+		const deleteExpiredSecretsBeforeDate = subtractDays(new Date(), 7);
 
 		const deletedSecrets = await db
 			.delete(secretSchema)
 			.where(
 				or(
 					lte(secretSchema.retrievedAt, deleteRetrievedSecretsBeforeDate),
-					lte(secretSchema.expiresAt, new Date()) // Expired secrets
+					lte(secretSchema.expiresAt, deleteExpiredSecretsBeforeDate) // Expired secrets
 				)
 			)
 			.returning();
