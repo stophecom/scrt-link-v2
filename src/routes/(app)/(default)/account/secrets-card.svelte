@@ -98,10 +98,10 @@
 		>
 		<Table.Header>
 			<Table.Row>
-				<Table.Head class="w-[140px]">{m.true_knotty_canary_work()}</Table.Head>
+				<Table.Head>{m.true_knotty_canary_work()}</Table.Head>
 				<Table.Head>{m.elegant_slimy_zebra_fulfill()}</Table.Head>
 				<Table.Head>{m.fit_acidic_samuel_sway()}</Table.Head>
-				<Table.Head class="text-right">{m.top_fancy_mink_loop()}</Table.Head>
+				<Table.Head>{m.top_fancy_mink_loop()}</Table.Head>
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
@@ -116,7 +116,7 @@
 						{/if}
 					</Table.Cell>
 					<Table.Cell>{@render renderStatus(secret)}</Table.Cell>
-					<Table.Cell class="text-right">
+					<Table.Cell>
 						{#if !secret.retrievedAt && secret.expiresAt > currentDate}
 							<Dialog.Root bind:open={isConfirmationDialogOpen}>
 								<Dialog.Trigger class="text-destructive inline-flex p-1 hover:underline">
