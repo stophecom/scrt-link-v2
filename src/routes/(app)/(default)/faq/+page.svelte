@@ -6,7 +6,12 @@
 	import { m } from '$lib/paraglide/messages.js';
 </script>
 
-<Page title={m.few_awful_chipmunk_trust()} lead={m.stock_keen_marten_commend()}>
+<Page
+	title={m.few_awful_chipmunk_trust()}
+	lead={m.stock_keen_marten_commend()}
+	metaDescription={m.silly_vivid_chipmunk_amuse()}
+	metaKeywords={m.many_pink_opossum_tear()}
+>
 	<Container>
 		{#each faqCategories() as item}
 			<h2 class="mt-20 mb-2 text-2xl leading-snug font-bold md:text-3xl">{item.title}</h2>

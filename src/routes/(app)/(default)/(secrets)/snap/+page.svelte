@@ -10,7 +10,12 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title={m.awake_big_halibut_view()} lead={m.misty_north_hedgehog_breathe()}>
+<Page
+	title={m.awake_big_halibut_view()}
+	lead={m.misty_north_hedgehog_breathe()}
+	metaDescription={m.tired_equal_meerkat_lead()}
+	metaKeywords={m.spry_few_horse_drum()}
+>
 	<Container>
 		<CreateSecret form={data.secretForm} user={data.user} secretTypes={[SecretType.SNAP]} />
 	</Container>

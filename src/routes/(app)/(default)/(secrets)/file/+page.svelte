@@ -10,7 +10,12 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title={m.sad_zippy_squirrel_scoop()} lead={m.pretty_clear_pig_dare()}>
+<Page
+	title={m.heavy_such_turkey_cuddle()}
+	lead={m.top_full_gopher_approve()}
+	metaDescription={m.male_dizzy_wallaby_urge()}
+	metaKeywords={m.same_wild_bat_hint()}
+>
 	<Container>
 		<CreateSecret form={data.secretForm} user={data.user} secretTypes={[SecretType.FILE]} />
 	</Container>

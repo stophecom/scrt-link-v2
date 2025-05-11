@@ -10,7 +10,12 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title={'Neogram'} lead={m.white_tame_clownfish_scoop()}>
+<Page
+	title={'Neogram'}
+	lead={m.white_tame_clownfish_scoop()}
+	metaDescription={m.active_dirty_cheetah_roar()}
+	metaKeywords={m.petty_ago_gibbon_enchant()}
+>
 	<Container>
 		<CreateSecret form={data.secretForm} user={data.user} secretTypes={[SecretType.NEOGRAM]} />
 	</Container>

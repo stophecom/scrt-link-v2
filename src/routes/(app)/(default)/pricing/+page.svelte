@@ -18,7 +18,14 @@
 	let { data } = $props();
 </script>
 
-<Page wide title={m.moving_quaint_buzzard_trip()} lead={m.slimy_next_shad_fall()} class="pb-0">
+<Page
+	wide
+	title={m.moving_quaint_buzzard_trip()}
+	lead={m.slimy_next_shad_fall()}
+	metaDescription={m.extra_minor_lark_clip()}
+	metaKeywords={m.vivid_hour_starfish_fear()}
+	class="pb-0"
+>
 	<Container variant="wide" class="mb-6 sm:py-10">
 		{#if data.plans}
 			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
