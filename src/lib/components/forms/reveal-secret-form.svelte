@@ -214,7 +214,7 @@
 				/>
 			{:else}
 				<!-- Secret Type: Text -->
-				<div class="whitespace-pre">
+				<div class="break-words whitespace-pre-wrap">
 					{content}
 				</div>
 				<div class="flex items-center justify-end pt-2">
