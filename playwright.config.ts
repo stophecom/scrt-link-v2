@@ -13,7 +13,7 @@ const config: PlaywrightTestConfig = {
 		screenshot: 'only-on-failure'
 	},
 	webServer: {
-		command: 'VERCEL_URL=http://localhost:4173 pnpm run build && pnpm run preview',
+		command: 'VERCEL_URL=http://localhost:5173 pnpm run build && pnpm run preview',
 		port: 4173
 	},
 	testDir: 'e2e'
@@ -28,7 +28,7 @@ const configPublished: PlaywrightTestConfig = {
 		},
 		video: 'off',
 		screenshot: 'only-on-failure',
-		baseURL: process.env.VERCEL_URL || 'http://localhost:4173'
+		baseURL: process.env.VERCEL_URL || 'http://localhost:5173'
 	},
 
 	testDir: 'e2e'
