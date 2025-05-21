@@ -23,6 +23,9 @@ const config: PlaywrightTestConfig = {
 const configPublished: PlaywrightTestConfig = {
 	timeout: 10000,
 	use: {
+		extraHTTPHeaders: {
+			'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+		},
 		contextOptions: {
 			permissions: ['clipboard-read', 'clipboard-write']
 		},
