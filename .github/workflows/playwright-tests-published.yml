@@ -22,6 +22,7 @@ jobs:
         if: github.event.deployment_status.environment != 'Production'
         run: npx playwright test
         env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
           PUBLIC_ENV: preview
           VERCEL_URL: ${{ github.event.deployment_status.target_url }}
           DEBUG: pw:api
