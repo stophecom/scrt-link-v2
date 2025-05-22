@@ -18,13 +18,7 @@ test.afterAll(async () => {
 test('File upload ', async ({ baseURL }) => {
 	await page.goto('/file');
 
-	const [fileChooser] = await Promise.all([
-		// It is important to call waitForEvent before click to set up waiting.
-		page.waitForEvent('filechooser'),
-		// Opens the file chooser.
-		page.locator("input[type='file']").click()
-	]);
-	await fileChooser.setFiles(['src/app.html']);
+	await page.locator("input[type='file']").setInputFiles('src/app.html');
 
 	await page.getByTestId('secret-form-submit').click();
 	await page.getByTestId('copy-link').click();
