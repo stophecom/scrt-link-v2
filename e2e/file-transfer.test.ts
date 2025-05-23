@@ -18,7 +18,15 @@ test.afterAll(async () => {
 test('File upload ', async ({ baseURL }) => {
 	await page.goto('/file');
 
+	page.on('request', (request) => console.log('>>', request.method(), request.url()));
+	page.on('response', (response) => console.log('<<', response.status(), response.url()));
+	const responsePromise = page.waitForResponse(
+		'https://scrt-link-v2-development.os.zrh1.flow.swiss'
+	);
 	await page.locator("input[type='file']").setInputFiles('src/app.html');
+
+	const response = await responsePromise;
+	console.log(response);
 
 	await page.getByTestId('secret-form-submit').click();
 	await page.getByTestId('copy-link').click();
