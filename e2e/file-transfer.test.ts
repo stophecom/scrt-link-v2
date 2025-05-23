@@ -18,10 +18,11 @@ test.afterAll(async () => {
 test('File upload ', async ({ baseURL }) => {
 	await page.goto('/file');
 
-	page.on('request', (request) => console.log('>>', request.method(), request.url()));
+	// page.on('request', (request) => console.log('>>', request.method(), request.url()));
 	page.on('response', (response) => console.log('<<', response.status(), response.url()));
 	const responsePromise = page.waitForResponse(
-		'https://scrt-link-v2-development.os.zrh1.flow.swiss'
+		'https://scrt-link-v2-development.os.zrh1.flow.swiss/',
+		{ timeout: 30000 }
 	);
 	await page.locator("input[type='file']").setInputFiles('src/app.html');
 
