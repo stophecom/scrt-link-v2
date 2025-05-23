@@ -21,7 +21,7 @@ const config: PlaywrightTestConfig = {
 
 // Runs on published websites
 const configPublished: PlaywrightTestConfig = {
-	timeout: 10000,
+	// timeout: 10000,
 	use: {
 		extraHTTPHeaders: {
 			'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET

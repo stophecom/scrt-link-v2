@@ -21,8 +21,7 @@ test('File upload ', async ({ baseURL }) => {
 	// page.on('request', (request) => console.log('>>', request.method(), request.url()));
 	page.on('response', (response) => console.log('<<', response.status(), response.url()));
 	const responsePromise = page.waitForResponse(
-		'https://scrt-link-v2-development.os.zrh1.flow.swiss/',
-		{ timeout: 30000 }
+		'https://scrt-link-v2-development.os.zrh1.flow.swiss/'
 	);
 	await page.locator("input[type='file']").setInputFiles('src/app.html');
 
