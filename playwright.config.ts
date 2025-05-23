@@ -29,7 +29,7 @@ const configPublished: PlaywrightTestConfig = {
 		contextOptions: {
 			permissions: ['clipboard-read', 'clipboard-write']
 		},
-		video: 'off',
+		video: 'on',
 		screenshot: 'only-on-failure',
 		baseURL: process.env.VERCEL_URL || 'http://localhost:5173'
 	},

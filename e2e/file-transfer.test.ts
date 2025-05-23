@@ -20,14 +20,6 @@ test('File upload ', async ({ baseURL }) => {
 
 	await page.locator("input[type='file']").setInputFiles('src/app.html');
 
-	// TEST
-	await page.waitForFunction(() => {
-		const btn = document.querySelector(
-			'[data-testid="secret-form-submit"]'
-		) as HTMLButtonElement | null;
-		return btn && !btn.disabled;
-	});
-
 	await page.getByTestId('secret-form-submit').click();
 	await page.getByTestId('copy-link').click();
 	secretUrl = await page.evaluate(() => navigator.clipboard.readText());
