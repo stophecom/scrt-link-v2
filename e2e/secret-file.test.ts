@@ -15,6 +15,7 @@ test.afterAll(async () => {
 	await page.close();
 });
 
+// For some reason tests fail on vercel build. @todo further investigate.
 test.skip('File upload ', async ({ baseURL }) => {
 	await page.goto('/file');
 
