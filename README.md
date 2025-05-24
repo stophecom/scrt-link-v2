@@ -146,6 +146,14 @@ stripe trigger payment_intent.succeeded
 In order to ship with confidence we run a set of tests during and after the deployment.
 See `playwright-tests-published.yml` for more info.
 
+### Bypass Vercel Environment Protection
+
+By default Vercel preview builds are protected and therefore can't be accessed by e2e-tests.
+Solution:
+
+- https://community.vercel.com/t/github-vercel-playwright-e2e-using-automation-bypass-secret/1093/2
+- [Vercel Docs](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation)
+
 ## API
 
 Since all secrets need to be encrypted on the client, the API relies on proper client-side handling. Therefore, API validation is not very strict.

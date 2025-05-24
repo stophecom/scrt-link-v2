@@ -191,7 +191,7 @@
 </script>
 
 {#if error}
-	<Alert data-testid="download-error" class="mt-4 mb-4" variant="destructive">
+	<Alert class="mt-4 mb-4" variant="destructive">
 		{error}
 	</Alert>
 {/if}
@@ -214,7 +214,7 @@
 				/>
 			{:else}
 				<!-- Secret Type: Text -->
-				<div class="break-words whitespace-pre-wrap">
+				<div class="break-words whitespace-pre-wrap" data-testid="secret-revelation-content">
 					{content}
 				</div>
 				<div class="flex items-center justify-end pt-2">
@@ -250,8 +250,11 @@
 					<input type="hidden" name="secretIdHash" value={secretIdHash} />
 
 					<div class="py-4">
-						<Form.Button delayed={$delayed} class="w-full" size="lg"
-							>{m.same_gaudy_iguana_bend()}</Form.Button
+						<Form.Button
+							data-testid="revelation-form-submit"
+							delayed={$delayed}
+							class="w-full"
+							size="lg">{m.same_gaudy_iguana_bend()}</Form.Button
 						>
 					</div>
 				</form>

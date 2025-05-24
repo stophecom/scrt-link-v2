@@ -180,6 +180,7 @@
 								{charactersLeft}
 								{...$constraints.content}
 								maxlength={planLimits.text}
+								data-testid="input-secret-content"
 							/>
 						</Form.Field>
 					{/if}
@@ -298,8 +299,11 @@
 				>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 				<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
 			>
-			<Form.Button delayed={$delayed} class="sm:ml-auto " disabled={isButtonDisabled}
-				>{m.lazy_mealy_vole_harbor()}</Form.Button
+			<Form.Button
+				data-testid="secret-form-submit"
+				delayed={$delayed || isFileUploading}
+				class="sm:ml-auto "
+				disabled={isButtonDisabled}>{m.lazy_mealy_vole_harbor()}</Form.Button
 			>
 		</div>
 	</form>

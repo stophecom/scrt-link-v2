@@ -13,7 +13,7 @@ const config: PlaywrightTestConfig = {
 		screenshot: 'only-on-failure'
 	},
 	webServer: {
-		command: 'VERCEL_URL=http://localhost:4173 pnpm run build && pnpm run preview',
+		command: 'VERCEL_URL=http://localhost:5173 pnpm run build && pnpm run preview',
 		port: 4173
 	},
 	testDir: 'e2e'
@@ -21,14 +21,17 @@ const config: PlaywrightTestConfig = {
 
 // Runs on published websites
 const configPublished: PlaywrightTestConfig = {
-	timeout: 10000,
+	// timeout: 10000,
 	use: {
+		extraHTTPHeaders: {
+			'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+		},
 		contextOptions: {
 			permissions: ['clipboard-read', 'clipboard-write']
 		},
-		video: 'off',
+		video: 'on',
 		screenshot: 'only-on-failure',
-		baseURL: process.env.VERCEL_URL || 'http://localhost:4173'
+		baseURL: process.env.VERCEL_URL || 'http://localhost:5173'
 	},
 
 	testDir: 'e2e'

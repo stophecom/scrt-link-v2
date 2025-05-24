@@ -48,7 +48,7 @@
 		<Spinner />
 	</div>
 {:else if error}
-	<Alert class="my-6" title="Error" variant="destructive">{error}</Alert>
+	<Alert data-testid="alert-error" class="my-6" title="Error" variant="destructive">{error}</Alert>
 {:else}
 	<RevealSecretForm {form} {masterKey} {secretIdHash} {showPasswordInput} />
 {/if}
