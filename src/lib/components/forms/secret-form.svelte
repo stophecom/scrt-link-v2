@@ -180,6 +180,7 @@
 								{charactersLeft}
 								{...$constraints.content}
 								maxlength={planLimits.text}
+								data-testid="input-secret-content"
 							/>
 						</Form.Field>
 					{/if}

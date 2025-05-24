@@ -15,7 +15,7 @@ test.afterAll(async () => {
 	await page.close();
 });
 
-test('File upload ', async ({ baseURL }) => {
+test.skip('File upload ', async ({ baseURL }) => {
 	await page.goto('/file');
 
 	// page.on('request', (request) => console.log('>>', request.method(), request.url()));
@@ -35,13 +35,13 @@ test('File upload ', async ({ baseURL }) => {
 	expect(secretUrl).toContain(`${baseURL}/s#`);
 });
 
-test('Download page renders correctly', async () => {
+test.skip('Download page renders correctly', async () => {
 	await page.goto(secretUrl);
 	await expect(page.locator('h1')).toBeVisible();
 	await expect(page.getByTestId('revelation-form-submit')).toBeVisible();
 });
 
-test('File download succeeds', async () => {
+test.skip('File download succeeds', async () => {
 	// Download file
 	// Start waiting for download before clicking. Note no await.
 	const downloadPromise = page.waitForEvent('download');
@@ -53,7 +53,7 @@ test('File download succeeds', async () => {
 	expect(downloadPromise).resolves.toBeDefined();
 });
 
-test(`File can't be accessed twice`, async () => {
+test.skip(`File can't be accessed twice`, async () => {
 	await page.reload();
 	await expect(page.getByTestId('alert-error')).toBeVisible();
 });

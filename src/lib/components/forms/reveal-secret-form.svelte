@@ -214,7 +214,7 @@
 				/>
 			{:else}
 				<!-- Secret Type: Text -->
-				<div class="break-words whitespace-pre-wrap">
+				<div class="break-words whitespace-pre-wrap" data-testid="secret-revelation-content">
 					{content}
 				</div>
 				<div class="flex items-center justify-end pt-2">
