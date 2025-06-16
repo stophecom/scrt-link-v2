@@ -4,6 +4,7 @@ import {
 	jsonb,
 	pgEnum,
 	pgTable,
+	primaryKey,
 	serial,
 	smallint,
 	text,
@@ -11,7 +12,13 @@ import {
 	uuid
 } from 'drizzle-orm/pg-core';
 
-import { ReadReceiptOptions, Role, SecretType, TierOptions } from '../../data/enums';
+import {
+	MembershipRole,
+	ReadReceiptOptions,
+	Role,
+	SecretType,
+	TierOptions
+} from '../../data/enums';
 
 export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,
@@ -66,10 +73,34 @@ export const secretTypeEnum = pgEnum('secret_type_enum', [
 	SecretType.NEOGRAM
 ]);
 
+export const organization = pgTable('organization', {
+	id: uuid('id').primaryKey().defaultRandom(),
+	name: text('name').notNull(),
+	createdBy: uuid('created_by').references(() => user.id)
+});
+
+export const membershipRole = pgEnum('membership_role', [
+	MembershipRole.MEMBER,
+	MembershipRole.OWNER
+]);
+
+export const membership = pgTable(
+	'membership',
+	{
+		userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }),
+		organizationId: uuid('organization_id').references(() => organization.id, {
+			onDelete: 'cascade'
+		}),
+		role: membershipRole().default(MembershipRole.MEMBER)
+	},
+	(table) => [primaryKey({ columns: [table.userId, table.organizationId] })]
+);
+
 export const whiteLabelSite = pgTable('white_label_site', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	customDomain: text('custom_domain').unique(),
 	published: boolean('published'),
+	private: boolean('private'),
 	name: text('name'),
 	locale: text('locale'),
 	theme: jsonb('theme'),
@@ -83,6 +114,7 @@ export const whiteLabelSite = pgTable('white_label_site', {
 	updatedAt: timestamp('updated_at', { mode: 'date' })
 		.notNull()
 		.$onUpdate(() => new Date()),
+	organizationId: uuid('organization_id').references(() => organization.id),
 	userId: uuid('user_id')
 		.notNull()
 		.unique()
