@@ -8,6 +8,8 @@ import { db } from '$lib/server/db';
 import { type Secret, secret, whiteLabelSite } from '$lib/server/db/schema';
 import {
 	createAPIToken,
+	createOrganization,
+	editOrganization,
 	logout,
 	revokeAPIToken,
 	saveSettings,
@@ -23,8 +25,8 @@ import {
 	themeFormValidator,
 	userFormValidator
 } from '$lib/server/form/validators';
-import { getActiveApiKeys } from '$lib/server/user';
-import { whiteLabelMetaSchema } from '$lib/validators/formSchemas';
+import { getActiveApiKeys, getOrganizationsByUser } from '$lib/server/user';
+import { organizationFormSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
 import { actions as secretActions } from '../+page.server';
 import type { Actions, PageServerLoad } from './$types';
@@ -74,10 +76,18 @@ export const load: PageServerLoad = async (event) => {
 		);
 	};
 
+	const userOrganizations = await getOrganizationsByUser(user.id);
+
+	const organizationFormValidator = async () => {
+		return await superValidate(zod(organizationFormSchema()), { errors: false });
+	};
+
 	return {
 		user: user,
 		apiKeys: apiKeys,
 		secrets: secrets,
+		userOrganizations: userOrganizations,
+		organizationForm: await organizationFormValidator(),
 		whiteLabelDomain: whiteLabel?.customDomain,
 		secretForm: await secretFormValidator(),
 		themeForm: await themeFormValidator(user),
@@ -96,6 +106,8 @@ export const actions: Actions = {
 	postSecret: postSecret,
 	saveWhiteLabelMeta: saveWhiteLabelMeta,
 	createAPIToken: createAPIToken,
+	createOrganization: createOrganization,
+	editOrganization: editOrganization,
 	revokeAPIToken: revokeAPIToken,
 	logout: logout
 };

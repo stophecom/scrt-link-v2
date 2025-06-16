@@ -28,6 +28,7 @@
 	import type { LayoutServerData } from '../../$types';
 	import type { PageServerData } from './$types';
 	import AccountCard from './account-card.svelte';
+	import OrganizationCard from './organization-card.svelte';
 	import SecretsCard from './secrets-card.svelte';
 
 	let { data }: { data: PageServerData & LayoutServerData } = $props();
@@ -63,7 +64,7 @@
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="api"
 					>{m.super_funny_jackal_pause()}</Tabs.Trigger
 				>
-				<Tabs.Trigger class="data-[state=active]:bg-muted" value="whiteLabel"
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="secretService"
 					>{TierOptions.SECRET_SERVICE}</Tabs.Trigger
 				>
 			</Tabs.List>
@@ -183,7 +184,15 @@
 					>
 				</Card>
 			</Tabs.Content>
-			<Tabs.Content value="whiteLabel">
+			<Tabs.Content value="secretService">
+				{#if planLimits.whiteLabel}
+					<OrganizationCard
+						{user}
+						organizations={data.userOrganizations}
+						form={data.organizationForm}
+					/>
+				{/if}
+
 				<Card
 					class="mb-6"
 					title={m.big_next_tortoise_ascend()}

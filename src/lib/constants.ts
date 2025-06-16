@@ -20,3 +20,4 @@ export const getBaseUrl = () => {
 
 export const FILE_RETENTION_PERIOD_IN_DAYS = 30;
 export const MAX_API_KEYS_PER_USER = 5;
+export const MAX_ORGANIZATIONS_PER_USER = 1;

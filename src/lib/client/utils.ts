@@ -86,3 +86,7 @@ export const sendMessageToServiceWorker = <T>(msg: Record<string, unknown>): Pro
 		navigator?.serviceWorker?.controller?.postMessage(msg, [channel.port2]);
 	});
 };
+
+export function wait(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}

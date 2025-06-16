@@ -4,8 +4,9 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { MAX_API_KEYS_PER_USER } from '$lib/constants';
+import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
+import { MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { addDomainToVercel, removeDomainFromVercelProject, validDomainRegex } from '$lib/domains';
@@ -17,6 +18,8 @@ import { db } from '$lib/server/db';
 import {
 	apiKey,
 	emailVerificationRequest,
+	membership,
+	organization,
 	user as userSchema,
 	userSettings,
 	whiteLabelSite
@@ -27,6 +30,7 @@ import {
 	apiKeyFormSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
+	organizationFormSchema,
 	passwordFormSchema,
 	secretFormSchema,
 	settingsFormSchema,
@@ -48,7 +52,8 @@ import {
 	checkIfUserExists,
 	checkIsEmailVerified,
 	createOrUpdateUser,
-	getActiveApiKeys
+	getActiveApiKeys,
+	getOrganizationsByUser
 } from '../user';
 
 export const postSecret: Action = async (event) => {
@@ -172,7 +177,101 @@ export const saveUser: Action = async (event) => {
 
 	return message(form, {
 		status: 'success',
-		title: 'Saved'
+		title: m.brief_wide_macaw_learn()
+	});
+};
+
+export const createOrganization: Action = async (event) => {
+	const form = await superValidate(event.request, zod(organizationFormSchema()));
+
+	const { name } = form.data;
+
+	const user = event.locals.user;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+	const userOrganizations = await getOrganizationsByUser(user.id);
+
+	// Too many organizations
+	if (userOrganizations.length >= MAX_ORGANIZATIONS_PER_USER) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.plane_solid_shrike_coax(),
+				description: m.merry_suave_bullock_race({ amount: MAX_ORGANIZATIONS_PER_USER })
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
+	const [organizationResult] = await db
+		.insert(organization)
+		.values({
+			createdBy: user.id,
+			name
+		})
+		.returning();
+
+	// Add creator as owner
+	await db.insert(membership).values({
+		userId: user.id,
+		organizationId: organizationResult.id,
+		role: MembershipRole.OWNER
+	});
+
+	return message(form, {
+		status: 'success',
+		title: 'Organization created'
+	});
+};
+
+export const editOrganization: Action = async (event) => {
+	const form = await superValidate(event.request, zod(organizationFormSchema()));
+
+	const { name, id } = form.data;
+
+	const user = event.locals.user;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+	const userOrganizations = await getOrganizationsByUser(user.id);
+
+	if (!id || !userOrganizations.length || !userOrganizations.some((item) => item.id === id)) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Not allowed'
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
+	await db
+		.update(organization)
+		.set({
+			name
+		})
+		.where(eq(organization.id, id));
+
+	return message(form, {
+		status: 'success',
+		title: m.this_good_parakeet_grasp()
 	});
 };
 

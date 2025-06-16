@@ -92,6 +92,15 @@ export const userFormSchema = () =>
 			.max(30)
 	});
 
+export const organizationFormSchema = () =>
+	z.object({
+		name: z
+			.string()
+			.min(2, m.minor_noble_cowfish_relish({ number: 2 }))
+			.max(30),
+		id: z.string().optional()
+	});
+
 export const whiteLabelMetaSchema = () =>
 	z.object({
 		customDomain: z.string().max(30),
@@ -184,6 +193,7 @@ export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
 export type SecretFormSchema = z.infer<ReturnType<typeof secretFormSchema>>;
 export type UserFormSchema = z.infer<ReturnType<typeof userFormSchema>>;
+export type OrganizationFormSchema = z.infer<ReturnType<typeof organizationFormSchema>>;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;
 export type RevealSecretFormSchema = z.infer<ReturnType<typeof revealSecretFormSchema>>;

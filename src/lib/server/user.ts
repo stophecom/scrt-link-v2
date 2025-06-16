@@ -3,7 +3,14 @@ import { and, eq } from 'drizzle-orm';
 import type { PartialExcept } from '$lib/typescript-helpers';
 
 import { db } from './db';
-import { apiKey, type User, user as userSchema, userSettings } from './db/schema';
+import {
+	apiKey,
+	membership,
+	organization,
+	type User,
+	user as userSchema,
+	userSettings
+} from './db/schema';
 import { addContactToAudience } from './resend';
 import stripeInstance from './stripe';
 import { sendWelcomeEmail } from './transactional-email';
@@ -95,3 +102,14 @@ export const getActiveApiKeys = async (userId: User['id']) =>
 		.select()
 		.from(apiKey)
 		.where(and(eq(apiKey.userId, userId), eq(apiKey.revoked, false)));
+
+export const getOrganizationsByUser = async (userId: User['id']) =>
+	await db
+		.select({
+			id: organization.id,
+			name: organization.name,
+			role: membership.role
+		})
+		.from(membership)
+		.innerJoin(organization, eq(membership.organizationId, organization.id))
+		.where(eq(membership.userId, userId));
