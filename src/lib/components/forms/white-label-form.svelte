@@ -2,7 +2,7 @@
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import { Palette, RefreshCcw, Save, SquareArrowUpRight } from 'lucide-svelte';
 	import { derived } from 'svelte/store';
-	import { superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { stringProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { api } from '$lib/api';
@@ -19,14 +19,17 @@
 	import Separator from '../ui/separator/separator.svelte';
 	import Spinner from '../ui/spinner/spinner.svelte';
 	import Checkboxes from './form-fields/checkboxes.svelte';
+	import RadioGroup from './form-fields/radio-group.svelte';
+	import Switch from './form-fields/switch.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
 		form: SuperValidated<WhiteLabelMetaSchema>;
 		whiteLabelDomain: string | null;
+		organizationIdOptions: { value: string; label: string }[];
 	};
 
-	let { form: formProp, whiteLabelDomain }: Props = $props();
+	let { form: formProp, organizationIdOptions, whiteLabelDomain }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zodClient(whiteLabelMetaSchema()),
@@ -38,6 +41,7 @@
 		onSubmit() {
 			queryClient.fetchQuery({ queryKey: ['domain-verification'] });
 		},
+
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
@@ -50,6 +54,7 @@
 
 	const { form: formData, message, delayed, constraints, enhance, errors } = form;
 
+	const organizationIdProxy = stringProxy(form, 'organizationId', { empty: 'null' }); // Cast to string
 	// Queries
 	const queryClient = useQueryClient();
 
@@ -147,6 +152,21 @@
 			</Alert>
 		{/if}
 
+		<Form.Field {form} name="isPrivate" class="py-4">
+			<Switch bind:checked={$formData.isPrivate} label={m.quaint_careful_ostrich_buy()} />
+			<Form.Description>{m.mealy_keen_felix_believe()}</Form.Description>
+		</Form.Field>
+		{#if $formData.isPrivate}
+			<Form.Fieldset {form} name="organizationId">
+				<RadioGroup
+					options={organizationIdOptions}
+					bind:value={$organizationIdProxy}
+					label={m.north_bright_tadpole_laugh()}
+				/>
+			</Form.Fieldset>
+			<!-- @todo Unclear why the hidden input is necessary. -->
+			<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
+		{/if}
 		<div class="pt-4">
 			<Form.Button delayed={$delayed}
 				><Save class="me-2 h-4 w-4" /> {m.caring_light_tiger_taste()}</Form.Button

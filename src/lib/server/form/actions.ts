@@ -660,6 +660,7 @@ export const revokeAPIToken: Action = async (event) => {
 
 export const saveWhiteLabelMeta: Action = async (event) => {
 	const form = await superValidate(event.request, zod(whiteLabelMetaSchema()));
+	console.log(form);
 	if (!form.valid) {
 		return fail(400, { form });
 	}
@@ -683,7 +684,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		);
 	}
 
-	const { locale, customDomain, name, enabledSecretTypes } = form.data;
+	const { locale, customDomain, isPrivate, name, enabledSecretTypes, organizationId } = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(
@@ -736,6 +737,8 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 				locale: locale,
 				customDomain,
 				name,
+				private: isPrivate,
+				organizationId: organizationId || null,
 				enabledSecretTypes,
 				userId: user.id
 			})
@@ -745,6 +748,8 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 					locale,
 					customDomain,
 					name,
+					private: isPrivate,
+					organizationId: organizationId || null,
 					enabledSecretTypes
 				}
 			});

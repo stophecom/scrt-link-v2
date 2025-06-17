@@ -4,6 +4,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
+import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { type Secret, secret, whiteLabelSite } from '$lib/server/db/schema';
 import {
@@ -73,6 +74,8 @@ export const load: PageServerLoad = async (event) => {
 			{
 				name: whiteLabel?.name || '',
 				customDomain: whiteLabel?.customDomain || '',
+				organizationId: whiteLabel?.organizationId || '',
+				isPrivate: whiteLabel?.private || false,
 				locale: whiteLabel?.locale || DEFAULT_LOCALE,
 				enabledSecretTypes: whiteLabel?.enabledSecretTypes || [SecretType.TEXT, SecretType.FILE]
 			},
@@ -81,10 +84,17 @@ export const load: PageServerLoad = async (event) => {
 	};
 
 	const userOrganizations = await getOrganizationsByUser(user.id);
-	const userOrganization = userOrganizations[0]; // We allow (and assume) only one organization
 
-	const membersByOrganization = await getMembersByOrganization(userOrganization.id);
+	console.log(userOrganizations);
 
+	let userOrganization: Awaited<ReturnType<typeof getOrganizationsByUser>>[0] | null = null;
+	let membersByOrganization: Awaited<ReturnType<typeof getMembersByOrganization>> = [];
+
+	if (userOrganizations.length) {
+		userOrganization = userOrganizations[0]; // We allow (and assume) only one organization
+
+		membersByOrganization = await getMembersByOrganization(userOrganization.id);
+	}
 	const organizationFormValidator = async () => {
 		return await superValidate(
 			{ id: userOrganization?.id, name: userOrganization?.name },
@@ -95,11 +105,29 @@ export const load: PageServerLoad = async (event) => {
 		);
 	};
 
+	const getOrganizationIdOptions = () => [
+		{
+			value: '',
+			label: m.fuzzy_cool_ape_blend()
+		},
+		...(userOrganization
+			? [
+					{
+						value: userOrganization.id,
+						label: m.elegant_whole_swallow_edit({ organization: userOrganization.name })
+					}
+				]
+			: [])
+	];
+
 	return {
 		user: user,
 		apiKeys: apiKeys,
 		secrets: secrets,
-		userOrganization: { ...userOrganization, members: membersByOrganization },
+		organizationIdOptions: getOrganizationIdOptions(),
+		userOrganization: userOrganization
+			? { ...userOrganization, members: membersByOrganization }
+			: null,
 		organizationForm: await organizationFormValidator(),
 		whiteLabelDomain: whiteLabel?.customDomain,
 		secretForm: await secretFormValidator(),

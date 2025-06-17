@@ -105,11 +105,13 @@ export const whiteLabelMetaSchema = () =>
 	z.object({
 		customDomain: z.string().max(30),
 		name: z.string().max(30),
+		organizationId: z.string().nullable(),
+		isPrivate: z.boolean(),
 		locale: z.enum(getSupportedLocales() as [string, ...string[]]),
 		enabledSecretTypes: z
 			.array(z.nativeEnum(SecretType))
 			.refine((value) => value.some((item) => item), {
-				message: 'You have to select at least one item.'
+				message: m.slow_mushy_rook_shine()
 			})
 	});
 
