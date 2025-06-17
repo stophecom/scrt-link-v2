@@ -188,7 +188,7 @@
 				{#if planLimits.whiteLabel}
 					<OrganizationCard
 						{user}
-						organizations={data.userOrganizations}
+						organization={data.userOrganization}
 						form={data.organizationForm}
 					/>
 				{/if}

@@ -25,7 +25,11 @@ import {
 	themeFormValidator,
 	userFormValidator
 } from '$lib/server/form/validators';
-import { getActiveApiKeys, getOrganizationsByUser } from '$lib/server/user';
+import {
+	getActiveApiKeys,
+	getMembersByOrganization,
+	getOrganizationsByUser
+} from '$lib/server/user';
 import { organizationFormSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
 import { actions as secretActions } from '../+page.server';
@@ -77,16 +81,25 @@ export const load: PageServerLoad = async (event) => {
 	};
 
 	const userOrganizations = await getOrganizationsByUser(user.id);
+	const userOrganization = userOrganizations[0]; // We allow (and assume) only one organization
+
+	const membersByOrganization = await getMembersByOrganization(userOrganization.id);
 
 	const organizationFormValidator = async () => {
-		return await superValidate(zod(organizationFormSchema()), { errors: false });
+		return await superValidate(
+			{ id: userOrganization?.id, name: userOrganization?.name },
+			zod(organizationFormSchema()),
+			{
+				errors: false
+			}
+		);
 	};
 
 	return {
 		user: user,
 		apiKeys: apiKeys,
 		secrets: secrets,
-		userOrganizations: userOrganizations,
+		userOrganization: { ...userOrganization, members: membersByOrganization },
 		organizationForm: await organizationFormValidator(),
 		whiteLabelDomain: whiteLabel?.customDomain,
 		secretForm: await secretFormValidator(),

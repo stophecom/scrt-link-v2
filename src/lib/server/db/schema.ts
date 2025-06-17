@@ -177,6 +177,7 @@ export const stats = pgTable('stats', {
 });
 
 export type User = typeof user.$inferSelect;
+export type Organization = typeof organization.$inferSelect;
 export type UserSettings = typeof userSettings.$inferSelect;
 export type Session = typeof session.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;

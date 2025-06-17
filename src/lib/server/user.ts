@@ -6,6 +6,7 @@ import { db } from './db';
 import {
 	apiKey,
 	membership,
+	type Organization,
 	organization,
 	type User,
 	user as userSchema,
@@ -113,3 +114,15 @@ export const getOrganizationsByUser = async (userId: User['id']) =>
 		.from(membership)
 		.innerJoin(organization, eq(membership.organizationId, organization.id))
 		.where(eq(membership.userId, userId));
+
+export const getMembersByOrganization = async (organizationId: Organization['id']) =>
+	await db
+		.select({
+			id: userSchema.id,
+			name: userSchema.name,
+			email: userSchema.email,
+			role: membership.role
+		})
+		.from(membership)
+		.innerJoin(userSchema, eq(membership.userId, userSchema.id))
+		.where(eq(membership.organizationId, organizationId));
