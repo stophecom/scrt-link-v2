@@ -26,20 +26,22 @@
 </script>
 
 {#if organization}
-	<Card class="mb-6" title={organization.name} description={'Manage your organization.'}>
+	<Card class="mb-6" title={organization.name} description={m.tense_witty_gecko_relish()}>
 		<Table.Root>
 			<Table.Header>
 				<Table.Row>
-					<Table.Head>{'Member'}</Table.Head>
-					<Table.Head>{'E-Mail'}</Table.Head>
-					<Table.Head>{'Role'}</Table.Head>
+					<Table.Head>{m.cuddly_flat_salmon_express()}</Table.Head>
+					<Table.Head>{m.maroon_quaint_shell_bend()}</Table.Head>
+					<Table.Head>{m.bad_close_anaconda_forgive()}</Table.Head>
 					<Table.Head></Table.Head>
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
 				{#each organization.members as member}
 					<Table.Row>
-						<Table.Cell class="font-medium">{member.name || 'Anonymous'}</Table.Cell>
+						<Table.Cell class="font-medium"
+							>{member.name || m.witty_wise_grebe_empower()}</Table.Cell
+						>
 						<Table.Cell>{member.email}</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
 
@@ -52,7 +54,7 @@
 		<Separator class="my-6" />
 		<Dialog.Root bind:open>
 			<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
-				>{'Edit organization'}</Dialog.Trigger
+				>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
 			>
 			<Dialog.Content class="sm:max-w-[425px]">
 				<Dialog.Header>
@@ -71,11 +73,7 @@
 		</Dialog.Root>
 	</Card>
 {:else}
-	<Card
-		class="mb-6"
-		title={'My Organization'}
-		description={'With an organization you can manage private access to your secret service.'}
-	>
+	<Card class="mb-6" title={m.drab_dark_squirrel_fetch()} description={m.fresh_bad_midge_explore()}>
 		<OrganizationForm {form} formAction="?/createOrganization" />
 	</Card>
 {/if}
