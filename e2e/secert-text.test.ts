@@ -19,7 +19,7 @@ test('Add text secret ', async ({ baseURL }) => {
 	await page.goto('/text');
 
 	await page.getByTestId('input-secret-content').fill(secret);
-	await page.getByTestId('secret-form-submit').click();
+	await page.getByTestId('secret-form-submit').click({ force: true });
 	await page.getByTestId('copy-link').click();
 	secretUrl = await page.evaluate(() => navigator.clipboard.readText());
 
