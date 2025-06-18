@@ -45,6 +45,8 @@
 
 	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 
+	const isAdminFlag = $derived(user.role === Role.ADMIN);
+
 	const hidePremiumPromo = new PersistedState<boolean>('hidePremiumPromo', false);
 </script>
 
@@ -72,7 +74,7 @@
 				<SecretsCard secrets={data.secrets} secretForm={data.secretForm} user={data.user} />
 			</Tabs.Content>
 			<Tabs.Content value="account">
-				{#if user.role === Role.ADMIN}
+				{#if isAdminFlag}
 					<Card class="mb-6" title="Admin">
 						<Button variant="outline" class="me-2 mb-6" href={localizeHref('/admin')}
 							>Admin Panel</Button
@@ -185,7 +187,7 @@
 				</Card>
 			</Tabs.Content>
 			<Tabs.Content value="secretService">
-				{#if planLimits.whiteLabel}
+				{#if planLimits.whiteLabel && isAdminFlag}
 					<OrganizationCard
 						{user}
 						organization={data.userOrganization}
@@ -200,6 +202,7 @@
 				>
 					{#if planLimits.whiteLabel}
 						<WhiteLabelForm
+							{isAdminFlag}
 							organizationIdOptions={data.organizationIdOptions}
 							form={data.whiteLabelForm}
 							whiteLabelDomain={data.whiteLabelDomain}

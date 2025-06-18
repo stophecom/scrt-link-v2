@@ -85,8 +85,6 @@ export const load: PageServerLoad = async (event) => {
 
 	const userOrganizations = await getOrganizationsByUser(user.id);
 
-	console.log(userOrganizations);
-
 	let userOrganization: Awaited<ReturnType<typeof getOrganizationsByUser>>[0] | null = null;
 	let membersByOrganization: Awaited<ReturnType<typeof getMembersByOrganization>> = [];
 

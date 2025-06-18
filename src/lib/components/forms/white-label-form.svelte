@@ -24,12 +24,13 @@
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
+		isAdminFlag: boolean;
 		form: SuperValidated<WhiteLabelMetaSchema>;
 		whiteLabelDomain: string | null;
 		organizationIdOptions: { value: string; label: string }[];
 	};
 
-	let { form: formProp, organizationIdOptions, whiteLabelDomain }: Props = $props();
+	let { isAdminFlag, form: formProp, organizationIdOptions, whiteLabelDomain }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zodClient(whiteLabelMetaSchema()),
@@ -152,20 +153,22 @@
 			</Alert>
 		{/if}
 
-		<Form.Field {form} name="isPrivate" class="py-4">
-			<Switch bind:checked={$formData.isPrivate} label={m.quaint_careful_ostrich_buy()} />
-			<Form.Description>{m.mealy_keen_felix_believe()}</Form.Description>
-		</Form.Field>
-		{#if $formData.isPrivate}
-			<Form.Fieldset {form} name="organizationId">
-				<RadioGroup
-					options={organizationIdOptions}
-					bind:value={$organizationIdProxy}
-					label={m.north_bright_tadpole_laugh()}
-				/>
-			</Form.Fieldset>
-			<!-- @todo Unclear why the hidden input is necessary. -->
-			<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
+		{#if isAdminFlag}
+			<Form.Field {form} name="isPrivate" class="py-4">
+				<Switch bind:checked={$formData.isPrivate} label={m.quaint_careful_ostrich_buy()} />
+				<Form.Description>{m.mealy_keen_felix_believe()}</Form.Description>
+			</Form.Field>
+			{#if $formData.isPrivate}
+				<Form.Fieldset {form} name="organizationId">
+					<RadioGroup
+						options={organizationIdOptions}
+						bind:value={$organizationIdProxy}
+						label={m.north_bright_tadpole_laugh()}
+					/>
+				</Form.Fieldset>
+				<!-- @todo Unclear why the hidden input is necessary. -->
+				<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
+			{/if}
 		{/if}
 		<div class="pt-4">
 			<Form.Button delayed={$delayed}
