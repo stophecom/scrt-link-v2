@@ -12,9 +12,14 @@ export enum ReadReceiptOptions {
 	NTFY = 'ntfy'
 }
 
+// @todo Refactor names
 export enum Role {
 	USER = 'user',
 	ADMIN = 'admin'
+}
+export enum MembershipRole {
+	MEMBER = 'Member',
+	OWNER = 'Owner'
 }
 
 export enum TierOptions {

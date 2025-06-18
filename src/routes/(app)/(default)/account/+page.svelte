@@ -28,6 +28,7 @@
 	import type { LayoutServerData } from '../../$types';
 	import type { PageServerData } from './$types';
 	import AccountCard from './account-card.svelte';
+	import OrganizationCard from './organization-card.svelte';
 	import SecretsCard from './secrets-card.svelte';
 
 	let { data }: { data: PageServerData & LayoutServerData } = $props();
@@ -43,6 +44,8 @@
 	];
 
 	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+
+	const isAdminFlag = $derived(user.role === Role.ADMIN);
 
 	const hidePremiumPromo = new PersistedState<boolean>('hidePremiumPromo', false);
 </script>
@@ -63,7 +66,7 @@
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="api"
 					>{m.super_funny_jackal_pause()}</Tabs.Trigger
 				>
-				<Tabs.Trigger class="data-[state=active]:bg-muted" value="whiteLabel"
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="secretService"
 					>{TierOptions.SECRET_SERVICE}</Tabs.Trigger
 				>
 			</Tabs.List>
@@ -71,7 +74,7 @@
 				<SecretsCard secrets={data.secrets} secretForm={data.secretForm} user={data.user} />
 			</Tabs.Content>
 			<Tabs.Content value="account">
-				{#if user.role === Role.ADMIN}
+				{#if isAdminFlag}
 					<Card class="mb-6" title="Admin">
 						<Button variant="outline" class="me-2 mb-6" href={localizeHref('/admin')}
 							>Admin Panel</Button
@@ -183,14 +186,27 @@
 					>
 				</Card>
 			</Tabs.Content>
-			<Tabs.Content value="whiteLabel">
+			<Tabs.Content value="secretService">
+				{#if planLimits.whiteLabel && isAdminFlag}
+					<OrganizationCard
+						{user}
+						organization={data.userOrganization}
+						form={data.organizationForm}
+					/>
+				{/if}
+
 				<Card
 					class="mb-6"
 					title={m.big_next_tortoise_ascend()}
 					description={m.solid_north_ostrich_cheer()}
 				>
 					{#if planLimits.whiteLabel}
-						<WhiteLabelForm form={data.whiteLabelForm} whiteLabelDomain={data.whiteLabelDomain} />
+						<WhiteLabelForm
+							{isAdminFlag}
+							organizationIdOptions={data.organizationIdOptions}
+							form={data.whiteLabelForm}
+							whiteLabelDomain={data.whiteLabelDomain}
+						/>
 					{:else}
 						<div class="text-destructive mb-2">{m.slow_zesty_whale_type()}</div>
 						<Button href={localizeHref('/business')}>{m.only_weird_walrus_promise()}</Button>

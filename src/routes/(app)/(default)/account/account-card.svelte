@@ -2,6 +2,7 @@
 	import BadgeCheck from 'lucide-svelte/icons/badge-check';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
+	import { wait } from '$lib/client/utils';
 	import UserForm from '$lib/components/forms/user-form.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
@@ -13,10 +14,6 @@
 	import type { UserFormSchema } from '$lib/validators/formSchemas';
 
 	let { user, form }: { user: App.Locals['user']; form: SuperValidated<UserFormSchema> } = $props();
-
-	function wait(ms: number) {
-		return new Promise((resolve) => setTimeout(resolve, ms));
-	}
 
 	let open = $state(false);
 </script>

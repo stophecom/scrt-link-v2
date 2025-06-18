@@ -4,10 +4,13 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
+import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { type Secret, secret, whiteLabelSite } from '$lib/server/db/schema';
 import {
 	createAPIToken,
+	createOrganization,
+	editOrganization,
 	logout,
 	revokeAPIToken,
 	saveSettings,
@@ -23,8 +26,12 @@ import {
 	themeFormValidator,
 	userFormValidator
 } from '$lib/server/form/validators';
-import { getActiveApiKeys } from '$lib/server/user';
-import { whiteLabelMetaSchema } from '$lib/validators/formSchemas';
+import {
+	getActiveApiKeys,
+	getMembersByOrganization,
+	getOrganizationsByUser
+} from '$lib/server/user';
+import { organizationFormSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
 import { actions as secretActions } from '../+page.server';
 import type { Actions, PageServerLoad } from './$types';
@@ -67,6 +74,8 @@ export const load: PageServerLoad = async (event) => {
 			{
 				name: whiteLabel?.name || '',
 				customDomain: whiteLabel?.customDomain || '',
+				organizationId: whiteLabel?.organizationId || '',
+				isPrivate: whiteLabel?.private || false,
 				locale: whiteLabel?.locale || DEFAULT_LOCALE,
 				enabledSecretTypes: whiteLabel?.enabledSecretTypes || [SecretType.TEXT, SecretType.FILE]
 			},
@@ -74,10 +83,50 @@ export const load: PageServerLoad = async (event) => {
 		);
 	};
 
+	const userOrganizations = await getOrganizationsByUser(user.id);
+
+	let userOrganization: Awaited<ReturnType<typeof getOrganizationsByUser>>[0] | null = null;
+	let membersByOrganization: Awaited<ReturnType<typeof getMembersByOrganization>> = [];
+
+	if (userOrganizations.length) {
+		userOrganization = userOrganizations[0]; // We allow (and assume) only one organization
+
+		membersByOrganization = await getMembersByOrganization(userOrganization.id);
+	}
+	const organizationFormValidator = async () => {
+		return await superValidate(
+			{ id: userOrganization?.id, name: userOrganization?.name },
+			zod(organizationFormSchema()),
+			{
+				errors: false
+			}
+		);
+	};
+
+	const getOrganizationIdOptions = () => [
+		{
+			value: '',
+			label: m.fuzzy_cool_ape_blend()
+		},
+		...(userOrganization
+			? [
+					{
+						value: userOrganization.id,
+						label: m.elegant_whole_swallow_edit({ organization: userOrganization.name })
+					}
+				]
+			: [])
+	];
+
 	return {
 		user: user,
 		apiKeys: apiKeys,
 		secrets: secrets,
+		organizationIdOptions: getOrganizationIdOptions(),
+		userOrganization: userOrganization
+			? { ...userOrganization, members: membersByOrganization }
+			: null,
+		organizationForm: await organizationFormValidator(),
 		whiteLabelDomain: whiteLabel?.customDomain,
 		secretForm: await secretFormValidator(),
 		themeForm: await themeFormValidator(user),
@@ -96,6 +145,8 @@ export const actions: Actions = {
 	postSecret: postSecret,
 	saveWhiteLabelMeta: saveWhiteLabelMeta,
 	createAPIToken: createAPIToken,
+	createOrganization: createOrganization,
+	editOrganization: editOrganization,
 	revokeAPIToken: revokeAPIToken,
 	logout: logout
 };

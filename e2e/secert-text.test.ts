@@ -19,7 +19,16 @@ test('Add text secret ', async ({ baseURL }) => {
 	await page.goto('/text');
 
 	await page.getByTestId('input-secret-content').fill(secret);
+
+	await expect(page.getByTestId('secret-form-submit')).toBeEnabled();
 	await page.getByTestId('secret-form-submit').click();
+
+	page.on('response', (response) => {
+		if (response.status() === 400) {
+			console.log('<< 400 BAD REQUEST:', response.url());
+		}
+	});
+
 	await page.getByTestId('copy-link').click();
 	secretUrl = await page.evaluate(() => navigator.clipboard.readText());
 
