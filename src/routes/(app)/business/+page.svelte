@@ -7,8 +7,8 @@
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Hero from '$lib/components/blocks/hero.svelte';
 	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
+	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import PageWrapper from '$lib/components/page/page-wrapper.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';

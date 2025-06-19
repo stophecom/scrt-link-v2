@@ -10,9 +10,9 @@
 	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
 
 	import { emailSupport } from '../../data/app';
-	import PageLead from './page-lead.svelte';
-	import PageTitle from './page-title.svelte';
-	import PageWrapper from './page-wrapper.svelte';
+	import PageLead from '../blocks/page-lead.svelte';
+	import PageTitle from '../blocks/page-title.svelte';
+	import PageWrapper from '../blocks/page-wrapper.svelte';
 
 	type Props = {
 		title: string;

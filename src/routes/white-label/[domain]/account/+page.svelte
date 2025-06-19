@@ -2,7 +2,7 @@
 	import LogOut from 'lucide-svelte/icons/log-out';
 	import { mode } from 'mode-watcher';
 
-	import WhiteLabelPage from '$lib/components/page/white-label-page.svelte';
+	import { WhiteLabelPage } from '$lib/components/page';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { m } from '$lib/paraglide/messages.js';

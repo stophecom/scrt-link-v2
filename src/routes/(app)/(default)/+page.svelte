@@ -5,7 +5,7 @@
 	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import Page from '$lib/components/page/page.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';

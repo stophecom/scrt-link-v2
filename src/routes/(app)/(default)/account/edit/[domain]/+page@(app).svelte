@@ -14,13 +14,13 @@
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
 	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
+	import PageLead from '$lib/components/blocks/page-lead.svelte';
+	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import Color from '$lib/components/forms/form-fields/color.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
 	import Switch from '$lib/components/forms/form-fields/switch.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
-	import PageLead from '$lib/components/page/page-lead.svelte';
-	import PageTitle from '$lib/components/page/page-title.svelte';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';

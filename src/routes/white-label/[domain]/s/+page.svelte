@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { mode } from 'mode-watcher';
 
-	import SPage from '$lib/components/page/s-page.svelte';
-	import WhiteLabelPage from '$lib/components/page/white-label-page.svelte';
+	import { WhiteLabelPage } from '$lib/components/page';
+	import { SPage } from '$lib/components/pages';
 	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';

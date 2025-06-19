@@ -5,8 +5,8 @@
 	import { cn } from '$lib/client/utils';
 	import { Container } from '$lib/components/ui/container';
 
-	import PageLead from '../page/page-lead.svelte';
-	import PageTitle from '../page/page-title.svelte';
+	import PageLead from './page-lead.svelte';
+	import PageTitle from './page-title.svelte';
 
 	type Props = {
 		title: string;

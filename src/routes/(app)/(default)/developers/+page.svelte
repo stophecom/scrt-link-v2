@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Page from '$lib/components/page/page.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 	import apiDocs from '$lib/data/docs/api.md?raw';

@@ -10,7 +10,7 @@
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';
 	import WhiteLabelForm from '$lib/components/forms/white-label-form.svelte';
-	import Page from '$lib/components/page/page.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
 	import Container from '$lib/components/ui/container/container.svelte';
