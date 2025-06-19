@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
-	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
+	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import LanguageSwitcher from '$lib/components/ui/language-switcher';

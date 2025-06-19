@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { mode } from 'mode-watcher';
 
-	import CreateSecret from '$lib/components/elements/create-secret.svelte';
+	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import WhiteLabelPage from '$lib/components/page/white-label-page.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 	import { m } from '$lib/paraglide/messages.js';

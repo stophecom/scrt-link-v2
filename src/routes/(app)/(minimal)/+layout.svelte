@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import Header from '$lib/components/elements/header.svelte';
+	import Header from '$lib/components/blocks/header.svelte';
 
 	import type { LayoutData } from './$types';
 

@@ -4,7 +4,7 @@
 
 	import { invalidateAll } from '$app/navigation';
 	import { api } from '$lib/api';
-	import CreateSecret from '$lib/components/elements/create-secret.svelte';
+	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';

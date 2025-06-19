@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { Code, Lock, MessageCircleQuestion } from 'lucide-svelte';
 
-	import AndroidFrame from '$lib/components/elements/android-frame.svelte';
-	import ApiPreview from '$lib/components/elements/api-preview.svelte';
-	import CreateSecret from '$lib/components/elements/create-secret.svelte';
-	import FeatureCard from '$lib/components/elements/feature-card.svelte';
-	import Hero from '$lib/components/elements/hero.svelte';
-	import HowItWorks from '$lib/components/elements/how-it-works.svelte';
+	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
+	import ApiPreview from '$lib/components/blocks/api-preview.svelte';
+	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
+	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
+	import Hero from '$lib/components/blocks/hero.svelte';
+	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import PageWrapper from '$lib/components/page/page-wrapper.svelte';
 	import Accordion from '$lib/components/ui/accordion';

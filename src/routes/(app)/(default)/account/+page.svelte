@@ -4,8 +4,8 @@
 	import { PersistedState } from 'runed';
 
 	import { enhance } from '$app/forms';
-	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
-	import UpgradeNotice from '$lib/components/elements/upgrade-notice.svelte';
+	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
+	import UpgradeNotice from '$lib/components/blocks/upgrade-notice.svelte';
 	import ApiTokenForm from '$lib/components/forms/api-token-form.svelte';
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';

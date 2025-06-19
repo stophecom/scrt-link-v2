@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	import Footer from '$lib/components/elements/footer.svelte';
-	import Header from '$lib/components/elements/header.svelte';
+	import Footer from '$lib/components/blocks/footer.svelte';
+	import Header from '$lib/components/blocks/header.svelte';
 
 	import type { LayoutData } from './$types';
 

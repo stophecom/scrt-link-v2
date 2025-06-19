@@ -12,8 +12,8 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
-	import AndroidFrame from '$lib/components/elements/android-frame.svelte';
-	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
+	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
+	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
 	import Color from '$lib/components/forms/form-fields/color.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/file-upload.svelte';
 	import Switch from '$lib/components/forms/form-fields/switch.svelte';
