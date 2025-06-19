@@ -1,27 +1,26 @@
 <script lang="ts">
 	import LogOut from 'lucide-svelte/icons/log-out';
+	import { mode } from 'mode-watcher';
 
-	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
-	import SettingsForm from '$lib/components/forms/settings-form.svelte';
-	import ThemeForm from '$lib/components/forms/theme-form.svelte';
-	import Page from '$lib/components/page/page.svelte';
+	import WhiteLabelPage from '$lib/components/page/white-label-page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import Card from '$lib/components/ui/card';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { m } from '$lib/paraglide/messages.js';
 
 	import SecretsCard from '../../../(app)/(default)/account/secrets-card.svelte';
-	import type { LayoutServerData } from '../../$types';
-	import type { PageServerData } from './$types';
+	import type { PageData } from './$types';
 	import AccountCard from './account-card.svelte';
 
-	let { data }: { data: PageServerData & LayoutServerData } = $props();
+	let { data }: { data: PageData } = $props();
 
 	const { user } = data;
+	let logo = $derived(mode.current === 'dark' ? data.logoDarkMode : data.logo);
 </script>
 
-<Page
+<WhiteLabelPage
+	metaTitle="Account"
+	{logo}
 	title={m.zany_jolly_cuckoo_scoop({
 		name: data.userForm.data.name || m.quiet_long_beaver_scold()
 	})}
@@ -43,21 +42,6 @@
 			<Tabs.Content value="account">
 				<AccountCard {user} form={data.userForm} />
 
-				<Card class="mb-6" title={m.vivid_house_flea_zap()} description={m.wacky_key_vole_roam()}>
-					<SettingsForm {user} form={data.settingsForm} />
-				</Card>
-
-				<Card
-					class="mb-6"
-					title={m.shy_smug_crow_sing()}
-					description={m.left_patchy_piranha_foster()}
-				>
-					<div class="mb-2">
-						<ThemeForm form={data.themeForm} />
-					</div>
-					<DarkModeSwitcher variant="outline" />
-				</Card>
-
 				<form class="flex justify-center" method="post" action="?/logout">
 					<Button type="submit" variant="outline"
 						><LogOut class="me-2 h-4 w-4" />{m.wacky_big_raven_honor()}</Button
@@ -66,4 +50,4 @@
 			</Tabs.Content>
 		</Tabs.Root>
 	</Container>
-</Page>
+</WhiteLabelPage>

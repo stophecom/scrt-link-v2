@@ -3,12 +3,11 @@ import { desc, eq } from 'drizzle-orm';
 import { redirectLocalized } from '$lib/i18n';
 import { db } from '$lib/server/db';
 import { type Secret, secret } from '$lib/server/db/schema';
-import { logout, saveSettings, saveTheme, saveUser } from '$lib/server/form/actions';
+import { logout, saveUser } from '$lib/server/form/actions';
 import { postSecret } from '$lib/server/form/actions';
 import {
 	secretFormValidator,
 	settingsFormValidator,
-	themeFormValidator,
 	userFormValidator
 } from '$lib/server/form/validators';
 
@@ -45,7 +44,6 @@ export const load: PageServerLoad = async (event) => {
 		user: user,
 		secrets: secrets,
 		secretForm: await secretFormValidator(),
-		themeForm: await themeFormValidator(user),
 		settingsForm: await settingsFormValidator(user),
 		userForm: await userFormValidator(user)
 	};
@@ -53,8 +51,6 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	...secretActions,
-	saveTheme: saveTheme,
-	saveSettings: saveSettings,
 	saveUser: saveUser,
 	postSecret: postSecret,
 	logout: logout
