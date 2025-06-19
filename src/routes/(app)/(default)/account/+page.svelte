@@ -59,7 +59,9 @@
 	<Container>
 		<Tabs.Root value="secrets">
 			<Tabs.List class="mb-2">
-				<Tabs.Trigger class="data-[state=active]:bg-muted" value="secrets">My secrets</Tabs.Trigger>
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="secrets"
+					>{m.free_nimble_whale_fry()}</Tabs.Trigger
+				>
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="account"
 					>{m.super_flaky_wallaby_pick()}</Tabs.Trigger
 				>
