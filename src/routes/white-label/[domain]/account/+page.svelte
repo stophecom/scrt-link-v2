@@ -4,7 +4,6 @@
 
 	import WhiteLabelPage from '$lib/components/page/white-label-page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import Container from '$lib/components/ui/container/container.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { m } from '$lib/paraglide/messages.js';
 
@@ -26,28 +25,26 @@
 	})}
 	lead={m.gray_quiet_tern_bubble()}
 >
-	<Container>
-		<Tabs.Root value="secrets">
-			<Tabs.List class="mb-2">
-				<Tabs.Trigger class="data-[state=active]:bg-muted" value="secrets"
-					>{m.free_nimble_whale_fry()}</Tabs.Trigger
-				>
-				<Tabs.Trigger class="data-[state=active]:bg-muted" value="account"
-					>{m.super_flaky_wallaby_pick()}</Tabs.Trigger
-				>
-			</Tabs.List>
-			<Tabs.Content value="secrets">
-				<SecretsCard secrets={data.secrets} secretForm={data.secretForm} user={data.user} />
-			</Tabs.Content>
-			<Tabs.Content value="account">
-				<AccountCard {user} form={data.userForm} />
+	<Tabs.Root value="secrets">
+		<Tabs.List class="mb-2">
+			<Tabs.Trigger class="data-[state=active]:bg-muted" value="secrets"
+				>{m.free_nimble_whale_fry()}</Tabs.Trigger
+			>
+			<Tabs.Trigger class="data-[state=active]:bg-muted" value="account"
+				>{m.super_flaky_wallaby_pick()}</Tabs.Trigger
+			>
+		</Tabs.List>
+		<Tabs.Content value="secrets">
+			<SecretsCard secrets={data.secrets} secretForm={data.secretForm} user={data.user} />
+		</Tabs.Content>
+		<Tabs.Content value="account">
+			<AccountCard {user} form={data.userForm} />
 
-				<form class="flex justify-center" method="post" action="?/logout">
-					<Button type="submit" variant="outline"
-						><LogOut class="me-2 h-4 w-4" />{m.wacky_big_raven_honor()}</Button
-					>
-				</form>
-			</Tabs.Content>
-		</Tabs.Root>
-	</Container>
+			<form class="flex justify-center" method="post" action="?/logout">
+				<Button type="submit" variant="outline"
+					><LogOut class="me-2 h-4 w-4" />{m.wacky_big_raven_honor()}</Button
+				>
+			</form>
+		</Tabs.Content>
+	</Tabs.Root>
 </WhiteLabelPage>
