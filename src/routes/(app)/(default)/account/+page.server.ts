@@ -1,7 +1,8 @@
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq, isNull } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { isOriginalHost } from '$lib/app-routing';
 import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
@@ -36,13 +37,31 @@ import { organizationFormSchema, whiteLabelMetaSchema } from '$lib/validators/fo
 import { actions as secretActions } from '../+page.server';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async (event) => {
-	if (!event.locals.user) {
+export const load: PageServerLoad = async ({ locals, url }) => {
+	const user = locals.user;
+	if (!user) {
 		return redirectLocalized(307, '/signup');
 	}
-	const user = event.locals.user;
 
-	const apiKeys = await getActiveApiKeys(user.id);
+	let whiteLabelSiteId;
+
+	const host = url.host;
+	if (host && !isOriginalHost(host)) {
+		const [whiteLabelResult] = await db
+			.select()
+			.from(whiteLabelSite)
+			.where(eq(whiteLabelSite.customDomain, host));
+
+		whiteLabelSiteId = whiteLabelResult.id;
+	}
+
+	// In case we are on a white-label site, we filter secrets accordingly
+	const conditions = [eq(secret.userId, user.id)];
+	if (whiteLabelSiteId) {
+		conditions.push(eq(secret.whiteLabelSiteId, whiteLabelSiteId));
+	} else {
+		conditions.push(isNull(secret.whiteLabelSiteId));
+	}
 
 	let secrets: ({ destroyed: boolean } & Pick<
 		Secret,
@@ -51,7 +70,7 @@ export const load: PageServerLoad = async (event) => {
 	const secretList = await db
 		.select()
 		.from(secret)
-		.where(eq(secret.userId, user.id))
+		.where(and(...conditions))
 		.orderBy(desc(secret.expiresAt));
 
 	if (secretList.length) {
@@ -117,6 +136,8 @@ export const load: PageServerLoad = async (event) => {
 				]
 			: [])
 	];
+
+	const apiKeys = await getActiveApiKeys(user.id);
 
 	return {
 		user: user,
