@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 import { isOriginalHost } from '$lib/app-routing';
+import { redirectLocalized } from '$lib/i18n';
 import { getLocale } from '$lib/paraglide/runtime';
 import { db } from '$lib/server/db';
 import { whiteLabelSite } from '$lib/server/db/schema';
@@ -11,7 +12,7 @@ import type { LocalizedWhiteLabelMessage } from '$lib/types';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ params, url }) => {
+export const load: PageServerLoad = async ({ params, url, locals }) => {
 	const locale = getLocale();
 
 	const [whiteLabel] = await db
@@ -25,6 +26,11 @@ export const load: PageServerLoad = async ({ params, url }) => {
 
 	if (!isOriginalHost(url.host) && !whiteLabel.published) {
 		throw error(403, `Page is not published.`);
+	}
+
+	// If site is private, force login
+	if (whiteLabel.private && !locals.user) {
+		return redirectLocalized(307, '/login');
 	}
 
 	return {

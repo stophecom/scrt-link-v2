@@ -28,4 +28,4 @@ export const guard: Guard = async ({ locals, url, params }) => {
 
 // Optional redirect for unauthorized users
 // this will be the default for nested sub-routes
-export const reroute = '/signup';
+export const reroute = '/login';
