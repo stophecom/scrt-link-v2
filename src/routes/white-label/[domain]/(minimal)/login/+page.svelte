@@ -1,9 +1,6 @@
 <script lang="ts">
-	import Google from '$lib/assets/images/Google.svg?component';
 	import EmailForm from '$lib/components/forms/email-form.svelte';
 	import { SingleFormPage } from '$lib/components/page';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
@@ -14,11 +11,4 @@
 <SingleFormPage title={m.legal_weak_jay_bless()} description={m.ago_crazy_pelican_pray()}>
 	<EmailForm data={data.emailForm} action="?/loginWithEmail" />
 	<div class="px-5 text-center text-sm">No login yet? Ask your administrator.</div>
-	<div class="py-5">
-		<Separator />
-	</div>
-
-	<Button class="w-full" variant="outline" size="lg" href="/login/google"
-		><Google class="mr-3" />{m.major_noble_snake_drop()}</Button
-	>
 </SingleFormPage>

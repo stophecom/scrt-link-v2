@@ -26,7 +26,7 @@
 <header {...rest}>
 	<Container class="flex justify-between py-3">
 		{#if minimal && logoSrc}
-			<a class="inline-flex h-28 w-44 items-center" href={localizeHref('/')}>
+			<a class="inline-flex h-20 w-36 items-center" href={localizeHref('/')}>
 				<img src={logoSrc} alt={'Logo'} class="max-h-full max-w-full object-contain" />
 			</a>
 		{/if}

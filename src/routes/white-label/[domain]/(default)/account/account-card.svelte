@@ -55,9 +55,5 @@
 		<Button class="mr-2 mb-2" variant="outline" href={localizeHref('/set-password')}
 			>{m.jumpy_factual_mole_hunt()}</Button
 		>
-
-		<Button variant="ghost" href={localizeHref('/delete-account')} class="text-destructive"
-			>{m.home_sharp_jackdaw_endure()}</Button
-		>
 	</div>
 </Card>
