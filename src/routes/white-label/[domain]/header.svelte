@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { mode } from 'mode-watcher';
 	import type { Snippet } from 'svelte';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
@@ -8,14 +9,27 @@
 	import LanguageSwitcher from '$lib/components/ui/language-switcher';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	type Props = { user: App.Locals['user']; children?: Snippet };
+	type Props = {
+		minimal?: boolean;
+		logoDarkMode?: string;
+		logo?: string;
+		user: App.Locals['user'];
+		children?: Snippet;
+	};
 
-	let { children, user, ...rest }: Props & SvelteHTMLElements['header'] = $props();
+	let { minimal, logo, logoDarkMode, user, ...rest }: Props & SvelteHTMLElements['header'] =
+		$props();
+
+	let logoSrc = $derived(mode.current === 'dark' ? logoDarkMode : logo);
 </script>
 
 <header {...rest}>
 	<Container class="flex justify-between py-3">
-		{@render children?.()}
+		{#if minimal && logoSrc}
+			<a class="inline-flex h-28 w-44 items-center" href={localizeHref('/')}>
+				<img src={logoSrc} alt={'Logo'} class="max-h-full max-w-full object-contain" />
+			</a>
+		{/if}
 		<div class="ml-auto flex items-center">
 			<DarkModeSwitcher hideLabel variant="ghost" size="icon" class="me-2" />
 			<LanguageSwitcher />

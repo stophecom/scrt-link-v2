@@ -16,7 +16,7 @@
 	import FormWrapper from './form-wrapper.svelte';
 
 	export let verificationFormData: SuperValidated<Infer<EmailVerificationCodeFormSchema>>;
-	export let resendFormData: SuperValidated<Infer<EmailFormSchema>>;
+	export let resendFormData: SuperValidated<EmailFormSchema>;
 
 	const verificationForm = superForm(verificationFormData, {
 		validators: zodClient(emailVerificationCodeFormSchema()),

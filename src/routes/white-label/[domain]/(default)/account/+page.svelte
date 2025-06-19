@@ -7,7 +7,7 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { m } from '$lib/paraglide/messages.js';
 
-	import SecretsCard from '../../../(app)/(default)/account/secrets-card.svelte';
+	import SecretsCard from '../../../../(app)/(default)/account/secrets-card.svelte';
 	import type { PageData } from './$types';
 	import AccountCard from './account-card.svelte';
 

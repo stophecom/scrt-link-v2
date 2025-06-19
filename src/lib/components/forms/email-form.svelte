@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
@@ -10,7 +10,7 @@
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
-		data: SuperValidated<Infer<EmailFormSchema>>;
+		data: SuperValidated<EmailFormSchema>;
 		buttonLabel?: string;
 		action: string;
 	};

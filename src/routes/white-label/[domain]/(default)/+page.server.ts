@@ -9,7 +9,7 @@ import { postSecret } from '$lib/server/form/actions';
 import { secretFormValidator } from '$lib/server/form/validators';
 import type { LocalizedWhiteLabelMessage } from '$lib/types';
 
-import type { Actions, PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from '../$types';
 
 export const load: PageServerLoad = async ({ params, url }) => {
 	const locale = getLocale();
