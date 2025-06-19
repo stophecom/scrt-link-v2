@@ -1,11 +1,11 @@
-import { eq, sql } from 'drizzle-orm';
+import { and, desc, eq, isNull, sql } from 'drizzle-orm';
 
 import { isOriginalHost } from '$lib/app-routing';
 import { generateRandomUrlSafeString, scryptHash } from '$lib/crypto';
 import type { SecretFormSchema } from '$lib/validators/formSchemas';
 
 import { db } from './db';
-import { secret, stats, whiteLabelSite } from './db/schema';
+import { type Secret, secret, stats, whiteLabelSite } from './db/schema';
 
 type SaveSecret = {
 	userId?: string;
@@ -88,4 +88,51 @@ export const saveSecret = async ({ userId, secretRequest, host }: SaveSecret) =>
 	}
 
 	return { receiptId, expiresIn, expiresAt: result.expiresAt };
+};
+
+type FetchSecrets = {
+	userId: string;
+	host?: string;
+};
+export const fetchSecrets = async ({ userId, host }: FetchSecrets) => {
+	let whiteLabelSiteId;
+
+	if (host && !isOriginalHost(host)) {
+		const [whiteLabelResult] = await db
+			.select()
+			.from(whiteLabelSite)
+			.where(eq(whiteLabelSite.customDomain, host));
+
+		whiteLabelSiteId = whiteLabelResult.id;
+	}
+
+	// In case we are on a white-label site, we filter secrets accordingly
+	const conditions = [eq(secret.userId, userId)];
+
+	if (whiteLabelSiteId) {
+		conditions.push(eq(secret.whiteLabelSiteId, whiteLabelSiteId));
+	} else {
+		conditions.push(isNull(secret.whiteLabelSiteId));
+	}
+
+	let secrets: ({ destroyed: boolean } & Pick<
+		Secret,
+		'receiptId' | 'expiresAt' | 'retrievedAt' | 'publicNote'
+	>)[] = [];
+	const secretList = await db
+		.select()
+		.from(secret)
+		.where(and(...conditions))
+		.orderBy(desc(secret.expiresAt));
+
+	if (secretList.length) {
+		secrets = secretList.map(({ receiptId, expiresAt, retrievedAt, publicNote, meta }) => ({
+			receiptId,
+			expiresAt,
+			retrievedAt,
+			publicNote,
+			destroyed: !meta
+		}));
+	}
+	return secrets;
 };

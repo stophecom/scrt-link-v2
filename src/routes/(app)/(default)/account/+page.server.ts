@@ -1,13 +1,12 @@
-import { and, desc, eq, isNull } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { isOriginalHost } from '$lib/app-routing';
 import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
-import { type Secret, secret, whiteLabelSite } from '$lib/server/db/schema';
+import { whiteLabelSite } from '$lib/server/db/schema';
 import {
 	createAPIToken,
 	createOrganization,
@@ -27,6 +26,7 @@ import {
 	themeFormValidator,
 	userFormValidator
 } from '$lib/server/form/validators';
+import { fetchSecrets } from '$lib/server/secrets';
 import {
 	getActiveApiKeys,
 	getMembersByOrganization,
@@ -43,45 +43,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	let whiteLabelSiteId;
-
-	const host = url.host;
-	if (host && !isOriginalHost(host)) {
-		const [whiteLabelResult] = await db
-			.select()
-			.from(whiteLabelSite)
-			.where(eq(whiteLabelSite.customDomain, host));
-
-		whiteLabelSiteId = whiteLabelResult.id;
-	}
-
-	// In case we are on a white-label site, we filter secrets accordingly
-	const conditions = [eq(secret.userId, user.id)];
-	if (whiteLabelSiteId) {
-		conditions.push(eq(secret.whiteLabelSiteId, whiteLabelSiteId));
-	} else {
-		conditions.push(isNull(secret.whiteLabelSiteId));
-	}
-
-	let secrets: ({ destroyed: boolean } & Pick<
-		Secret,
-		'receiptId' | 'expiresAt' | 'retrievedAt' | 'publicNote'
-	>)[] = [];
-	const secretList = await db
-		.select()
-		.from(secret)
-		.where(and(...conditions))
-		.orderBy(desc(secret.expiresAt));
-
-	if (secretList.length) {
-		secrets = secretList.map(({ receiptId, expiresAt, retrievedAt, publicNote, meta }) => ({
-			receiptId,
-			expiresAt,
-			retrievedAt,
-			publicNote,
-			destroyed: !meta
-		}));
-	}
+	const secrets = fetchSecrets({ userId: user.id, host: url.host });
 
 	const [whiteLabel] = await db
 		.select()

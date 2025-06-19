@@ -1,8 +1,4 @@
-import { desc, eq } from 'drizzle-orm';
-
 import { redirectLocalized } from '$lib/i18n';
-import { db } from '$lib/server/db';
-import { type Secret, secret } from '$lib/server/db/schema';
 import { logout, saveUser } from '$lib/server/form/actions';
 import { postSecret } from '$lib/server/form/actions';
 import {
@@ -10,35 +6,19 @@ import {
 	settingsFormValidator,
 	userFormValidator
 } from '$lib/server/form/validators';
+import { fetchSecrets } from '$lib/server/secrets';
 
 import { actions as secretActions } from '../+page.server';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async (event) => {
-	if (!event.locals.user) {
+export const load: PageServerLoad = async ({ url, locals }) => {
+	const user = locals.user;
+
+	if (!user) {
 		return redirectLocalized(307, '/signup');
 	}
-	const user = event.locals.user;
 
-	let secrets: ({ destroyed: boolean } & Pick<
-		Secret,
-		'receiptId' | 'expiresAt' | 'retrievedAt' | 'publicNote'
-	>)[] = [];
-	const secretList = await db
-		.select()
-		.from(secret)
-		.where(eq(secret.userId, user.id))
-		.orderBy(desc(secret.expiresAt));
-
-	if (secretList.length) {
-		secrets = secretList.map(({ receiptId, expiresAt, retrievedAt, publicNote, meta }) => ({
-			receiptId,
-			expiresAt,
-			retrievedAt,
-			publicNote,
-			destroyed: !meta
-		}));
-	}
+	const secrets = fetchSecrets({ userId: user.id, host: url.host });
 
 	return {
 		user: user,
