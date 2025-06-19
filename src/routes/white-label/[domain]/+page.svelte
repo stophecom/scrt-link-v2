@@ -7,14 +7,12 @@
 	import { m } from '$lib/paraglide/messages.js';
 
 	import type { PageData } from './$types';
-	import Header from './header.svelte';
 
 	let { data }: { data: PageData } = $props();
 
 	let logo = $derived(mode.current === 'dark' ? data.logoDarkMode : data.logo);
 </script>
 
-<Header />
 <WhiteLabelPage
 	name={data?.name}
 	metaTitle={m.active_polite_manatee_support()}

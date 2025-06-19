@@ -7,6 +7,7 @@
 	import { getLocale } from '$lib/paraglide/runtime';
 
 	import type { LayoutData } from './$types';
+	import Header from './header.svelte';
 
 	let { children, data }: { data: LayoutData; children: Snippet } = $props();
 
@@ -48,6 +49,7 @@
 </svelte:head>
 
 <div class="min-h-screen" style="--color-primary: {data.theme?.primaryColor || '#000000'}">
+	<Header user={data.user} />
 	{@render children()}
 
 	<footer class="border-border bg-background border-t py-4 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
