@@ -305,6 +305,28 @@ export const loginWithEmail: Action = async (event) => {
 		return { form };
 	}
 
+	// Restrict login to white-label
+	const host = event.url.host;
+	if (host && !isOriginalHost(host)) {
+		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
+		console.log('not original host', { host, whiteLabelSiteResult });
+
+		// Site is restricted to either user (owner) or members of the assigned organization
+
+		console.log('result', { resultId: result.id, userId: whiteLabelSiteResult.userId });
+		if (result.id !== whiteLabelSiteResult.userId && whiteLabelSiteResult.organizationId) {
+			const members = await getMembersByOrganization(whiteLabelSiteResult.organizationId);
+
+			console.log('members', { members });
+
+			if (!members.some((item) => item.email === email)) {
+				throw Error(
+					`Access is restricted. Only owners or assigned organization members are allowed to login to ${host}`
+				);
+			}
+		}
+	}
+
 	// If user doesn't have a password (e.g. from old version of scrt.link) or email is not verified.
 	if (!result.passwordHash || !result.emailVerified) {
 		// User needs to verify his/her email
@@ -341,22 +363,6 @@ export const loginWithPassword: Action = async (event) => {
 
 	try {
 		const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
-
-		// Restrict login to white-label
-		const host = event.url.host;
-		if (host && !isOriginalHost(host)) {
-			const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
-
-			// Site is restricted to either user (owner) or members of the assigned organization
-			if (result.id !== whiteLabelSiteResult.userId && whiteLabelSiteResult.organizationId) {
-				const members = await getMembersByOrganization(whiteLabelSiteResult.organizationId);
-				if (!members.some((item) => item.email === email)) {
-					throw Error(
-						`Access is restricted. Only owners or assigned organization members are allowed to login to ${host}`
-					);
-				}
-			}
-		}
 
 		if (!result.passwordHash) {
 			throw Error('No password hash in DB.');
