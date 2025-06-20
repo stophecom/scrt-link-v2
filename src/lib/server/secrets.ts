@@ -5,7 +5,8 @@ import { generateRandomUrlSafeString, scryptHash } from '$lib/crypto';
 import type { SecretFormSchema } from '$lib/validators/formSchemas';
 
 import { db } from './db';
-import { type Secret, secret, stats, whiteLabelSite } from './db/schema';
+import { type Secret, secret, stats } from './db/schema';
+import { getWhiteLabelSiteByHost } from './whiteLabelSite';
 
 type SaveSecret = {
 	userId?: string;
@@ -18,12 +19,9 @@ export const saveSecret = async ({ userId, secretRequest, host }: SaveSecret) =>
 	let whiteLabelSiteId;
 
 	if (host && !isOriginalHost(host)) {
-		const [whiteLabelResult] = await db
-			.select()
-			.from(whiteLabelSite)
-			.where(eq(whiteLabelSite.customDomain, host));
+		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
 
-		whiteLabelSiteId = whiteLabelResult.id;
+		whiteLabelSiteId = whiteLabelSiteResult.id;
 	}
 
 	let passwordHash;
@@ -98,10 +96,7 @@ export const fetchSecrets = async ({ userId, host }: FetchSecrets) => {
 	let whiteLabelSiteId;
 
 	if (host && !isOriginalHost(host)) {
-		const [whiteLabelResult] = await db
-			.select()
-			.from(whiteLabelSite)
-			.where(eq(whiteLabelSite.customDomain, host));
+		const whiteLabelResult = await getWhiteLabelSiteByHost(host);
 
 		whiteLabelSiteId = whiteLabelResult.id;
 	}

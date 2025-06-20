@@ -1,12 +1,9 @@
-import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
-import { db } from '$lib/server/db';
-import { whiteLabelSite } from '$lib/server/db/schema';
 import {
 	createAPIToken,
 	createOrganization,
@@ -32,6 +29,7 @@ import {
 	getMembersByOrganization,
 	getOrganizationsByUser
 } from '$lib/server/user';
+import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
 import { organizationFormSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
 import { actions as secretActions } from '../+page.server';
@@ -45,10 +43,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 	const secrets = await fetchSecrets({ userId: user.id, host: url.host });
 
-	const [whiteLabel] = await db
-		.select()
-		.from(whiteLabelSite)
-		.where(eq(whiteLabelSite.userId, user.id));
+	const whiteLabel = await getWhiteLabelSiteByUserId(user.id);
 
 	const whiteLabelFormValidator = async () => {
 		return await superValidate(

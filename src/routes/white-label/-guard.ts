@@ -1,18 +1,13 @@
 import { error } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
 import type { Guard } from 'svelte-guard';
 
 import { isOriginalHost } from '$lib/app-routing';
-import { db } from '$lib/server/db';
-import { whiteLabelSite } from '$lib/server/db/schema';
+import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 
 export const guard: Guard = async ({ locals, url, params }) => {
 	const domainFromParam = params.domain || '';
 
-	const [whiteLabel] = await db
-		.select()
-		.from(whiteLabelSite)
-		.where(eq(whiteLabelSite.customDomain, domainFromParam));
+	const whiteLabel = await getWhiteLabelSiteByHost(domainFromParam);
 
 	if (!whiteLabel) {
 		throw error(500, `No data for ${params.domain} found.`);

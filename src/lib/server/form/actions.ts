@@ -4,6 +4,7 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { isOriginalHost } from '$lib/app-routing';
 import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { MembershipRole } from '$lib/data/enums';
@@ -53,8 +54,10 @@ import {
 	checkIsEmailVerified,
 	createOrUpdateUser,
 	getActiveApiKeys,
+	getMembersByOrganization,
 	getOrganizationsByUser
 } from '../user';
+import { getWhiteLabelSiteByHost, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod(secretFormSchema()));
@@ -338,6 +341,22 @@ export const loginWithPassword: Action = async (event) => {
 
 	try {
 		const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
+
+		// Restrict login to white-label
+		const host = event.url.host;
+		if (host && !isOriginalHost(host)) {
+			const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
+
+			// Site is restricted to either user (owner) or members of the assigned organization
+			if (result.id !== whiteLabelSiteResult.userId && whiteLabelSiteResult.organizationId) {
+				const members = await getMembersByOrganization(whiteLabelSiteResult.organizationId);
+				if (!members.some((item) => item.email === email)) {
+					throw Error(
+						`Access is restricted. Only owners or assigned organization members are allowed to login to ${host}`
+					);
+				}
+			}
+		}
 
 		if (!result.passwordHash) {
 			throw Error('No password hash in DB.');
@@ -699,10 +718,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 	}
 
 	try {
-		const [existing] = await db
-			.select()
-			.from(whiteLabelSite)
-			.where(eq(whiteLabelSite.userId, user.id));
+		const existing = await getWhiteLabelSiteByUserId(user.id);
 
 		// If the domain changed, we remove the existing one from vercel
 		if (existing.customDomain && existing.customDomain !== customDomain) {
@@ -830,10 +846,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		published
 	} = form.data;
 
-	const [existingWhiteLabelSite] = await db
-		.select()
-		.from(whiteLabelSite)
-		.where(eq(whiteLabelSite.userId, user.id));
+	const existingWhiteLabelSite = await getWhiteLabelSiteByUserId(user.id);
 
 	// @todo Delete logo/app icon on S3
 

@@ -4,7 +4,8 @@ import { eq } from 'drizzle-orm';
 
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
-import { secret, whiteLabelSite } from '$lib/server/db/schema';
+import { secret } from '$lib/server/db/schema';
+import { getWhiteLabelSiteById } from '$lib/server/whiteLabelSite';
 
 export const POST: RequestHandler = async ({ params, url }) => {
 	const secretId = params.id;
@@ -31,10 +32,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 
 		if (result?.whiteLabelSiteId) {
-			const [whiteLabelResult] = await db
-				.select()
-				.from(whiteLabelSite)
-				.where(eq(whiteLabelSite.id, result.whiteLabelSiteId));
+			const whiteLabelResult = await getWhiteLabelSiteById(result.whiteLabelSiteId);
 
 			if (host !== whiteLabelResult.customDomain) {
 				throw Error(`Host mismatch. The secret can't get accessed from this host.`);
