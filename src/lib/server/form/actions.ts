@@ -4,7 +4,6 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { isOriginalHost } from '$lib/app-routing';
 import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { MembershipRole } from '$lib/data/enums';
@@ -54,10 +53,9 @@ import {
 	checkIsEmailVerified,
 	createOrUpdateUser,
 	getActiveApiKeys,
-	getMembersByOrganization,
 	getOrganizationsByUser
 } from '../user';
-import { getWhiteLabelSiteByHost, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
+import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod(secretFormSchema()));
@@ -305,6 +303,9 @@ export const loginWithEmail: Action = async (event) => {
 		return { form };
 	}
 
+	// Restrict login to white-label
+	await checkIsUserAllowedOnWhiteLabelSite(event.url.host, result.id);
+
 	// If user doesn't have a password (e.g. from old version of scrt.link) or email is not verified.
 	if (!result.passwordHash || !result.emailVerified) {
 		// User needs to verify his/her email
@@ -343,30 +344,7 @@ export const loginWithPassword: Action = async (event) => {
 		const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
 
 		// Restrict login to white-label
-		const host = event.url.host;
-		if (host && !isOriginalHost(host)) {
-			const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
-
-			// Site is restricted to either user (owner) or members of the assigned organization
-			const isOwner = result.id === whiteLabelSiteResult.userId;
-			const orgId = whiteLabelSiteResult.organizationId;
-
-			if (!isOwner) {
-				if (!orgId) {
-					throw Error(`Access is restricted. No organization assigned to this site.`);
-				}
-				if (whiteLabelSiteResult.organizationId) {
-					const members = await getMembersByOrganization(whiteLabelSiteResult.organizationId);
-					const isMember = members.some((item) => item.email === email);
-
-					if (!isMember) {
-						throw Error(
-							`Access is restricted. Only owners or assigned organization members are allowed to login to ${host}`
-						);
-					}
-				}
-			}
-		}
+		await checkIsUserAllowedOnWhiteLabelSite(event.url.host, result.id);
 
 		if (!result.passwordHash) {
 			throw Error('No password hash in DB.');
