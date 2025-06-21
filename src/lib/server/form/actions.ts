@@ -319,6 +319,7 @@ export const addMemberToOrganization: Action = async (event) => {
 	}
 
 	console.log({ name, organizationId });
+	// @todo Add invitation / team size limit.
 
 	// If scrt.link user exists, we only add to organization.
 	const existingUser = await getUserByEmail(email);
