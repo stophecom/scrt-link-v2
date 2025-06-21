@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { ArrowRight, Check, Rocket, Trash } from '@lucide/svelte';
+	import { Trash } from '@lucide/svelte';
 	import LogOut from '@lucide/svelte/icons/log-out';
-	import { PersistedState } from 'runed';
 
 	import { enhance } from '$app/forms';
 	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
@@ -16,7 +15,6 @@
 	import Container from '$lib/components/ui/container/container.svelte';
 	import CopyButton from '$lib/components/ui/copy-button';
 	import Input from '$lib/components/ui/input/input.svelte';
-	import Markdown from '$lib/components/ui/markdown';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { whiteLabelDemoWebsite } from '$lib/data/app';
@@ -35,19 +33,9 @@
 
 	const { user } = data;
 
-	const premiumFeatures = [
-		m.weary_antsy_lionfish_pat(),
-		m.shy_suave_donkey_gasp(),
-		m.this_ideal_racoon_link(),
-		m.basic_just_camel_clasp(),
-		m.candid_noble_cobra_fetch()
-	];
-
 	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 
 	const isAdminFlag = $derived(user.role === Role.ADMIN);
-
-	const hidePremiumPromo = new PersistedState<boolean>('hidePremiumPromo', false);
 </script>
 
 <Page
@@ -103,34 +91,6 @@
 					</div>
 					<DarkModeSwitcher variant="outline" />
 				</Card>
-
-				{#if !hidePremiumPromo.current}
-					<Card
-						title={m.red_less_tapir_edit()}
-						description={m.few_short_gull_taste()}
-						class="border-primary relative mb-6 border-2"
-					>
-						<Rocket class="absolute top-5 right-5" />
-						<ul class="mb-6">
-							{#each premiumFeatures as item}
-								<li class="flex items-center py-1 sm:text-lg">
-									<Check class="text-primary me-2" />
-									<Markdown markdown={item} />
-								</li>
-							{/each}
-						</ul>
-
-						<div class="grid grid-rows-2 gap-2 sm:flex sm:justify-between">
-							<Button variant="outline" onclick={() => (hidePremiumPromo.current = true)}
-								>{m.proud_awake_shark_drum()}</Button
-							>
-
-							<Button class="sm:ml-auto" href={localizeHref('/pricing')}
-								><ArrowRight class="mr-2 h-5 w-5" />{m.quick_sweet_angelfish_lend()}</Button
-							>
-						</div>
-					</Card>
-				{/if}
 
 				<form class="flex justify-center" method="post" action="?/logout">
 					<Button type="submit" variant="outline"

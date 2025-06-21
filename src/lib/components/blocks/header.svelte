@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { Factory, Plus, User, X } from '@lucide/svelte';
+	import { Factory, Plus, User } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
-	import { PersistedState } from 'runed';
 
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
@@ -23,14 +22,6 @@
 	let { user, minimal, business }: Props = $props();
 
 	let persistHeader = $derived(minimal || business);
-
-	const showBusinessAnnouncement = new PersistedState<boolean>('showBusinessAnnouncement', true);
-
-	const headerHeight = $derived(showBusinessAnnouncement.current ? '104px' : '64px');
-
-	$effect(() => {
-		document.documentElement.style.setProperty('--header-height', headerHeight);
-	});
 </script>
 
 <IntersectionObserver let:intersecting bottom={persistHeader ? 0 : 100}>
@@ -41,25 +32,6 @@
 				? 'bg-transparent'
 				: 'bg-background shadow-sm'}"
 		>
-			{#if showBusinessAnnouncement.current}
-				<div class="bg-primary text-primary-foreground">
-					<Container variant={'wide'} class=" flex h-10 items-center text-xs sm:text-sm">
-						<strong>{m.solid_heroic_ibex_coax()}</strong>
-						<a
-							class="after:bg-primary-foreground before:bg-primary-foreground relative ms-2 inline-block py-2 before:absolute before:bottom-2 before:left-0 before:h-[1px] before:w-full before:opacity-50 after:absolute after:bottom-2 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
-							href={localizeHref('/business')}>{m.soft_tame_niklas_enchant()}</a
-						>
-						<button
-							class="ml-auto block p-2"
-							onclick={() => {
-								showBusinessAnnouncement.current = false;
-							}}
-							><X class="h-5 w-5" /><span class="sr-only">{m.steep_brave_sloth_list()}</span
-							></button
-						>
-					</Container>
-				</div>
-			{/if}
 			<Container variant={'wide'} class="flex h-16 items-center">
 				<a
 					class="flex items-center py-2 transition duration-150 ease-in-out {intersecting &&
