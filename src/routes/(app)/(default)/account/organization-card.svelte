@@ -28,7 +28,8 @@
 		inviteOrganizationMemberForm: SuperValidated<InviteOrganizationMemberFormSchema>;
 	} = $props();
 
-	let open = $state(false);
+	let openDialogName = $state(false);
+	let openDialogInvite = $state(false);
 </script>
 
 {#if organization}
@@ -60,7 +61,7 @@
 		<Separator class="my-6" />
 		<div class="grid grid-cols-2 gap-4">
 			<div>
-				<Dialog.Root bind:open>
+				<Dialog.Root bind:open={openDialogName}>
 					<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
 						>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
 					>
@@ -73,7 +74,7 @@
 							form={organizationForm}
 							onSubmit={() => {
 								wait(300).then(async () => {
-									open = false;
+									openDialogName = false;
 								});
 							}}
 						/>
@@ -81,13 +82,13 @@
 				</Dialog.Root>
 			</div>
 			<div class="ms-auto">
-				<Dialog.Root bind:open>
+				<Dialog.Root bind:open={openDialogInvite}>
 					<Dialog.Trigger class={buttonVariants({ variant: 'default' })}
-						>Invite members</Dialog.Trigger
+						>{m.spare_lazy_jackal_slide()}</Dialog.Trigger
 					>
 					<Dialog.Content class="sm:max-w-[425px]">
 						<Dialog.Header>
-							<Dialog.Title>{m.spry_every_kangaroo_flip()}</Dialog.Title>
+							<Dialog.Title>{m.mealy_few_mantis_absorb()}</Dialog.Title>
 						</Dialog.Header>
 						<InviteOrganizationMemberForm
 							formAction="?/addMemberToOrganization"

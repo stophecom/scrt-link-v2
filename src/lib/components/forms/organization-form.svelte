@@ -48,6 +48,10 @@
 		</Form.Field>
 		<input type="hidden" name="organizationId" value={$formData.id} />
 
-		<Form.Button delayed={$delayed} class="ml-auto ">{m.caring_light_tiger_taste()}</Form.Button>
+		<div class="py-4">
+			<Form.Button delayed={$delayed} class="w-full" size="lg"
+				>{m.caring_light_tiger_taste()}</Form.Button
+			>
+		</div>
 	</form>
 </FormWrapper>

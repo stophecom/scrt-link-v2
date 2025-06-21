@@ -59,7 +59,9 @@
 		<input type="hidden" name="organizationId" bind:value={organizationId} />
 
 		<div class="py-4">
-			<Form.Button delayed={$delayed} class="w-full" size="lg">Add member</Form.Button>
+			<Form.Button delayed={$delayed} class="w-full" size="lg"
+				>{m.whole_crazy_gopher_favor()}</Form.Button
+			>
 		</div>
 	</form>
 </FormWrapper>
