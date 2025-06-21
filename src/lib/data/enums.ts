@@ -22,6 +22,13 @@ export enum MembershipRole {
 	OWNER = 'Owner'
 }
 
+export enum InviteStatus {
+	PENDING = 'pending',
+	ACCEPTED = 'accepted',
+	EXPIRED = 'expired',
+	REVOKED = 'revoked'
+}
+
 export enum TierOptions {
 	CONFIDENTIAL = 'Confidential',
 	SECRET = 'Secret',

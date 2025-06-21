@@ -129,6 +129,7 @@ export const getMembersByOrganization = async (organizationId: Organization['id'
 			id: userSchema.id,
 			name: userSchema.name,
 			email: userSchema.email,
+			picture: userSchema.picture,
 			role: membership.role
 		})
 		.from(membership)

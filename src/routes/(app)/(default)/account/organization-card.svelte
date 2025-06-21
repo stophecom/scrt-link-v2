@@ -4,6 +4,7 @@
 	import { wait } from '$lib/client/utils';
 	import InviteOrganizationMemberForm from '$lib/components/forms/invite-organization-member-form.svelte';
 	import OrganizationForm from '$lib/components/forms/organization-form.svelte';
+	import * as Avatar from '$lib/components/ui/avatar';
 	import { buttonVariants } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
@@ -46,9 +47,20 @@
 			<Table.Body>
 				{#each organization.members as member}
 					<Table.Row>
-						<Table.Cell class="font-medium">
-							{member.name || m.witty_wise_grebe_empower()}
-							<div class="text-xs">{member.email}</div>
+						<Table.Cell class="flex items-center font-medium">
+							<div>
+								<Avatar.Root class="me-2 h-8 w-8">
+									<Avatar.Image src={member.picture} alt={member.name} />
+									<Avatar.Fallback
+										class="border-foreground bg-foreground text-background border uppercase"
+										>{Array.from(member.email)[0]}</Avatar.Fallback
+									>
+								</Avatar.Root>
+							</div>
+							<div>
+								{member.name || m.witty_wise_grebe_empower()}
+								<div class="text-xs">{member.email}</div>
+							</div>
 						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
 						<Table.Cell>{'pending'}</Table.Cell>
