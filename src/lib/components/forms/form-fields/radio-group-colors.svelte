@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Check from '@lucide/svelte/icons/check';
 	import { RadioGroup as RadioGroupPrimitive } from 'bits-ui';
-	import Check from 'lucide-svelte/icons/check';
 	import { elasticOut } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { scale } from 'svelte/transition';

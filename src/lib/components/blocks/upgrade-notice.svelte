@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LockKeyhole from 'lucide-svelte/icons/lock-keyhole';
+	import LockKeyhole from '@lucide/svelte/icons/lock-keyhole';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
 	import Alert from '$lib/components/ui/alert/alert.svelte';

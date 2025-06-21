@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Check from 'lucide-svelte/icons/check-circle';
+	import Check from '@lucide/svelte/icons/check-circle';
 	import { PersistedState } from 'runed';
 	import { Stripe } from 'stripe';
 	import { toast } from 'svelte-sonner';

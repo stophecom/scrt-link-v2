@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Check from 'lucide-svelte/icons/check';
+	import Check from '@lucide/svelte/icons/check';
 	import type { Snippet } from 'svelte';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 

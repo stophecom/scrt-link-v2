@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Trash from 'lucide-svelte/icons/trash';
-	import IconX from 'lucide-svelte/icons/x';
+	import Trash from '@lucide/svelte/icons/trash';
+	import IconX from '@lucide/svelte/icons/x';
 	import { onDestroy } from 'svelte';
 	import { fade } from 'svelte/transition';
 

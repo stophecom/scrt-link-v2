@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CheckCircle2, Flame } from 'lucide-svelte';
+	import { CheckCircle2, Flame } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 
 	import { invalidateAll } from '$app/navigation';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ArrowRight from 'lucide-svelte/icons/arrow-right';
+	import ArrowRight from '@lucide/svelte/icons/arrow-right';
 
 	import UrlExplained from '$lib/assets/images/illustrations/url-explained.svg?component';
 	import CreateSecret from '$lib/components/blocks/create-secret.svelte';

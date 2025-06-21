@@ -1,4 +1,4 @@
-import { Factory, Plane, Rocket, Send } from 'lucide-svelte';
+import { Factory, Plane, Rocket, Send } from '@lucide/svelte';
 
 import { isOriginalHost } from '$lib/app-routing';
 import { formatBytes } from '$lib/i18n';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ChevronDown from 'lucide-svelte/icons/chevron-down';
+	import ChevronDown from '@lucide/svelte/icons/chevron-down';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { ArrowRight, Check, Rocket, Trash } from 'lucide-svelte';
-	import LogOut from 'lucide-svelte/icons/log-out';
+	import { ArrowRight, Check, Rocket, Trash } from '@lucide/svelte';
+	import LogOut from '@lucide/svelte/icons/log-out';
 	import { PersistedState } from 'runed';
 
 	import { enhance } from '$app/forms';

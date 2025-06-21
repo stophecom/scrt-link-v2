@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Trash from 'lucide-svelte/icons/trash';
+	import Trash from '@lucide/svelte/icons/trash';
 	import { onDestroy } from 'svelte';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 	import { fade } from 'svelte/transition';

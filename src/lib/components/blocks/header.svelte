@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Factory, Plus, User, X } from 'lucide-svelte';
-	import Plane from 'lucide-svelte/icons/plane';
-	import Rocket from 'lucide-svelte/icons/rocket';
+	import { Factory, Plus, User, X } from '@lucide/svelte';
+	import Plane from '@lucide/svelte/icons/plane';
+	import Rocket from '@lucide/svelte/icons/rocket';
 	import { PersistedState } from 'runed';
 
 	import Logo from '$lib/assets/images/logo.svg?component';

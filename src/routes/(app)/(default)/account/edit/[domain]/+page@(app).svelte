@@ -5,7 +5,7 @@
 		ChevronUp,
 		CircleAlert,
 		SquareArrowUpRight
-	} from 'lucide-svelte';
+	} from '@lucide/svelte';
 	import { tick } from 'svelte';
 	import { elasticOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Check from 'lucide-svelte/icons/circle-check-big';
-	import Reply from 'lucide-svelte/icons/reply';
+	import Check from '@lucide/svelte/icons/circle-check-big';
+	import Reply from '@lucide/svelte/icons/reply';
 	import { fade } from 'svelte/transition';
 
 	import { onNavigate } from '$app/navigation';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Code, Lock, MessageCircleQuestion } from 'lucide-svelte';
+	import { Code, Lock, MessageCircleQuestion } from '@lucide/svelte';
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
 	import ApiPreview from '$lib/components/blocks/api-preview.svelte';

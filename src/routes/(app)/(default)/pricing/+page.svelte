@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MessageCircleQuestion } from 'lucide-svelte';
+	import { MessageCircleQuestion } from '@lucide/svelte';
 
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';

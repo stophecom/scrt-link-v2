@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { Palette, RefreshCcw, Save, SquareArrowUpRight } from '@lucide/svelte';
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
-	import { Palette, RefreshCcw, Save, SquareArrowUpRight } from 'lucide-svelte';
 	import { derived } from 'svelte/store';
 	import { stringProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';

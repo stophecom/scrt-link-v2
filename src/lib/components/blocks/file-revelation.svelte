@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Check } from 'lucide-svelte';
-	import FileLock from 'lucide-svelte/icons/file-lock';
+	import { Check } from '@lucide/svelte';
+	import FileLock from '@lucide/svelte/icons/file-lock';
 
 	import Typewriter from '$lib/components/helpers/typewriter.svelte';
 	import type { FileMeta } from '$lib/file-transfer';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ArrowUpFromLine from 'lucide-svelte/icons/arrow-up-from-line';
+	import ArrowUpFromLine from '@lucide/svelte/icons/arrow-up-from-line';
 
 	import gif from '$lib/assets/images/snoop.webp';
 	import { formatBytes } from '$lib/i18n';

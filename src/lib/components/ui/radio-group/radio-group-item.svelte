@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Circle from '@lucide/svelte/icons/circle';
 	import { RadioGroup as RadioGroupPrimitive } from 'bits-ui';
-	import Circle from 'lucide-svelte/icons/circle';
 
 	import { cn } from '$lib/client/utils.js';
 

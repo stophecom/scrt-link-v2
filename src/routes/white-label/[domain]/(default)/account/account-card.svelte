@@ -1,5 +1,5 @@
 <script lang="ts">
-	import BadgeCheck from 'lucide-svelte/icons/badge-check';
+	import BadgeCheck from '@lucide/svelte/icons/badge-check';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { wait } from '$lib/client/utils';

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Flame from 'lucide-svelte/icons/flame';
-	import Reply from 'lucide-svelte/icons/reply';
+	import Flame from '@lucide/svelte/icons/flame';
+	import Reply from '@lucide/svelte/icons/reply';
 	import { tick } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';

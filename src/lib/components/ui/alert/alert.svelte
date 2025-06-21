@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { type Icon as IconType } from 'lucide-svelte';
-	import CircleAlert from 'lucide-svelte/icons/circle-alert';
-	import CircleCheck from 'lucide-svelte/icons/circle-check';
-	import Info from 'lucide-svelte/icons/info';
+	import { type Icon as IconType } from '@lucide/svelte';
+	import CircleAlert from '@lucide/svelte/icons/circle-alert';
+	import CircleCheck from '@lucide/svelte/icons/circle-check';
+	import Info from '@lucide/svelte/icons/info';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 

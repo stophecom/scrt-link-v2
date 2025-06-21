@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LogOut from 'lucide-svelte/icons/log-out';
+	import LogOut from '@lucide/svelte/icons/log-out';
 	import { mode } from 'mode-watcher';
 
 	import { WhiteLabelPage } from '$lib/components/page';

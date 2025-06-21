@@ -17,6 +17,9 @@ importers:
       '@aws-sdk/s3-request-presigner':
         specifier: ^3.772.0
         version: 3.772.0
+      '@lucide/svelte':
+        specifier: ^0.522.0
+        version: 0.522.0(svelte@5.20.5)
       '@stripe/stripe-js':
         specifier: ^5.10.0
         version: 5.10.0
@@ -153,9 +156,6 @@ importers:
       husky:
         specifier: ^9.1.7
         version: 9.1.7
-      lucide-svelte:
-        specifier: ^0.503.0
-        version: 0.503.0(svelte@5.20.5)
       mdsvex:
         specifier: ^0.11.2
         version: 0.11.2(svelte@5.20.5)
@@ -1302,6 +1302,11 @@ packages:
 
   '@lix-js/server-api-schema@0.1.1':
     resolution: {integrity: sha512-W1Z7KKOxAQ4Dag9V2wrDevHPh5rPk+icBUsxNfNCNB2tlPrKpba99562vcTCPoT03KXpihEbWutZNujCRtMA+g==}
+
+  '@lucide/svelte@0.522.0':
+    resolution: {integrity: sha512-Q10WkheTfb0sZ6y+EQVTqW4DN8nD2mym00gVpinbe3dJWRW3/R7SeTGF9pW+Ux4PrzkNV9dUdUTWcbO/AdKwQQ==}
+    peerDependencies:
+      svelte: ^5
 
   '@mapbox/node-pre-gyp@2.0.0-rc.0':
     resolution: {integrity: sha512-nhSMNprz3WmeRvd8iUs5JqkKr0Ncx46JtPxM3AhXes84XpSJfmIwKeWXRpsr53S7kqPkQfPhzrMFUxSNb23qSA==}
@@ -3208,11 +3213,6 @@ packages:
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
-
-  lucide-svelte@0.503.0:
-    resolution: {integrity: sha512-oT1idMbgJKCCLWI4U7bdUYUZqxS78fiTGJuKGZ5u0NJNyuiUErDu3G7sXkYpfDwwspeid7gZSjrlJbTINEfErw==}
-    peerDependencies:
-      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -5604,6 +5604,10 @@ snapshots:
 
   '@lix-js/server-api-schema@0.1.1': {}
 
+  '@lucide/svelte@0.522.0(svelte@5.20.5)':
+    dependencies:
+      svelte: 5.20.5
+
   '@mapbox/node-pre-gyp@2.0.0-rc.0':
     dependencies:
       consola: 3.3.2
@@ -7627,10 +7631,6 @@ snapshots:
       highlight.js: 11.11.1
 
   lru-cache@10.4.3: {}
-
-  lucide-svelte@0.503.0(svelte@5.20.5):
-    dependencies:
-      svelte: 5.20.5
 
   lz-string@1.5.0: {}
 
