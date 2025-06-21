@@ -9,5 +9,5 @@
 </script>
 
 <SingleFormPage title={m.spicy_tough_larva_cry()} description={m.smart_aware_albatross_animate()}>
-	<EmailForm data={data.resetPasswordForm} action="?/resetPassword" />
+	<EmailForm form={data.resetPasswordForm} formAction="?/resetPassword" />
 </SingleFormPage>

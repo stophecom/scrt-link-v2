@@ -9,6 +9,6 @@
 </script>
 
 <SingleFormPage title={m.legal_weak_jay_bless()} description={m.ago_crazy_pelican_pray()}>
-	<EmailForm data={data.emailForm} action="?/loginWithEmail" />
+	<EmailForm form={data.emailForm} formAction="?/loginWithEmail" />
 	<div class="px-5 text-center text-sm">No login yet? Ask your administrator.</div>
 </SingleFormPage>

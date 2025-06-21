@@ -15,9 +15,9 @@
 
 <SingleFormPage title={m.tough_jumpy_anteater_taste()} description={m.teary_brief_robin_scoop()}>
 	<EmailForm
-		data={data.signupForm}
+		form={data.signupForm}
 		buttonLabel={m.full_awake_puffin_pray()}
-		action="?/signupWithEmail"
+		formAction="?/signupWithEmail"
 	/>
 	<div class="px-5 text-center text-sm">
 		{m.many_home_felix_seek()}
