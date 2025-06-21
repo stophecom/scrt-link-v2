@@ -59,10 +59,10 @@
 		</Table.Root>
 
 		<Separator class="my-6" />
-		<div class="grid grid-cols-2 gap-4">
+		<div class="xs:grid-rows-1 xs:grid-cols-2 grid grid-rows-2 gap-2">
 			<div>
 				<Dialog.Root bind:open={openDialogName}>
-					<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
+					<Dialog.Trigger class={buttonVariants({ variant: 'outline', class: 'max-xs:w-full' })}
 						>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
 					>
 					<Dialog.Content class="sm:max-w-[425px]">
@@ -81,9 +81,9 @@
 					</Dialog.Content>
 				</Dialog.Root>
 			</div>
-			<div class="ms-auto">
+			<div class="xs:ms-auto">
 				<Dialog.Root bind:open={openDialogInvite}>
-					<Dialog.Trigger class={buttonVariants({ variant: 'default' })}
+					<Dialog.Trigger class={buttonVariants({ variant: 'default', class: 'max-xs:w-full' })}
 						>{m.spare_lazy_jackal_slide()}</Dialog.Trigger
 					>
 					<Dialog.Content class="sm:max-w-[425px]">
