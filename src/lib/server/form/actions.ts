@@ -54,6 +54,7 @@ import {
 	checkIsEmailVerified,
 	createOrUpdateUser,
 	getActiveApiKeys,
+	getMembersByOrganization,
 	getOrganizationsByUser,
 	getUserByEmail,
 	welcomeNewUser
@@ -300,12 +301,11 @@ export const addMemberToOrganization: Action = async (event) => {
 
 	// Make sure user is owner of the organization
 	const userOrganizations = await getOrganizationsByUser(user.id);
-
-	const isOwner = userOrganizations.some(
+	const userOrganization = userOrganizations.find(
 		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
 	);
 
-	if (!organizationId || !isOwner) {
+	if (!organizationId || !userOrganization) {
 		return message(
 			form,
 			{
@@ -320,6 +320,24 @@ export const addMemberToOrganization: Action = async (event) => {
 
 	console.log({ name, organizationId });
 	// @todo Add invitation / team size limit.
+
+	// Too many API keys
+	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const membersByOrganization = await getMembersByOrganization(userOrganization.id);
+
+	if (membersByOrganization.length >= planLimits.organizationTeamSize) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Limit reached',
+				description: 'Member limit reached on your current plan.'
+			},
+			{
+				status: 401
+			}
+		);
+	}
 
 	// If scrt.link user exists, we only add to organization.
 	const existingUser = await getUserByEmail(email);
