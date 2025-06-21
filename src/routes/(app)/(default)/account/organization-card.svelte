@@ -38,21 +38,21 @@
 			<Table.Header>
 				<Table.Row>
 					<Table.Head>{m.cuddly_flat_salmon_express()}</Table.Head>
-					<Table.Head>{m.maroon_quaint_shell_bend()}</Table.Head>
 					<Table.Head>{m.bad_close_anaconda_forgive()}</Table.Head>
-					<Table.Head></Table.Head>
+					<Table.Head>Status</Table.Head>
+					<Table.Head>Edit</Table.Head>
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
 				{#each organization.members as member}
 					<Table.Row>
-						<Table.Cell class="font-medium"
-							>{member.name || m.witty_wise_grebe_empower()}</Table.Cell
-						>
-						<Table.Cell>{member.email}</Table.Cell>
+						<Table.Cell class="font-medium">
+							{member.name || m.witty_wise_grebe_empower()}
+							<div class="text-xs">{member.email}</div>
+						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
-
-						<Table.Cell></Table.Cell>
+						<Table.Cell>{'pending'}</Table.Cell>
+						<Table.Cell>...</Table.Cell>
 					</Table.Row>
 				{/each}
 			</Table.Body>

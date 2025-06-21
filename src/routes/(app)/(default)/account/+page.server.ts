@@ -1,7 +1,7 @@
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { SecretType } from '$lib/data/enums';
+import { MembershipRole, SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import {
@@ -66,12 +66,11 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 	const userOrganizations = await getOrganizationsByUser(user.id);
 
-	let userOrganization: Awaited<ReturnType<typeof getOrganizationsByUser>>[0] | null = null;
+	// We allow (and assume) only one organization with OWNER role.
+	const userOrganization = userOrganizations.find((item) => item.role === MembershipRole.OWNER);
+
 	let membersByOrganization: Awaited<ReturnType<typeof getMembersByOrganization>> = [];
-
-	if (userOrganizations.length) {
-		userOrganization = userOrganizations[0]; // We allow (and assume) only one organization
-
+	if (userOrganization) {
 		membersByOrganization = await getMembersByOrganization(userOrganization.id);
 	}
 	const organizationFormValidator = async () => {
