@@ -3,7 +3,7 @@ import { ArcticFetchError, OAuth2RequestError, type OAuth2Tokens } from 'arctic'
 
 import * as auth from '$lib/server/auth';
 import { google } from '$lib/server/auth';
-import { createOrUpdateUser } from '$lib/server/user';
+import { createOrUpdateUser, welcomeNewUser } from '$lib/server/user';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const storedState = event.cookies.get('google_oauth_state') ?? null;
@@ -31,13 +31,15 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		const googleUser: UserInfoResponse = await response.json();
 
 		// Create or update user
-		const { userId } = await createOrUpdateUser({
+		const { userId, name } = await createOrUpdateUser({
 			email: googleUser.email,
 			emailVerified: googleUser.email_verified || false,
 			googleId: googleUser.sub,
 			picture: googleUser.picture,
 			name: googleUser.name
 		});
+
+		await welcomeNewUser({ email: googleUser.email, name });
 
 		// Create session
 		await auth.createSession(event, userId);

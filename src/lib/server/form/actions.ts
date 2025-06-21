@@ -30,6 +30,7 @@ import {
 	apiKeyFormSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
+	inviteOrganizationMemberFormSchema,
 	organizationFormSchema,
 	passwordFormSchema,
 	secretFormSchema,
@@ -53,7 +54,9 @@ import {
 	checkIsEmailVerified,
 	createOrUpdateUser,
 	getActiveApiKeys,
-	getOrganizationsByUser
+	getOrganizationsByUser,
+	getUserByEmail,
+	welcomeNewUser
 } from '../user';
 import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
 
@@ -230,14 +233,14 @@ export const createOrganization: Action = async (event) => {
 
 	return message(form, {
 		status: 'success',
-		title: 'Organization created'
+		title: m.upper_wise_dove_propel()
 	});
 };
 
 export const editOrganization: Action = async (event) => {
 	const form = await superValidate(event.request, zod(organizationFormSchema()));
 
-	const { name, id } = form.data;
+	const { name, organizationId } = form.data;
 
 	const user = event.locals.user;
 
@@ -250,12 +253,16 @@ export const editOrganization: Action = async (event) => {
 	}
 	const userOrganizations = await getOrganizationsByUser(user.id);
 
-	if (!id || !userOrganizations.length || !userOrganizations.some((item) => item.id === id)) {
+	const isOwner = userOrganizations.some(
+		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+	);
+
+	if (!organizationId || !isOwner) {
 		return message(
 			form,
 			{
 				status: 'error',
-				title: 'Not allowed'
+				title: 'Not allowed.'
 			},
 			{
 				status: 401
@@ -268,11 +275,101 @@ export const editOrganization: Action = async (event) => {
 		.set({
 			name
 		})
-		.where(eq(organization.id, id));
+		.where(eq(organization.id, organizationId));
 
 	return message(form, {
 		status: 'success',
 		title: m.this_good_parakeet_grasp()
+	});
+};
+
+export const addMemberToOrganization: Action = async (event) => {
+	const form = await superValidate(event.request, zod(inviteOrganizationMemberFormSchema()));
+
+	const { email, name, organizationId } = form.data;
+
+	const user = event.locals.user;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	// Make sure user is owner of the organization
+	const userOrganizations = await getOrganizationsByUser(user.id);
+
+	const isOwner = userOrganizations.some(
+		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+	);
+
+	if (!organizationId || !isOwner) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Not allowed.'
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
+	console.log({ name, organizationId });
+
+	// If scrt.link user exists, we only add to organization.
+	const existingUser = await getUserByEmail(email);
+	if (existingUser) {
+		// @todo think about (await checkIsEmailVerified(email))
+		const existingMember = await db.query.membership.findFirst({
+			where: (fields, { eq, and }) =>
+				and(eq(fields.userId, existingUser.id), eq(fields.organizationId, organizationId))
+		});
+
+		if (existingMember) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: 'User is already a member of this organization.'
+				},
+				{
+					status: 401
+				}
+			);
+		}
+
+		const [foo] = await db
+			.insert(membership)
+			.values({
+				userId: existingUser.id,
+				organizationId: organizationId,
+				role: MembershipRole.MEMBER
+			})
+			.returning();
+
+		console.log(foo);
+	} else {
+		// @todo Invite user.
+		// For now there is an error message
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Member needs an active scrt.link account to get invited.'
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
+	return message(form, {
+		status: 'success',
+		title: 'Invite successful'
 	});
 };
 
@@ -486,10 +583,12 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 		// All check passed. We create or update user and session.
 
 		// Create or update user
-		const { userId } = await createOrUpdateUser({
+		const { userId, name } = await createOrUpdateUser({
 			email: email,
 			emailVerified: true
 		});
+
+		await welcomeNewUser({ email, name });
 
 		// Create session
 		await auth.createSession(event, userId);

@@ -5,6 +5,7 @@ import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import {
+	addMemberToOrganization,
 	createAPIToken,
 	createOrganization,
 	editOrganization,
@@ -30,7 +31,11 @@ import {
 	getOrganizationsByUser
 } from '$lib/server/user';
 import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
-import { organizationFormSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
+import {
+	inviteOrganizationMemberFormSchema,
+	organizationFormSchema,
+	whiteLabelMetaSchema
+} from '$lib/validators/formSchemas';
 
 import { actions as secretActions } from '../+page.server';
 import type { Actions, PageServerLoad } from './$types';
@@ -71,12 +76,17 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	}
 	const organizationFormValidator = async () => {
 		return await superValidate(
-			{ id: userOrganization?.id, name: userOrganization?.name },
+			{ organizationId: userOrganization?.id, name: userOrganization?.name },
 			zod(organizationFormSchema()),
 			{
 				errors: false
 			}
 		);
+	};
+	const inviteOrganizationMemberFormValidator = async () => {
+		return await superValidate(zod(inviteOrganizationMemberFormSchema()), {
+			errors: false
+		});
 	};
 
 	const getOrganizationIdOptions = () => [
@@ -105,6 +115,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			? { ...userOrganization, members: membersByOrganization }
 			: null,
 		organizationForm: await organizationFormValidator(),
+		inviteOrganizationMemberForm: await inviteOrganizationMemberFormValidator(),
 		whiteLabelDomain: whiteLabel?.customDomain,
 		secretForm: await secretFormValidator(),
 		themeForm: await themeFormValidator(user),
@@ -125,6 +136,7 @@ export const actions: Actions = {
 	createAPIToken: createAPIToken,
 	createOrganization: createOrganization,
 	editOrganization: editOrganization,
+	addMemberToOrganization: addMemberToOrganization,
 	revokeAPIToken: revokeAPIToken,
 	logout: logout
 };

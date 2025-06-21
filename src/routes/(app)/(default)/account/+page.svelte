@@ -153,7 +153,8 @@
 					<OrganizationCard
 						{user}
 						organization={data.userOrganization}
-						form={data.organizationForm}
+						organizationForm={data.organizationForm}
+						inviteOrganizationMemberForm={data.inviteOrganizationMemberForm}
 					/>
 				{/if}
 

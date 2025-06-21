@@ -2,6 +2,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { wait } from '$lib/client/utils';
+	import InviteOrganizationMemberForm from '$lib/components/forms/invite-organization-member-form.svelte';
 	import OrganizationForm from '$lib/components/forms/organization-form.svelte';
 	import { buttonVariants } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
@@ -9,17 +10,22 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Table from '$lib/components/ui/table';
 	import { m } from '$lib/paraglide/messages.js';
-	import type { OrganizationFormSchema } from '$lib/validators/formSchemas';
+	import type {
+		InviteOrganizationMemberFormSchema,
+		OrganizationFormSchema
+	} from '$lib/validators/formSchemas';
 
 	import type { PageServerData } from './$types';
 
 	let {
-		form,
+		organizationForm,
+		inviteOrganizationMemberForm,
 		organization
 	}: {
 		user: App.Locals['user'];
 		organization: PageServerData['userOrganization'];
-		form: SuperValidated<OrganizationFormSchema>;
+		organizationForm: SuperValidated<OrganizationFormSchema>;
+		inviteOrganizationMemberForm: SuperValidated<InviteOrganizationMemberFormSchema>;
 	} = $props();
 
 	let open = $state(false);
@@ -52,28 +58,49 @@
 		</Table.Root>
 
 		<Separator class="my-6" />
-		<Dialog.Root bind:open>
-			<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
-				>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
-			>
-			<Dialog.Content class="sm:max-w-[425px]">
-				<Dialog.Header>
-					<Dialog.Title>{m.spry_every_kangaroo_flip()}</Dialog.Title>
-				</Dialog.Header>
-				<OrganizationForm
-					formAction="?/editOrganization"
-					{form}
-					onSubmit={() => {
-						wait(300).then(async () => {
-							open = false;
-						});
-					}}
-				/>
-			</Dialog.Content>
-		</Dialog.Root>
+		<div class="grid grid-cols-2 gap-4">
+			<div>
+				<Dialog.Root bind:open>
+					<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}
+						>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
+					>
+					<Dialog.Content class="sm:max-w-[425px]">
+						<Dialog.Header>
+							<Dialog.Title>{m.spry_every_kangaroo_flip()}</Dialog.Title>
+						</Dialog.Header>
+						<OrganizationForm
+							formAction="?/editOrganization"
+							form={organizationForm}
+							onSubmit={() => {
+								wait(300).then(async () => {
+									open = false;
+								});
+							}}
+						/>
+					</Dialog.Content>
+				</Dialog.Root>
+			</div>
+			<div class="ms-auto">
+				<Dialog.Root bind:open>
+					<Dialog.Trigger class={buttonVariants({ variant: 'default' })}
+						>Invite members</Dialog.Trigger
+					>
+					<Dialog.Content class="sm:max-w-[425px]">
+						<Dialog.Header>
+							<Dialog.Title>{m.spry_every_kangaroo_flip()}</Dialog.Title>
+						</Dialog.Header>
+						<InviteOrganizationMemberForm
+							formAction="?/addMemberToOrganization"
+							form={inviteOrganizationMemberForm}
+							organizationId={organization.id}
+						/>
+					</Dialog.Content>
+				</Dialog.Root>
+			</div>
+		</div>
 	</Card>
 {:else}
 	<Card class="mb-6" title={m.drab_dark_squirrel_fetch()} description={m.fresh_bad_midge_explore()}>
-		<OrganizationForm {form} formAction="?/createOrganization" />
+		<OrganizationForm form={organizationForm} formAction="?/createOrganization" />
 	</Card>
 {/if}
