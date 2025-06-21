@@ -57,6 +57,7 @@ import {
 	getMembersByOrganization,
 	getOrganizationsByUser,
 	getUserByEmail,
+	inviteUserToOrganization,
 	welcomeNewUser
 } from '../user';
 import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
@@ -287,7 +288,7 @@ export const editOrganization: Action = async (event) => {
 export const addMemberToOrganization: Action = async (event) => {
 	const form = await superValidate(event.request, zod(inviteOrganizationMemberFormSchema()));
 
-	const { email, name, organizationId } = form.data;
+	const { email, organizationId } = form.data;
 
 	const user = event.locals.user;
 
@@ -318,10 +319,7 @@ export const addMemberToOrganization: Action = async (event) => {
 		);
 	}
 
-	console.log({ name, organizationId });
-	// @todo Add invitation / team size limit.
-
-	// Too many API keys
+	// Limit amount of team members. @todo Think about metered pricing.
 	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 	const membersByOrganization = await getMembersByOrganization(userOrganization.id);
 
@@ -342,7 +340,6 @@ export const addMemberToOrganization: Action = async (event) => {
 	// If scrt.link user exists, we only add to organization.
 	const existingUser = await getUserByEmail(email);
 	if (existingUser) {
-		// @todo think about (await checkIsEmailVerified(email))
 		const existingMember = await db.query.membership.findFirst({
 			where: (fields, { eq, and }) =>
 				and(eq(fields.userId, existingUser.id), eq(fields.organizationId, organizationId))
@@ -360,31 +357,15 @@ export const addMemberToOrganization: Action = async (event) => {
 				}
 			);
 		}
-
-		const [foo] = await db
-			.insert(membership)
-			.values({
-				userId: existingUser.id,
-				organizationId: organizationId,
-				role: MembershipRole.MEMBER
-			})
-			.returning();
-
-		console.log(foo);
-	} else {
-		// @todo Invite user.
-		// For now there is an error message
-		return message(
-			form,
-			{
-				status: 'error',
-				title: 'Member needs an active scrt.link account to get invited.'
-			},
-			{
-				status: 401
-			}
-		);
 	}
+
+	// Send invite
+	await inviteUserToOrganization({
+		userId: user.id,
+		email,
+		membershipRole: MembershipRole.MEMBER,
+		organizationId
+	});
 
 	return message(form, {
 		status: 'success',

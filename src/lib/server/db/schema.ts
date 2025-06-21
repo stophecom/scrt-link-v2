@@ -122,6 +122,7 @@ export const invite = pgTable(
 		status: inviteStatus().default(InviteStatus.PENDING),
 		invitedByUserId: uuid('invited_by_user_id').notNull(),
 		createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+		expiresAt: timestamp('expires_at', { mode: 'date' }).notNull(),
 		acceptedAt: timestamp('accepted_at', { mode: 'date' })
 	},
 	(table) => [unique().on(table.email, table.organizationId)]
