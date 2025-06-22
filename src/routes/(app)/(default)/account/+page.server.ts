@@ -24,7 +24,11 @@ import {
 	themeFormValidator,
 	userFormValidator
 } from '$lib/server/form/validators';
-import { getMembersByOrganizationId, getOrganizationsByUserId } from '$lib/server/organization';
+import {
+	getMembersAndInvitesByOrganization,
+	getOrganizationsByUserId,
+	type MembersAndInvitesByOrganization
+} from '$lib/server/organization';
 import { fetchSecrets } from '$lib/server/secrets';
 import { getActiveApiKeys } from '$lib/server/user';
 import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
@@ -66,9 +70,10 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	// We allow (and assume) only one organization with OWNER role.
 	const userOrganization = userOrganizations.find((item) => item.role === MembershipRole.OWNER);
 
-	let membersByOrganization: Awaited<ReturnType<typeof getMembersByOrganizationId>> = [];
+	let membersAndInvitesByOrganization: MembersAndInvitesByOrganization[] = [];
+
 	if (userOrganization) {
-		membersByOrganization = await getMembersByOrganizationId(userOrganization.id);
+		membersAndInvitesByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
 	}
 	const organizationFormValidator = async () => {
 		return await superValidate(
@@ -108,7 +113,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		secrets: secrets,
 		organizationIdOptions: getOrganizationIdOptions(),
 		userOrganization: userOrganization
-			? { ...userOrganization, members: membersByOrganization }
+			? { ...userOrganization, members: membersAndInvitesByOrganization }
 			: null,
 		organizationForm: await organizationFormValidator(),
 		inviteOrganizationMemberForm: await inviteOrganizationMemberFormValidator(),

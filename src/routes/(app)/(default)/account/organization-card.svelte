@@ -46,11 +46,12 @@
 			</Table.Header>
 			<Table.Body>
 				{#each organization.members as member}
+					{@const memberName = member.name || m.witty_wise_grebe_empower()}
 					<Table.Row>
 						<Table.Cell class="flex items-center font-medium">
 							<div>
 								<Avatar.Root class="me-2 h-8 w-8">
-									<Avatar.Image src={member.picture} alt={member.name} />
+									<Avatar.Image src={member.picture} alt={memberName} />
 									<Avatar.Fallback
 										class="border-foreground bg-foreground text-background border uppercase"
 										>{Array.from(member.email)[0]}</Avatar.Fallback
@@ -58,12 +59,12 @@
 								</Avatar.Root>
 							</div>
 							<div>
-								{member.name || m.witty_wise_grebe_empower()}
+								{memberName || m.witty_wise_grebe_empower()}
 								<div class="text-xs">{member.email}</div>
 							</div>
 						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
-						<Table.Cell>{'pending'}</Table.Cell>
+						<Table.Cell>{member.status}</Table.Cell>
 						<Table.Cell>...</Table.Cell>
 					</Table.Row>
 				{/each}

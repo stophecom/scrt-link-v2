@@ -2,7 +2,7 @@ import { eq } from 'drizzle-orm';
 
 import { sha256Hash } from '$lib/client/web-crypto';
 import { generateBase64Token } from '$lib/crypto';
-import type { MembershipRole } from '$lib/data/enums';
+import { InviteStatus, type MembershipRole } from '$lib/data/enums';
 import { DAY } from '$lib/data/units';
 
 import { db } from './db';
@@ -45,6 +45,17 @@ export const getMembersByOrganizationId = async (organizationId: Organization['i
 		.innerJoin(user, eq(membership.userId, user.id))
 		.where(eq(membership.organizationId, organizationId));
 
+export const getInvitesByOrganizationId = async (organizationId: Organization['id']) =>
+	await db
+		.select({
+			id: invite.id,
+			email: invite.email,
+			status: invite.status,
+			role: invite.membershipRole
+		})
+		.from(invite)
+		.where(eq(invite.organizationId, organizationId));
+
 type InviteUserToOrganization = {
 	userId: string;
 	email: string;
@@ -75,4 +86,49 @@ export const inviteUserToOrganization = async ({
 	const name = organization.name;
 
 	await sendOrganisationInvitationEmail(email, otpToken, name);
+};
+
+export type MembersAndInvitesByOrganization = {
+	id: string;
+	name: string | null;
+	email: string;
+	picture: string | null;
+	role: MembershipRole | null;
+	status: InviteStatus | null;
+};
+
+export const getMembersAndInvitesByOrganization = async (organizationId: Organization['id']) => {
+	const existingMembers = await getMembersByOrganizationId(organizationId);
+
+	const invitedMembers = await getInvitesByOrganizationId(organizationId);
+
+	const mergedMap = new Map<string, MembersAndInvitesByOrganization>();
+
+	// Add existing members first
+	for (const member of existingMembers) {
+		mergedMap.set(member.email, {
+			id: member.id,
+			name: member.name ?? null,
+			email: member.email,
+			picture: member.picture ?? null,
+			role: member.role ?? null,
+			status: InviteStatus.ACCEPTED
+		});
+	}
+
+	// Add invited members if email not already present
+	for (const invite of invitedMembers) {
+		if (!mergedMap.has(invite.email)) {
+			mergedMap.set(invite.email, {
+				id: invite.id,
+				name: null,
+				email: invite.email,
+				picture: null,
+				role: invite.role ?? null,
+				status: invite.status ?? null
+			});
+		}
+	}
+
+	return Array.from(mergedMap.values());
 };
