@@ -283,7 +283,7 @@ export const editOrganization: Action = async (event) => {
 
 	return message(form, {
 		status: 'success',
-		title: m.this_good_parakeet_grasp()
+		title: m.wild_born_blackbird_peel()
 	});
 };
 

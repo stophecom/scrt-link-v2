@@ -85,8 +85,8 @@
 						<OrganizationForm
 							formAction="?/editOrganization"
 							form={organizationForm}
-							onSubmit={() => {
-								wait(300).then(async () => {
+							onSuccess={() => {
+								wait(200).then(async () => {
 									openDialogName = false;
 								});
 							}}

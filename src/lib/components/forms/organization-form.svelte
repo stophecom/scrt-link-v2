@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { type FormOptions, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { toast } from 'svelte-sonner';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
@@ -11,18 +12,24 @@
 
 	type Props = {
 		form: SuperValidated<OrganizationFormSchema>;
-		onSubmit?: FormOptions['onSubmit'];
+		onSuccess?: () => void;
 		formAction: string;
 	};
 
-	let { form: formProp, formAction, onSubmit = $bindable() }: Props = $props();
+	let { form: formProp, formAction, onSuccess = () => {} }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zodClient(organizationFormSchema()),
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates
 		invalidateAll: 'force',
-		onSubmit: onSubmit,
+		onUpdated: ({ form }) => {
+			if (form.message?.status === 'success' && form.message?.title) {
+				toast.success(form.message.title);
+			}
+
+			onSuccess();
+		},
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
@@ -46,7 +53,7 @@
 				type="text"
 			/>
 		</Form.Field>
-		<input type="hidden" name="organizationId" value={$formData.id} />
+		<input type="hidden" name="organizationId" value={$formData.organizationId} />
 
 		<div class="py-4">
 			<Form.Button delayed={$delayed} class="w-full" size="lg"
