@@ -24,12 +24,9 @@ import {
 	themeFormValidator,
 	userFormValidator
 } from '$lib/server/form/validators';
+import { getMembersByOrganizationId, getOrganizationsByUserId } from '$lib/server/organization';
 import { fetchSecrets } from '$lib/server/secrets';
-import {
-	getActiveApiKeys,
-	getMembersByOrganization,
-	getOrganizationsByUser
-} from '$lib/server/user';
+import { getActiveApiKeys } from '$lib/server/user';
 import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
 import {
 	inviteOrganizationMemberFormSchema,
@@ -64,14 +61,14 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		);
 	};
 
-	const userOrganizations = await getOrganizationsByUser(user.id);
+	const userOrganizations = await getOrganizationsByUserId(user.id);
 
 	// We allow (and assume) only one organization with OWNER role.
 	const userOrganization = userOrganizations.find((item) => item.role === MembershipRole.OWNER);
 
-	let membersByOrganization: Awaited<ReturnType<typeof getMembersByOrganization>> = [];
+	let membersByOrganization: Awaited<ReturnType<typeof getMembersByOrganizationId>> = [];
 	if (userOrganization) {
-		membersByOrganization = await getMembersByOrganization(userOrganization.id);
+		membersByOrganization = await getMembersByOrganizationId(userOrganization.id);
 	}
 	const organizationFormValidator = async () => {
 		return await superValidate(

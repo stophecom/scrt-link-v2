@@ -47,6 +47,11 @@ import {
 	createEmailVerificationRequestAndRedirect,
 	deleteEmailVerificationRequests
 } from '../email-verification';
+import {
+	getMembersByOrganizationId,
+	getOrganizationsByUserId,
+	inviteUserToOrganization
+} from '../organization';
 import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '../rate-limit';
 import { saveSecret } from '../secrets';
 import {
@@ -54,10 +59,7 @@ import {
 	checkIsEmailVerified,
 	createOrUpdateUser,
 	getActiveApiKeys,
-	getMembersByOrganization,
-	getOrganizationsByUser,
 	getUserByEmail,
-	inviteUserToOrganization,
 	welcomeNewUser
 } from '../user';
 import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
@@ -201,7 +203,7 @@ export const createOrganization: Action = async (event) => {
 	if (!user) {
 		return redirectLocalized(307, '/signup');
 	}
-	const userOrganizations = await getOrganizationsByUser(user.id);
+	const userOrganizations = await getOrganizationsByUserId(user.id);
 
 	// Too many organizations
 	if (userOrganizations.length >= MAX_ORGANIZATIONS_PER_USER) {
@@ -253,7 +255,7 @@ export const editOrganization: Action = async (event) => {
 	if (!user) {
 		return redirectLocalized(307, '/signup');
 	}
-	const userOrganizations = await getOrganizationsByUser(user.id);
+	const userOrganizations = await getOrganizationsByUserId(user.id);
 
 	const isOwner = userOrganizations.some(
 		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
@@ -301,7 +303,7 @@ export const addMemberToOrganization: Action = async (event) => {
 	}
 
 	// Make sure user is owner of the organization
-	const userOrganizations = await getOrganizationsByUser(user.id);
+	const userOrganizations = await getOrganizationsByUserId(user.id);
 	const userOrganization = userOrganizations.find(
 		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
 	);
@@ -321,7 +323,7 @@ export const addMemberToOrganization: Action = async (event) => {
 
 	// Limit amount of team members. @todo Think about metered pricing.
 	const planLimits = getUserPlanLimits(user?.subscriptionTier);
-	const membersByOrganization = await getMembersByOrganization(userOrganization.id);
+	const membersByOrganization = await getMembersByOrganizationId(userOrganization.id);
 
 	if (membersByOrganization.length >= planLimits.organizationTeamSize) {
 		return message(

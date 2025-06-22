@@ -1,26 +1,12 @@
 import { and, eq } from 'drizzle-orm';
 
-import { sha256Hash } from '$lib/client/web-crypto';
-import { generateBase64Token } from '$lib/crypto';
-import type { MembershipRole } from '$lib/data/enums';
-import { DAY } from '$lib/data/units';
 import type { PartialExcept } from '$lib/typescript-helpers';
 
 import { db } from './db';
-import {
-	apiKey,
-	invite,
-	membership,
-	type Organization,
-	organization,
-	type User,
-	user as userSchema,
-	userSettings
-} from './db/schema';
-import { getOrganizationById } from './organization';
+import { apiKey, type User, user as userSchema, userSettings } from './db/schema';
 import { addContactToAudience } from './resend';
 import stripeInstance from './stripe';
-import { sendOrganisationInvitationEmail, sendWelcomeEmail } from './transactional-email';
+import { sendWelcomeEmail } from './transactional-email';
 
 export async function getUserByEmail(email: string) {
 	const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
@@ -117,59 +103,3 @@ export const getActiveApiKeys = async (userId: User['id']) =>
 		.select()
 		.from(apiKey)
 		.where(and(eq(apiKey.userId, userId), eq(apiKey.revoked, false)));
-
-export const getOrganizationsByUser = async (userId: User['id']) =>
-	await db
-		.select({
-			id: organization.id,
-			name: organization.name,
-			role: membership.role
-		})
-		.from(membership)
-		.innerJoin(organization, eq(membership.organizationId, organization.id))
-		.where(eq(membership.userId, userId));
-
-export const getMembersByOrganization = async (organizationId: Organization['id']) =>
-	await db
-		.select({
-			id: userSchema.id,
-			name: userSchema.name,
-			email: userSchema.email,
-			picture: userSchema.picture,
-			role: membership.role
-		})
-		.from(membership)
-		.innerJoin(userSchema, eq(membership.userId, userSchema.id))
-		.where(eq(membership.organizationId, organizationId));
-
-type InviteUserToOrganization = {
-	userId: string;
-	email: string;
-	membershipRole: MembershipRole;
-	organizationId: string;
-};
-export const inviteUserToOrganization = async ({
-	userId,
-	email,
-	membershipRole,
-	organizationId
-}: InviteUserToOrganization) => {
-	const otpToken = generateBase64Token();
-	const otpTokenHash = await sha256Hash(otpToken);
-
-	const expiresAt = new Date(Date.now() + 7 * DAY);
-
-	await db.insert(invite).values({
-		email,
-		organizationId,
-		membershipRole,
-		invitedByUserId: userId,
-		token: otpTokenHash,
-		expiresAt
-	});
-
-	const organization = await getOrganizationById({ organizationId });
-	const name = organization.name;
-
-	await sendOrganisationInvitationEmail(email, otpToken, name);
-};

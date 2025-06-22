@@ -4,7 +4,7 @@ import { isOriginalHost } from '$lib/app-routing';
 
 import { db } from './db';
 import { whiteLabelSite } from './db/schema';
-import { getMembersByOrganization } from './user';
+import { getMembersByOrganizationId } from './organization';
 
 export const getWhiteLabelSiteByHost = async (host: string) => {
 	const [whiteLabelResult] = await db
@@ -48,7 +48,7 @@ export const checkIsUserAllowedOnWhiteLabelSite = async (host: string, userId: s
 				throw Error(`Access is restricted. No organization assigned to this site.`);
 			}
 			if (whiteLabelSiteResult.organizationId) {
-				const members = await getMembersByOrganization(whiteLabelSiteResult.organizationId);
+				const members = await getMembersByOrganizationId(whiteLabelSiteResult.organizationId);
 				const isMember = members.some((item) => item.id === userId);
 
 				if (!isMember) {
