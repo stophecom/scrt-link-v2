@@ -155,6 +155,7 @@
 						organization={data.userOrganization}
 						organizationForm={data.organizationForm}
 						inviteOrganizationMemberForm={data.inviteOrganizationMemberForm}
+						manageOrganizationMemberForm={data.manageOrganizationMemberForm}
 					/>
 				{/if}
 

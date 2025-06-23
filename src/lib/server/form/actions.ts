@@ -32,6 +32,7 @@ import {
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
 	inviteOrganizationMemberFormSchema,
+	manageOrganizationMemberFormSchema,
 	organizationFormSchema,
 	passwordFormSchema,
 	secretFormSchema,
@@ -49,7 +50,7 @@ import {
 	deleteEmailVerificationRequests
 } from '../email-verification';
 import {
-	getMembersByOrganizationId,
+	getMembersAndInvitesByOrganization,
 	getOrganizationsByUserId,
 	inviteUserToOrganization
 } from '../organization';
@@ -324,7 +325,7 @@ export const addMemberToOrganization: Action = async (event) => {
 
 	// Limit amount of team members. @todo Think about metered pricing.
 	const planLimits = getUserPlanLimits(user?.subscriptionTier);
-	const membersByOrganization = await getMembersByOrganizationId(userOrganization.id);
+	const membersByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
 
 	if (membersByOrganization.length >= planLimits.organizationTeamSize) {
 		return message(
@@ -402,6 +403,63 @@ export const addMemberToOrganization: Action = async (event) => {
 		title: 'Invite successful.',
 		description: 'We have sent out an invitation.'
 	});
+};
+
+export const removeMemberFromOrganization: Action = async (event) => {
+	const form = await superValidate(event.request, zod(manageOrganizationMemberFormSchema()));
+
+	console.log(form.data);
+	const { organizationId, inviteId, userId } = form.data;
+
+	const user = event.locals.user;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	// Make sure user is owner of the organization
+	const userOrganizations = await getOrganizationsByUserId(user.id);
+	const userOrganization = userOrganizations.find(
+		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+	);
+
+	if (!organizationId || !userOrganization) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Not allowed.'
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
+	if (inviteId) {
+		await db.delete(invite).where(eq(invite.id, inviteId));
+
+		return message(form, {
+			status: 'success',
+			title: 'Revoked invitation.',
+			description: 'The invitation has been deleted.'
+		});
+	}
+
+	// Prevent removing yourself from the organization
+	if (userId && userId !== user.id) {
+		await db.delete(membership).where(eq(membership.userId, userId));
+
+		return message(form, {
+			status: 'success',
+			title: 'Removed member.',
+			description: 'The member has been removed from your organization.'
+		});
+	}
 };
 
 export const loginWithEmail: Action = async (event) => {

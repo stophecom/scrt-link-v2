@@ -35,7 +35,7 @@ export const getOrganizationsByUserId = async (userId: User['id']) =>
 export const getMembersByOrganizationId = async (organizationId: Organization['id']) =>
 	await db
 		.select({
-			id: user.id,
+			userId: user.id,
 			name: user.name,
 			email: user.email,
 			picture: user.picture,
@@ -48,7 +48,7 @@ export const getMembersByOrganizationId = async (organizationId: Organization['i
 export const getInvitesByOrganizationId = async (organizationId: Organization['id']) =>
 	await db
 		.select({
-			id: invite.id,
+			inviteId: invite.id,
 			email: invite.email,
 			expiresAt: invite.expiresAt,
 			acceptedAt: invite.acceptedAt,
@@ -91,7 +91,8 @@ export const inviteUserToOrganization = async ({
 };
 
 export type MembersAndInvitesByOrganization = {
-	id: string;
+	userId?: string;
+	inviteId?: string;
 	name: string | null;
 	email: string;
 	picture: string | null;
@@ -109,7 +110,7 @@ export const getMembersAndInvitesByOrganization = async (organizationId: Organiz
 	// Add existing members first
 	for (const member of existingMembers) {
 		mergedMap.set(member.email, {
-			id: member.id,
+			userId: member.userId,
 			name: member.name ?? null,
 			email: member.email,
 			picture: member.picture ?? null,
@@ -127,7 +128,7 @@ export const getMembersAndInvitesByOrganization = async (organizationId: Organiz
 			}
 
 			mergedMap.set(invite.email, {
-				id: invite.id,
+				inviteId: invite.inviteId,
 				name: null,
 				email: invite.email,
 				picture: null,

@@ -112,6 +112,13 @@ export const inviteOrganizationMemberFormSchema = () =>
 		organizationId: z.string()
 	});
 
+export const manageOrganizationMemberFormSchema = () =>
+	z.object({
+		userId: z.string().optional(),
+		inviteId: z.string().optional(),
+		organizationId: z.string()
+	});
+
 export const whiteLabelMetaSchema = () =>
 	z.object({
 		customDomain: z.string().max(30),
@@ -209,6 +216,9 @@ export type UserFormSchema = z.infer<ReturnType<typeof userFormSchema>>;
 export type OrganizationFormSchema = z.infer<ReturnType<typeof organizationFormSchema>>;
 export type InviteOrganizationMemberFormSchema = z.infer<
 	ReturnType<typeof inviteOrganizationMemberFormSchema>
+>;
+export type ManageOrganizationMemberFormSchema = z.infer<
+	ReturnType<typeof manageOrganizationMemberFormSchema>
 >;
 export type SettingsFormSchema = ReturnType<typeof settingsFormSchema>;
 export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;

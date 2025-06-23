@@ -10,6 +10,7 @@ import {
 	createOrganization,
 	editOrganization,
 	logout,
+	removeMemberFromOrganization,
 	revokeAPIToken,
 	saveSettings,
 	saveTheme,
@@ -34,6 +35,7 @@ import { getActiveApiKeys } from '$lib/server/user';
 import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
 import {
 	inviteOrganizationMemberFormSchema,
+	manageOrganizationMemberFormSchema,
 	organizationFormSchema,
 	whiteLabelMetaSchema
 } from '$lib/validators/formSchemas';
@@ -90,6 +92,12 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		});
 	};
 
+	const manageOrganizationMemberFormValidator = async () => {
+		return await superValidate(zod(manageOrganizationMemberFormSchema()), {
+			errors: false
+		});
+	};
+
 	const getOrganizationIdOptions = () => [
 		{
 			value: '',
@@ -117,6 +125,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			: null,
 		organizationForm: await organizationFormValidator(),
 		inviteOrganizationMemberForm: await inviteOrganizationMemberFormValidator(),
+		manageOrganizationMemberForm: await manageOrganizationMemberFormValidator(),
 		whiteLabelDomain: whiteLabel?.customDomain,
 		secretForm: await secretFormValidator(),
 		themeForm: await themeFormValidator(user),
@@ -138,6 +147,7 @@ export const actions: Actions = {
 	createOrganization: createOrganization,
 	editOrganization: editOrganization,
 	addMemberToOrganization: addMemberToOrganization,
+	removeMemberFromOrganization: removeMemberFromOrganization,
 	revokeAPIToken: revokeAPIToken,
 	logout: logout
 };

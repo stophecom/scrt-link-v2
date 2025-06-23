@@ -4,6 +4,7 @@
 
 	import { wait } from '$lib/client/utils';
 	import InviteOrganizationMemberForm from '$lib/components/forms/invite-organization-member-form.svelte';
+	import ManageOrganizationMemberForm from '$lib/components/forms/manage-organization-member-form.svelte';
 	import OrganizationForm from '$lib/components/forms/organization-form.svelte';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { buttonVariants } from '$lib/components/ui/button';
@@ -11,10 +12,11 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Table from '$lib/components/ui/table';
-	import { InviteStatus } from '$lib/data/enums';
+	import { InviteStatus, MembershipRole } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import type {
 		InviteOrganizationMemberFormSchema,
+		ManageOrganizationMemberFormSchema,
 		OrganizationFormSchema
 	} from '$lib/validators/formSchemas';
 
@@ -23,12 +25,14 @@
 	let {
 		organizationForm,
 		inviteOrganizationMemberForm,
+		manageOrganizationMemberForm,
 		organization
 	}: {
 		user: App.Locals['user'];
 		organization: PageServerData['userOrganization'];
 		organizationForm: SuperValidated<OrganizationFormSchema>;
 		inviteOrganizationMemberForm: SuperValidated<InviteOrganizationMemberFormSchema>;
+		manageOrganizationMemberForm: SuperValidated<ManageOrganizationMemberFormSchema>;
 	} = $props();
 
 	let openDialogName = $state(false);
@@ -56,8 +60,8 @@
 				<Table.Row>
 					<Table.Head>{m.cuddly_flat_salmon_express()}</Table.Head>
 					<Table.Head>{m.bad_close_anaconda_forgive()}</Table.Head>
-					<Table.Head>Status</Table.Head>
-					<Table.Head>Edit</Table.Head>
+					<Table.Head>{m.noisy_loved_chicken_forgive()}</Table.Head>
+					<Table.Head></Table.Head>
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
@@ -84,22 +88,40 @@
 						<Table.Cell>{member.role}</Table.Cell>
 						<Table.Cell>{@render renderStatus(member.status)}</Table.Cell>
 						<Table.Cell>
-							<Dialog.Root
-								bind:open={() => openDialogs.get(member.id) ?? false,
-								(value) => {
-									openDialogs.set(member.id, value);
-								}}
-							>
-								<Dialog.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-									<Pen class="h-4 w-4" /><span class="sr-only">Edit member</span></Dialog.Trigger
+							{#if member.role !== MembershipRole.OWNER}
+								<Dialog.Root
+									bind:open={() => openDialogs.get(member.email) ?? false,
+									(value) => {
+										openDialogs.set(member.email, value);
+									}}
 								>
-								<Dialog.Content class="sm:max-w-[425px]">
-									<Dialog.Header>
-										<Dialog.Title>Edit Member</Dialog.Title>
-										{member.id}
-									</Dialog.Header>
-								</Dialog.Content>
-							</Dialog.Root>
+									<Dialog.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+										<Pen class="h-4 w-4" /><span class="sr-only">{m.helpful_noble_swan_mop()}</span
+										></Dialog.Trigger
+									>
+									<Dialog.Content class="sm:max-w-[425px]">
+										<Dialog.Header>
+											<Dialog.Title>
+												{#if member.userId}
+													{m.still_royal_cod_flip()}
+												{:else if member.inviteId}
+													{m.bold_bold_pony_peel()}
+												{/if}
+											</Dialog.Title>
+											<div class="pt-4">
+												<div class="mb-2">{member.email}</div>
+												<ManageOrganizationMemberForm
+													organizationId={organization.id}
+													userId={member.userId}
+													inviteId={member.inviteId}
+													form={manageOrganizationMemberForm}
+													formAction="?/removeMemberFromOrganization"
+												/>
+											</div>
+										</Dialog.Header>
+									</Dialog.Content>
+								</Dialog.Root>
+							{/if}
 						</Table.Cell>
 					</Table.Row>
 				{/each}
