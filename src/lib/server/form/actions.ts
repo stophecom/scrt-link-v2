@@ -6,7 +6,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
-import { MembershipRole } from '$lib/data/enums';
+import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { addDomainToVercel, removeDomainFromVercelProject, validDomainRegex } from '$lib/domains';
@@ -18,6 +18,7 @@ import { db } from '$lib/server/db';
 import {
 	apiKey,
 	emailVerificationRequest,
+	invite,
 	membership,
 	organization,
 	user as userSchema,
@@ -339,7 +340,7 @@ export const addMemberToOrganization: Action = async (event) => {
 		);
 	}
 
-	// If scrt.link user exists, we only add to organization.
+	// Handle existing member
 	const existingUser = await getUserByEmail(email);
 	if (existingUser) {
 		const existingMember = await db.query.membership.findFirst({
@@ -352,7 +353,34 @@ export const addMemberToOrganization: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: 'User is already a member of this organization.'
+					title: 'Invitation failed',
+					description: 'User is already a member of your organization.'
+				},
+				{
+					status: 401
+				}
+			);
+		}
+	}
+
+	// Handle existing invitation
+	const [existingInvite] = await db
+		.select()
+		.from(invite)
+		.where(and(eq(invite.organizationId, organizationId), eq(invite.email, email)))
+		.limit(1);
+
+	if (existingInvite) {
+		if (existingInvite.expiresAt < new Date() || existingInvite.status !== InviteStatus.PENDING) {
+			// Invite has expired. We delete it.
+			await db.delete(invite).where(eq(invite.id, existingInvite.id));
+		} else {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: 'Invitation failed',
+					description: 'User has already been invited to the organization.'
 				},
 				{
 					status: 401
@@ -371,7 +399,8 @@ export const addMemberToOrganization: Action = async (event) => {
 
 	return message(form, {
 		status: 'success',
-		title: 'Invite successful'
+		title: 'Invite successful.',
+		description: 'We have sent out an invitation.'
 	});
 };
 

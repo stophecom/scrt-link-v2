@@ -50,6 +50,8 @@ export const getInvitesByOrganizationId = async (organizationId: Organization['i
 		.select({
 			id: invite.id,
 			email: invite.email,
+			expiresAt: invite.expiresAt,
+			acceptedAt: invite.acceptedAt,
 			status: invite.status,
 			role: invite.membershipRole
 		})
@@ -119,13 +121,18 @@ export const getMembersAndInvitesByOrganization = async (organizationId: Organiz
 	// Add invited members if email not already present
 	for (const invite of invitedMembers) {
 		if (!mergedMap.has(invite.email)) {
+			let status: InviteStatus = invite.status ?? InviteStatus.PENDING;
+			if (invite.expiresAt < new Date()) {
+				status = InviteStatus.EXPIRED;
+			}
+
 			mergedMap.set(invite.email, {
 				id: invite.id,
 				name: null,
 				email: invite.email,
 				picture: null,
 				role: invite.role ?? null,
-				status: invite.status ?? null
+				status: status
 			});
 		}
 	}

@@ -604,5 +604,8 @@
 	"cool_solid_anaconda_fond": "Accept invitation",
 	"odd_tense_tuna_list": "You have been invited by {name} to join the team on scrt.link.",
 	"calm_loose_midge_scold": "You are invited",
-	"wild_born_blackbird_peel": "Successfully changed organization."
+	"wild_born_blackbird_peel": "Successfully changed organization.",
+	"aloof_male_shark_sail": "pending",
+	"warm_long_gecko_express": "revoked",
+	"flaky_tiny_weasel_stab": "expired"
 }

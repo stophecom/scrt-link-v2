@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Pen } from '@lucide/svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { wait } from '$lib/client/utils';
@@ -10,6 +11,7 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Table from '$lib/components/ui/table';
+	import { InviteStatus } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import type {
 		InviteOrganizationMemberFormSchema,
@@ -31,7 +33,21 @@
 
 	let openDialogName = $state(false);
 	let openDialogInvite = $state(false);
+
+	let openDialogs = new Map(); // Map<memberId, boolean>
 </script>
+
+{#snippet renderStatus(status: InviteStatus | null)}
+	{#if status === InviteStatus.PENDING}
+		<span class="italic">{m.aloof_male_shark_sail()}</span>
+	{:else if status === InviteStatus.REVOKED}
+		<span class="text-destructive">{m.warm_long_gecko_express()}</span>
+	{:else if status === InviteStatus.EXPIRED}
+		<span class="text-destructive">{m.flaky_tiny_weasel_stab()}</span>
+	{:else}
+		<span class="text-success">{'active'}</span>
+	{/if}
+{/snippet}
 
 {#if organization}
 	<Card class="mb-6" title={organization.name} description={m.tense_witty_gecko_relish()}>
@@ -48,24 +64,43 @@
 				{#each organization.members as member}
 					{@const memberName = member.name || m.witty_wise_grebe_empower()}
 					<Table.Row>
-						<Table.Cell class="flex items-center font-medium">
-							<div>
-								<Avatar.Root class="me-2 h-8 w-8">
-									<Avatar.Image src={member.picture} alt={memberName} />
-									<Avatar.Fallback
-										class="border-foreground bg-foreground text-background border uppercase"
-										>{Array.from(member.email)[0]}</Avatar.Fallback
-									>
-								</Avatar.Root>
-							</div>
-							<div>
-								{memberName || m.witty_wise_grebe_empower()}
-								<div class="text-xs">{member.email}</div>
+						<Table.Cell>
+							<div class="flex items-center font-medium">
+								<div>
+									<Avatar.Root class="me-2 h-8 w-8">
+										<Avatar.Image src={member.picture} alt={memberName} />
+										<Avatar.Fallback
+											class="border-foreground bg-foreground text-background border uppercase"
+											>{Array.from(member.email)[0]}</Avatar.Fallback
+										>
+									</Avatar.Root>
+								</div>
+								<div>
+									{memberName || m.witty_wise_grebe_empower()}
+									<div class="text-xs">{member.email}</div>
+								</div>
 							</div>
 						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
-						<Table.Cell>{member.status}</Table.Cell>
-						<Table.Cell>...</Table.Cell>
+						<Table.Cell>{@render renderStatus(member.status)}</Table.Cell>
+						<Table.Cell>
+							<Dialog.Root
+								bind:open={() => openDialogs.get(member.id) ?? false,
+								(value) => {
+									openDialogs.set(member.id, value);
+								}}
+							>
+								<Dialog.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+									<Pen class="h-4 w-4" /><span class="sr-only">Edit member</span></Dialog.Trigger
+								>
+								<Dialog.Content class="sm:max-w-[425px]">
+									<Dialog.Header>
+										<Dialog.Title>Edit Member</Dialog.Title>
+										{member.id}
+									</Dialog.Header>
+								</Dialog.Content>
+							</Dialog.Root>
+						</Table.Cell>
 					</Table.Row>
 				{/each}
 			</Table.Body>
