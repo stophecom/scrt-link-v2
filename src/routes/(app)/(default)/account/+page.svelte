@@ -149,7 +149,7 @@
 				</Card>
 			</Tabs.Content>
 			<Tabs.Content value="secretService">
-				{#if planLimits.whiteLabel && isAdminFlag}
+				{#if planLimits.whiteLabel}
 					<OrganizationCard
 						{user}
 						organization={data.userOrganization}
@@ -166,7 +166,6 @@
 				>
 					{#if planLimits.whiteLabel}
 						<WhiteLabelForm
-							{isAdminFlag}
 							organizationIdOptions={data.organizationIdOptions}
 							form={data.whiteLabelForm}
 							whiteLabelDomain={data.whiteLabelDomain}
