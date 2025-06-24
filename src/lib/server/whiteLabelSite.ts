@@ -49,7 +49,7 @@ export const checkIsUserAllowedOnWhiteLabelSite = async (host: string, userId: s
 			}
 			if (whiteLabelSiteResult.organizationId) {
 				const members = await getMembersByOrganizationId(whiteLabelSiteResult.organizationId);
-				const isMember = members.some((item) => item.id === userId);
+				const isMember = members.some((item) => item.userId === userId);
 
 				if (!isMember) {
 					throw Error(
