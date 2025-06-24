@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type FormOptions, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
@@ -11,22 +11,16 @@
 
 	type Props = {
 		form: SuperValidated<EmailFormSchema>;
-		onSubmit?: FormOptions['onSubmit'];
 		buttonLabel?: string;
 		formAction: string;
 	};
 
-	let {
-		formAction,
-		form: formProp,
-		buttonLabel = m.few_blue_wallaby_read(),
-		onSubmit = $bindable()
-	}: Props = $props();
+	let { formAction, form: formProp, buttonLabel = m.few_blue_wallaby_read() }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zodClient(emailFormSchema()),
 		validationMethod: 'auto',
-		onSubmit: onSubmit,
+
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
