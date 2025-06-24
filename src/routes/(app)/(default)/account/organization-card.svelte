@@ -8,12 +8,14 @@
 	import OrganizationForm from '$lib/components/forms/organization-form.svelte';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { buttonVariants } from '$lib/components/ui/button';
+	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Table from '$lib/components/ui/table';
 	import { InviteStatus, MembershipRole } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
+	import type { MembersAndInvitesByOrganization } from '$lib/server/organization';
 	import type {
 		InviteOrganizationMemberFormSchema,
 		ManageOrganizationMemberFormSchema,
@@ -38,7 +40,7 @@
 	let openDialogName = $state(false);
 	let openDialogInvite = $state(false);
 
-	let openDialogs = new Map(); // Map<memberId, boolean>
+	let selectedItem: MembersAndInvitesByOrganization | null = $state(null);
 </script>
 
 {#snippet renderStatus(status: InviteStatus | null)}
@@ -89,38 +91,15 @@
 						<Table.Cell>{@render renderStatus(member.status)}</Table.Cell>
 						<Table.Cell>
 							{#if member.role !== MembershipRole.OWNER}
-								<Dialog.Root
-									bind:open={() => openDialogs.get(member.email) ?? false,
-									(value) => {
-										openDialogs.set(member.email, value);
+								<Button
+									size="icon"
+									variant="ghost"
+									on:click={() => {
+										selectedItem = member;
 									}}
 								>
-									<Dialog.Trigger class={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-										<Pen class="h-4 w-4" /><span class="sr-only">{m.helpful_noble_swan_mop()}</span
-										></Dialog.Trigger
-									>
-									<Dialog.Content class="sm:max-w-[425px]">
-										<Dialog.Header>
-											<Dialog.Title>
-												{#if member.userId}
-													{m.still_royal_cod_flip()}
-												{:else if member.inviteId}
-													{m.bold_bold_pony_peel()}
-												{/if}
-											</Dialog.Title>
-											<div class="pt-4">
-												<div class="mb-2">{member.email}</div>
-												<ManageOrganizationMemberForm
-													organizationId={organization.id}
-													userId={member.userId}
-													inviteId={member.inviteId}
-													form={manageOrganizationMemberForm}
-													formAction="?/removeMemberFromOrganization"
-												/>
-											</div>
-										</Dialog.Header>
-									</Dialog.Content>
-								</Dialog.Root>
+									<Pen class="h-4 w-4" /><span class="sr-only">{m.helpful_noble_swan_mop()}</span>
+								</Button>
 							{/if}
 						</Table.Cell>
 					</Table.Row>
@@ -170,6 +149,35 @@
 			</div>
 		</div>
 	</Card>
+
+	<Dialog.Root bind:open={selectedItem} on:openChange={(e) => !e.detail && close()}>
+		<Dialog.Content class="sm:max-w-[425px]">
+			<Dialog.Header>
+				{#if selectedItem}
+					<Dialog.Title>
+						{#if selectedItem.userId}
+							{m.still_royal_cod_flip()}
+						{:else if selectedItem.inviteId}
+							{m.bold_bold_pony_peel()}
+						{/if}
+					</Dialog.Title>
+					<div class="pt-4">
+						<div class="mb-2">{selectedItem.email}</div>
+						<ManageOrganizationMemberForm
+							organizationId={organization.id}
+							userId={selectedItem.userId}
+							inviteId={selectedItem.inviteId}
+							form={manageOrganizationMemberForm}
+							formAction="?/removeMemberFromOrganization"
+							onSuccess={() => {
+								selectedItem = null;
+							}}
+						/>
+					</div>
+				{/if}
+			</Dialog.Header>
+		</Dialog.Content>
+	</Dialog.Root>
 {:else}
 	<Card class="mb-6" title={m.drab_dark_squirrel_fetch()} description={m.fresh_bad_midge_explore()}>
 		<OrganizationForm form={organizationForm} formAction="?/createOrganization" />

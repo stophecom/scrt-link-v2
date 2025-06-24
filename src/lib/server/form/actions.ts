@@ -408,7 +408,6 @@ export const addMemberToOrganization: Action = async (event) => {
 export const removeMemberFromOrganization: Action = async (event) => {
 	const form = await superValidate(event.request, zod(manageOrganizationMemberFormSchema()));
 
-	console.log(form.data);
 	const { organizationId, inviteId, userId } = form.data;
 
 	const user = event.locals.user;
@@ -441,7 +440,21 @@ export const removeMemberFromOrganization: Action = async (event) => {
 	}
 
 	if (inviteId) {
-		await db.delete(invite).where(eq(invite.id, inviteId));
+		const result = await db.delete(invite).where(eq(invite.id, inviteId)).returning();
+
+		if (!result.length) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: `Invitation doesn't exist.`,
+					description: `The invitation you try to delete no longer exists. It might have been deleted before.`
+				},
+				{
+					status: 401
+				}
+			);
+		}
 
 		return message(form, {
 			status: 'success',
@@ -452,7 +465,21 @@ export const removeMemberFromOrganization: Action = async (event) => {
 
 	// Prevent removing yourself from the organization
 	if (userId && userId !== user.id) {
-		await db.delete(membership).where(eq(membership.userId, userId));
+		const result = await db.delete(membership).where(eq(membership.userId, userId)).returning();
+
+		if (!result.length) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: `Member doesn't exist.`,
+					description: `The member you try to delete no longer exists. It might have been deleted before.`
+				},
+				{
+					status: 401
+				}
+			);
+		}
 
 		return message(form, {
 			status: 'success',

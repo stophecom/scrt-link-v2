@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
-	import { type FormOptions, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import {
@@ -14,7 +14,7 @@
 
 	type Props = {
 		form: SuperValidated<ManageOrganizationMemberFormSchema>;
-		onSubmit?: FormOptions['onSubmit'];
+		onSuccess?: () => void;
 		inviteId?: string;
 		userId?: string;
 		organizationId: string;
@@ -27,12 +27,13 @@
 		organizationId,
 		formAction,
 		form: formProp,
-		onSubmit = $bindable()
+		onSuccess = () => {}
 	}: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zodClient(manageOrganizationMemberFormSchema()),
 		validationMethod: 'auto',
+
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
@@ -45,6 +46,7 @@
 			if (form.message?.status === 'success' && form.message?.title) {
 				toast.success(form.message.title);
 			}
+			onSuccess();
 		}
 	});
 
