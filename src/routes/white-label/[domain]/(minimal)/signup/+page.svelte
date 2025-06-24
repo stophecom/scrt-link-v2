@@ -4,5 +4,5 @@
 </script>
 
 <SingleFormPage title={m.tough_jumpy_anteater_taste()} description={m.teary_brief_robin_scoop()}>
-	Please ask your administrator to get invited.
+	{m.stock_neat_carp_pout()}
 </SingleFormPage>
