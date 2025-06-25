@@ -33,7 +33,7 @@ export const load = async (event) => {
 
 	try {
 		// Create or update user
-		const { userId } = await createOrUpdateUser({
+		const { userId, passwordHash } = await createOrUpdateUser({
 			email: existingInvite.email,
 			emailVerified: true
 		});
@@ -53,6 +53,7 @@ export const load = async (event) => {
 		// Create session
 		await auth.createSession(event, userId);
 
+		// Get organization name from invite
 		let organizationName = '';
 		if (existingInvite.organizationId) {
 			const [organizationResult] = await db
@@ -64,7 +65,8 @@ export const load = async (event) => {
 		}
 
 		return {
-			organizationName: organizationName
+			organizationName: organizationName,
+			hasPassword: !!passwordHash
 		};
 	} catch (e) {
 		console.error(e);

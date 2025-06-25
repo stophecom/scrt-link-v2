@@ -17,7 +17,7 @@
 		? m.tough_keen_bee_pause({ organizationName: data.organizationName })
 		: m.simple_last_slug_lend()}
 >
-	<Button class="mt-12 w-full" href={localizeHref('/set-password')}
+	<Button class="mt-12 w-full" href={localizeHref(data.hasPassword ? '/account' : '/set-password')}
 		>{m.safe_gray_hawk_empower()}</Button
 	>
 	<div class="py-5">

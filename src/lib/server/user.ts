@@ -71,7 +71,7 @@ export const createOrUpdateUser = async ({
 			}
 		});
 
-	return { userId: userResult.id, name: userResult.name };
+	return { userId: userResult.id, ...userResult };
 };
 
 export const welcomeNewUser = async ({ email, name }: Pick<User, 'email' | 'name'>) => {
