@@ -55,6 +55,24 @@
 	{/if}
 {/snippet}
 
+{#snippet renderUserCard(email: string, name: string | null, picture: string | null)}
+	{@const memberName = name || m.witty_wise_grebe_empower()}
+	<div class="flex items-center font-medium">
+		<div>
+			<Avatar.Root class="me-2 h-8 w-8">
+				<Avatar.Image src={picture} alt={memberName} />
+				<Avatar.Fallback class="border-foreground bg-foreground text-background border uppercase"
+					>{Array.from(email)[0]}</Avatar.Fallback
+				>
+			</Avatar.Root>
+		</div>
+		<div>
+			{memberName}
+			<div class="text-xs">{email}</div>
+		</div>
+	</div>
+{/snippet}
+
 {#if organization}
 	<Card class="mb-6" title={organization.name} description={m.tense_witty_gecko_relish()}>
 		<Table.Root>
@@ -68,24 +86,9 @@
 			</Table.Header>
 			<Table.Body>
 				{#each organization.members as member}
-					{@const memberName = member.name || m.witty_wise_grebe_empower()}
 					<Table.Row>
 						<Table.Cell>
-							<div class="flex items-center font-medium">
-								<div>
-									<Avatar.Root class="me-2 h-8 w-8">
-										<Avatar.Image src={member.picture} alt={memberName} />
-										<Avatar.Fallback
-											class="border-foreground bg-foreground text-background border uppercase"
-											>{Array.from(member.email)[0]}</Avatar.Fallback
-										>
-									</Avatar.Root>
-								</div>
-								<div>
-									{memberName || m.witty_wise_grebe_empower()}
-									<div class="text-xs">{member.email}</div>
-								</div>
-							</div>
+							{@render renderUserCard(member.email, member.name, member.picture)}
 						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
 						<Table.Cell>{@render renderStatus(member.status)}</Table.Cell>
@@ -162,7 +165,9 @@
 						{/if}
 					</Dialog.Title>
 					<div class="pt-4">
-						<div class="mb-2">{selectedItem.email}</div>
+						<dir class="mb-3 rounded border p-3">
+							{@render renderUserCard(selectedItem.email, selectedItem.name, selectedItem.picture)}
+						</dir>
 						<ManageOrganizationMemberForm
 							organizationId={organization.id}
 							userId={selectedItem.userId}
