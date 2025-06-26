@@ -6,34 +6,15 @@ import type { SecretFormSchema } from '$lib/validators/formSchemas';
 
 import { db } from './db';
 import { type Secret, secret, stats } from './db/schema';
-import { isMemberOfOrganization } from './organization';
 import { getWhiteLabelSiteByHost } from './whiteLabelSite';
 
 type SaveSecret = {
 	userId?: string;
 	secretRequest: SecretFormSchema;
-	host?: string;
+	whiteLabelSiteId?: string;
 };
-export const saveSecret = async ({ userId, secretRequest, host }: SaveSecret) => {
+export const saveSecret = async ({ userId, secretRequest, whiteLabelSiteId }: SaveSecret) => {
 	const { content, publicNote, password, secretIdHash, meta, expiresIn, publicKey } = secretRequest;
-
-	let whiteLabelSiteId;
-
-	if (host && !isOriginalHost(host)) {
-		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
-
-		const organizationId = whiteLabelSiteResult?.organizationId;
-
-		const isOwner = whiteLabelSiteResult?.userId === userId;
-		const isMemberOfWhiteLabelSiteOwningOrganization =
-			userId && organizationId && (await isMemberOfOrganization(userId, organizationId));
-
-		if (!isOwner && !isMemberOfWhiteLabelSiteOwningOrganization) {
-			throw Error(`Not allowed to create secret for host ${host}`);
-		}
-
-		whiteLabelSiteId = whiteLabelSiteResult.id;
-	}
 
 	let passwordHash;
 	if (password) {

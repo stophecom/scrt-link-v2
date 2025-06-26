@@ -4,6 +4,7 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { isOriginalHost } from '$lib/app-routing';
 import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { InviteStatus, MembershipRole } from '$lib/data/enums';
@@ -64,7 +65,11 @@ import {
 	getUserByEmail,
 	welcomeNewUser
 } from '../user';
-import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
+import {
+	checkIsUserAllowedOnWhiteLabelSite,
+	getWhiteLabelSiteByHost,
+	getWhiteLabelSiteByUserId
+} from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod(secretFormSchema()));
@@ -77,11 +82,18 @@ export const postSecret: Action = async (event) => {
 
 	const user = event.locals.user;
 
+	let whiteLabelSiteId;
+	if (host && !isOriginalHost(host)) {
+		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
+
+		whiteLabelSiteId = whiteLabelSiteResult.id;
+	}
+
 	try {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
 			userId: user?.id,
 			secretRequest: form.data,
-			host
+			whiteLabelSiteId
 		});
 
 		const expirationPeriod =

@@ -1,11 +1,14 @@
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
+import { isOriginalHost } from '$lib/app-routing';
 import { sha256Hash } from '$lib/client/web-crypto';
 import { db } from '$lib/server/db';
 import { apiKey } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/schema';
+import { isMemberOfOrganization } from '$lib/server/organization';
 import { saveSecret } from '$lib/server/secrets';
+import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 import { secretFormSchema } from '$lib/validators/formSchemas';
 
 const corsHeaders = {
@@ -49,6 +52,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		return jsonWithCors({ error: 'Invalid API key.' }, { status: 403 });
 	}
 
+	const userId = userWithApiKey.user?.id;
+
 	const body = await request.json();
 	const validation = secretFormSchema().safeParse(body);
 
@@ -67,17 +72,35 @@ export const POST: RequestHandler = async ({ request }) => {
 		return jsonWithCors({ error: 'Checksum mismatch.' }, { status: 400 });
 	}
 
+	let whiteLabelSiteId;
+	if (host && !isOriginalHost(host)) {
+		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
+		whiteLabelSiteId = whiteLabelSiteResult.id;
+
+		const organizationId = whiteLabelSiteResult?.organizationId;
+
+		// For API users we need to check if user is allowed to use custom domain (white-label host)
+		const isOwner = whiteLabelSiteResult?.userId === userId;
+		const isMemberOfWhiteLabelSiteOwningOrganization =
+			userId && organizationId && (await isMemberOfOrganization(userId, organizationId));
+
+		if (!isOwner && !isMemberOfWhiteLabelSiteOwningOrganization) {
+			return jsonWithCors(
+				{ error: `Not allowed to create secret for host ${host}` },
+				{ status: 400 }
+			);
+		}
+	}
+
 	try {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
-			userId: userWithApiKey.user?.id,
+			userId: userId,
 			secretRequest: validation.data,
-			host
+			whiteLabelSiteId
 		});
 		return jsonWithCors({ receiptId, expiresIn, expiresAt });
 	} catch (error) {
-		return jsonWithCors(
-			{ error: error instanceof Error ? error.message : 'Unknown error' },
-			{ status: 400 }
-		);
+		console.error(error);
+		return jsonWithCors({ error: `Couldn't save secret.` }, { status: 400 });
 	}
 };
