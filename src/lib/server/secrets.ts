@@ -28,7 +28,7 @@ export const saveSecret = async ({ userId, secretRequest, host }: SaveSecret) =>
 		const isMemberOfWhiteLabelSiteOwningOrganization =
 			userId && organizationId && (await isMemberOfOrganization(userId, organizationId));
 
-		if (!isOwner || !isMemberOfWhiteLabelSiteOwningOrganization) {
+		if (!isOwner && !isMemberOfWhiteLabelSiteOwningOrganization) {
 			throw Error(`Not allowed to create secret for host ${host}`);
 		}
 
