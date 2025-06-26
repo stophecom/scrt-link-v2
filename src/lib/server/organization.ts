@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 import { sha256Hash } from '$lib/client/web-crypto';
 import { generateBase64Token } from '$lib/crypto';
@@ -45,6 +45,16 @@ export const getMembersByOrganizationId = async (organizationId: Organization['i
 		.innerJoin(user, eq(membership.userId, user.id))
 		.where(eq(membership.organizationId, organizationId));
 
+export const isMemberOfOrganization = async (
+	userId: string,
+	organizationId: string
+): Promise<boolean> => {
+	const result = await db.query.membership.findFirst({
+		where: and(eq(membership.userId, userId), eq(membership.organizationId, organizationId))
+	});
+
+	return !!result;
+};
 export const getInvitesByOrganizationId = async (organizationId: Organization['id']) =>
 	await db
 		.select({

@@ -39,13 +39,13 @@ export const POST: RequestHandler = async ({ request }) => {
 	}
 
 	const token = authorizationHeader.split(' ')[1];
-	const [matchingApiKey] = await db
+	const [userWithApiKey] = await db
 		.select()
 		.from(apiKey)
 		.leftJoin(user, eq(user.id, apiKey.userId))
 		.where(eq(apiKey.key, token));
 
-	if (!matchingApiKey) {
+	if (!userWithApiKey || !userWithApiKey.api_key) {
 		return jsonWithCors({ error: 'Invalid API key.' }, { status: 403 });
 	}
 
@@ -67,11 +67,17 @@ export const POST: RequestHandler = async ({ request }) => {
 		return jsonWithCors({ error: 'Checksum mismatch.' }, { status: 400 });
 	}
 
-	const { receiptId, expiresIn, expiresAt } = await saveSecret({
-		userId: matchingApiKey.user?.id,
-		secretRequest: validation.data,
-		host
-	});
-
-	return jsonWithCors({ receiptId, expiresIn, expiresAt });
+	try {
+		const { receiptId, expiresIn, expiresAt } = await saveSecret({
+			userId: userWithApiKey.user?.id,
+			secretRequest: validation.data,
+			host
+		});
+		return jsonWithCors({ receiptId, expiresIn, expiresAt });
+	} catch (error) {
+		return jsonWithCors(
+			{ error: error instanceof Error ? error.message : 'Unknown error' },
+			{ status: 400 }
+		);
+	}
 };

@@ -20,6 +20,7 @@ const DEFAULT_HOST = 'scrt.link';
 type Options = {
 	secretType?: SecretType.TEXT | SecretType.NEOGRAM | SecretType.NEOGRAM;
 	password?: string;
+	publicNote?: string;
 	expiresIn?: number;
 	host?: string;
 };
@@ -28,11 +29,14 @@ export const scrtLink = (apiKey: string) => {
 		throw new Error('API key is required');
 	}
 
-	const createSecret = async (
-		secret: string,
-		options: Options = { secretType: SecretType.TEXT, expiresIn: 7 * DAY, host: DEFAULT_HOST }
-	) => {
-		const { secretType, password, expiresIn, host } = options;
+	const createSecret = async (secret: string, options: Partial<Options> = {}) => {
+		const {
+			secretType = SecretType.TEXT,
+			password,
+			publicNote,
+			expiresIn = 7 * DAY,
+			host = DEFAULT_HOST
+		} = options;
 
 		let encryptedContent = secret;
 		let encryptedMeta = JSON.stringify({
@@ -59,6 +63,7 @@ export const scrtLink = (apiKey: string) => {
 			meta: encryptedMeta,
 			content: encryptedContent,
 			publicKey,
+			publicNote,
 			expiresIn,
 			password
 		});
