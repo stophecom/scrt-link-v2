@@ -124,7 +124,7 @@ const plans = () => [
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
 			whiteLabel: true,
-			organizationTeamSize: 10
+			organizationTeamSize: 30
 		}
 	}
 ];
