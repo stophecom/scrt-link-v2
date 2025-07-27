@@ -89,7 +89,7 @@
 		"resend": "^4.1.1",
 		"runed": "^0.23.3",
 		"stripe": "^17.7.0",
-		"svelte-email-tailwind": "^2.1.1",
+		"svelte-email-tailwind": "^3.0.2",
 		"svelte-exmarkdown": "^4.0.2",
 		"svelte-guard": "^1.0.0",
 		"svelte-typewriter": "^3.2.3"
