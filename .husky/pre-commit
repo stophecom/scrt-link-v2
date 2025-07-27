@@ -2,7 +2,7 @@
 # Load nvm and use the correct Node version
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm use 20  # or whatever version you want
+# nvm use 22 or whatever version you want
 
 npx pnpm format
 npx pnpm lint
