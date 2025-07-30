@@ -528,19 +528,16 @@ export const loginWithEmail: Action = async (event) => {
 		return { form };
 	}
 
+	// If user doesn't have a password (e.g. from old version of scrt.link) or email is not verified.
+	if (!result.passwordHash || !result.emailVerified) {
+		// User needs to verify his/her email
+		await createEmailVerificationRequestAndRedirect(event, email);
+	}
+
 	try {
 		// Restrict login to white-label
+		// @todo: refactor this
 		await checkIsUserAllowedOnWhiteLabelSite(event.url.host, result.id);
-
-		// If user doesn't have a password (e.g. from old version of scrt.link) or email is not verified.
-		if (!result.passwordHash || !result.emailVerified) {
-			// User needs to verify his/her email
-			await createEmailVerificationRequestAndRedirect(event, email);
-		}
-
-		event.cookies.set('email_verification', email, {
-			path: '/'
-		});
 	} catch (error) {
 		console.error(error);
 
@@ -554,6 +551,10 @@ export const loginWithEmail: Action = async (event) => {
 			{ status: 401 }
 		);
 	}
+
+	event.cookies.set('email_verification', email, {
+		path: '/'
+	});
 
 	return redirectLocalized(303, '/login/password');
 };
