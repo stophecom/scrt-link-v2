@@ -85,8 +85,8 @@ importers:
         version: 3.2.3(svelte@5.20.5)
     devDependencies:
       '@eslint/compat':
-        specifier: ^1.2.6
-        version: 1.2.6(eslint@9.21.0(jiti@2.4.2))
+        specifier: ^1.3.1
+        version: 1.3.1(eslint@9.21.0(jiti@2.4.2))
       '@eslint/js':
         specifier: ^9.21.0
         version: 9.21.0
@@ -1140,11 +1140,11 @@ packages:
     resolution: {integrity: sha512-CCZCDJuduB9OUkFkY2IgppNZMi2lBQgD2qzwXkEia16cge2pijY/aXi96CJMquDMn3nJdlPV1A5KrJEXwfLNzQ==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
 
-  '@eslint/compat@1.2.6':
-    resolution: {integrity: sha512-k7HNCqApoDHM6XzT30zGoETj+D+uUcZUb+IVAJmar3u6bvHf7hhHJcWx09QHj4/a2qrKZMWU0E16tvkiAdv06Q==}
+  '@eslint/compat@1.3.1':
+    resolution: {integrity: sha512-k8MHony59I5EPic6EQTCNOuPoVBnoYXkP+20xvwFjN7t0qI3ImyvyBgg+hIVPwC8JaxVjjUZld+cLfBLFDLucg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      eslint: ^9.10.0
+      eslint: ^8.40 || 9
     peerDependenciesMeta:
       eslint:
         optional: true
@@ -2324,8 +2324,8 @@ packages:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
-  css-select@5.1.0:
-    resolution: {integrity: sha512-nwoRF1rvRRnnCqqY7updORDsuqKzqYJ28+oSMaJMMgOauh3fvwHqMS7EZpIPqK8GL+g9mKxF1vP/ZjSeNjEVHg==}
+  css-select@5.2.2:
+    resolution: {integrity: sha512-TizTzUddG/xYLA3NXodFM0fSbNizXjOKhqiQQwvhlspadZokn1KDy0NZFS0wuEubIYAV5/c1/lAr0TaaFXEXzw==}
 
   css-tree@2.2.1:
     resolution: {integrity: sha512-OA0mILzGc1kCOCSJerOeqDxDQ4HOh+G8NbOJFOTgOCzpw7fCBubk0fEyxp8AgOL/jvLgYA/uV0cMbe43ElF1JA==}
@@ -2335,8 +2335,8 @@ packages:
     resolution: {integrity: sha512-6Fv1DV/TYw//QF5IzQdqsNDjx/wc8TrMBZsqjL9eW01tWb7R7k/mq+/VXfJCl7SoD5emsJop9cOByJZfs8hYIw==}
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0}
 
-  css-what@6.1.0:
-    resolution: {integrity: sha512-HTUrgRJ7r4dsZKU6GjmpfRK1O76h97Z8MfS1G0FozR+oF2kG6Vfe8JE6zwrkbxigziPHinCJ+gCPjA9EaBDtRw==}
+  css-what@6.2.2:
+    resolution: {integrity: sha512-u/O3vwbptzhMs3L1fQE82ZSLHQQfto5gyZzwteVIEyeaY5Fc7R4dapF/BvRoSYFeqfBk4m0V1Vafq5Pjv25wvA==}
     engines: {node: '>= 6'}
 
   cssesc@3.0.0:
@@ -5391,7 +5391,7 @@ snapshots:
 
   '@eslint-community/regexpp@4.12.1': {}
 
-  '@eslint/compat@1.2.6(eslint@9.21.0(jiti@2.4.2))':
+  '@eslint/compat@1.3.1(eslint@9.21.0(jiti@2.4.2))':
     optionalDependencies:
       eslint: 9.21.0(jiti@2.4.2)
 
@@ -6777,10 +6777,10 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  css-select@5.1.0:
+  css-select@5.2.2:
     dependencies:
       boolbase: 1.0.0
-      css-what: 6.1.0
+      css-what: 6.2.2
       domhandler: 5.0.3
       domutils: 3.2.2
       nth-check: 2.1.1
@@ -6795,7 +6795,7 @@ snapshots:
       mdn-data: 2.0.30
       source-map-js: 1.2.1
 
-  css-what@6.1.0: {}
+  css-what@6.2.2: {}
 
   cssesc@3.0.0: {}
 
@@ -8686,9 +8686,9 @@ snapshots:
     dependencies:
       '@trysound/sax': 0.2.0
       commander: 7.2.0
-      css-select: 5.1.0
+      css-select: 5.2.2
       css-tree: 2.3.1
-      css-what: 6.1.0
+      css-what: 6.2.2
       csso: 5.0.5
       picocolors: 1.1.1
 
