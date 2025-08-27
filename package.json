@@ -50,7 +50,7 @@
 		"lucide-svelte": "^0.503.0",
 		"mdsvex": "^0.11.2",
 		"mode-watcher": "^1.0.2",
-		"prettier": "^3.4.2",
+		"prettier": "^3.6.2",
 		"prettier-plugin-svelte": "^3.3.2",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"svelte": "^5.20.5",
