@@ -27,7 +27,7 @@
 	<Form.Description>{description}</Form.Description>
 </div>
 <div class="flex-wrap space-y-2 space-x-3 sm:flex">
-	{#each items as item}
+	{#each items as item (item.value)}
 		{@const checked = value.includes(item.value)}
 
 		<div class="flex flex-row items-center space-x-1">

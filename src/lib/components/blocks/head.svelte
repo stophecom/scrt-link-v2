@@ -30,7 +30,7 @@
 		hreflang="x-default"
 		href={getAbsoluteLocalizedUrl(page.url.origin, globalPathname, DEFAULT_LOCALE)}
 	/>
-	{#each locales as locale}
+	{#each locales as locale (locale)}
 		{#if locale === DEFAULT_LOCALE}
 			<link
 				rel="alternate"

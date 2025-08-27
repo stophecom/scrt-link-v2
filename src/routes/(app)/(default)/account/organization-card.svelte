@@ -51,7 +51,7 @@
 	{:else if status === InviteStatus.EXPIRED}
 		<span class="text-destructive">{m.flaky_tiny_weasel_stab()}</span>
 	{:else}
-		<span class="text-success">{'active'}</span>
+		<span class="text-success">active</span>
 	{/if}
 {/snippet}
 
@@ -85,7 +85,7 @@
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#each organization.members as member}
+				{#each organization.members as member, i (i)}
 					<Table.Row>
 						<Table.Cell>
 							{@render renderUserCard(member.email, member.name, member.picture)}

@@ -28,7 +28,7 @@
 				activeCurrency = value as SupportedCurrency;
 			}}
 		>
-			{#each Object.values(SupportedCurrency) as currency}
+			{#each Object.values(SupportedCurrency) as currency (currency)}
 				<DropdownMenu.RadioItem value={currency} class="uppercase"
 					>{currency}</DropdownMenu.RadioItem
 				>

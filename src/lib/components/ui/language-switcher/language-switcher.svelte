@@ -33,7 +33,7 @@
 				setLocale(value as Locale);
 			}}
 		>
-			{#each locales as tag}
+			{#each locales as tag, i (i)}
 				<DropdownMenu.RadioItem value={tag}>{getSupportedLanguagesMap(tag)}</DropdownMenu.RadioItem>
 			{/each}
 		</DropdownMenu.RadioGroup>

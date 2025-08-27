@@ -5,7 +5,7 @@
 	import apiDocs from '$lib/data/docs/api.md?raw';
 </script>
 
-<Page wide title={'Developers'} lead={'API documentation for developers.'} markNotTranslated>
+<Page wide title="Developers" lead="API documentation for developers." markNotTranslated>
 	<Container variant="wide">
 		<Markdown markdown={apiDocs} format={true} formatCode />
 	</Container>

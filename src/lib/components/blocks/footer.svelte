@@ -38,7 +38,7 @@
 		<div class="pb-8 md:flex">
 			<div class="text-muted-foreground flex flex-wrap items-center text-sm">
 				<span class="py-2 pe-4">©{new Date().getFullYear()} SANTiHANS GmbH</span>
-				{#each imprintMenu() as menuItem}
+				{#each imprintMenu() as menuItem (menuItem.href)}
 					<a class="hover:text-foreground pe-4 underline" href={localizeHref(menuItem.href)}>
 						{menuItem.label}
 					</a>

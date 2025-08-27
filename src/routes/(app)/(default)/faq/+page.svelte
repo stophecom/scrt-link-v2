@@ -13,7 +13,7 @@
 	metaKeywords={m.many_pink_opossum_tear()}
 >
 	<Container>
-		{#each faqCategories() as item}
+		{#each faqCategories() as item (item.id)}
 			<h2 class="mt-20 mb-2 text-2xl leading-snug font-bold md:text-3xl">{item.title}</h2>
 
 			{@const categoryFaq = faq().filter(({ category }) => category === item.id)}

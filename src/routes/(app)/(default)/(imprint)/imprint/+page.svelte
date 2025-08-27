@@ -14,7 +14,7 @@
 
 		<h2>{m.even_icy_shell_compose()}</h2>
 		<ul>
-			{#each legalMenu() as menuItem}
+			{#each legalMenu() as menuItem, i (i)}
 				<li>
 					<a href={localizeHref(menuItem.href)}>
 						{menuItem.label}

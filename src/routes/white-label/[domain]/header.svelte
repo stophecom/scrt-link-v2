@@ -27,7 +27,7 @@
 	<Container class="flex justify-between py-3">
 		{#if minimal && logoSrc}
 			<a class="inline-flex h-20 w-36 items-center" href={localizeHref('/')}>
-				<img src={logoSrc} alt={'Logo'} class="max-h-full max-w-full object-contain" />
+				<img src={logoSrc} alt="Logo" class="max-h-full max-w-full object-contain" />
 			</a>
 		{/if}
 		<div class="ml-auto flex items-center">

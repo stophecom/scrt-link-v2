@@ -85,7 +85,7 @@
 		{:else}
 			<Tabs.Root value="text" let:value>
 				<Tabs.List class="max-w-full overflow-scroll">
-					{#each enabledSecretTypes as secretTypeItem}
+					{#each enabledSecretTypes as secretTypeItem (secretTypeItem.value)}
 						<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
 					{/each}
 				</Tabs.List>

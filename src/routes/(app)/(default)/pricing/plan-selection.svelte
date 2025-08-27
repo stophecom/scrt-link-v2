@@ -148,7 +148,7 @@
 			{/if}
 		</PlanView>
 
-		{#each plansSorted as plan}
+		{#each plansSorted as plan (plan.id)}
 			{@const prices = plan.prices}
 			{@const isActiveProduct = plan.id === activeProduct}
 			{@const price = showYearlyPrice ? prices?.yearly : prices?.monthly}

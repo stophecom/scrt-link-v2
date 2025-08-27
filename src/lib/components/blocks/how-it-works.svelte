@@ -47,7 +47,7 @@
 
 <IntersectionObserver let:intersecting top={-100} once={true}>
 	<div class="grid grid-rows-3 gap-4 sm:grid-cols-3 sm:grid-rows-none">
-		{#each explanationSteps() as step, i}
+		{#each explanationSteps() as step, i (step.title)}
 			<div
 				style="transition-delay: {i * 100}ms;"
 				class="flex transition-all {intersecting

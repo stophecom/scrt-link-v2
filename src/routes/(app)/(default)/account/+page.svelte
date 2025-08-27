@@ -110,7 +110,7 @@
 
 						{#if data.apiKeys.length}
 							<h3 class="mt-6 mb-2 text-xl font-semibold">{m.lost_slimy_pelican_achieve()}</h3>
-							{#each data.apiKeys as item}
+							{#each data.apiKeys as item, i (i)}
 								<div
 									class="bg-background/60 border-border mb-3 grid grid-cols-[100px_1fr] gap-2 overflow-hidden border p-2 px-4 sm:grid-cols-[100px_1fr_min-content_min-content]"
 								>

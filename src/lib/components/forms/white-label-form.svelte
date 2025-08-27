@@ -124,7 +124,7 @@
 									<div class="font-semibold">Name</div>
 									<div class="font-semibold">Value</div>
 
-									{#each $queryResult.data.instructions as item}
+									{#each $queryResult.data.instructions as item (item.value)}
 										<div>{item.type}</div>
 										<div class="whitespace-pre-wrap">{item.domain}</div>
 										<div class="break-all">{item.value}</div>

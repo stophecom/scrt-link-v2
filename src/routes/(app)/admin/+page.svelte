@@ -11,7 +11,7 @@
 <Page title="Admin" lead="Insights and Playground">
 	<Container>
 		<Card title="Top Users" description="Users with the most created secrets">
-			{#each data.userStats as item}
+			{#each data.userStats as item, i (i)}
 				<div>
 					{item.user?.email}:
 					{item.stats.totalSecrets}

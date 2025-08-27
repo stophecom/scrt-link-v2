@@ -32,7 +32,7 @@
 				? 'bg-transparent'
 				: 'bg-background shadow-sm'}"
 		>
-			<Container variant={'wide'} class="flex h-16 items-center">
+			<Container variant="wide" class="flex h-16 items-center">
 				<a
 					class="flex items-center py-2 transition duration-150 ease-in-out {intersecting &&
 					!persistHeader
@@ -72,7 +72,7 @@
 								<DropdownMenu.Label>{m.ideal_brave_eagle_trust()}</DropdownMenu.Label>
 								<DropdownMenu.Separator />
 
-								{#each secretMenu() as menuItem}
+								{#each secretMenu() as menuItem (menuItem.href)}
 									<DropdownMenu.Item href={localizeHref(menuItem.href)}>
 										<menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</DropdownMenu.Item
 									>

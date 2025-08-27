@@ -15,7 +15,7 @@
 	<Container>
 		<section>
 			<ul class="grid gap-4">
-				{#each data.posts as post}
+				{#each data.posts as post, i (i)}
 					<li>
 						<a
 							class="group border-border flex w-full rounded border-b transition-all"

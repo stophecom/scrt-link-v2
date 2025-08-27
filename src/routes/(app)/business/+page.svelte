@@ -62,7 +62,7 @@
 			<div
 				class="grid grid-rows-6 gap-4 sm:grid-cols-2 sm:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
 			>
-				{#each businessFeatures() as step, i}
+				{#each businessFeatures() as step, i (i)}
 					<div
 						style="transition-delay: {i * 100}ms;"
 						class="flex transition-all {intersecting
@@ -92,7 +92,7 @@
 	<Section wide title={m.alert_fluffy_snail_fetch()} lead={m.bright_steep_racoon_accept()}>
 		<IntersectionObserver let:intersecting top={-50} once={true}>
 			<div class="grid grid-rows-4 gap-4 sm:grid-cols-2 sm:grid-rows-2">
-				{#each securityFeatures() as step, i}
+				{#each securityFeatures() as step, i (i)}
 					<div
 						style="transition-delay: {i * 100}ms;"
 						class="flex transition-all {intersecting

@@ -11,7 +11,7 @@
 </script>
 
 <Page
-	title={'Neogram'}
+	title="Neogram"
 	lead={m.white_tame_clownfish_scoop()}
 	metaDescription={m.active_dirty_cheetah_roar()}
 	metaKeywords={m.petty_ago_gibbon_enchant()}

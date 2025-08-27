@@ -13,7 +13,7 @@
 <div class={cn(className)}>
 	<h5 class="text-primary p-1 font-semibold">{title}</h5>
 	<ul class="">
-		{#each menu as menuItem}
+		{#each menu as menuItem (menuItem.href)}
 			<li class="flex items-center">
 				<a
 					class="flex p-1 py-2 font-medium hover:underline sm:py-1"

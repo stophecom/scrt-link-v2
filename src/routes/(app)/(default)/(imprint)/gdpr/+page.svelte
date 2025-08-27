@@ -6,7 +6,7 @@
 	import { m } from '$lib/paraglide/messages.js';
 </script>
 
-<Page title={'GDPR Compliance'} lead={m.male_dry_haddock_harbor()} markNotTranslated={true}>
+<Page title="GDPR Compliance" lead={m.male_dry_haddock_harbor()} markNotTranslated={true}>
 	<Container>
 		<Markdown markdown={markdownDocument} format />
 	</Container>

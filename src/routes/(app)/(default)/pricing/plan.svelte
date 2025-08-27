@@ -86,7 +86,7 @@
 	<div>
 		<h5 class="mb-3 text-xs font-semibold uppercase">{planContent.title}</h5>
 		<ul>
-			{#each planContent.contents as item}
+			{#each planContent.contents as item, i (i)}
 				<li class="flex items-center py-1 text-sm">
 					<Check class="text-primary mr-2 h-4 w-4" />{item}
 				</li>
