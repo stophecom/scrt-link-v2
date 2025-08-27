@@ -10,7 +10,7 @@
 	import { type SettingsFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
 
 	import { getReadReceiptOptions } from '../../data/secretSettings';
-	import UpgradeNotice from '../elements/upgrade-notice.svelte';
+	import UpgradeNotice from '../blocks/upgrade-notice.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {

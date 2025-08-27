@@ -1,17 +1,16 @@
-import { desc, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-import { SecretType } from '$lib/data/enums';
+import { MembershipRole, SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
-import { db } from '$lib/server/db';
-import { type Secret, secret, whiteLabelSite } from '$lib/server/db/schema';
 import {
+	addMemberToOrganization,
 	createAPIToken,
 	createOrganization,
 	editOrganization,
 	logout,
+	removeMemberFromOrganization,
 	revokeAPIToken,
 	saveSettings,
 	saveTheme,
@@ -27,47 +26,32 @@ import {
 	userFormValidator
 } from '$lib/server/form/validators';
 import {
-	getActiveApiKeys,
-	getMembersByOrganization,
-	getOrganizationsByUser
-} from '$lib/server/user';
-import { organizationFormSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
+	getMembersAndInvitesByOrganization,
+	getOrganizationsByUserId,
+	type MembersAndInvitesByOrganization
+} from '$lib/server/organization';
+import { fetchSecrets } from '$lib/server/secrets';
+import { getActiveApiKeys } from '$lib/server/user';
+import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
+import {
+	inviteOrganizationMemberFormSchema,
+	manageOrganizationMemberFormSchema,
+	organizationFormSchema,
+	whiteLabelMetaSchema
+} from '$lib/validators/formSchemas';
 
 import { actions as secretActions } from '../+page.server';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async (event) => {
-	if (!event.locals.user) {
+export const load: PageServerLoad = async ({ locals, url }) => {
+	const user = locals.user;
+	if (!user) {
 		return redirectLocalized(307, '/signup');
 	}
-	const user = event.locals.user;
 
-	const apiKeys = await getActiveApiKeys(user.id);
+	const secrets = await fetchSecrets({ userId: user.id, host: url.host });
 
-	let secrets: ({ destroyed: boolean } & Pick<
-		Secret,
-		'receiptId' | 'expiresAt' | 'retrievedAt' | 'publicNote'
-	>)[] = [];
-	const secretList = await db
-		.select()
-		.from(secret)
-		.where(eq(secret.userId, user.id))
-		.orderBy(desc(secret.expiresAt));
-
-	if (secretList.length) {
-		secrets = secretList.map(({ receiptId, expiresAt, retrievedAt, publicNote, meta }) => ({
-			receiptId,
-			expiresAt,
-			retrievedAt,
-			publicNote,
-			destroyed: !meta
-		}));
-	}
-
-	const [whiteLabel] = await db
-		.select()
-		.from(whiteLabelSite)
-		.where(eq(whiteLabelSite.userId, user.id));
+	const whiteLabel = await getWhiteLabelSiteByUserId(user.id);
 
 	const whiteLabelFormValidator = async () => {
 		return await superValidate(
@@ -83,24 +67,35 @@ export const load: PageServerLoad = async (event) => {
 		);
 	};
 
-	const userOrganizations = await getOrganizationsByUser(user.id);
+	const userOrganizations = await getOrganizationsByUserId(user.id);
 
-	let userOrganization: Awaited<ReturnType<typeof getOrganizationsByUser>>[0] | null = null;
-	let membersByOrganization: Awaited<ReturnType<typeof getMembersByOrganization>> = [];
+	// We allow (and assume) only one organization with OWNER role.
+	const userOrganization = userOrganizations.find((item) => item.role === MembershipRole.OWNER);
 
-	if (userOrganizations.length) {
-		userOrganization = userOrganizations[0]; // We allow (and assume) only one organization
+	let membersAndInvitesByOrganization: MembersAndInvitesByOrganization[] = [];
 
-		membersByOrganization = await getMembersByOrganization(userOrganization.id);
+	if (userOrganization) {
+		membersAndInvitesByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
 	}
 	const organizationFormValidator = async () => {
 		return await superValidate(
-			{ id: userOrganization?.id, name: userOrganization?.name },
+			{ organizationId: userOrganization?.id, name: userOrganization?.name },
 			zod(organizationFormSchema()),
 			{
 				errors: false
 			}
 		);
+	};
+	const inviteOrganizationMemberFormValidator = async () => {
+		return await superValidate(zod(inviteOrganizationMemberFormSchema()), {
+			errors: false
+		});
+	};
+
+	const manageOrganizationMemberFormValidator = async () => {
+		return await superValidate(zod(manageOrganizationMemberFormSchema()), {
+			errors: false
+		});
 	};
 
 	const getOrganizationIdOptions = () => [
@@ -118,15 +113,19 @@ export const load: PageServerLoad = async (event) => {
 			: [])
 	];
 
+	const apiKeys = await getActiveApiKeys(user.id);
+
 	return {
 		user: user,
 		apiKeys: apiKeys,
 		secrets: secrets,
 		organizationIdOptions: getOrganizationIdOptions(),
 		userOrganization: userOrganization
-			? { ...userOrganization, members: membersByOrganization }
+			? { ...userOrganization, members: membersAndInvitesByOrganization }
 			: null,
 		organizationForm: await organizationFormValidator(),
+		inviteOrganizationMemberForm: await inviteOrganizationMemberFormValidator(),
+		manageOrganizationMemberForm: await manageOrganizationMemberFormValidator(),
 		whiteLabelDomain: whiteLabel?.customDomain,
 		secretForm: await secretFormValidator(),
 		themeForm: await themeFormValidator(user),
@@ -147,6 +146,8 @@ export const actions: Actions = {
 	createAPIToken: createAPIToken,
 	createOrganization: createOrganization,
 	editOrganization: editOrganization,
+	addMemberToOrganization: addMemberToOrganization,
+	removeMemberFromOrganization: removeMemberFromOrganization,
 	revokeAPIToken: revokeAPIToken,
 	logout: logout
 };

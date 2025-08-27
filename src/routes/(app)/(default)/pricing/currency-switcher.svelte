@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Globe from 'lucide-svelte/icons/globe';
+	import Globe from '@lucide/svelte/icons/globe';
 
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
@@ -28,7 +28,7 @@
 				activeCurrency = value as SupportedCurrency;
 			}}
 		>
-			{#each Object.values(SupportedCurrency) as currency}
+			{#each Object.values(SupportedCurrency) as currency (currency)}
 				<DropdownMenu.RadioItem value={currency} class="uppercase"
 					>{currency}</DropdownMenu.RadioItem
 				>

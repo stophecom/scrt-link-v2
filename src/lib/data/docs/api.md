@@ -49,9 +49,10 @@ Example response:
 	// Example with all options
 	client
 		.createSecret('https://example.com', {
-			secretType: 'redirect' // text | redirect | neogram
-			password: 'foobar123'
+			secretType: 'redirect', // text | redirect | neogram
+			password: 'foobar123',
 			expiresIn: 86400000,
+			publicNote: 'Bitcoin wallet address',
 			host: 'br3f.com' // White-label
 		})
 		.then(console.log);

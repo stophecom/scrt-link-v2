@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Share from 'lucide-svelte/icons/share-2';
+	import Share from '@lucide/svelte/icons/share-2';
 
 	import { appName } from '$lib/data/app';
 	import { m } from '$lib/paraglide/messages.js';

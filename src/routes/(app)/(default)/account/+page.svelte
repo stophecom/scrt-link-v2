@@ -1,22 +1,20 @@
 <script lang="ts">
-	import { ArrowRight, Check, Rocket, Trash } from 'lucide-svelte';
-	import LogOut from 'lucide-svelte/icons/log-out';
-	import { PersistedState } from 'runed';
+	import { Trash } from '@lucide/svelte';
+	import LogOut from '@lucide/svelte/icons/log-out';
 
 	import { enhance } from '$app/forms';
-	import DarkModeSwitcher from '$lib/components/elements/dark-mode-switcher.svelte';
-	import UpgradeNotice from '$lib/components/elements/upgrade-notice.svelte';
+	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
+	import UpgradeNotice from '$lib/components/blocks/upgrade-notice.svelte';
 	import ApiTokenForm from '$lib/components/forms/api-token-form.svelte';
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';
 	import WhiteLabelForm from '$lib/components/forms/white-label-form.svelte';
-	import Page from '$lib/components/page/page.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import CopyButton from '$lib/components/ui/copy-button';
 	import Input from '$lib/components/ui/input/input.svelte';
-	import Markdown from '$lib/components/ui/markdown';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { whiteLabelDemoWebsite } from '$lib/data/app';
@@ -35,19 +33,9 @@
 
 	const { user } = data;
 
-	const premiumFeatures = [
-		m.weary_antsy_lionfish_pat(),
-		m.shy_suave_donkey_gasp(),
-		m.this_ideal_racoon_link(),
-		m.basic_just_camel_clasp(),
-		m.candid_noble_cobra_fetch()
-	];
-
 	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 
 	const isAdminFlag = $derived(user.role === Role.ADMIN);
-
-	const hidePremiumPromo = new PersistedState<boolean>('hidePremiumPromo', false);
 </script>
 
 <Page
@@ -59,7 +47,9 @@
 	<Container>
 		<Tabs.Root value="secrets">
 			<Tabs.List class="mb-2">
-				<Tabs.Trigger class="data-[state=active]:bg-muted" value="secrets">My secrets</Tabs.Trigger>
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="secrets"
+					>{m.free_nimble_whale_fry()}</Tabs.Trigger
+				>
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="account"
 					>{m.super_flaky_wallaby_pick()}</Tabs.Trigger
 				>
@@ -102,34 +92,6 @@
 					<DarkModeSwitcher variant="outline" />
 				</Card>
 
-				{#if !hidePremiumPromo.current}
-					<Card
-						title={m.red_less_tapir_edit()}
-						description={m.few_short_gull_taste()}
-						class="border-primary relative mb-6 border-2"
-					>
-						<Rocket class="absolute top-5 right-5" />
-						<ul class="mb-6">
-							{#each premiumFeatures as item}
-								<li class="flex items-center py-1 sm:text-lg">
-									<Check class="text-primary me-2" />
-									<Markdown markdown={item} />
-								</li>
-							{/each}
-						</ul>
-
-						<div class="grid grid-rows-2 gap-2 sm:flex sm:justify-between">
-							<Button variant="outline" onclick={() => (hidePremiumPromo.current = true)}
-								>{m.proud_awake_shark_drum()}</Button
-							>
-
-							<Button class="sm:ml-auto" href={localizeHref('/pricing')}
-								><ArrowRight class="mr-2 h-5 w-5" />{m.quick_sweet_angelfish_lend()}</Button
-							>
-						</div>
-					</Card>
-				{/if}
-
 				<form class="flex justify-center" method="post" action="?/logout">
 					<Button type="submit" variant="outline"
 						><LogOut class="me-2 h-4 w-4" />{m.wacky_big_raven_honor()}</Button
@@ -148,7 +110,7 @@
 
 						{#if data.apiKeys.length}
 							<h3 class="mt-6 mb-2 text-xl font-semibold">{m.lost_slimy_pelican_achieve()}</h3>
-							{#each data.apiKeys as item}
+							{#each data.apiKeys as item, i (i)}
 								<div
 									class="bg-background/60 border-border mb-3 grid grid-cols-[100px_1fr] gap-2 overflow-hidden border p-2 px-4 sm:grid-cols-[100px_1fr_min-content_min-content]"
 								>
@@ -187,11 +149,13 @@
 				</Card>
 			</Tabs.Content>
 			<Tabs.Content value="secretService">
-				{#if planLimits.whiteLabel && isAdminFlag}
+				{#if planLimits.whiteLabel}
 					<OrganizationCard
 						{user}
 						organization={data.userOrganization}
-						form={data.organizationForm}
+						organizationForm={data.organizationForm}
+						inviteOrganizationMemberForm={data.inviteOrganizationMemberForm}
+						manageOrganizationMemberForm={data.manageOrganizationMemberForm}
 					/>
 				{/if}
 
@@ -202,7 +166,6 @@
 				>
 					{#if planLimits.whiteLabel}
 						<WhiteLabelForm
-							{isAdminFlag}
 							organizationIdOptions={data.organizationIdOptions}
 							form={data.whiteLabelForm}
 							whiteLabelDomain={data.whiteLabelDomain}

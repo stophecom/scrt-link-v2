@@ -3,18 +3,16 @@ import { and, eq } from 'drizzle-orm';
 import type { PartialExcept } from '$lib/typescript-helpers';
 
 import { db } from './db';
-import {
-	apiKey,
-	membership,
-	type Organization,
-	organization,
-	type User,
-	user as userSchema,
-	userSettings
-} from './db/schema';
+import { apiKey, type User, user as userSchema, userSettings } from './db/schema';
 import { addContactToAudience } from './resend';
 import stripeInstance from './stripe';
 import { sendWelcomeEmail } from './transactional-email';
+
+export async function getUserByEmail(email: string) {
+	const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
+
+	return result;
+}
 
 export async function checkIfUserExists(email: string): Promise<boolean> {
 	const result = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
@@ -37,8 +35,6 @@ export const createOrUpdateUser = async ({
 	name = null,
 	picture = null
 }: PartialExcept<User, 'email'>) => {
-	const isNewUser = !(await checkIfUserExists(email));
-
 	// All check passed. We create or update user and session.
 	const [userResult] = await db
 		.insert(userSchema)
@@ -75,6 +71,12 @@ export const createOrUpdateUser = async ({
 			}
 		});
 
+	return { userId: userResult.id, ...userResult };
+};
+
+export const welcomeNewUser = async ({ email, name }: Pick<User, 'email' | 'name'>) => {
+	const isNewUser = !(await checkIfUserExists(email));
+
 	if (isNewUser) {
 		// We add user to MQL list on Resend
 		try {
@@ -94,8 +96,6 @@ export const createOrUpdateUser = async ({
 			console.error(`Failed to send welcome email.`, JSON.stringify(error));
 		}
 	}
-
-	return { userId: userResult.id };
 };
 
 export const getActiveApiKeys = async (userId: User['id']) =>
@@ -103,26 +103,3 @@ export const getActiveApiKeys = async (userId: User['id']) =>
 		.select()
 		.from(apiKey)
 		.where(and(eq(apiKey.userId, userId), eq(apiKey.revoked, false)));
-
-export const getOrganizationsByUser = async (userId: User['id']) =>
-	await db
-		.select({
-			id: organization.id,
-			name: organization.name,
-			role: membership.role
-		})
-		.from(membership)
-		.innerJoin(organization, eq(membership.organizationId, organization.id))
-		.where(eq(membership.userId, userId));
-
-export const getMembersByOrganization = async (organizationId: Organization['id']) =>
-	await db
-		.select({
-			id: userSchema.id,
-			name: userSchema.name,
-			email: userSchema.email,
-			role: membership.role
-		})
-		.from(membership)
-		.innerJoin(userSchema, eq(membership.userId, userSchema.id))
-		.where(eq(membership.organizationId, organizationId));

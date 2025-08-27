@@ -182,6 +182,7 @@ Authorization: Bearer {{apiAccessToken}}
   "publicKey": "-----BEGIN PUBLIC KEY-----\nMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEbR5G6VDGfn8kPSE7y8MHY9PaWdgej1zz8nv6mN202pgOzuOzh221LoSFRprLhPqn9ykO+ZmvEMYVZa6+Wfk5GhEZpHl4QtJOGxH8rLhKqbLTJiBsLyXK0xm1u2N/UO1X\n-----END PUBLIC KEY-----",
   "meta": "XYZ", # Encrypted
   "content": "XYZ", # Encrypted
+  "publicNote": "Lorem ipsum", # This is saved as plain text.
   "password": "my-secret-password", # Optional. Can be omitted.
   "expiresIn": 3600000 # Time in ms.
 }
@@ -208,6 +209,7 @@ Usage in Node.js / Browser:
 			secretType: 'redirect' // text | redirect | neogram
 			password: 'foobar123'
 			expiresIn: 86400000,
+			publicNote: 'Bitcoin wallet address',
 			host: 'br3f.com', // For white-label / business
 		})
 		.then(console.log);

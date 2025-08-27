@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Flame from 'lucide-svelte/icons/flame';
-	import Reply from 'lucide-svelte/icons/reply';
+	import Flame from '@lucide/svelte/icons/flame';
+	import Reply from '@lucide/svelte/icons/reply';
 	import { tick } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -15,9 +15,9 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 
-	import FileRevelation from '../elements/file-revelation.svelte';
-	import NeogramRevelation from '../elements/neogram-revelation.svelte';
-	import SnapRevelation from '../elements/snap-revelation.svelte';
+	import FileRevelation from '../blocks/file-revelation.svelte';
+	import NeogramRevelation from '../blocks/neogram-revelation.svelte';
+	import SnapRevelation from '../blocks/snap-revelation.svelte';
 	import Alert from '../ui/alert/alert.svelte';
 	import Button from '../ui/button/button.svelte';
 	import CopyButton from '../ui/copy-button';

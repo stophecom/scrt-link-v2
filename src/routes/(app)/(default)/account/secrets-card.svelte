@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { CheckCircle2, Flame } from 'lucide-svelte';
+	import { CheckCircle2, Flame } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
 
 	import { invalidateAll } from '$app/navigation';
 	import { api } from '$lib/api';
-	import CreateSecret from '$lib/components/elements/create-secret.svelte';
+	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
@@ -76,7 +76,7 @@
 	{/if}
 {/snippet}
 
-<Card class="mb-6" title={'My Secret Links'}>
+<Card class="mb-6" title="My Secret Links">
 	<div class="flex justify-start py-4">
 		<Dialog.Root>
 			<Dialog.Trigger class={buttonVariants({ variant: 'default' })}
@@ -105,7 +105,7 @@
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
-			{#each filteredSecrets as secret}
+			{#each filteredSecrets as secret, i (i)}
 				<Table.Row>
 					<Table.Cell class="font-medium"
 						><span class="inline-block p-1 font-mono">{secret.receiptId}</span></Table.Cell

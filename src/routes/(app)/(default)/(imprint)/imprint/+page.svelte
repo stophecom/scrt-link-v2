@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Page from '$lib/components/page/page.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 	import imprint from '$lib/data/imprint.md?raw';
@@ -14,7 +14,7 @@
 
 		<h2>{m.even_icy_shell_compose()}</h2>
 		<ul>
-			{#each legalMenu() as menuItem}
+			{#each legalMenu() as menuItem, i (i)}
 				<li>
 					<a href={localizeHref(menuItem.href)}>
 						{menuItem.label}

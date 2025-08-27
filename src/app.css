@@ -44,7 +44,6 @@
 		--success-foreground: 123 38% 30%;
 
 		--info: 199 92% 36%;
-		--info-foreground: 199 92% 56%;
 
 		--ring: 240 10% 3.9%;
 
@@ -79,7 +78,6 @@
 		--success-foreground: 123 38% 88%;
 
 		--info: 199 92% 56%;
-		--info-foreground: 199 92% 56%;
 
 		--ring: 240 4.9% 83.9%;
 	}
@@ -141,7 +139,6 @@
 	--color-success-foreground: hsl(var(--success-foreground));
 
 	--color-info: hsl(var(--info));
-	--color-info-foreground: hsl(var(--info-foreground));
 
 	--color-muted: hsl(var(--muted));
 	--color-muted-foreground: hsl(var(--muted-foreground));

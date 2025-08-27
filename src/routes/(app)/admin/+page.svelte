@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Page from '$lib/components/page/page.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 
@@ -11,7 +11,7 @@
 <Page title="Admin" lead="Insights and Playground">
 	<Container>
 		<Card title="Top Users" description="Users with the most created secrets">
-			{#each data.userStats as item}
+			{#each data.userStats as item, i (i)}
 				<div>
 					{item.user?.email}:
 					{item.stats.totalSecrets}

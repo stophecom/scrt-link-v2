@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { Palette, RefreshCcw, Save, SquareArrowUpRight } from '@lucide/svelte';
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
-	import { Palette, RefreshCcw, Save, SquareArrowUpRight } from 'lucide-svelte';
 	import { derived } from 'svelte/store';
 	import { stringProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -24,13 +24,12 @@
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
-		isAdminFlag: boolean;
 		form: SuperValidated<WhiteLabelMetaSchema>;
 		whiteLabelDomain: string | null;
 		organizationIdOptions: { value: string; label: string }[];
 	};
 
-	let { isAdminFlag, form: formProp, organizationIdOptions, whiteLabelDomain }: Props = $props();
+	let { form: formProp, organizationIdOptions, whiteLabelDomain }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zodClient(whiteLabelMetaSchema()),
@@ -125,7 +124,7 @@
 									<div class="font-semibold">Name</div>
 									<div class="font-semibold">Value</div>
 
-									{#each $queryResult.data.instructions as item}
+									{#each $queryResult.data.instructions as item (item.value)}
 										<div>{item.type}</div>
 										<div class="whitespace-pre-wrap">{item.domain}</div>
 										<div class="break-all">{item.value}</div>
@@ -153,22 +152,20 @@
 			</Alert>
 		{/if}
 
-		{#if isAdminFlag}
-			<Form.Field {form} name="isPrivate" class="py-4">
-				<Switch bind:checked={$formData.isPrivate} label={m.quaint_careful_ostrich_buy()} />
-				<Form.Description>{m.mealy_keen_felix_believe()}</Form.Description>
-			</Form.Field>
-			{#if $formData.isPrivate}
-				<Form.Fieldset {form} name="organizationId">
-					<RadioGroup
-						options={organizationIdOptions}
-						bind:value={$organizationIdProxy}
-						label={m.north_bright_tadpole_laugh()}
-					/>
-				</Form.Fieldset>
-				<!-- @todo Unclear why the hidden input is necessary. -->
-				<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
-			{/if}
+		<Form.Field {form} name="isPrivate" class="py-4">
+			<Switch bind:checked={$formData.isPrivate} label={m.quaint_careful_ostrich_buy()} />
+			<Form.Description>{m.mealy_keen_felix_believe()}</Form.Description>
+		</Form.Field>
+		{#if $formData.isPrivate}
+			<Form.Fieldset {form} name="organizationId">
+				<RadioGroup
+					options={organizationIdOptions}
+					bind:value={$organizationIdProxy}
+					label={m.north_bright_tadpole_laugh()}
+				/>
+			</Form.Fieldset>
+			<!-- @todo Unclear why the hidden input is necessary. -->
+			<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
 		{/if}
 		<div class="pt-4">
 			<Form.Button delayed={$delayed}

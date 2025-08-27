@@ -1,4 +1,4 @@
-import { Factory, Plane, Rocket, Send } from 'lucide-svelte';
+import { Factory, Plane, Rocket, Send } from '@lucide/svelte';
 
 import { isOriginalHost } from '$lib/app-routing';
 import { formatBytes } from '$lib/i18n';
@@ -19,7 +19,8 @@ const defaultLimits = {
 	passwordAllowed: false,
 	readReceiptsAllowed: false,
 	expirationOptions: [] as number[],
-	whiteLabel: false
+	whiteLabel: false,
+	organizationTeamSize: 0
 };
 
 const plans = () => [
@@ -43,7 +44,8 @@ const plans = () => [
 			passwordAllowed: false,
 			readReceiptsAllowed: false,
 			expirationOptions: [],
-			whiteLabel: false
+			whiteLabel: false,
+			organizationTeamSize: 0
 		}
 	},
 	{
@@ -70,7 +72,8 @@ const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptions,
-			whiteLabel: false
+			whiteLabel: false,
+			organizationTeamSize: 0
 		}
 	},
 	{
@@ -93,11 +96,12 @@ const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
-			whiteLabel: false
+			whiteLabel: false,
+			organizationTeamSize: 0
 		}
 	},
 	{
-		name: TierOptions.SECRET_SERVICE, // Limits apply to owner, contents apply to public. @todo refactor this.
+		name: TierOptions.SECRET_SERVICE, // Limits apply to owner, contents apply to public (see below in getPlanLimits). @todo refactor this.
 		icon: Factory,
 		title: m.muddy_any_tapir_roar(),
 		contents: [
@@ -119,7 +123,8 @@ const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
-			whiteLabel: true
+			whiteLabel: true,
+			organizationTeamSize: 30
 		}
 	}
 ];
@@ -151,7 +156,7 @@ export const getPlanLimits = (host: string, tier?: TierOptions | null) => {
 
 	// We make sure the plan limits for white-label prevent the display of UpgradeNotice within secret-form.
 	// This is a workaround.
-	// @todo We should make this more less error-prone for the future.
+	// @todo We should make this less error-prone for the future.
 	if (isWhiteLabel) {
 		return {
 			[SecretType.TEXT]: 100_000,
@@ -163,7 +168,8 @@ export const getPlanLimits = (host: string, tier?: TierOptions | null) => {
 			passwordAllowed: true,
 			readReceiptsAllowed: false,
 			expirationOptions: expiresInOptions,
-			whiteLabel: false
+			whiteLabel: false,
+			organizationTeamSize: 0
 		};
 	} else {
 		return getUserPlanLimits(tier);

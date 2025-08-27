@@ -9,10 +9,12 @@ import {
 	smallint,
 	text,
 	timestamp,
+	unique,
 	uuid
 } from 'drizzle-orm/pg-core';
 
 import {
+	InviteStatus,
 	MembershipRole,
 	ReadReceiptOptions,
 	Role,
@@ -87,13 +89,43 @@ export const membershipRole = pgEnum('membership_role', [
 export const membership = pgTable(
 	'membership',
 	{
-		userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }),
-		organizationId: uuid('organization_id').references(() => organization.id, {
-			onDelete: 'cascade'
-		}),
+		userId: uuid('user_id')
+			.notNull()
+			.references(() => user.id, { onDelete: 'cascade' }),
+		organizationId: uuid('organization_id')
+			.notNull()
+			.references(() => organization.id, {
+				onDelete: 'cascade'
+			}),
 		role: membershipRole().default(MembershipRole.MEMBER)
 	},
 	(table) => [primaryKey({ columns: [table.userId, table.organizationId] })]
+);
+
+export const inviteStatus = pgEnum('invite_status', [
+	InviteStatus.PENDING,
+	InviteStatus.ACCEPTED,
+	InviteStatus.REVOKED,
+	InviteStatus.EXPIRED
+]);
+
+export const invite = pgTable(
+	'invite',
+	{
+		id: uuid('id').primaryKey().defaultRandom(),
+		email: text('email').notNull(),
+		organizationId: uuid('organization_id').references(() => organization.id, {
+			onDelete: 'cascade'
+		}),
+		membershipRole: membershipRole().default(MembershipRole.MEMBER),
+		token: text('token').notNull(),
+		status: inviteStatus().default(InviteStatus.PENDING),
+		invitedByUserId: uuid('invited_by_user_id').notNull(),
+		createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+		expiresAt: timestamp('expires_at', { mode: 'date' }).notNull(),
+		acceptedAt: timestamp('accepted_at', { mode: 'date' })
+	},
+	(table) => [unique().on(table.email, table.organizationId)]
 );
 
 export const whiteLabelSite = pgTable('white_label_site', {
@@ -179,6 +211,7 @@ export const stats = pgTable('stats', {
 export type User = typeof user.$inferSelect;
 export type Organization = typeof organization.$inferSelect;
 export type Membership = typeof membership.$inferSelect;
+export type Invite = typeof invite.$inferSelect;
 export type UserSettings = typeof userSettings.$inferSelect;
 export type Session = typeof session.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;

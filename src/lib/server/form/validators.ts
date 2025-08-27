@@ -30,7 +30,7 @@ export const loginPasswordFormValidator = async (defaultValues: Partial<Infer<Si
 	});
 
 export const resendEmailVerificationFormValidator = async (
-	defaultValues: Partial<Infer<EmailFormSchema>>
+	defaultValues: Partial<EmailFormSchema>
 ) =>
 	await superValidate(defaultValues, zod(emailFormSchema()), {
 		errors: false,

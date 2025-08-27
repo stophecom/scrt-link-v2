@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { Code, Lock, MessageCircleQuestion } from 'lucide-svelte';
+	import { Code, Lock, MessageCircleQuestion } from '@lucide/svelte';
 
-	import AndroidFrame from '$lib/components/elements/android-frame.svelte';
-	import ApiPreview from '$lib/components/elements/api-preview.svelte';
-	import CreateSecret from '$lib/components/elements/create-secret.svelte';
-	import FeatureCard from '$lib/components/elements/feature-card.svelte';
-	import Hero from '$lib/components/elements/hero.svelte';
-	import HowItWorks from '$lib/components/elements/how-it-works.svelte';
+	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
+	import ApiPreview from '$lib/components/blocks/api-preview.svelte';
+	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
+	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
+	import Hero from '$lib/components/blocks/hero.svelte';
+	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
+	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import PageWrapper from '$lib/components/page/page-wrapper.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
@@ -62,7 +62,7 @@
 			<div
 				class="grid grid-rows-6 gap-4 sm:grid-cols-2 sm:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
 			>
-				{#each businessFeatures() as step, i}
+				{#each businessFeatures() as step, i (i)}
 					<div
 						style="transition-delay: {i * 100}ms;"
 						class="flex transition-all {intersecting
@@ -92,7 +92,7 @@
 	<Section wide title={m.alert_fluffy_snail_fetch()} lead={m.bright_steep_racoon_accept()}>
 		<IntersectionObserver let:intersecting top={-50} once={true}>
 			<div class="grid grid-rows-4 gap-4 sm:grid-cols-2 sm:grid-rows-2">
-				{#each securityFeatures() as step, i}
+				{#each securityFeatures() as step, i (i)}
 					<div
 						style="transition-delay: {i * 100}ms;"
 						class="flex transition-all {intersecting

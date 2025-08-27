@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { ChevronDown } from 'lucide-svelte';
-	import Globe from 'lucide-svelte/icons/globe';
+	import { ChevronDown } from '@lucide/svelte';
+	import Globe from '@lucide/svelte/icons/globe';
 
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
@@ -33,7 +33,7 @@
 				setLocale(value as Locale);
 			}}
 		>
-			{#each locales as tag}
+			{#each locales as tag, i (i)}
 				<DropdownMenu.RadioItem value={tag}>{getSupportedLanguagesMap(tag)}</DropdownMenu.RadioItem>
 			{/each}
 		</DropdownMenu.RadioGroup>

@@ -3,10 +3,10 @@
 
 	import { localizeHref } from '$lib/paraglide/runtime';
 
+	import PageLead from '../blocks/page-lead.svelte';
+	import PageTitle from '../blocks/page-title.svelte';
+	import PageWrapper from '../blocks/page-wrapper.svelte';
 	import Container from '../ui/container/container.svelte';
-	import PageLead from './page-lead.svelte';
-	import PageTitle from './page-title.svelte';
-	import PageWrapper from './page-wrapper.svelte';
 
 	type Props = {
 		name?: string | null;

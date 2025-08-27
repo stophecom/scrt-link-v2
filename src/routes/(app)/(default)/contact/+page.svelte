@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ContactForm from '$lib/components/forms/contact-form.svelte';
-	import Page from '$lib/components/page/page.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Card from '$lib/components/ui/card';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { emailSupport } from '$lib/data/app';

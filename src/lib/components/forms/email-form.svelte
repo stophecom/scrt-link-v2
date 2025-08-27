@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
@@ -10,16 +10,17 @@
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
-		data: SuperValidated<Infer<EmailFormSchema>>;
+		form: SuperValidated<EmailFormSchema>;
 		buttonLabel?: string;
-		action: string;
+		formAction: string;
 	};
 
-	let { action, data, buttonLabel = m.few_blue_wallaby_read() }: Props = $props();
+	let { formAction, form: formProp, buttonLabel = m.few_blue_wallaby_read() }: Props = $props();
 
-	const form = superForm(data, {
+	const form = superForm(formProp, {
 		validators: zodClient(emailFormSchema()),
 		validationMethod: 'auto',
+
 		onError({ result }) {
 			// We use message for unexpected errors
 			$message = {
@@ -34,7 +35,7 @@
 </script>
 
 <FormWrapper message={$message}>
-	<form method="POST" use:enhance {action}>
+	<form method="POST" use:enhance action={formAction}>
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>

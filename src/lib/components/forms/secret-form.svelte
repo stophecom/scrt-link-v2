@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ChevronDown from 'lucide-svelte/icons/chevron-down';
+	import ChevronDown from '@lucide/svelte/icons/chevron-down';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
@@ -28,7 +28,7 @@
 	import { type SecretFormSchema, secretFormSchema } from '$lib/validators/formSchemas';
 
 	import { getExpiresInOptions } from '../../data/secretSettings';
-	import UpgradeNotice from '../elements/upgrade-notice.svelte';
+	import UpgradeNotice from '../blocks/upgrade-notice.svelte';
 	import Input from '../ui/input/input.svelte';
 	import Label from '../ui/label/label.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';

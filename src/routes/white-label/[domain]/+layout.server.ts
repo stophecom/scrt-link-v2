@@ -1,18 +1,13 @@
 import { error } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
 
 import { PUBLIC_IMGIX_CDN_URL } from '$env/static/public';
-import { db } from '$lib/server/db';
-import { whiteLabelSite } from '$lib/server/db/schema';
+import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 import type { Theme } from '$lib/types';
 
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ params, locals }) => {
-	const [result] = await db
-		.select()
-		.from(whiteLabelSite)
-		.where(eq(whiteLabelSite.customDomain, params.domain));
+	const result = await getWhiteLabelSiteByHost(params.domain);
 
 	if (!result) {
 		throw error(500, `No data for ${params.domain} found.`);

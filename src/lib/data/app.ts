@@ -14,7 +14,7 @@ import {
 	Timer,
 	Trash2,
 	Zap
-} from 'lucide-svelte';
+} from '@lucide/svelte';
 
 import { m } from '$lib/paraglide/messages.js';
 import { localizeHref } from '$lib/paraglide/runtime';

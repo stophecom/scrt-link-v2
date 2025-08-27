@@ -20,7 +20,7 @@
 	let:errorAttrs
 >
 	<slot {errors} {fieldErrorsAttrs} {errorAttrs}>
-		{#each errors as error}
+		{#each errors as error, i (i)}
 			<div {...errorAttrs} class={cn(errorClasses)}>{error}</div>
 		{/each}
 	</slot>

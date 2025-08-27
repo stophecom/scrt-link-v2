@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	import PageWrapper from '../blocks/page-wrapper.svelte';
 	import Markdown from '../ui/markdown';
-	import PageWrapper from './page-wrapper.svelte';
 
 	let { title, description, children }: { title: string; description?: string; children: Snippet } =
 		$props();

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import CreateSecret from '$lib/components/elements/create-secret.svelte';
-	import Page from '$lib/components/page/page.svelte';
+	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { SecretType } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';

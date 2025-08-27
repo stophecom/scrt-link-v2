@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { MessageCircleQuestion } from 'lucide-svelte';
+	import { MessageCircleQuestion } from '@lucide/svelte';
 
-	import FeatureCard from '$lib/components/elements/feature-card.svelte';
+	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import Page from '$lib/components/page/page.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
@@ -35,7 +35,7 @@
 	<Section wide variant="card">
 		<IntersectionObserver let:intersecting top={-50} once={true}>
 			<div class="grid grid-rows-3 gap-4 md:grid-cols-3 md:grid-rows-1">
-				{#each subscriptionFeatures() as step, i}
+				{#each subscriptionFeatures() as step, i (i)}
 					<div
 						style="transition-delay: {i * 100}ms;"
 						class="flex transition-all {intersecting

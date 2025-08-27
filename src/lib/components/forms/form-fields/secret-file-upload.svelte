@@ -1,7 +1,8 @@
 <script lang="ts">
-	import Trash from 'lucide-svelte/icons/trash';
-	import IconX from 'lucide-svelte/icons/x';
+	import Trash from '@lucide/svelte/icons/trash';
+	import IconX from '@lucide/svelte/icons/x';
 	import { onDestroy } from 'svelte';
+	import { SvelteMap } from 'svelte/reactivity';
 	import { fade } from 'svelte/transition';
 
 	import { PUBLIC_S3_BUCKET } from '$env/static/public';
@@ -48,7 +49,7 @@
 	);
 
 	const chunkSize = 64 * MB;
-	let controllers = new Map<number, AbortController>(); // Track each request's AbortController
+	let controllers = new SvelteMap<number, AbortController>(); // Track each request's AbortController
 
 	const postSecret = async (file: File) => {
 		loading = true;
@@ -107,7 +108,7 @@
 	>
 		{#if imageSrc}
 			<div class="absolute top-0 left-0 h-full w-full overflow-clip">
-				<img class="h-full w-full object-cover opacity-50 blur-md" src={imageSrc} alt={'preview'} />
+				<img class="h-full w-full object-cover opacity-50 blur-md" src={imageSrc} alt="preview" />
 			</div>
 		{/if}
 		<div

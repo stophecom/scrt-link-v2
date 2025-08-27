@@ -1,13 +1,11 @@
 import { error } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 import { redirectLocalized } from '$lib/i18n';
 import { getLocale } from '$lib/paraglide/runtime';
-import { db } from '$lib/server/db';
-import { whiteLabelSite } from '$lib/server/db/schema';
 import { saveWhiteLabelSite } from '$lib/server/form/actions';
+import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
 import type { LocalizedWhiteLabelMessage, Theme } from '$lib/types';
 import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
@@ -21,10 +19,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const user = locals.user;
 	const locale = getLocale();
 
-	const [whiteLabel] = await db
-		.select()
-		.from(whiteLabelSite)
-		.where(eq(whiteLabelSite.userId, user.id));
+	const whiteLabel = await getWhiteLabelSiteByUserId(user.id);
 
 	if (!whiteLabel) {
 		return error(404, 'No white-label website found.');

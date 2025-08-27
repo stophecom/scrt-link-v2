@@ -23,3 +23,5 @@ export function getEnumFromString<T extends Record<string, string>>(
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type PartialExcept<T, K extends keyof T> = Partial<T> & Pick<T, K>;
+
+export type RequireSome<T, K extends keyof T> = T & Required<Pick<T, K>>;

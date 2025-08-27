@@ -1,4 +1,4 @@
-import { MessageCircleDashed, Paperclip, Redo2, TypeOutline, Zap } from 'lucide-svelte';
+import { MessageCircleDashed, Paperclip, Redo2, TypeOutline, Zap } from '@lucide/svelte';
 
 import { m } from '$lib/paraglide/messages.js';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { ArrowRight } from 'lucide-svelte';
+	import { ArrowRight } from '@lucide/svelte';
 
-	import Page from '$lib/components/page/page.svelte';
+	import Page from '$lib/components/page/default-page.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -15,7 +15,7 @@
 	<Container>
 		<section>
 			<ul class="grid gap-4">
-				{#each data.posts as post}
+				{#each data.posts as post, i (i)}
 					<li>
 						<a
 							class="group border-border flex w-full rounded border-b transition-all"

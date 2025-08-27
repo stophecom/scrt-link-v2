@@ -16,7 +16,7 @@
 	<span class="me-3">
 		{formatDate(new Date(date))}
 	</span>
-	{#each categories as category}
+	{#each categories as category, i (i)}
 		<span class="bg-muted me-2 rounded-full px-2 py-1 text-xs">
 			<span class="text-muted-foreground">#</span>
 			{category}

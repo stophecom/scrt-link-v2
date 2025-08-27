@@ -4,9 +4,10 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
+import { isOriginalHost } from '$lib/app-routing';
 import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
-import { MembershipRole } from '$lib/data/enums';
+import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { addDomainToVercel, removeDomainFromVercelProject, validDomainRegex } from '$lib/domains';
@@ -18,6 +19,7 @@ import { db } from '$lib/server/db';
 import {
 	apiKey,
 	emailVerificationRequest,
+	invite,
 	membership,
 	organization,
 	user as userSchema,
@@ -30,6 +32,8 @@ import {
 	apiKeyFormSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
+	inviteOrganizationMemberFormSchema,
+	manageOrganizationMemberFormSchema,
 	organizationFormSchema,
 	passwordFormSchema,
 	secretFormSchema,
@@ -46,6 +50,11 @@ import {
 	createEmailVerificationRequestAndRedirect,
 	deleteEmailVerificationRequests
 } from '../email-verification';
+import {
+	getMembersAndInvitesByOrganization,
+	getOrganizationsByUserId,
+	inviteUserToOrganization
+} from '../organization';
 import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '../rate-limit';
 import { saveSecret } from '../secrets';
 import {
@@ -53,8 +62,14 @@ import {
 	checkIsEmailVerified,
 	createOrUpdateUser,
 	getActiveApiKeys,
-	getOrganizationsByUser
+	getUserByEmail,
+	welcomeNewUser
 } from '../user';
+import {
+	checkIsUserAllowedOnWhiteLabelSite,
+	getWhiteLabelSiteByHost,
+	getWhiteLabelSiteByUserId
+} from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod(secretFormSchema()));
@@ -67,11 +82,18 @@ export const postSecret: Action = async (event) => {
 
 	const user = event.locals.user;
 
+	let whiteLabelSiteId;
+	if (host && !isOriginalHost(host)) {
+		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
+
+		whiteLabelSiteId = whiteLabelSiteResult.id;
+	}
+
 	try {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
 			userId: user?.id,
 			secretRequest: form.data,
-			host
+			whiteLabelSiteId
 		});
 
 		const expirationPeriod =
@@ -195,7 +217,7 @@ export const createOrganization: Action = async (event) => {
 	if (!user) {
 		return redirectLocalized(307, '/signup');
 	}
-	const userOrganizations = await getOrganizationsByUser(user.id);
+	const userOrganizations = await getOrganizationsByUserId(user.id);
 
 	// Too many organizations
 	if (userOrganizations.length >= MAX_ORGANIZATIONS_PER_USER) {
@@ -229,14 +251,14 @@ export const createOrganization: Action = async (event) => {
 
 	return message(form, {
 		status: 'success',
-		title: 'Organization created'
+		title: m.upper_wise_dove_propel()
 	});
 };
 
 export const editOrganization: Action = async (event) => {
 	const form = await superValidate(event.request, zod(organizationFormSchema()));
 
-	const { name, id } = form.data;
+	const { name, organizationId } = form.data;
 
 	const user = event.locals.user;
 
@@ -247,14 +269,18 @@ export const editOrganization: Action = async (event) => {
 	if (!user) {
 		return redirectLocalized(307, '/signup');
 	}
-	const userOrganizations = await getOrganizationsByUser(user.id);
+	const userOrganizations = await getOrganizationsByUserId(user.id);
 
-	if (!id || !userOrganizations.length || !userOrganizations.some((item) => item.id === id)) {
+	const isOwner = userOrganizations.some(
+		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+	);
+
+	if (!organizationId || !isOwner) {
 		return message(
 			form,
 			{
 				status: 'error',
-				title: 'Not allowed'
+				title: 'Not allowed.'
 			},
 			{
 				status: 401
@@ -267,12 +293,212 @@ export const editOrganization: Action = async (event) => {
 		.set({
 			name
 		})
-		.where(eq(organization.id, id));
+		.where(eq(organization.id, organizationId));
 
 	return message(form, {
 		status: 'success',
-		title: m.this_good_parakeet_grasp()
+		title: m.wild_born_blackbird_peel()
 	});
+};
+
+export const addMemberToOrganization: Action = async (event) => {
+	const form = await superValidate(event.request, zod(inviteOrganizationMemberFormSchema()));
+
+	const { email, organizationId } = form.data;
+
+	const user = event.locals.user;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	// Make sure user is owner of the organization
+	const userOrganizations = await getOrganizationsByUserId(user.id);
+	const userOrganization = userOrganizations.find(
+		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+	);
+
+	if (!organizationId || !userOrganization) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Not allowed.'
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
+	// Limit amount of team members. @todo Think about metered pricing.
+	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const membersByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
+
+	if (membersByOrganization.length >= planLimits.organizationTeamSize) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Limit reached',
+				description: 'Member limit reached on your current plan.'
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
+	// Handle existing member
+	const existingUser = await getUserByEmail(email);
+	if (existingUser) {
+		const existingMember = await db.query.membership.findFirst({
+			where: (fields, { eq, and }) =>
+				and(eq(fields.userId, existingUser.id), eq(fields.organizationId, organizationId))
+		});
+
+		if (existingMember) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: 'Invitation failed',
+					description: 'User is already a member of your organization.'
+				},
+				{
+					status: 401
+				}
+			);
+		}
+	}
+
+	// Handle existing invitation
+	const [existingInvite] = await db
+		.select()
+		.from(invite)
+		.where(and(eq(invite.organizationId, organizationId), eq(invite.email, email)))
+		.limit(1);
+
+	if (existingInvite) {
+		if (existingInvite.expiresAt < new Date() || existingInvite.status !== InviteStatus.PENDING) {
+			// Invite has expired. We delete it.
+			await db.delete(invite).where(eq(invite.id, existingInvite.id));
+		} else {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: 'Invitation failed',
+					description: 'User has already been invited to the organization.'
+				},
+				{
+					status: 401
+				}
+			);
+		}
+	}
+
+	// Send invite
+	await inviteUserToOrganization({
+		userId: user.id,
+		email,
+		membershipRole: MembershipRole.MEMBER,
+		organizationId
+	});
+
+	return message(form, {
+		status: 'success',
+		title: 'Invite successful.',
+		description: 'We have sent out an invitation.'
+	});
+};
+
+export const removeMemberFromOrganization: Action = async (event) => {
+	const form = await superValidate(event.request, zod(manageOrganizationMemberFormSchema()));
+
+	const { organizationId, inviteId, userId } = form.data;
+
+	const user = event.locals.user;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	// Make sure user is owner of the organization
+	const userOrganizations = await getOrganizationsByUserId(user.id);
+	const userOrganization = userOrganizations.find(
+		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+	);
+
+	if (!organizationId || !userOrganization) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Not allowed.'
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
+	if (inviteId) {
+		const result = await db.delete(invite).where(eq(invite.id, inviteId)).returning();
+
+		if (!result.length) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: `Invitation doesn't exist.`,
+					description: `The invitation you try to delete no longer exists. It might have been deleted before.`
+				},
+				{
+					status: 401
+				}
+			);
+		}
+
+		return message(form, {
+			status: 'success',
+			title: 'Revoked invitation.',
+			description: 'The invitation has been deleted.'
+		});
+	}
+
+	// Prevent removing yourself from the organization
+	if (userId && userId !== user.id) {
+		const result = await db.delete(membership).where(eq(membership.userId, userId)).returning();
+
+		if (!result.length) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: `Member doesn't exist.`,
+					description: `The member you try to delete no longer exists. It might have been deleted before.`
+				},
+				{
+					status: 401
+				}
+			);
+		}
+
+		return message(form, {
+			status: 'success',
+			title: 'Removed member.',
+			description: 'The member has been removed from your organization.'
+		});
+	}
 };
 
 export const loginWithEmail: Action = async (event) => {
@@ -308,6 +534,24 @@ export const loginWithEmail: Action = async (event) => {
 		await createEmailVerificationRequestAndRedirect(event, email);
 	}
 
+	try {
+		// Restrict login to white-label
+		// @todo: refactor this
+		await checkIsUserAllowedOnWhiteLabelSite(event.url.host, result.id);
+	} catch (error) {
+		console.error(error);
+
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.livid_wild_crab_loop(),
+				description: m.quaint_solid_orangutan_devour()
+			},
+			{ status: 401 }
+		);
+	}
+
 	event.cookies.set('email_verification', email, {
 		path: '/'
 	});
@@ -338,6 +582,9 @@ export const loginWithPassword: Action = async (event) => {
 
 	try {
 		const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
+
+		// Restrict login to white-label
+		await checkIsUserAllowedOnWhiteLabelSite(event.url.host, result.id);
 
 		if (!result.passwordHash) {
 			throw Error('No password hash in DB.');
@@ -465,10 +712,12 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 		// All check passed. We create or update user and session.
 
 		// Create or update user
-		const { userId } = await createOrUpdateUser({
+		const { userId, name } = await createOrUpdateUser({
 			email: email,
 			emailVerified: true
 		});
+
+		await welcomeNewUser({ email, name });
 
 		// Create session
 		await auth.createSession(event, userId);
@@ -699,10 +948,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 	}
 
 	try {
-		const [existing] = await db
-			.select()
-			.from(whiteLabelSite)
-			.where(eq(whiteLabelSite.userId, user.id));
+		const existing = await getWhiteLabelSiteByUserId(user.id);
 
 		// If the domain changed, we remove the existing one from vercel
 		if (existing.customDomain && existing.customDomain !== customDomain) {
@@ -830,10 +1076,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		published
 	} = form.data;
 
-	const [existingWhiteLabelSite] = await db
-		.select()
-		.from(whiteLabelSite)
-		.where(eq(whiteLabelSite.userId, user.id));
+	const existingWhiteLabelSite = await getWhiteLabelSiteByUserId(user.id);
 
 	// @todo Delete logo/app icon on S3
 

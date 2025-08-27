@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ArrowUp from 'lucide-svelte/icons/arrow-up';
+	import ArrowUp from '@lucide/svelte/icons/arrow-up';
 	import type { ClassValue } from 'svelte/elements';
 
 	let props: { class?: ClassValue } = $props();
