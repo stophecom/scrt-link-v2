@@ -6,6 +6,7 @@ const map: Record<Locale, string> = {
 	en: 'English',
 	fr: 'Français',
 	es: 'Español',
+	pt: 'Português',
 	ru: 'Русский',
 	'zh-CN': '中文(简体)'
 };
