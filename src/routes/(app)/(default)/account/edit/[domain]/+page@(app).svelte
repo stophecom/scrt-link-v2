@@ -248,9 +248,6 @@
 
 				<Separator class="my-4" />
 				<LanguageSwitcher showDropdownIndicator />
-				<div class="py-4">
-					<Form.Button delayed={$delayed} class="w-full" size="lg">Save</Form.Button>
-				</div>
 			</Card>
 
 			<Card
