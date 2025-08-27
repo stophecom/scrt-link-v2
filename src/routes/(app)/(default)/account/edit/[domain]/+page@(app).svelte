@@ -6,6 +6,7 @@
 		CircleAlert,
 		SquareArrowUpRight
 	} from '@lucide/svelte';
+	import { useDebounce } from 'runed';
 	import { tick } from 'svelte';
 	import { elasticOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -42,6 +43,10 @@
 	let showSuccess = $state(false);
 	let showSpinner = $state(false);
 
+	const submitDebounced = useDebounce(() => {
+		submit();
+	}, 1000);
+
 	const form = superForm(data.whiteLabelSiteForm, {
 		validators: zodClient(whiteLabelSiteSchema()),
 
@@ -50,7 +55,7 @@
 		invalidateAll: 'force',
 
 		onChange() {
-			submit();
+			submitDebounced();
 		},
 		onError({ result }) {
 			// We use message for unexpected errors
