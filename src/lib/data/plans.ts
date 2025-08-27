@@ -105,8 +105,8 @@ const plans = () => [
 		icon: Factory,
 		title: m.muddy_any_tapir_roar(),
 		contents: [
-			m.knotty_shy_bobcat_build(),
-			m.only_close_okapi_express(),
+			m.aloof_zany_cheetah_greet(),
+			m.proud_cool_lemur_commend(),
 			m.formal_mealy_chipmunk_advise(),
 			m.new_still_dingo_create({ limit: formatBytes(100 * MB) }),
 			m.ideal_low_mouse_splash(),
