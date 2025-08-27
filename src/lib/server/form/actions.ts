@@ -1105,6 +1105,11 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			messages: messagesJson
 		});
 	} else {
+		// If we add new supported locales, we need to create the entry first
+		if (!messagesJson[locale]) {
+			messagesJson[locale] = {};
+		}
+
 		Object.assign(
 			messagesJson[locale],
 			dropUndefinedValuesFromObject({ title, lead, description, imprint })
