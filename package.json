@@ -79,7 +79,7 @@
 		"@tailwindcss/vite": "^4.0.6",
 		"@tanstack/svelte-query": "^5.71.1",
 		"arctic": "^2.3.3",
-		"axios": "^1.8.2",
+		"axios": "^1.12.0",
 		"axios-retry": "^4.5.0",
 		"drizzle-orm": "^0.38.3",
 		"drizzle-zod": "^0.6.1",
