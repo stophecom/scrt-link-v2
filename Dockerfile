@@ -1,0 +1,36 @@
+FROM node:22-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+
+# Install dependencies
+RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Build application with Node adapter
+ENV ADAPTER=node
+RUN pnpm build
+
+# Minimal runner image
+FROM node:22-alpine AS runner
+
+WORKDIR /app
+
+# Copy built artifacts from builder
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/package.json ./package.json
+
+# Install production dependencies
+RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN pnpm install --prod --frozen-lockfile
+
+# Expose port
+EXPOSE 3000
+
+# Start command
+CMD ["node", "build"]
