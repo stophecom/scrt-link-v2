@@ -43,12 +43,15 @@
 	});
 </script>
 
-{#if isLoading}
-	<div class="flex min-h-48 items-center justify-center">
-		<Spinner />
-	</div>
-{:else if error}
-	<Alert data-testid="alert-error" class="my-6" title="Error" variant="destructive">{error}</Alert>
-{:else}
-	<RevealSecretForm {form} {masterKey} {secretIdHash} {showPasswordInput} />
-{/if}
+<div class="py-12">
+	{#if isLoading}
+		<div class="flex min-h-48 items-center justify-center">
+			<Spinner />
+		</div>
+	{:else if error}
+		<Alert data-testid="alert-error" class="my-6" title="Error" variant="destructive">{error}</Alert
+		>
+	{:else}
+		<RevealSecretForm {form} {masterKey} {secretIdHash} {showPasswordInput} />
+	{/if}
+</div>

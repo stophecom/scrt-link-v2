@@ -23,9 +23,16 @@ test('Add text secret ', async ({ baseURL }) => {
 	await expect(page.getByTestId('secret-form-submit')).toBeEnabled();
 	await page.getByTestId('secret-form-submit').click();
 
-	page.on('response', (response) => {
-		if (response.status() === 400) {
-			console.log('<< 400 BAD REQUEST:', response.url());
+	page.on('response', async (response) => {
+		if (response.status() >= 400) {
+			console.log(`<< ${response.status()} ${response.statusText()}:`, response.url());
+			// Try to read body for more info
+			try {
+				const body = await response.text();
+				console.log('Error Body:', body.slice(0, 1000));
+			} catch (e) {
+				console.log('Could not read response body', e);
+			}
 		}
 	});
 

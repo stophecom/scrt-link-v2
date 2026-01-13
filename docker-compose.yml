@@ -8,3 +8,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: local
+
+  app:
+    build:
+      context: .
+      args:
+        CSRF_CHECK_ORIGIN: 'false'
+    ports:
+      - '3000:3000'
+    environment:
+      POSTGRES_URL: postgres://postgres:mysecretpassword@db:5432/local
+      # Add other necessary environment variables here, or use env_file
+    depends_on:
+      - db

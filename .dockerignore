@@ -1,0 +1,15 @@
+node_modules
+.svelte-kit
+.vercel
+build
+dist
+#.env
+#.env.*
+
+!.env.example
+.git
+.github
+.husky
+.vscode
+test-results
+backups
