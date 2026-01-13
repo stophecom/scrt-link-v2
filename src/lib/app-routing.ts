@@ -7,6 +7,7 @@ export const isOriginalHost = (host: string) => {
 
 	return (
 		host === 'localhost:5173' ||
+		host === 'localhost:3000' ||
 		host === PUBLIC_PRODUCTION_URL ||
 		host === `www.${PUBLIC_PRODUCTION_URL}` ||
 		host === `dev.${PUBLIC_PRODUCTION_URL}` ||
