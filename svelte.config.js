@@ -1,4 +1,3 @@
-
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { mdsvex } from 'mdsvex';
 
@@ -20,9 +19,9 @@ const config = {
 		adapter:
 			process.env.ADAPTER === 'node'
 				? (await import('@sveltejs/adapter-node')).default()
-				: (await import('@sveltejs/adapter-vercel')).default()
+				: (await import('@sveltejs/adapter-vercel')).default(),
 
-		// csrf: { checkOrigin: false } // For debug purposes only
+		csrf: { checkOrigin: process.env.CSRF_CHECK_ORIGIN === 'false' ? false : true } // For debug purposes only
 	},
 
 	extensions: ['.svelte', '.svx', '.md']
