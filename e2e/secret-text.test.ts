@@ -21,8 +21,6 @@ test('Add text secret ', async ({ baseURL }) => {
 	await page.getByTestId('input-secret-content').fill(secret);
 
 	await expect(page.getByTestId('secret-form-submit')).toBeEnabled();
-	await page.getByTestId('secret-form-submit').click();
-
 	page.on('response', async (response) => {
 		if (response.status() >= 400) {
 			console.log(`<< ${response.status()} ${response.statusText()}:`, response.url());
@@ -36,6 +34,9 @@ test('Add text secret ', async ({ baseURL }) => {
 		}
 	});
 
+	await page.getByTestId('secret-form-submit').click();
+
+	await expect(page.getByTestId('copy-link')).toBeVisible();
 	await page.getByTestId('copy-link').click();
 	secretUrl = await page.evaluate(() => navigator.clipboard.readText());
 
