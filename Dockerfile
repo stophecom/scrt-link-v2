@@ -14,6 +14,8 @@ COPY . .
 
 # Build application with Node adapter
 ENV ADAPTER=node
+ARG CSRF_CHECK_ORIGIN=true
+ENV CSRF_CHECK_ORIGIN=$CSRF_CHECK_ORIGIN
 RUN pnpm build
 
 # Minimal runner image
@@ -24,10 +26,11 @@ WORKDIR /app
 # Copy built artifacts from builder
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
 
 # Install production dependencies
 RUN corepack enable && corepack prepare pnpm@latest --activate
-RUN pnpm install --prod --frozen-lockfile
+RUN pnpm install --prod --frozen-lockfile --ignore-scripts
 
 # Expose port
 EXPOSE 3000
