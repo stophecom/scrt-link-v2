@@ -36,8 +36,8 @@
 		"@poppanator/sveltekit-svg": "^5.0.0",
 		"@sveltejs/adapter-node": "^5.5.0",
 		"@sveltejs/adapter-vercel": "^5.5.2",
-		"@sveltejs/kit": "^2.17.3",
-		"@sveltejs/vite-plugin-svelte": "^4.0.4",
+		"@sveltejs/kit": "^2.49.4",
+		"@sveltejs/vite-plugin-svelte": "^6.2.4",
 		"@tailwindcss/postcss": "^4.0.0",
 		"@types/grecaptcha": "^3.0.9",
 		"@vitest/browser": "^3.0.1",
@@ -57,7 +57,7 @@
 		"prettier": "^3.6.2",
 		"prettier-plugin-svelte": "^3.3.2",
 		"prettier-plugin-tailwindcss": "^0.6.11",
-		"svelte": "^5.20.5",
+		"svelte": "^5.46.3",
 		"svelte-check": "^4.1.1",
 		"svelte-email-tailwind": "^4.0.0",
 		"svelte-sonner": "^0.3.28",
@@ -68,9 +68,9 @@
 		"tailwindcss": "^4.0.0",
 		"typescript": "^5.7.2",
 		"typescript-eslint": "^8.18.2",
-		"vite": "^5.4.11",
+		"vite": "^7.3.1",
 		"vitest": "^3.0.5",
-		"zod": "^3.24.1"
+		"zod": "^3.25.76"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.772.0",
