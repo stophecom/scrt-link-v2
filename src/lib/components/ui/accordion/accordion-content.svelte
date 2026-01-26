@@ -15,12 +15,17 @@
 </script>
 
 <AccordionPrimitive.Content
+	forceMount
 	class={cn('overflow-hidden text-sm transition-all', className)}
-	{transition}
-	{transitionConfig}
 	{...$$restProps}
 >
-	<div class="pt-0 pb-4">
-		<slot />
-	</div>
+	{#snippet child({ props, open }: { props: Record<string, unknown>; open: boolean })}
+		{#if open}
+			<div {...props} transition:transition={transitionConfig}>
+				<div class="pt-0 pb-4">
+					<slot />
+				</div>
+			</div>
+		{/if}
+	{/snippet}
 </AccordionPrimitive.Content>

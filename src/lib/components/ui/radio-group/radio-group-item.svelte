@@ -22,9 +22,11 @@
 	{...$$restProps}
 	on:click
 >
-	<div class="flex items-center justify-center">
-		<RadioGroupPrimitive.ItemIndicator>
-			<Circle class="h-4 w-4 fill-current text-current" />
-		</RadioGroupPrimitive.ItemIndicator>
-	</div>
+	{#snippet children({ checked }: { checked: boolean })}
+		<div class="flex items-center justify-center">
+			{#if checked}
+				<Circle class="h-4 w-4 fill-current text-current" />
+			{/if}
+		</div>
+	{/snippet}
 </RadioGroupPrimitive.Item>

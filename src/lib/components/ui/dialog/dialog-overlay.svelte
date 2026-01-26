@@ -14,9 +14,14 @@
 	export { className as class };
 </script>
 
-<DialogPrimitive.Overlay
-	{transition}
-	{transitionConfig}
-	class={cn('bg-foreground/50 fixed inset-0 z-50 backdrop-blur-sm', className)}
-	{...$$restProps}
-/>
+<DialogPrimitive.Overlay forceMount {...$$restProps}>
+	{#snippet child({ props, open }: { props: Record<string, unknown>; open: boolean })}
+		{#if open}
+			<div
+				class={cn('bg-foreground/50 fixed inset-0 z-50 backdrop-blur-sm', className)}
+				transition:transition={transitionConfig}
+				{...props}
+			></div>
+		{/if}
+	{/snippet}
+</DialogPrimitive.Overlay>

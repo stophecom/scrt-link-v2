@@ -4,12 +4,15 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import type { Snippet } from 'svelte';
 
+	import { Tooltip } from 'bits-ui';
 	import { Toaster } from '$lib/components/ui/sonner';
 
 	let { children }: { children: Snippet } = $props();
 </script>
 
-{@render children()}
+<Tooltip.Provider>
+	{@render children()}
+</Tooltip.Provider>
 
 <ModeWatcher />
 <Toaster />

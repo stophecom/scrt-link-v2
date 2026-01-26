@@ -14,10 +14,13 @@
 </script>
 
 <DropdownMenu.Root>
-	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="ghost" builders={[builder]} class="uppercase"
-			><Globe class="mr-2 h-4 w-4" /> {activeCurrency}
-		</Button>
+	<DropdownMenu.Trigger>
+		{#snippet child({ props })}
+			<Button {...props} variant="ghost" class="uppercase">
+				<Globe class="mr-2 h-4 w-4" />
+				{activeCurrency}
+			</Button>
+		{/snippet}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">
 		<DropdownMenu.Label>{m.gross_smart_toucan_borrow()}</DropdownMenu.Label>

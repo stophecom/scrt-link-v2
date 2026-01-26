@@ -25,17 +25,15 @@
 	{...$$restProps}
 	on:click
 >
-	<CheckboxPrimitive.Indicator
-		class={cn('flex h-full w-full items-center justify-center text-current')}
-		let:isChecked
-		let:isIndeterminate
-	>
-		{#if isChecked}
-			<div in:scale={{ easing: elasticOut, duration: 1000 }}>
-				<Check class="h-4 w-4" />
-			</div>
-		{:else if isIndeterminate}
-			<Minus class="h-4 w-4" />
-		{/if}
-	</CheckboxPrimitive.Indicator>
+	{#snippet children({ checked, indeterminate }: { checked: boolean; indeterminate: boolean })}
+		<div class={cn('flex h-full w-full items-center justify-center text-current')}>
+			{#if checked}
+				<div in:scale={{ easing: elasticOut, duration: 1000 }}>
+					<Check class="h-4 w-4" />
+				</div>
+			{:else if indeterminate}
+				<Minus class="h-4 w-4" />
+			{/if}
+		</div>
+	{/snippet}
 </CheckboxPrimitive.Root>

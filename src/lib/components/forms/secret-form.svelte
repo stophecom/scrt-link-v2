@@ -56,7 +56,7 @@
 
 	let neogramDestructionTimer = $state(5);
 
-	const planLimits = getPlanLimits(page.url.host, user?.subscriptionTier);
+	let planLimits = $derived(getPlanLimits(page.url.host, user?.subscriptionTier));
 
 	const form = superForm(formProp, {
 		validators: zod(secretFormSchema()),
