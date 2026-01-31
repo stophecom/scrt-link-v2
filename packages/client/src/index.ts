@@ -1,5 +1,5 @@
 import { MASTER_PASSWORD_LENGTH, SECRET_ID_LENGTH } from './constants';
-import { type Options,SecretType } from './types';
+import { type Options, SecretType } from './types';
 import { DAY } from './utils';
 import {
 	encryptString,
@@ -86,5 +86,5 @@ export const scrtLink = (apiKey: string) => {
 	};
 };
 
-export { type Options,SecretType };
+export { type Options, SecretType };
 export default scrtLink;
