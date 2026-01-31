@@ -97,7 +97,7 @@
 								<Button
 									size="icon"
 									variant="ghost"
-									on:click={() => {
+									onclick={() => {
 										selectedItem = member;
 									}}
 								>

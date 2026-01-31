@@ -5,8 +5,6 @@
 	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = DropdownMenuPrimitive.CheckboxItemProps;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = DropdownMenuPrimitive.CheckboxItemEvents;
 
 	let className: $$Props['class'] = undefined;
 	export let checked: $$Props['checked'] = undefined;
@@ -20,13 +18,6 @@
 		className
 	)}
 	{...$$restProps}
-	on:click
-	on:keydown
-	on:focusin
-	on:focusout
-	on:pointerdown
-	on:pointerleave
-	on:pointermove
 >
 	{#snippet child({ checked })}
 		<span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">

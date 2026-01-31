@@ -6,8 +6,6 @@
 	type $$Props = DropdownMenuPrimitive.ItemProps & {
 		inset?: boolean;
 	};
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = DropdownMenuPrimitive.ItemEvents;
 
 	let className: $$Props['class'] = undefined;
 	export let inset: $$Props['inset'] = undefined;
@@ -21,13 +19,6 @@
 		className
 	)}
 	{...$$restProps}
-	on:click
-	on:keydown
-	on:focusin
-	on:focusout
-	on:pointerdown
-	on:pointerleave
-	on:pointermove
 >
 	<slot />
 </DropdownMenuPrimitive.Item>

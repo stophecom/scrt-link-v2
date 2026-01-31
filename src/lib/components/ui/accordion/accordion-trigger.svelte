@@ -5,8 +5,6 @@
 	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = AccordionPrimitive.TriggerProps;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = AccordionPrimitive.TriggerEvents;
 
 	let className: $$Props['class'] = undefined;
 	export let level: AccordionPrimitive.HeaderProps['level'] = 3;
@@ -20,7 +18,6 @@
 			className
 		)}
 		{...$$restProps}
-		on:click
 	>
 		<slot />
 		<ChevronDown class="h-4 w-4 shrink-0 transition-transform duration-200" />

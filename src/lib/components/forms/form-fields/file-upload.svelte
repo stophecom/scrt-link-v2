@@ -117,7 +117,7 @@
 					variant="outline"
 					class="border-destructive"
 					aria-label="Delete"
-					on:click={async () => {
+					onclick={async () => {
 						value = null;
 						reset();
 						// We need to trigger change event.

@@ -5,8 +5,6 @@
 	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = RadioGroupPrimitive.ItemProps;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = RadioGroupPrimitive.ItemEvents;
 
 	let className: $$Props['class'] = undefined;
 	export let value: $$Props['value'];
@@ -20,7 +18,6 @@
 		className
 	)}
 	{...$$restProps}
-	on:click
 >
 	{#snippet children({ checked }: { checked: boolean })}
 		<div class="flex items-center justify-center">
