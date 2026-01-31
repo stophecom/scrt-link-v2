@@ -21,20 +21,25 @@
 <Dialog.Portal>
 	<Dialog.Overlay />
 	<DialogPrimitive.Content
-		{transition}
-		{transitionConfig}
+		forceMount
 		class={cn(
 			'bg-background border-border fixed bottom-0 left-[50%] z-50 grid max-h-screen w-full max-w-[600px] translate-x-[-50%] gap-4 p-6 shadow-lg sm:top-[50%] sm:bottom-auto sm:translate-y-[-50%] sm:rounded-lg sm:border',
 			className
 		)}
 		{...$$restProps}
 	>
-		<slot />
-		<DialogPrimitive.Close
-			class="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm p-2 opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none"
-		>
-			<X class="h-4 w-4" />
-			<span class="sr-only">Close</span>
-		</DialogPrimitive.Close>
+		{#snippet child({ props, open }: { props: Record<string, unknown>; open: boolean })}
+			{#if open}
+				<div {...props} transition:transition={transitionConfig}>
+					<slot />
+					<DialogPrimitive.Close
+						class="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm p-2 opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none"
+					>
+						<X class="h-4 w-4" />
+						<span class="sr-only">Close</span>
+					</DialogPrimitive.Close>
+				</div>
+			{/if}
+		{/snippet}
 	</DialogPrimitive.Content>
 </Dialog.Portal>

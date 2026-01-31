@@ -17,7 +17,7 @@
 	let { items }: Props = $props();
 </script>
 
-<AccordionPrimitive.Root class="mb-4 w-full" multiple>
+<AccordionPrimitive.Root class="mb-4 w-full" type="multiple">
 	{#each items as item, i (i)}
 		<Item value="${i}" class="border-dark-10 group border-border border-b  px-1.5">
 			<Trigger>

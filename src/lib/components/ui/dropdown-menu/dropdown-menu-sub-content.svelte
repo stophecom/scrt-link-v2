@@ -16,17 +16,24 @@
 	export { className as class };
 </script>
 
-<DropdownMenuPrimitive.SubContent
-	{transition}
-	{transitionConfig}
-	class={cn(
-		'bg-popover text-popover-foreground z-50 min-w-[8rem] rounded-md border p-1 shadow-lg focus:outline-hidden',
-		className
-	)}
-	{...$$restProps}
-	on:keydown
-	on:focusout
-	on:pointermove
->
-	<slot />
-</DropdownMenuPrimitive.SubContent>
+<DropdownMenuPrimitive.Portal>
+	<DropdownMenuPrimitive.SubContent
+		forceMount
+		class={cn(
+			'bg-popover text-popover-foreground z-50 min-w-[8rem] rounded-md border p-1 shadow-lg focus:outline-hidden',
+			className
+		)}
+		{...$$restProps}
+		on:keydown
+		on:focusout
+		on:pointermove
+	>
+		{#snippet child({ props, open }: { props: Record<string, unknown>; open: boolean })}
+			{#if open}
+				<div {...props} transition:transition={transitionConfig}>
+					<slot />
+				</div>
+			{/if}
+		{/snippet}
+	</DropdownMenuPrimitive.SubContent>
+</DropdownMenuPrimitive.Portal>

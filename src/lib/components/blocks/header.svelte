@@ -58,25 +58,33 @@
 				<div class="ml-auto grid grid-flow-col items-center gap-2">
 					{#if !persistHeader && user}
 						<DropdownMenu.Root>
-							<DropdownMenu.Trigger asChild let:builder
-								><Button builders={[builder]} variant="ghost" size="icon">
-									<Plus
-										class="transition-all {builder['data-state'] === 'open'
-											? 'rotate-45'
-											: 'rotate-0'}"
-									/>
-									<span class="sr-only">{m.ideal_brave_eagle_trust()}</span></Button
-								></DropdownMenu.Trigger
-							>
+							<DropdownMenu.Trigger>
+								{#snippet child({ props })}
+									<Button {...props} variant="ghost" size="icon">
+										<Plus
+											class="transition-all {props['data-state'] === 'open'
+												? 'rotate-45'
+												: 'rotate-0'}"
+										/>
+										<span class="sr-only">{m.ideal_brave_eagle_trust()}</span>
+									</Button>
+								{/snippet}
+							</DropdownMenu.Trigger>
 							<DropdownMenu.Content class="w-56">
-								<DropdownMenu.Label>{m.ideal_brave_eagle_trust()}</DropdownMenu.Label>
-								<DropdownMenu.Separator />
+								<DropdownMenu.Group>
+									<DropdownMenu.Label>{m.ideal_brave_eagle_trust()}</DropdownMenu.Label>
+									<DropdownMenu.Separator />
 
-								{#each secretMenu() as menuItem (menuItem.href)}
-									<DropdownMenu.Item href={localizeHref(menuItem.href)}>
-										<menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</DropdownMenu.Item
-									>
-								{/each}
+									{#each secretMenu() as menuItem (menuItem.href)}
+										<DropdownMenu.Item>
+											{#snippet child({ props })}
+												<a href={localizeHref(menuItem.href)} {...props}
+													><menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</a
+												>
+											{/snippet}
+										</DropdownMenu.Item>
+									{/each}
+								</DropdownMenu.Group>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 					{/if}

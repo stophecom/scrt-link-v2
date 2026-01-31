@@ -5,6 +5,7 @@
 	import { toast } from 'svelte-sonner';
 
 	import { goto, invalidateAll } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { api } from '$lib/api';
 	import PoweredByStripe from '$lib/assets/images/PoweredByStripe.svg?component';
 	import { TRIAL_PERIOD_DAYS } from '$lib/client/constants';
@@ -69,7 +70,7 @@
 
 	const handleSubmit = async (priceId: string) => {
 		if (!user) {
-			await goto('/signup');
+			await goto(resolve('/signup'));
 		}
 		try {
 			// If customer has a subscription, update it.
@@ -207,6 +208,6 @@
 				{m.day_even_beaver_cry({ percentage: yearlyPlanSavings || 0 })}
 			</div>
 		</div>
-		<div class="flex items-center py-4 sm:ms-auto"><PoweredByStripe class="w-[160px]" /></div>
+		<div class="flex items-center py-4 sm:ms-auto"><PoweredByStripe class="w-40" /></div>
 	</div>
 </div>

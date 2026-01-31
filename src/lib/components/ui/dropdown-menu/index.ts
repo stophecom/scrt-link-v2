@@ -15,6 +15,7 @@ const Sub = DropdownMenuPrimitive.Sub;
 const Root = DropdownMenuPrimitive.Root;
 const Trigger = DropdownMenuPrimitive.Trigger;
 const Group = DropdownMenuPrimitive.Group;
+const Portal = DropdownMenuPrimitive.Portal;
 
 export {
 	CheckboxItem,
@@ -37,6 +38,7 @@ export {
 	Group,
 	Item,
 	Label,
+	Portal,
 	RadioGroup,
 	RadioItem,
 	Root,
