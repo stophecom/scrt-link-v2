@@ -20,6 +20,9 @@ importers:
       '@lucide/svelte':
         specifier: ^0.522.0
         version: 0.522.0(svelte@5.48.1)
+      '@scrt-link/core':
+        specifier: workspace:*
+        version: link:packages/core
       '@stripe/stripe-js':
         specifier: ^5.10.0
         version: 5.10.0
@@ -215,6 +218,19 @@ importers:
         version: 3.25.76
 
   packages/client:
+    dependencies:
+      '@scrt-link/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      tsup:
+        specifier: ^8.0.0
+        version: 8.5.1(jiti@2.6.1)(postcss@8.5.6)(typescript@5.9.3)(yaml@2.8.2)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+
+  packages/core:
     devDependencies:
       tsup:
         specifier: ^8.0.0

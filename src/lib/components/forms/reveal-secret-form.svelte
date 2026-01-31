@@ -1,15 +1,14 @@
 <script lang="ts">
 	import Flame from '@lucide/svelte/icons/flame';
 	import Reply from '@lucide/svelte/icons/reply';
+	import { decryptString, SecretType } from '@scrt-link/core';
 	import { tick } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
-	import { decryptString } from '$lib/client/web-crypto';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import { SecretType } from '$lib/data/enums';
 	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';

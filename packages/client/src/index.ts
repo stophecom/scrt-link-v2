@@ -1,13 +1,16 @@
-import { MASTER_PASSWORD_LENGTH, SECRET_ID_LENGTH } from './constants';
-import { type Options, SecretType } from './types';
-import { DAY } from './utils';
 import {
+	DAY,
 	encryptString,
 	exportPublicKey,
 	generateKeyPair,
 	generateRandomUrlSafeString,
+	MASTER_PASSWORD_LENGTH,
+	SECRET_ID_LENGTH,
+	SecretType,
 	sha256Hash
-} from './web-crypto';
+} from '@scrt-link/core';
+
+import type { Options } from './types';
 
 // http://localhost:5173
 const PROTOCOL = 'https';
@@ -86,5 +89,5 @@ export const scrtLink = (apiKey: string) => {
 	};
 };
 
-export { type Options, SecretType };
+export { type Options,SecretType };
 export default scrtLink;

@@ -29,6 +29,9 @@
 		"lint": "eslint .",
 		"prepublishOnly": "npm run build"
 	},
+	"dependencies": {
+		"@scrt-link/core": "workspace:*"
+	},
 	"devDependencies": {
 		"tsup": "^8.0.0",
 		"typescript": "^5.0.0"
