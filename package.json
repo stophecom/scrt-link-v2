@@ -21,7 +21,7 @@
 		"db:studio": "drizzle-kit studio",
 		"prepare": "husky",
 		"machine-translate": "inlang machine translate --project project.inlang",
-		"build-client-module": "esbuild src/lib/client/client-module.ts --bundle --format=esm --minify --outfile=.vercel/output/static/client-module.js"
+		"build-client-module": "esbuild packages/client/src/index.ts --bundle --format=esm --minify --outfile=.vercel/output/static/client-module.js"
 	},
 	"engines": {
 		"node": "22.x"
