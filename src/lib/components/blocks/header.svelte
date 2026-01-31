@@ -76,9 +76,13 @@
 									<DropdownMenu.Separator />
 
 									{#each secretMenu() as menuItem (menuItem.href)}
-										<DropdownMenu.Item href={localizeHref(menuItem.href)}>
-											<menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</DropdownMenu.Item
-										>
+										<DropdownMenu.Item>
+											{#snippet child({ props })}
+												<a href={localizeHref(menuItem.href)} {...props}
+													><menuItem.icon class="me-2 h-4 w-4" />{menuItem.label}</a
+												>
+											{/snippet}
+										</DropdownMenu.Item>
 									{/each}
 								</DropdownMenu.Group>
 							</DropdownMenu.Content>
