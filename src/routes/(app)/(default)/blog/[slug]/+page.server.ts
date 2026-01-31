@@ -10,8 +10,10 @@ export async function load({ params }) {
 	try {
 		const post = await import(`$lib/data/blog/${params.slug}.md`);
 
+		const rendered = render(post.default);
+
 		return {
-			content: render(post.default),
+			content: rendered.body,
 			meta: { ...post.metadata, slug: params.slug } as BlogPostMeta
 		};
 	} catch (e) {

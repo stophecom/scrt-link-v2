@@ -28,7 +28,7 @@
 			</div>
 			<div class="prose">
 				<!--  eslint-disable-next-line svelte/no-at-html-tags -->
-				{@html data.content.body}
+				{@html data.content}
 			</div>
 		</article>
 		<ShareButton
