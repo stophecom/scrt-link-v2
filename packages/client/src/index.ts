@@ -89,5 +89,5 @@ export const scrtLink = (apiKey: string) => {
 	};
 };
 
-export { type Options,SecretType };
+export { type Options, SecretType };
 export default scrtLink;
