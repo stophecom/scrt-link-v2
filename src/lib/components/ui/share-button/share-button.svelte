@@ -32,6 +32,6 @@
 	}: ShareData & ButtonProps & { label?: string } = $props();
 </script>
 
-<Button variant="ghost" {...rest} on:click={() => webShare({ title, text, url })}
+<Button variant="ghost" {...rest} onclick={() => webShare({ title, text, url })}
 	><Share class="mr-2 h-4 w-4" />{label}</Button
 >

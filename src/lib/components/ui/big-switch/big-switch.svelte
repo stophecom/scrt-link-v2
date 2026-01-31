@@ -3,9 +3,7 @@
 
 	import { cn } from '$lib/client/utils.js';
 
-	type $$Props = SwitchPrimitive.Props & { left: string; right: string };
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = SwitchPrimitive.Events;
+	type $$Props = SwitchPrimitive.RootProps & { left: string; right: string };
 
 	let { left, right, checked = $bindable(), ...rest }: $$Props = $props();
 </script>
@@ -17,8 +15,6 @@
 		'peer focus-visible:ring-ring focus-visible:ring-offset-background bg-input relative inline-grid cursor-pointer grid-cols-2 items-center rounded-full border-4 border-transparent text-lg font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
 		rest.class
 	)}
-	on:click
-	on:keydown
 >
 	<SwitchPrimitive.Thumb
 		class={cn(
