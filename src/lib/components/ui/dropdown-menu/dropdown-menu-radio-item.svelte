@@ -5,8 +5,6 @@
 	import { cn } from '$lib/client/utils.js';
 
 	type $$Props = DropdownMenuPrimitive.RadioItemProps;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = DropdownMenuPrimitive.RadioItemEvents;
 
 	let className: $$Props['class'] = undefined;
 	export let value: $$Props['value'];
@@ -20,13 +18,6 @@
 	)}
 	{value}
 	{...$$restProps}
-	on:click
-	on:keydown
-	on:focusin
-	on:focusout
-	on:pointerdown
-	on:pointerleave
-	on:pointermove
 >
 	{#snippet child({ props, checked })}
 		<div {...props}>

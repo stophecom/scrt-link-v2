@@ -131,7 +131,7 @@
 				class="border-foreground"
 				variant="ghost"
 				aria-label="Delete"
-				on:click={reset}
+				onclick={reset}
 			>
 				{#if done}
 					<Trash class="text-destructive h-4 w-4" />

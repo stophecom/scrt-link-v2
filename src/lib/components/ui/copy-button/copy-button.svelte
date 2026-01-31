@@ -19,6 +19,7 @@
 		copyText(text);
 
 		visible = true;
+		console.log('copying');
 		setTimeout(() => {
 			if (e.target instanceof HTMLButtonElement) {
 				e.target.blur();
@@ -29,7 +30,7 @@
 </script>
 
 <div class="relative inline-flex {rest?.class}">
-	<Button data-testid="copy-link" on:click={copy} {...rest}
+	<Button data-testid="copy-link" {...rest} onclick={copy}
 		><Copy class="mr-2 h-4 w-4" />{m.knotty_fuzzy_scallop_fall()}</Button
 	>
 	<div

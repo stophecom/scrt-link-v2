@@ -7,9 +7,7 @@
 
 	import { cn } from '$lib/client/utils.js';
 
-	type $$Props = CheckboxPrimitive.Props;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = CheckboxPrimitive.Events;
+	type $$Props = CheckboxPrimitive.RootProps;
 
 	let className: $$Props['class'] = undefined;
 	export let checked: $$Props['checked'] = false;
@@ -23,7 +21,6 @@
 	)}
 	bind:checked
 	{...$$restProps}
-	on:click
 >
 	{#snippet children({ checked, indeterminate }: { checked: boolean; indeterminate: boolean })}
 		<div class={cn('flex h-full w-full items-center justify-center text-current')}>
