@@ -36,6 +36,7 @@
 	let masterKey = $state('');
 	let successMessage = $state('');
 	let link: string = $derived(`${page.url.origin}/s#${masterKey}`);
+	let currentTab = $state('text');
 
 	let enabledSecretTypes = $derived(
 		getSecretTypes().filter(({ value }) => secretTypes.includes(value))
@@ -83,17 +84,17 @@
 		{#if secretTypes.length === 1}
 			<SecretForm {form} {user} secretType={secretTypes[0]} bind:masterKey bind:successMessage />
 		{:else}
-			<Tabs.Root value="text" let:value>
+			<Tabs.Root bind:value={currentTab}>
 				<Tabs.List class="max-w-full overflow-scroll">
 					{#each enabledSecretTypes as secretTypeItem (secretTypeItem.value)}
 						<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
 					{/each}
 				</Tabs.List>
-				<Tabs.Content {value}>
+				<Tabs.Content value={currentTab}>
 					<SecretForm
 						{form}
 						{user}
-						secretType={value as SecretType}
+						secretType={currentTab as SecretType}
 						bind:masterKey
 						bind:successMessage
 					/>

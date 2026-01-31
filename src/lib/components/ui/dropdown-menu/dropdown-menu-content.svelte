@@ -1,29 +1,24 @@
 <script lang="ts">
 	import { DropdownMenu as DropdownMenuPrimitive } from 'bits-ui';
 
-	import { cn, flyAndScale } from '$lib/client/utils.js';
+	import { cn } from '$lib/client/utils.js';
 
-	type $$Props = DropdownMenuPrimitive.ContentProps;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	type $$Events = DropdownMenuPrimitive.ContentEvents;
+	type ContentProps = DropdownMenuPrimitive.ContentProps;
 
-	let className: $$Props['class'] = undefined;
-	export let sideOffset: $$Props['sideOffset'] = 4;
-	export let transition: $$Props['transition'] = flyAndScale;
-	export let transitionConfig: $$Props['transitionConfig'] = undefined;
+	let className: ContentProps['class'] = undefined;
+	export let sideOffset: ContentProps['sideOffset'] = 4;
 	export { className as class };
 </script>
 
-<DropdownMenuPrimitive.Content
-	{transition}
-	{transitionConfig}
-	{sideOffset}
-	class={cn(
-		'bg-popover text-popover-foreground border-border z-50 min-w-[8rem] rounded-md border p-1 shadow-md focus:outline-hidden',
-		className
-	)}
-	{...$$restProps}
-	on:keydown
->
-	<slot />
-</DropdownMenuPrimitive.Content>
+<DropdownMenuPrimitive.Portal>
+	<DropdownMenuPrimitive.Content
+		{sideOffset}
+		class={cn(
+			'bg-popover text-popover-foreground border-border z-50 min-w-[8rem] rounded-md border p-1 shadow-md focus:outline-hidden',
+			className
+		)}
+		{...$$restProps}
+	>
+		<slot />
+	</DropdownMenuPrimitive.Content>
+</DropdownMenuPrimitive.Portal>

@@ -15,7 +15,7 @@
 
 <DropdownMenuPrimitive.RadioItem
 	class={cn(
-		'data-highlighted:text-accent-foreground data-highlighted:bg-muted relative flex cursor-pointer items-center rounded-sm py-4 pr-2 pl-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 sm:py-3',
+		'data-highlighted:text-accent-foreground data-highlighted:bg-muted hover:bg-muted hover:text-accent-foreground relative flex cursor-pointer items-center rounded-sm py-4 pr-2 pl-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 sm:py-3',
 		className
 	)}
 	{value}
@@ -28,10 +28,14 @@
 	on:pointerleave
 	on:pointermove
 >
-	<span class="absolute left-2 flex h-4 w-4 items-center justify-center">
-		<DropdownMenuPrimitive.RadioIndicator>
-			<Check class="text-primary h-4 w-4" />
-		</DropdownMenuPrimitive.RadioIndicator>
-	</span>
-	<slot />
+	{#snippet child({ props, checked })}
+		<div {...props}>
+			{#if checked}
+				<span class="absolute left-2 flex h-4 w-4 items-center justify-center">
+					<Check class="text-primary h-4 w-4" />
+				</span>
+			{/if}
+			<slot />
+		</div>
+	{/snippet}
 </DropdownMenuPrimitive.RadioItem>

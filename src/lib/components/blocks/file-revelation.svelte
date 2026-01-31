@@ -55,7 +55,7 @@
 	</div>
 
 	<div
-		class="border-foreground bg-background text-muted-foreground absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 rounded-full border p-2"
+		class="border-foreground bg-background text-muted-foreground absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 rounded-full border p-2"
 	>
 		{#if isDownloading}
 			<UploadSpinner class="rotate-180" />

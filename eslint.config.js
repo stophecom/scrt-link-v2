@@ -40,7 +40,9 @@ export default ts.config(
 		},
 		rules: {
 			'simple-import-sort/imports': 'error',
-			'simple-import-sort/exports': 'error'
+			'simple-import-sort/exports': 'error',
+			// @see https://github.com/sveltejs/eslint-plugin-svelte/issues/1353
+			'svelte/no-navigation-without-resolve': 'off'
 		}
 	}
 );
