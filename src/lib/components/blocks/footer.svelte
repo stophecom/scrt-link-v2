@@ -44,6 +44,7 @@
 					</a>
 				{/each}
 				<span class="text-nowrap">
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 					<a class="hover:text-foreground py-2 pe-0 underline" target="_blank" href={uptimerobotUrl}
 						>{m.real_proud_dolphin_attend()}</a
 					>

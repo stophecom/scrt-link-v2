@@ -3,7 +3,7 @@
 	import Globe from '@lucide/svelte/icons/globe';
 
 	import { Button } from '$lib/components/ui/button/index.js';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { m } from '$lib/paraglide/messages.js';
 	import { getLocale, type Locale, locales, setLocale } from '$lib/paraglide/runtime';
 
@@ -27,6 +27,7 @@
 		{/snippet}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">
+		<DropdownMenu.Group>
 			<DropdownMenu.Label>{m.wacky_bad_swallow_hack()}</DropdownMenu.Label>
 			<DropdownMenu.Separator />
 			<DropdownMenu.RadioGroup
@@ -41,5 +42,6 @@
 					>
 				{/each}
 			</DropdownMenu.RadioGroup>
-		</DropdownMenu.Content>
+		</DropdownMenu.Group>
+	</DropdownMenu.Content>
 </DropdownMenu.Root>

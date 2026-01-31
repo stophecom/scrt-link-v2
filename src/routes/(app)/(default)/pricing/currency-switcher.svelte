@@ -2,7 +2,7 @@
 	import Globe from '@lucide/svelte/icons/globe';
 
 	import { Button } from '$lib/components/ui/button/index.js';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { SupportedCurrency } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 
@@ -23,19 +23,21 @@
 		{/snippet}
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">
-		<DropdownMenu.Label>{m.gross_smart_toucan_borrow()}</DropdownMenu.Label>
-		<DropdownMenu.Separator />
-		<DropdownMenu.RadioGroup
-			value={activeCurrency as string}
-			onValueChange={async (value) => {
-				activeCurrency = value as SupportedCurrency;
-			}}
-		>
-			{#each Object.values(SupportedCurrency) as currency (currency)}
-				<DropdownMenu.RadioItem value={currency} class="uppercase"
-					>{currency}</DropdownMenu.RadioItem
-				>
-			{/each}
-		</DropdownMenu.RadioGroup>
+		<DropdownMenu.Group>
+			<DropdownMenu.Label>{m.gross_smart_toucan_borrow()}</DropdownMenu.Label>
+			<DropdownMenu.Separator />
+			<DropdownMenu.RadioGroup
+				value={activeCurrency as string}
+				onValueChange={async (value) => {
+					activeCurrency = value as SupportedCurrency;
+				}}
+			>
+				{#each Object.values(SupportedCurrency) as currency (currency)}
+					<DropdownMenu.RadioItem value={currency} class="uppercase"
+						>{currency}</DropdownMenu.RadioItem
+					>
+				{/each}
+			</DropdownMenu.RadioGroup>
+		</DropdownMenu.Group>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
