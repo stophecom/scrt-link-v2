@@ -1,29 +1,21 @@
-// This module is intended to be used in browser-based applications to interact with the API.
-
-import { SecretType } from '$lib/data/enums';
-import { DAY } from '$lib/data/units';
-
-import { MASTER_PASSWORD_LENGTH, SECRET_ID_LENGTH } from './constants';
 import {
+	DAY,
 	encryptString,
 	exportPublicKey,
 	generateKeyPair,
 	generateRandomUrlSafeString,
+	MASTER_PASSWORD_LENGTH,
+	SECRET_ID_LENGTH,
+	SecretType,
 	sha256Hash
-} from './web-crypto';
+} from '@scrt-link/core';
+
+import type { Options } from './types';
 
 // http://localhost:5173
 const PROTOCOL = 'https';
 const DEFAULT_HOST = 'scrt.link';
 
-// Only text based secrets are supported via API.
-type Options = {
-	secretType?: SecretType.TEXT | SecretType.NEOGRAM | SecretType.NEOGRAM;
-	password?: string;
-	publicNote?: string;
-	expiresIn?: number;
-	host?: string;
-};
 export const scrtLink = (apiKey: string) => {
 	if (!apiKey) {
 		throw new Error('API key is required');
@@ -70,7 +62,7 @@ export const scrtLink = (apiKey: string) => {
 
 		const checksum = await sha256Hash(body);
 
-		const res = await fetch(`${PROTOCOL}://${DEFAULT_HOST}/api/v1/secrets`, {
+		const res = await fetch(`${PROTOCOL}://${host}/api/v1/secrets`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -97,4 +89,5 @@ export const scrtLink = (apiKey: string) => {
 	};
 };
 
+export { type Options, SecretType };
 export default scrtLink;
