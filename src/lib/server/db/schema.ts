@@ -20,7 +20,7 @@ import {
 	Role,
 	SecretType,
 	TierOptions
-} from '../../data/enums';
+} from '$lib/data/enums';
 
 export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,

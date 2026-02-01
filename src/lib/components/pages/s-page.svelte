@@ -1,10 +1,9 @@
 <script lang="ts">
+	import { SECRET_ID_LENGTH, sha256Hash } from '@scrt-link/core';
 	import { onMount } from 'svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { api } from '$lib/api';
-	import { SECRET_ID_LENGTH } from '$lib/client/constants';
-	import { sha256Hash } from '$lib/client/web-crypto';
 	import RevealSecretForm from '$lib/components/forms/reveal-secret-form.svelte';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import { Spinner } from '$lib/components/ui/spinner';

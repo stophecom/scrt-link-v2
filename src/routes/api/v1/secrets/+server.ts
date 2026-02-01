@@ -1,8 +1,8 @@
+import { sha256Hash } from '@scrt-link/core';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 import { isOriginalHost } from '$lib/app-routing';
-import { sha256Hash } from '$lib/client/web-crypto';
 import { db } from '$lib/server/db';
 import { apiKey } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/schema';

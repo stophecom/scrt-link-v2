@@ -3,6 +3,7 @@ import svg from '@poppanator/sveltekit-svg';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import svelteEmailTailwind from 'svelte-email-tailwind/vite';
+import { searchForWorkspaceRoot } from 'vite';
 import { defineConfig } from 'vitest/config';
 
 const config = {
@@ -27,6 +28,14 @@ const config = {
 	}
 };
 export default defineConfig({
+	server: {
+		fs: {
+			allow: [
+				// Search for the workspace root (where pnpm-workspace.yaml is)
+				searchForWorkspaceRoot(process.cwd())
+			]
+		}
+	},
 	plugins: [
 		paraglideVitePlugin({
 			project: './project.inlang',

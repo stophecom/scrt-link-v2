@@ -1,6 +1,6 @@
+import { sha256Hash } from '@scrt-link/core';
 import { and, eq } from 'drizzle-orm';
 
-import { sha256Hash } from '$lib/client/web-crypto';
 import { generateBase64Token } from '$lib/crypto';
 import { InviteStatus, type MembershipRole } from '$lib/data/enums';
 import { DAY } from '$lib/data/units';
