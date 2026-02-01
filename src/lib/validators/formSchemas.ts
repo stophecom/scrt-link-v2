@@ -9,12 +9,12 @@ import { m } from '$lib/paraglide/messages.js';
 // We return functions in order for translations to work as expected.
 export const emailFormSchema = () =>
 	z.object({
-		email: z.string().toLowerCase().email(m.every_chunky_osprey_zip())
+		email: z.email(m.every_chunky_osprey_zip()).toLowerCase()
 	});
 
 export const emailVerificationCodeFormSchema = () =>
 	z.object({
-		email: z.string().toLowerCase().email(m.every_chunky_osprey_zip()),
+		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
 		code: z.string().length(6, { message: m.arable_such_jay_swim({ number: 6 }) })
 	});
 
@@ -35,7 +35,7 @@ export const deleteAccountSchema = () =>
 
 export const signInFormSchema = () =>
 	z.object({
-		email: z.string().toLowerCase().email(m.every_chunky_osprey_zip()),
+		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
 		password: z
 			.string()
 			.min(6, m.aloof_careful_trout_dine({ number: 6 }))
@@ -65,19 +65,14 @@ export const secretFormSchema = () =>
 					...expiresInOptionsValues.slice(2).map((item) => z.literal(item))
 				],
 				{
-					errorMap: (error) => {
+					error: (error) => {
 						if (error.code === 'invalid_union') {
-							return {
-								message: `Valid options are: ${expiresInOptionsValues.join(', ')}`
-							};
+							return `Valid options are: ${expiresInOptionsValues.join(', ')}`;
 						}
-						return {
-							message: error.message ?? 'Unknown validation error.'
-						};
+						return error.message ?? 'Unknown validation error.';
 					}
 				}
 			)
-
 			.default(defaultExpiresInValue)
 	});
 
@@ -107,7 +102,7 @@ export const inviteOrganizationMemberFormSchema = () =>
 			.min(2, m.minor_noble_cowfish_relish({ number: 2 }))
 			.max(30)
 			.optional(),
-		email: z.string().toLowerCase().email(m.every_chunky_osprey_zip()),
+		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
 		organizationId: z.string()
 	});
 
@@ -127,9 +122,10 @@ export const whiteLabelMetaSchema = () =>
 		locale: z.enum(getSupportedLocales() as [string, ...string[]]),
 		enabledSecretTypes: z
 			.array(z.nativeEnum(SecretType))
-			.refine((value) => value.some((item) => item), {
+			.min(1, {
 				message: m.slow_mushy_rook_shine()
 			})
+			.default([]) // Explicitly tell Superforms this is an array
 	});
 
 export const whiteLabelSiteSchema = () =>
@@ -150,12 +146,7 @@ export const settingsFormSchema = () =>
 	z
 		.object({
 			readReceiptOption: z.nativeEnum(ReadReceiptOptions),
-			email: z
-				.string()
-				.toLowerCase()
-				.email(m.every_chunky_osprey_zip())
-				.optional()
-				.or(z.literal('')), // https://github.com/colinhacks/zod/issues/310#issuecomment-794533682
+			email: z.email(m.every_chunky_osprey_zip()).toLowerCase().optional().or(z.literal('')), // https://github.com/colinhacks/zod/issues/310#issuecomment-794533682
 			ntfyEndpoint: z.string().optional()
 		})
 		.refine(
@@ -193,7 +184,7 @@ export const revealSecretFormSchema = () =>
 
 export const contactFormSchema = () =>
 	z.object({
-		email: z.string().toLowerCase().email(m.every_chunky_osprey_zip()),
+		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
 		content: z.string().min(30, m.soft_proof_mink_pinch({ number: 30 })),
 		recaptchaToken: z.string()
 	});

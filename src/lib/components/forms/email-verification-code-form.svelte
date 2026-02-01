@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
 	import * as Form from '$lib/components/ui/form';
@@ -19,7 +19,7 @@
 	export let resendFormData: SuperValidated<EmailFormSchema>;
 
 	const verificationForm = superForm(verificationFormData, {
-		validators: zodClient(emailVerificationCodeFormSchema()),
+		validators: zod4Client(emailVerificationCodeFormSchema()),
 		validationMethod: 'auto',
 		onError(event) {
 			$verificationFormMessage = {

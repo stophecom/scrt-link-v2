@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { type FormOptions, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
@@ -23,7 +23,7 @@
 	let { organizationId, formAction, form: formProp, onSubmit = $bindable() }: Props = $props();
 
 	const form = superForm(formProp, {
-		validators: zodClient(inviteOrganizationMemberFormSchema()),
+		validators: zod4Client(inviteOrganizationMemberFormSchema()),
 		validationMethod: 'auto',
 		onSubmit: onSubmit,
 		onError({ result }) {

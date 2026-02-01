@@ -4,7 +4,7 @@
 	import { decryptString, SecretType } from '@scrt-link/core';
 	import { tick } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
@@ -52,7 +52,7 @@
 	const partialSchema = revealSecretFormSchema().omit({ password: true });
 
 	const revealSecretForm = superForm(form, {
-		validators: zodClient(showPasswordInput ? revealSecretFormSchema() : partialSchema),
+		validators: zod4Client(showPasswordInput ? revealSecretFormSchema() : partialSchema),
 		validationMethod: 'auto',
 		onResult: async ({ result }) => {
 			if (result.type === 'success') {

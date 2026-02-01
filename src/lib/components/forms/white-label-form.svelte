@@ -3,7 +3,7 @@
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import { derived } from 'svelte/store';
 	import { stringProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import { api } from '$lib/api';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
@@ -32,7 +32,7 @@
 	let { form: formProp, organizationIdOptions, whiteLabelDomain }: Props = $props();
 
 	const form = superForm(formProp, {
-		validators: zodClient(whiteLabelMetaSchema()),
+		validators: zod4Client(whiteLabelMetaSchema()),
 
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates

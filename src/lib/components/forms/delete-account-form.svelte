@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
 	import Switch from '$lib/components/forms/form-fields/switch.svelte';
@@ -13,7 +13,7 @@
 	export let form: SuperValidated<Infer<DeleteAccountSchema>>;
 
 	const deleteAccountForm = superForm(form, {
-		validators: zodClient(deleteAccountSchema()),
+		validators: zod4Client(deleteAccountSchema()),
 		validationMethod: 'auto',
 		onError(event) {
 			$message = {

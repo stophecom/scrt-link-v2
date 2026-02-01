@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { type FormOptions, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
 	import { m } from '$lib/paraglide/messages.js';
@@ -17,7 +17,7 @@
 	let { form: formProp, onSubmit = $bindable() }: Props = $props();
 
 	const form = superForm(formProp, {
-		validators: zodClient(userFormSchema()),
+		validators: zod4Client(userFormSchema()),
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates
 		invalidateAll: 'force',

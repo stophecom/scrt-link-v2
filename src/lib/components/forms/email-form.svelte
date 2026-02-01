@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
@@ -18,7 +18,7 @@
 	let { formAction, form: formProp, buttonLabel = m.few_blue_wallaby_read() }: Props = $props();
 
 	const form = superForm(formProp, {
-		validators: zodClient(emailFormSchema()),
+		validators: zod4Client(emailFormSchema()),
 		validationMethod: 'auto',
 
 		onError({ result }) {
