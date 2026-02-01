@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 import { type Infer, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { ReadReceiptOptions, ThemeOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
@@ -19,20 +19,20 @@ import {
 	userFormSchema
 } from '$lib/validators/formSchemas';
 
-export const secretFormValidator = async () => await superValidate(zod(secretFormSchema()));
+export const secretFormValidator = async () => await superValidate(zod4(secretFormSchema()));
 
 // Auth
-export const emailFormValidator = async () => await superValidate(zod(emailFormSchema())); // Used for login, signup, password reset
+export const emailFormValidator = async () => await superValidate(zod4(emailFormSchema())); // Used for login, signup, password reset
 
 export const loginPasswordFormValidator = async (defaultValues: Partial<Infer<SignInFormSchema>>) =>
-	await superValidate(defaultValues, zod(signInFormSchema()), {
+	await superValidate(defaultValues, zod4(signInFormSchema()), {
 		errors: false
 	});
 
 export const resendEmailVerificationFormValidator = async (
 	defaultValues: Partial<EmailFormSchema>
 ) =>
-	await superValidate(defaultValues, zod(emailFormSchema()), {
+	await superValidate(defaultValues, zod4(emailFormSchema()), {
 		errors: false,
 		id: 'resend-form'
 	});
@@ -40,7 +40,7 @@ export const resendEmailVerificationFormValidator = async (
 export const emailVerificationFormValidator = async (
 	defaultValues: Partial<Infer<EmailVerificationCodeFormSchema>>
 ) =>
-	await superValidate(defaultValues, zod(emailVerificationCodeFormSchema()), {
+	await superValidate(defaultValues, zod4(emailVerificationCodeFormSchema()), {
 		errors: false
 	});
 
@@ -50,7 +50,7 @@ export const themeFormValidator = async (user: App.Locals['user']) =>
 		{
 			themeOption: user?.preferences?.themeColor || ThemeOptions.PINK
 		},
-		zod(themeFormSchema())
+		zod4(themeFormSchema())
 	);
 
 export const settingsFormValidator = async (user: App.Locals['user']) => {
@@ -66,7 +66,7 @@ export const settingsFormValidator = async (user: App.Locals['user']) => {
 			email: settings?.email || user.email || '',
 			ntfyEndpoint: settings?.ntfyEndpoint || ''
 		},
-		zod(settingsFormSchema())
+		zod4(settingsFormSchema())
 	);
 };
 
@@ -76,12 +76,12 @@ export const userFormValidator = async (user: App.Locals['user']) => {
 		{
 			name: user?.name || ''
 		},
-		zod(userFormSchema()),
+		zod4(userFormSchema()),
 		{ errors: false }
 	);
 };
 
 export const apiKeyFormValidator = async () =>
-	await superValidate(zod(apiKeyFormSchema()), {
+	await superValidate(zod4(apiKeyFormSchema()), {
 		id: 'api-token-form'
 	});

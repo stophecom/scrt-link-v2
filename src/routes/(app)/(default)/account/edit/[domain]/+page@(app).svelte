@@ -11,7 +11,7 @@
 	import { elasticOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
 	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
@@ -48,7 +48,7 @@
 	}, 1000);
 
 	const form = superForm(data.whiteLabelSiteForm, {
-		validators: zodClient(whiteLabelSiteSchema()),
+		validators: zod4Client(whiteLabelSiteSchema()),
 
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates

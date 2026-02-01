@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { fail, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { redirectLocalized } from '$lib/i18n';
 import * as auth from '$lib/server/auth';
@@ -19,7 +19,7 @@ export async function load(event: RequestEvent) {
 
 	return {
 		user: event.locals.user,
-		accountDeletionForm: await superValidate(zod(deleteAccountSchema()))
+		accountDeletionForm: await superValidate(zod4(deleteAccountSchema()))
 	};
 }
 
@@ -36,7 +36,7 @@ async function deleteAccount(event: RequestEvent) {
 		return fail(401);
 	}
 
-	const accountDeletionForm = await superValidate(event.request, zod(deleteAccountSchema()));
+	const accountDeletionForm = await superValidate(event.request, zod4(deleteAccountSchema()));
 
 	if (!accountDeletionForm.valid) {
 		return fail(400, { accountDeletionForm });

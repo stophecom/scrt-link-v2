@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import {
 		type ManageOrganizationMemberFormSchema,
@@ -31,7 +31,7 @@
 	}: Props = $props();
 
 	const form = superForm(formProp, {
-		validators: zodClient(manageOrganizationMemberFormSchema()),
+		validators: zod4Client(manageOrganizationMemberFormSchema()),
 		validationMethod: 'auto',
 
 		onError({ result }) {

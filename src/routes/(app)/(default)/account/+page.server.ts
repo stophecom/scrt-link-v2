@@ -1,5 +1,5 @@
 import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { MembershipRole, SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
@@ -63,7 +63,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 				locale: whiteLabel?.locale || DEFAULT_LOCALE,
 				enabledSecretTypes: whiteLabel?.enabledSecretTypes || [SecretType.TEXT, SecretType.FILE]
 			},
-			zod(whiteLabelMetaSchema())
+			zod4(whiteLabelMetaSchema())
 		);
 	};
 
@@ -80,20 +80,20 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	const organizationFormValidator = async () => {
 		return await superValidate(
 			{ organizationId: userOrganization?.id, name: userOrganization?.name },
-			zod(organizationFormSchema()),
+			zod4(organizationFormSchema()),
 			{
 				errors: false
 			}
 		);
 	};
 	const inviteOrganizationMemberFormValidator = async () => {
-		return await superValidate(zod(inviteOrganizationMemberFormSchema()), {
+		return await superValidate(zod4(inviteOrganizationMemberFormSchema()), {
 			errors: false
 		});
 	};
 
 	const manageOrganizationMemberFormValidator = async () => {
-		return await superValidate(zod(manageOrganizationMemberFormSchema()), {
+		return await superValidate(zod4(manageOrganizationMemberFormSchema()), {
 			errors: false
 		});
 	};

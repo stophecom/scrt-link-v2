@@ -2,7 +2,7 @@ import { type Action, error, fail } from '@sveltejs/kit';
 import { and, desc, eq } from 'drizzle-orm';
 import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { isOriginalHost } from '$lib/app-routing';
 import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
@@ -72,7 +72,7 @@ import {
 } from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
-	const form = await superValidate(event.request, zod(secretFormSchema()));
+	const form = await superValidate(event.request, zod4(secretFormSchema()));
 
 	const host = event.url.host;
 
@@ -117,7 +117,7 @@ export const postSecret: Action = async (event) => {
 };
 
 export const saveTheme: Action = async (event) => {
-	const form = await superValidate(event.request, zod(themeFormSchema()));
+	const form = await superValidate(event.request, zod4(themeFormSchema()));
 	if (!form.valid) {
 		return fail(400, { form });
 	}
@@ -142,7 +142,7 @@ export const saveTheme: Action = async (event) => {
 };
 
 export const saveSettings: Action = async (event) => {
-	const form = await superValidate(event.request, zod(settingsFormSchema()));
+	const form = await superValidate(event.request, zod4(settingsFormSchema()));
 
 	const user = event.locals.user;
 
@@ -176,7 +176,7 @@ export const saveSettings: Action = async (event) => {
 };
 
 export const saveUser: Action = async (event) => {
-	const form = await superValidate(event.request, zod(userFormSchema()));
+	const form = await superValidate(event.request, zod4(userFormSchema()));
 
 	const { name } = form.data;
 
@@ -204,7 +204,7 @@ export const saveUser: Action = async (event) => {
 };
 
 export const createOrganization: Action = async (event) => {
-	const form = await superValidate(event.request, zod(organizationFormSchema()));
+	const form = await superValidate(event.request, zod4(organizationFormSchema()));
 
 	const { name } = form.data;
 
@@ -256,7 +256,7 @@ export const createOrganization: Action = async (event) => {
 };
 
 export const editOrganization: Action = async (event) => {
-	const form = await superValidate(event.request, zod(organizationFormSchema()));
+	const form = await superValidate(event.request, zod4(organizationFormSchema()));
 
 	const { name, organizationId } = form.data;
 
@@ -302,7 +302,7 @@ export const editOrganization: Action = async (event) => {
 };
 
 export const addMemberToOrganization: Action = async (event) => {
-	const form = await superValidate(event.request, zod(inviteOrganizationMemberFormSchema()));
+	const form = await superValidate(event.request, zod4(inviteOrganizationMemberFormSchema()));
 
 	const { email, organizationId } = form.data;
 
@@ -418,7 +418,7 @@ export const addMemberToOrganization: Action = async (event) => {
 };
 
 export const removeMemberFromOrganization: Action = async (event) => {
-	const form = await superValidate(event.request, zod(manageOrganizationMemberFormSchema()));
+	const form = await superValidate(event.request, zod4(manageOrganizationMemberFormSchema()));
 
 	const { organizationId, inviteId, userId } = form.data;
 
@@ -502,7 +502,7 @@ export const removeMemberFromOrganization: Action = async (event) => {
 };
 
 export const loginWithEmail: Action = async (event) => {
-	const form = await superValidate(event.request, zod(emailFormSchema()));
+	const form = await superValidate(event.request, zod4(emailFormSchema()));
 
 	if (await limiter.isLimited(event)) {
 		return message(
@@ -560,7 +560,7 @@ export const loginWithEmail: Action = async (event) => {
 };
 
 export const loginWithPassword: Action = async (event) => {
-	const form = await superValidate(event.request, zod(signInFormSchema()));
+	const form = await superValidate(event.request, zod4(signInFormSchema()));
 
 	if (await limiter.isLimited(event)) {
 		return message(
@@ -621,7 +621,7 @@ export const loginWithPassword: Action = async (event) => {
 };
 
 export const signupWithEmail: Action = async (event) => {
-	const form = await superValidate(event.request, zod(emailFormSchema()));
+	const form = await superValidate(event.request, zod4(emailFormSchema()));
 
 	const { email } = form.data;
 
@@ -643,7 +643,7 @@ export const signupWithEmail: Action = async (event) => {
 export const verifyEmailVerificationCode: Action = async (event) => {
 	const verificationForm = await superValidate(
 		event.request,
-		zod(emailVerificationCodeFormSchema())
+		zod4(emailVerificationCodeFormSchema())
 	);
 
 	if (await limiter.isLimited(event)) {
@@ -734,7 +734,7 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 };
 
 export const resendEmailVerificationCode: Action = async (event) => {
-	const resendForm = await superValidate(event.request, zod(emailFormSchema()), {
+	const resendForm = await superValidate(event.request, zod4(emailFormSchema()), {
 		id: 'resend-form'
 	});
 
@@ -771,7 +771,7 @@ export const resendEmailVerificationCode: Action = async (event) => {
 };
 
 export const resetPassword: Action = async (event) => {
-	const form = await superValidate(event.request, zod(emailFormSchema()));
+	const form = await superValidate(event.request, zod4(emailFormSchema()));
 
 	if (await limiter.isLimited(event)) {
 		return message(
@@ -807,7 +807,7 @@ export const setPassword: Action = async (event) => {
 		return redirectLocalized(307, '/login');
 	}
 
-	const passwordForm = await superValidate(event.request, zod(passwordFormSchema()));
+	const passwordForm = await superValidate(event.request, zod4(passwordFormSchema()));
 
 	if (!passwordForm.valid) {
 		return fail(400, { form: passwordForm });
@@ -842,7 +842,7 @@ export const logout: Action = async (event) => {
 };
 
 export const createAPIToken: Action = async (event) => {
-	const form = await superValidate(event.request, zod(apiKeyFormSchema()));
+	const form = await superValidate(event.request, zod4(apiKeyFormSchema()));
 
 	const user = event.locals.user;
 
@@ -886,7 +886,7 @@ export const createAPIToken: Action = async (event) => {
 };
 
 export const revokeAPIToken: Action = async (event) => {
-	const apiKeyForm = await superValidate(event.request, zod(apiKeyFormSchema()), {
+	const apiKeyForm = await superValidate(event.request, zod4(apiKeyFormSchema()), {
 		id: 'api-token-form'
 	});
 	const { keyId } = apiKeyForm.data;
@@ -908,7 +908,7 @@ export const revokeAPIToken: Action = async (event) => {
 };
 
 export const saveWhiteLabelMeta: Action = async (event) => {
-	const form = await superValidate(event.request, zod(whiteLabelMetaSchema()));
+	const form = await superValidate(event.request, zod4(whiteLabelMetaSchema()));
 
 	if (!form.valid) {
 		return fail(400, { form });
@@ -957,6 +957,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 
 		// Adding domain to vercel
 		const response = await addDomainToVercel(customDomain);
+
 		if (response?.error) {
 			// The error code  "domain_already_in_use" is expected, We therefore exclude it from handling.
 			if (response.error?.code !== 'domain_already_in_use') {
@@ -1033,7 +1034,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 };
 
 export const saveWhiteLabelSite: Action = async (event) => {
-	const form = await superValidate(event.request, zod(whiteLabelSiteSchema()), {
+	const form = await superValidate(event.request, zod4(whiteLabelSiteSchema()), {
 		strict: true // Prevent null coercion - used for logo/appIcon/ogImage
 	});
 

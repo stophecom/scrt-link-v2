@@ -1,7 +1,7 @@
 import { type Actions, error } from '@sveltejs/kit';
 import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { RECAPTCHA_SERVER_KEY } from '$env/static/private';
 import { m } from '$lib/paraglide/messages.js';
@@ -12,13 +12,13 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(contactFormSchema()))
+		form: await superValidate(zod4(contactFormSchema()))
 	};
 };
 
 export const actions: Actions = {
 	contact: async (event) => {
-		const form = await superValidate(event.request, zod(contactFormSchema()));
+		const form = await superValidate(event.request, zod4(contactFormSchema()));
 
 		if (!form.valid) {
 			return fail(400, { form });

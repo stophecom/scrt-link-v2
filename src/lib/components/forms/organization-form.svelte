@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
 	import { m } from '$lib/paraglide/messages.js';
@@ -19,7 +19,7 @@
 	let { form: formProp, formAction, onSuccess = () => {} }: Props = $props();
 
 	const form = superForm(formProp, {
-		validators: zodClient(organizationFormSchema()),
+		validators: zod4Client(organizationFormSchema()),
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates
 		invalidateAll: 'force',

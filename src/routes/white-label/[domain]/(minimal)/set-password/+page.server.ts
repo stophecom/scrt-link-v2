@@ -1,5 +1,5 @@
 import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { redirectLocalized } from '$lib/i18n';
 import { setPassword } from '$lib/server/form/actions';
@@ -14,7 +14,7 @@ export async function load(event: RequestEvent) {
 
 	return {
 		user: event.locals.user,
-		form: await superValidate(zod(passwordFormSchema()))
+		form: await superValidate(zod4(passwordFormSchema()))
 	};
 }
 
