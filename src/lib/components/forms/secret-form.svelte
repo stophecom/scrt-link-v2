@@ -13,7 +13,7 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zod } from 'sveltekit-superforms/adapters';
+	import { zod4 } from 'sveltekit-superforms/adapters';
 
 	import { page } from '$app/state';
 	import { plausible } from '$lib/client/plausible';
@@ -60,7 +60,7 @@
 	let planLimits = $derived(getPlanLimits(page.url.host, user?.subscriptionTier));
 
 	const form = superForm(formProp, {
-		validators: zod(secretFormSchema()),
+		validators: zod4(secretFormSchema()),
 		dataType: 'json',
 
 		onSubmit: async ({ jsonData }) => {

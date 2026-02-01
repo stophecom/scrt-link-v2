@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
@@ -13,7 +13,7 @@
 	export let form: SuperValidated<Infer<PasswordFormSchema>>;
 
 	const passwordForm = superForm(form, {
-		validators: zodClient(passwordFormSchema()),
+		validators: zod4Client(passwordFormSchema()),
 		validationMethod: 'auto',
 		onError(event) {
 			$message = {

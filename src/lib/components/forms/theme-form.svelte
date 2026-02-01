@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import RadioGroupColors from '$lib/components/forms/form-fields/radio-group-colors.svelte';
 	import * as Form from '$lib/components/ui/form';
@@ -17,7 +17,7 @@
 	let { form: formProp }: Props = $props();
 
 	const form = superForm(formProp, {
-		validators: zodClient(themeFormSchema()),
+		validators: zod4Client(themeFormSchema()),
 
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates

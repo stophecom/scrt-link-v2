@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { eq, sql } from 'drizzle-orm';
 import { fail, message, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { verifyPassword } from '$lib/crypto';
 import { m } from '$lib/paraglide/messages.js';
@@ -16,7 +16,7 @@ const MAX_PASSWORD_ATTEMPTS = 5;
 
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(revealSecretFormSchema()))
+		form: await superValidate(zod4(revealSecretFormSchema()))
 	};
 };
 
@@ -24,7 +24,7 @@ export const actions: Actions = {
 	default: async (event) => {
 		// We make password optional since not all secrets are encrypted with an extra password.
 		const partialSchema = revealSecretFormSchema().partial({ password: true });
-		const form = await superValidate(event.request, zod(partialSchema));
+		const form = await superValidate(event.request, zod4(partialSchema));
 
 		const { password, secretIdHash } = form.data;
 

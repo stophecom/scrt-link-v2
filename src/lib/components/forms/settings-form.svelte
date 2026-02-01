@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
@@ -23,7 +23,7 @@
 	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 
 	const form = superForm(formProp, {
-		validators: zodClient(settingsFormSchema()),
+		validators: zod4Client(settingsFormSchema()),
 
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates

@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { redirectLocalized } from '$lib/i18n';
 import { getLocale } from '$lib/paraglide/runtime';
@@ -40,7 +40,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 				primaryColor: (whiteLabel.theme as Theme)?.primaryColor || '#000000',
 				published: whiteLabel.published || false
 			},
-			zod(whiteLabelSiteSchema())
+			zod4(whiteLabelSiteSchema())
 		);
 	};
 

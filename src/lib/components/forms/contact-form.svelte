@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import { PUBLIC_RECAPTCHA_CLIENT_KEY } from '$env/static/public';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
@@ -14,7 +14,7 @@
 	let { data }: { data: SuperValidated<Infer<ContactFormSchema>> } = $props();
 
 	const form = superForm(data, {
-		validators: zodClient(contactFormSchema()),
+		validators: zod4Client(contactFormSchema()),
 		validationMethod: 'auto',
 		dataType: 'json',
 
