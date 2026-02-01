@@ -57,11 +57,11 @@ Creates a new secret.
 
 - `content`: The string content to encrypt and share.
 - `options` (optional):
-  - `secretType`: `SecretType.TEXT` or `SecretType.URL`.
+  - `secretType`: `SecretType.TEXT` or `SecretType.REDIRECT` or `SecretType.NEOGRAM`.
   - `password`: Optional password to further protect the secret.
   - `publicNote`: Optional note visible to anyone with the link.
-  - `expiresIn`: Expiration time in seconds (default is 7 days).
-  - `host`: Custom host if using a self-hosted instance.
+  - `expiresIn`: Expiration time in ms (default is 7 days).
+  - `host`: Custom host (needs to configured on scrt.link).
 
 ## Security
 

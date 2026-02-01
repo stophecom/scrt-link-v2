@@ -237,8 +237,8 @@ pnpm --filter @scrt-link/client build
 
 # Publish package
 cd packages/client
-npm version patch
 npm login
+npm version patch
 npm publish --access public
 ```
 

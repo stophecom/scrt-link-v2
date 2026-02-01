@@ -1,6 +1,6 @@
 {
 	"name": "@scrt-link/client",
-	"version": "0.0.2",
+	"version": "0.0.4",
 	"description": "Client module for scrt.link",
 	"keywords": [
 		"scrt.link",
