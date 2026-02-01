@@ -1,11 +1,10 @@
+import { pemFooter, pemHeader } from '@scrt-link/core';
 import { z } from 'zod';
 
-import { pemFooter, pemHeader } from '$lib/client/web-crypto';
+import { ReadReceiptOptions, SecretType, ThemeOptions } from '$lib/data/enums';
+import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { getSupportedLocales } from '$lib/data/supportedLocales';
 import { m } from '$lib/paraglide/messages.js';
-
-import { ReadReceiptOptions, SecretType, ThemeOptions } from '../data/enums';
-import { getExpiresInOptions } from '../data/secretSettings';
 
 // We return functions in order for translations to work as expected.
 export const emailFormSchema = () =>

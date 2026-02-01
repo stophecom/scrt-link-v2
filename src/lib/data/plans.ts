@@ -1,12 +1,12 @@
 import { Factory, Plane, Rocket, Send } from '@lucide/svelte';
 
 import { isOriginalHost } from '$lib/app-routing';
+import { SecretType, TierOptions } from '$lib/data/enums';
+import { GB, MB } from '$lib/data/units';
 import { formatBytes } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 
-import { SecretType, TierOptions } from './enums';
 import { expiresInOptions, expiresInOptionsExtended } from './secretSettings';
-import { GB, MB } from './units';
 
 // Defaults for visitors without account
 const defaultLimits = {

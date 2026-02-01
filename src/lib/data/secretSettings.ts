@@ -1,7 +1,6 @@
+import { ReadReceiptOptions, SecretType, ThemeOptions } from '$lib/data/enums';
+import { DAY, MIN } from '$lib/data/units';
 import { m } from '$lib/paraglide/messages.js';
-
-import { ReadReceiptOptions, SecretType, ThemeOptions } from './enums';
-import { DAY, MIN } from './units';
 
 export const expiresInOptions = [10 * MIN, 60 * MIN, DAY, 7 * DAY];
 export const expiresInOptionsExtended = [...expiresInOptions, 30 * DAY];

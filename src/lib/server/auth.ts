@@ -1,9 +1,9 @@
+import { sha256Hash } from '@scrt-link/core';
 import type { RequestEvent } from '@sveltejs/kit';
 import { Google } from 'arctic';
 import { eq } from 'drizzle-orm';
 
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
-import { sha256Hash } from '$lib/client/web-crypto';
 import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
 import type { ThemeOptions } from '$lib/data/enums';

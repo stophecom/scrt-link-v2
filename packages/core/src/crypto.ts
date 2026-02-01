@@ -1,6 +1,5 @@
 // Collection of crypto helper functions
 // These helpers only run in the Browser: crypto as in window.crypto
-// See crypto.ts for server tools
 
 // Create random bytes for Salt, Initialization Vector (IV), etc.
 const getRandomBytes = (length = 16) => crypto.getRandomValues(new Uint8Array(length));

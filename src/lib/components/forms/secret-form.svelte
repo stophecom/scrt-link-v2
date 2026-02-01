@@ -1,27 +1,28 @@
 <script lang="ts">
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
+	import {
+		encryptString,
+		exportPublicKey,
+		generateKeyPair,
+		generateRandomUrlSafeString,
+		MASTER_PASSWORD_LENGTH,
+		SECRET_ID_LENGTH,
+		SecretType,
+		sha256Hash
+	} from '@scrt-link/core';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { intProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod } from 'sveltekit-superforms/adapters';
 
 	import { page } from '$app/state';
-	import { MASTER_PASSWORD_LENGTH, SECRET_ID_LENGTH } from '$lib/client/constants';
 	import { plausible } from '$lib/client/plausible';
-	import {
-		encryptString,
-		exportPublicKey,
-		generateKeyPair,
-		generateRandomUrlSafeString,
-		sha256Hash
-	} from '$lib/client/web-crypto';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/secret-file-upload.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import { SecretType } from '$lib/data/enums';
 	import { getPlanLimits } from '$lib/data/plans';
 	import type { FileMeta } from '$lib/file-transfer';
 	import { m } from '$lib/paraglide/messages.js';

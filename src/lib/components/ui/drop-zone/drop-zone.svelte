@@ -2,10 +2,9 @@
 	import ArrowUpFromLine from '@lucide/svelte/icons/arrow-up-from-line';
 
 	import gif from '$lib/assets/images/snoop.webp';
+	import { GB } from '$lib/data/units';
 	import { formatBytes } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
-
-	import { GB } from '../../../data/units';
 
 	let isOver = $state(false);
 
