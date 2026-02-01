@@ -1,5 +1,3 @@
-import { describe, expect, expectTypeOf, test } from 'vitest';
-
 import {
 	base64ToBinary,
 	binaryToBase64,
@@ -11,7 +9,8 @@ import {
 	importPublicKey,
 	signMessage,
 	verifyMessageSignature
-} from './web-crypto';
+} from '@scrt-link/core';
+import { describe, expect, expectTypeOf, test } from 'vitest';
 
 const keyPair = await generateKeyPair();
 

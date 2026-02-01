@@ -227,7 +227,22 @@ Example response:
 }
 ```
 
-#### Development
+#### Build npm client module
+
+More info in packages/client.
+
+```bash
+# Build package
+pnpm --filter @scrt-link/client build
+
+# Publish package
+cd packages/client
+npm version patch
+npm login
+npm publish --access public
+```
+
+#### Build API provided client module
 
 ```bash
 # The esm module is built during deployment as part of postbuild and saved in the /static folder.

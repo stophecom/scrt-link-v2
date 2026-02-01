@@ -1,7 +1,7 @@
+import { sha256Hash } from '@scrt-link/core';
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-import { sha256Hash } from '$lib/client/web-crypto.js';
 import { InviteStatus } from '$lib/data/enums.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db/index.js';
