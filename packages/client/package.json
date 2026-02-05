@@ -1,6 +1,6 @@
 {
 	"name": "@scrt-link/client",
-	"version": "0.0.4",
+	"version": "0.0.8",
 	"description": "Client module for scrt.link",
 	"keywords": [
 		"scrt.link",
@@ -18,23 +18,33 @@
 	"license": "MIT",
 	"author": "stophe",
 	"type": "module",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		}
+	},
 	"files": [
 		"dist"
 	],
+	"tsup": {
+		"noExternal": [
+			"@scrt-link/core"
+		]
+	},
 	"scripts": {
 		"build": "tsup src/index.ts --format cjs,esm --dts",
 		"dev": "tsup src/index.ts --format cjs,esm --dts --watch",
 		"lint": "eslint .",
 		"prepublishOnly": "npm run build"
 	},
-	"dependencies": {
-		"@scrt-link/core": "workspace:*"
-	},
 	"devDependencies": {
 		"tsup": "^8.0.0",
-		"typescript": "^5.0.0"
-	},
-	"module": "dist/index.mjs"
+		"typescript": "^5.0.0",
+		"@scrt-link/core": "workspace:*"
+	}
 }

@@ -5,7 +5,6 @@ Client module for [scrt.link](https://scrt.link). This package allows you to cre
 ## Features
 
 - **Client-Side Encryption**: Secrets are encrypted in the browser/client before being sent to the server.
-- **Zero-Knowledge**: The server never sees the master password or the unencrypted content.
 - **Easy Integration**: Simple API for creating secrets.
 - **TypeScript Support**: Full type definitions included.
 
