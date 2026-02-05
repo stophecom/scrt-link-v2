@@ -6,13 +6,35 @@ To use the API, you’ll need an active [subscription](/pricing) that unlocks th
 
 Due to the complexity of handling end-to-end encrypted files, **only text-based secrets** (Text, Redirect, Neogram) **are supported** via the API.
 
-For convenience, the client module is available as an ESM module at `https://scrt.link/api/v1/client-module` - no need to install any NPM packages. See usage examples below.
+For convenience, the client module is available as an ESM module at `https://scrt.link/api/v1/client-module`. Or use the [NPM package](https://www.npmjs.com/package/@scrt-link/client).
 
 ## ⚒️ Client Module
 
 The client module provides a simple and convenient way to interact with the scrt.link API.
 
-### Basic Usage
+👉 [Demo implementation](https://github.com/stophecom/scrt-link-demo)
+
+### Installation
+
+```bash
+npm install @scrt-link/client
+// or
+pnpm add @scrt-link/client
+```
+
+### Basic Usage (Typescript)
+
+```ts
+import { scrtLink, SecretType } from '@scrt-link/client';
+
+const client = scrtLink(API_KEY);
+
+const response = await client.createSecret('Your secret text...', {
+	secretType: SecretType.TEXT
+});
+```
+
+### Via ESM Module
 
 ```html
 <script type="module">
@@ -26,7 +48,7 @@ The client module provides a simple and convenient way to interact with the scrt
 </script>
 ```
 
-Example response:
+### Example response:
 
 ```json
 {
