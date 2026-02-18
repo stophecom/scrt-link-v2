@@ -5,4 +5,4 @@ export NVM_DIR="$HOME/.nvm"
 # nvm use 22 or whatever version you want
 
 npx pnpm format
-npx pnpm lint
+npx pnpm lint --fix
