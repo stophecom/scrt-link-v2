@@ -33,19 +33,21 @@
 	</Container>
 
 	<Section wide variant="card">
-		<IntersectionObserver let:intersecting top={-50} once={true}>
-			<div class="grid grid-rows-3 gap-4 md:grid-cols-3 md:grid-rows-1">
-				{#each subscriptionFeatures() as step, i (i)}
-					<div
-						style="transition-delay: {i * 100}ms;"
-						class="flex transition-all {intersecting
-							? 'translate-y-0 scale-100 opacity-100 duration-700'
-							: 'translate-y-20 scale-90 opacity-0'}"
-					>
-						<FeatureCard Icon={step.icon} title={step.title} description={step.description} />
-					</div>
-				{/each}
-			</div>
+		<IntersectionObserver top={-50} once={true}>
+			{#snippet children(intersecting)}
+				<div class="grid grid-rows-3 gap-4 md:grid-cols-3 md:grid-rows-1">
+					{#each subscriptionFeatures() as step, i (i)}
+						<div
+							style="transition-delay: {i * 100}ms;"
+							class="flex transition-all {intersecting
+								? 'translate-y-0 scale-100 opacity-100 duration-700'
+								: 'translate-y-20 scale-90 opacity-0'}"
+						>
+							<FeatureCard Icon={step.icon} title={step.title} description={step.description} />
+						</div>
+					{/each}
+				</div>
+			{/snippet}
 		</IntersectionObserver>
 	</Section>
 
