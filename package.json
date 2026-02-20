@@ -24,7 +24,7 @@
 		"build-client-module": "esbuild packages/client/src/index.ts --bundle --format=esm --minify --outfile=.vercel/output/static/client-module.js"
 	},
 	"engines": {
-		"node": "22.x"
+		"node": "24.x"
 	},
 	"packageManager": "pnpm@10.15.0",
 	"devDependencies": {
