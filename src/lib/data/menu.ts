@@ -47,6 +47,11 @@ export const productMenu = () => [
 		label: m.salty_sea_insect_fry()
 	},
 	{
+		href: 'https://deepwiki.com/stophecom/scrt-link-v2',
+		externalLink: true,
+		label: m.east_plain_anaconda_pinch()
+	},
+	{
 		href: githubUrl,
 		externalLink: true,
 		label: 'Github'
