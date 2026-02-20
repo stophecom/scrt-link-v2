@@ -2,20 +2,22 @@ import { sha256Hash } from '@scrt-link/core';
 import type { RequestEvent } from '@sveltejs/kit';
 import { Google } from 'arctic';
 import { eq } from 'drizzle-orm';
+import { z } from 'zod';
 
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
-import type { ThemeOptions } from '$lib/data/enums';
+import { ThemeOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
-// Since preferences is stored as json in the DB, we type it here.
-type Preferences = {
-	themeColor: ThemeOptions;
-};
+const preferencesSchema = z
+	.object({
+		themeColor: z.nativeEnum(ThemeOptions).default(ThemeOptions.TEAL)
+	})
+	.default({ themeColor: ThemeOptions.TEAL });
 
 export const sessionCookieName = 'auth-session';
 
@@ -79,7 +81,7 @@ export async function validateSessionToken(token: string) {
 		session,
 		user: {
 			...user,
-			preferences: user.preferences as Preferences
+			preferences: preferencesSchema.parse(user.preferences || undefined)
 		}
 	};
 }

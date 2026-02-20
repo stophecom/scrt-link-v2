@@ -45,17 +45,19 @@
 	</Card>
 {/snippet}
 
-<IntersectionObserver let:intersecting top={-100} once={true}>
-	<div class="grid grid-rows-3 gap-4 sm:grid-cols-3 sm:grid-rows-none">
-		{#each explanationSteps() as step, i (step.title)}
-			<div
-				style="transition-delay: {i * 100}ms;"
-				class="flex transition-all {intersecting
-					? 'translate-y-0 scale-100 opacity-100 duration-700'
-					: 'translate-y-20 scale-90 opacity-0'}"
-			>
-				{@render illustrationCards(step.title, step.illustration, step.description, i)}
-			</div>
-		{/each}
-	</div>
+<IntersectionObserver top={-100} once={true}>
+	{#snippet children(intersecting)}
+		<div class="grid grid-rows-3 gap-4 sm:grid-cols-3 sm:grid-rows-none">
+			{#each explanationSteps() as step, i (step.title)}
+				<div
+					style="transition-delay: {i * 100}ms;"
+					class="flex transition-all {intersecting
+						? 'translate-y-0 scale-100 opacity-100 duration-700'
+						: 'translate-y-20 scale-90 opacity-0'}"
+				>
+					{@render illustrationCards(step.title, step.illustration, step.description, i)}
+				</div>
+			{/each}
+		</div>
+	{/snippet}
 </IntersectionObserver>

@@ -27,7 +27,7 @@ import {
 	whiteLabelSite
 } from '$lib/server/db/schema';
 import type { LocalizedWhiteLabelMessage, Theme } from '$lib/types';
-import { dropUndefinedValuesFromObject } from '$lib/utlis';
+import { dropUndefinedValuesFromObject } from '$lib/utils';
 import {
 	apiKeyFormSchema,
 	emailFormSchema,
