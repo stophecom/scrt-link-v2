@@ -49,7 +49,7 @@ export const productMenu = () => [
 	{
 		href: 'https://deepwiki.com/stophecom/scrt-link-v2',
 		externalLink: true,
-		label: 'Documentation'
+		label: m.east_plain_anaconda_pinch()
 	},
 	{
 		href: githubUrl,
