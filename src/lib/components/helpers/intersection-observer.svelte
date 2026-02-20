@@ -1,16 +1,23 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import type { Snippet } from 'svelte';
 
-	export let once = false;
-	export let top = 0;
-	export let bottom = 0;
-	export let left = 0;
-	export let right = 0;
+	interface Props {
+		once?: boolean;
+		top?: number;
+		bottom?: number;
+		left?: number;
+		right?: number;
+		children?: Snippet<[boolean]>;
+	}
 
-	let intersecting = true;
-	let container: HTMLElement;
+	let { once = false, top = 0, bottom = 0, left = 0, right = 0, children }: Props = $props();
 
-	onMount(() => {
+	let intersecting = $state(true);
+	let container: HTMLElement | undefined = $state();
+
+	$effect(() => {
+		if (!container) return;
+
 		if (typeof IntersectionObserver !== 'undefined') {
 			const rootMargin = `${bottom}px ${left}px ${top}px ${right}px`;
 
@@ -18,7 +25,7 @@
 				(entries) => {
 					intersecting = entries[0].isIntersecting;
 					if (intersecting && once) {
-						observer.unobserve(container);
+						observer.unobserve(container!);
 					}
 				},
 				{
@@ -27,10 +34,11 @@
 			);
 
 			observer.observe(container);
-			return () => observer.unobserve(container);
+			return () => observer.unobserve(container!);
 		}
 
 		function handler() {
+			if (!container) return;
 			const bcr = container.getBoundingClientRect();
 			intersecting =
 				bcr.bottom + bottom > 0 &&
@@ -49,7 +57,7 @@
 </script>
 
 <div bind:this={container}>
-	<slot {intersecting}></slot>
+	{@render children?.(intersecting)}
 </div>
 
 <style>

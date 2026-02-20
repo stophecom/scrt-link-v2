@@ -58,21 +58,23 @@
 		title={m.tense_pretty_finch_spur()}
 		lead={m.fuzzy_patchy_flamingo_hike()}
 	>
-		<IntersectionObserver let:intersecting top={-50} once={true}>
-			<div
-				class="grid grid-rows-6 gap-4 sm:grid-cols-2 sm:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
-			>
-				{#each businessFeatures() as step, i (i)}
-					<div
-						style="transition-delay: {i * 100}ms;"
-						class="flex transition-all {intersecting
-							? 'translate-y-0 scale-100 opacity-100 duration-700'
-							: 'translate-y-20 scale-90 opacity-0'}"
-					>
-						<FeatureCard Icon={step.icon} title={step.title} description={step.description} />
-					</div>
-				{/each}
-			</div>
+		<IntersectionObserver top={-50} once={true}>
+			{#snippet children(intersecting)}
+				<div
+					class="grid grid-rows-6 gap-4 sm:grid-cols-2 sm:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
+				>
+					{#each businessFeatures() as step, i (i)}
+						<div
+							style="transition-delay: {i * 100}ms;"
+							class="flex transition-all {intersecting
+								? 'translate-y-0 scale-100 opacity-100 duration-700'
+								: 'translate-y-20 scale-90 opacity-0'}"
+						>
+							<FeatureCard Icon={step.icon} title={step.title} description={step.description} />
+						</div>
+					{/each}
+				</div>
+			{/snippet}
 		</IntersectionObserver>
 	</Section>
 
@@ -90,19 +92,21 @@
 	</Section>
 
 	<Section wide title={m.alert_fluffy_snail_fetch()} lead={m.bright_steep_racoon_accept()}>
-		<IntersectionObserver let:intersecting top={-50} once={true}>
-			<div class="grid grid-rows-4 gap-4 sm:grid-cols-2 sm:grid-rows-2">
-				{#each securityFeatures() as step, i (i)}
-					<div
-						style="transition-delay: {i * 100}ms;"
-						class="flex transition-all {intersecting
-							? 'translate-y-0 scale-100 opacity-100 duration-700'
-							: 'translate-y-20 scale-90 opacity-0'}"
-					>
-						<FeatureCard Icon={step.icon} title={step.title} description={step.description} />
-					</div>
-				{/each}
-			</div>
+		<IntersectionObserver top={-50} once={true}>
+			{#snippet children(intersecting)}
+				<div class="grid grid-rows-4 gap-4 sm:grid-cols-2 sm:grid-rows-2">
+					{#each securityFeatures() as step, i (i)}
+						<div
+							style="transition-delay: {i * 100}ms;"
+							class="flex transition-all {intersecting
+								? 'translate-y-0 scale-100 opacity-100 duration-700'
+								: 'translate-y-20 scale-90 opacity-0'}"
+						>
+							<FeatureCard Icon={step.icon} title={step.title} description={step.description} />
+						</div>
+					{/each}
+				</div>
+			{/snippet}
 		</IntersectionObserver>
 
 		<Button variant="outline" href={localizeHref('/security')}

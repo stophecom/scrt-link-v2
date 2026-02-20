@@ -29,17 +29,19 @@
 	</Section>
 
 	<Section title={m.flat_zany_baboon_adapt()} lead={m.royal_odd_ox_read()}>
-		<IntersectionObserver let:intersecting top={-100} once={true}>
-			<div
-				class="flex transition-all {intersecting
-					? 'translate-y-0 opacity-100 duration-500'
-					: 'translate-y-10 opacity-0'}"
-			>
-				<Card class="mb-2">
-					<UrlExplained />
-					{m.equal_elegant_herring_yell()}
-				</Card>
-			</div>
+		<IntersectionObserver top={-100} once={true}>
+			{#snippet children(intersecting)}
+				<div
+					class="flex transition-all {intersecting
+						? 'translate-y-0 opacity-100 duration-500'
+						: 'translate-y-10 opacity-0'}"
+				>
+					<Card class="mb-2">
+						<UrlExplained />
+						{m.equal_elegant_herring_yell()}
+					</Card>
+				</div>
+			{/snippet}
 		</IntersectionObserver>
 		<Button variant="ghost" href={localizeHref('/security')}
 			>{m.happy_plain_panther_fry()}<ArrowRight class="ms-2 h-4 w-4" /></Button
