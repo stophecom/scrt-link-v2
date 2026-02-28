@@ -304,7 +304,9 @@ export const editOrganization: Action = async (event) => {
 export const addMemberToOrganization: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(inviteOrganizationMemberFormSchema()));
 
-	const { email, organizationId } = form.data;
+	const { email, organizationId, role } = form.data;
+
+	console.log(role);
 
 	const user = event.locals.user;
 
@@ -406,7 +408,7 @@ export const addMemberToOrganization: Action = async (event) => {
 	await inviteUserToOrganization({
 		userId: user.id,
 		email,
-		membershipRole: MembershipRole.MEMBER,
+		membershipRole: role,
 		organizationId
 	});
 

@@ -9,7 +9,9 @@
 		type InviteOrganizationMemberFormSchema,
 		inviteOrganizationMemberFormSchema
 	} from '$lib/validators/formSchemas';
+	import { MembershipRole } from '$lib/data/enums';
 
+	import RadioGroup from './form-fields/radio-group.svelte';
 	// import Text from './form-fields/text.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
@@ -24,7 +26,7 @@
 
 	const form = superForm(formProp, {
 		validators: zod4Client(inviteOrganizationMemberFormSchema()),
-		validationMethod: 'auto',
+
 		onSubmit: onSubmit,
 		onError({ result }) {
 			// We use message for unexpected errors
@@ -56,6 +58,17 @@
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
+
+		<Form.Fieldset {form} name="role" class="pb-4">
+			<RadioGroup
+				options={[
+					{ value: MembershipRole.MEMBER, label: m.cuddly_flat_salmon_express() },
+					{ value: MembershipRole.OWNER, label: 'Owner' }
+				]}
+				label={m.bad_close_anaconda_forgive()}
+				bind:value={$formData.role}
+			/>
+		</Form.Fieldset>
 		<input type="hidden" name="organizationId" bind:value={organizationId} />
 
 		<div class="py-4">

@@ -1,7 +1,7 @@
 import { pemFooter, pemHeader } from '@scrt-link/core';
 import { z } from 'zod';
 
-import { ReadReceiptOptions, SecretType, ThemeOptions } from '$lib/data/enums';
+import { MembershipRole, ReadReceiptOptions, SecretType, ThemeOptions } from '$lib/data/enums';
 import { getExpiresInOptions } from '$lib/data/secretSettings';
 import { getSupportedLocales } from '$lib/data/supportedLocales';
 import { m } from '$lib/paraglide/messages.js';
@@ -103,7 +103,8 @@ export const inviteOrganizationMemberFormSchema = () =>
 			.max(30)
 			.optional(),
 		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
-		organizationId: z.string()
+		organizationId: z.string(),
+		role: z.nativeEnum(MembershipRole).default(MembershipRole.MEMBER)
 	});
 
 export const manageOrganizationMemberFormSchema = () =>

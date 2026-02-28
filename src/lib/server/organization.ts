@@ -85,6 +85,8 @@ export const inviteUserToOrganization = async ({
 
 	const expiresAt = new Date(Date.now() + 7 * DAY);
 
+	console.log('membershipRole', membershipRole);
+
 	await db.insert(invite).values({
 		email,
 		organizationId,
