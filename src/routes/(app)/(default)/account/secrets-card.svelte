@@ -26,6 +26,10 @@
 
 	let showExpired = $state(false);
 	let isConfirmationDialogOpen = $state(false);
+	let selectedSecretForDeletion = $state<Pick<
+		Secret,
+		'receiptId' | 'expiresAt' | 'retrievedAt'
+	> | null>(null);
 
 	let filteredSecrets = $derived(
 		showExpired
@@ -118,38 +122,47 @@
 					<Table.Cell>{@render renderStatus(secret)}</Table.Cell>
 					<Table.Cell>
 						{#if !secret.retrievedAt && secret.expiresAt > currentDate}
-							<Dialog.Root bind:open={isConfirmationDialogOpen}>
-								<Dialog.Trigger class="text-destructive inline-flex p-1 hover:underline">
-									<span>{m.arable_mellow_wolf_bubble()}</span>
-									<Flame class="ms-1 h-4 w-4" />
-								</Dialog.Trigger>
-								<Dialog.Content>
-									<Dialog.Header>
-										<Dialog.Title>{m.soft_aloof_barbel_splash()}</Dialog.Title>
-										<Dialog.Description>
-											<Markdown
-												format
-												markdown={m.that_deft_alpaca_type({ receiptId: secret.receiptId || '' })}
-											/>
-										</Dialog.Description>
-									</Dialog.Header>
-									<Dialog.Footer>
-										<Dialog.Close class={buttonVariants({ variant: 'outline' })}
-											>{m.big_due_warthog_rest()}</Dialog.Close
-										>
-										<Button
-											onclick={() => deleteSecretByReceiptId(secret.receiptId)}
-											class="max-sm:mb-2">{m.simple_active_cowfish_spur()}</Button
-										>
-									</Dialog.Footer>
-								</Dialog.Content>
-							</Dialog.Root>
+							<button
+								class="text-destructive inline-flex p-1 hover:underline"
+								onclick={() => {
+									selectedSecretForDeletion = secret;
+									isConfirmationDialogOpen = true;
+								}}
+							>
+								<span>{m.arable_mellow_wolf_bubble()}</span>
+								<Flame class="ms-1 h-4 w-4" />
+							</button>
 						{/if}
 					</Table.Cell>
 				</Table.Row>
 			{/each}
 		</Table.Body>
 	</Table.Root>
+
+	<Dialog.Root bind:open={isConfirmationDialogOpen}>
+		<Dialog.Content>
+			<Dialog.Header>
+				<Dialog.Title>{m.soft_aloof_barbel_splash()}</Dialog.Title>
+				<Dialog.Description>
+					<Markdown
+						format
+						markdown={m.that_deft_alpaca_type({
+							receiptId: selectedSecretForDeletion?.receiptId || ''
+						})}
+					/>
+				</Dialog.Description>
+			</Dialog.Header>
+			<Dialog.Footer>
+				<Dialog.Close class={buttonVariants({ variant: 'outline' })}
+					>{m.big_due_warthog_rest()}</Dialog.Close
+				>
+				<Button
+					onclick={() => deleteSecretByReceiptId(selectedSecretForDeletion?.receiptId ?? null)}
+					class="max-sm:mb-2">{m.simple_active_cowfish_spur()}</Button
+				>
+			</Dialog.Footer>
+		</Dialog.Content>
+	</Dialog.Root>
 
 	<Separator class=" my-6" />
 	<div class="inline-flex items-center">
