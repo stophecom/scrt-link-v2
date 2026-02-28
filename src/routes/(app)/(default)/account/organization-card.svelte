@@ -200,7 +200,7 @@
 						{/if}
 					</Dialog.Title>
 					<div class="pt-4">
-						<dir class="mb-3 rounded border p-3">
+						<dir class="bg-card mb-3 rounded border p-3">
 							{@render renderUserCard(
 								selectedItem.email,
 								selectedItem.name,
@@ -213,8 +213,9 @@
 							userId={selectedItem.userId}
 							inviteId={selectedItem.inviteId}
 							isCurrentUser={selectedItem.userId === user?.id}
+							isOwner={organization.role === MembershipRole.OWNER}
+							initialRole={selectedItem.role}
 							form={manageOrganizationMemberForm}
-							formAction="?/removeMemberFromOrganization"
 							onSuccess={() => {
 								selectedItem = null;
 							}}

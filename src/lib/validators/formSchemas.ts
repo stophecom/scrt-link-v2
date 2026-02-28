@@ -111,7 +111,8 @@ export const manageOrganizationMemberFormSchema = () =>
 	z.object({
 		userId: z.string().optional(),
 		inviteId: z.string().optional(),
-		organizationId: z.string()
+		organizationId: z.string(),
+		role: z.nativeEnum(MembershipRole).optional()
 	});
 
 export const whiteLabelMetaSchema = () =>

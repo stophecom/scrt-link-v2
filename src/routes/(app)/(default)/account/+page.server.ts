@@ -1,7 +1,7 @@
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { SecretType } from '$lib/data/enums';
+import { MembershipRole, SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import {
@@ -10,7 +10,8 @@ import {
 	createOrganization,
 	editOrganization,
 	logout,
-	removeMemberFromOrganization,
+	manageOrganizationMember,
+	removeOrganizationMember,
 	revokeAPIToken,
 	saveSettings,
 	saveTheme,
@@ -93,7 +94,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	};
 
 	const manageOrganizationMemberFormValidator = async () => {
-		return await superValidate(zod4(manageOrganizationMemberFormSchema()), {
+		return await superValidate({ role: MembershipRole.MEMBER }, zod4(manageOrganizationMemberFormSchema()), {
 			errors: false
 		});
 	};
@@ -151,7 +152,8 @@ export const actions: Actions = {
 	createOrganization: createOrganization,
 	editOrganization: editOrganization,
 	addMemberToOrganization: addMemberToOrganization,
-	removeMemberFromOrganization: removeMemberFromOrganization,
+	manageOrganizationMember: manageOrganizationMember,
+	removeOrganizationMember: removeOrganizationMember,
 	revokeAPIToken: revokeAPIToken,
 	logout: logout
 };

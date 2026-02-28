@@ -2,6 +2,9 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
+	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
+	import * as Form from '$lib/components/ui/form';
+	import { MembershipRole } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages';
 	import {
 		type ManageOrganizationMemberFormSchema,
@@ -11,6 +14,7 @@
 	import Button from '../ui/button/button.svelte';
 	// import Text from './form-fields/text.svelte';
 	import FormWrapper from './form-wrapper.svelte';
+	import { Separator } from '$lib/components/ui/separator';
 
 	type Props = {
 		form: SuperValidated<ManageOrganizationMemberFormSchema>;
@@ -18,17 +22,19 @@
 		inviteId?: string;
 		userId?: string;
 		organizationId: string;
-		formAction: string;
 		isCurrentUser?: boolean;
+		isOwner?: boolean;
+		initialRole?: MembershipRole | null;
 	};
 
 	let {
 		userId,
 		inviteId,
 		organizationId,
-		formAction,
 		form: formProp,
 		isCurrentUser,
+		isOwner = false,
+		initialRole,
 		onSuccess = () => {}
 	}: Props = $props();
 
@@ -49,13 +55,45 @@
 		}
 	});
 
-	const { message, enhance } = form;
+	const { form: formData, message, enhance } = form;
+
+	$effect(() => {
+		if (initialRole) {
+			$formData.role = initialRole;
+		}
+	});
 </script>
 
 <FormWrapper message={$message}>
-	<form method="POST" use:enhance action={formAction}>
+	<form method="POST" use:enhance action="?/manageOrganizationMember">
+		{#if isOwner}
+			<Form.Fieldset {form} name="role" class="pb-4">
+				<RadioGroup
+					options={[
+						{ value: MembershipRole.MEMBER, label: m.cuddly_flat_salmon_express() },
+						{ value: MembershipRole.OWNER, label: 'Owner' }
+					]}
+					label={m.bad_close_anaconda_forgive()}
+					bind:value={$formData.role}
+				/>
+				<input type="hidden" name="role" bind:value={$formData.role} />
+			</Form.Fieldset>
+			{#if userId || inviteId}
+				<Button type="submit" formaction="?/manageOrganizationMember" class="mb-2 w-full"
+					>{m.caring_light_tiger_taste()}</Button
+				>
+			{/if}
+		{/if}
+
+		<Separator class="my-6" />
+
 		{#if userId}
-			<Button type="submit" variant="destructive">
+			<Button
+				type="submit"
+				formaction="?/removeOrganizationMember"
+				variant="destructive"
+				class="w-full"
+			>
 				{#if isCurrentUser}
 					{m.weary_any_loris_work()}
 				{:else}
@@ -64,10 +102,17 @@
 			</Button>
 			<input type="hidden" name="userId" value={userId} />
 		{/if}
+
 		{#if inviteId}
-			<Button type="submit" variant="destructive">Revoke invitation</Button>
+			<Button
+				type="submit"
+				formaction="?/removeOrganizationMember"
+				variant="destructive"
+				class="w-full">{m.main_nice_goldfish_flow()}</Button
+			>
 			<input type="hidden" name="inviteId" value={inviteId} />
 		{/if}
+
 		<input type="hidden" name="organizationId" value={organizationId} />
 	</form>
 </FormWrapper>
