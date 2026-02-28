@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { User } from '@lucide/svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { wait } from '$lib/client/utils';
@@ -64,7 +65,12 @@
 	{/if}
 {/snippet}
 
-{#snippet renderUserCard(email: string, name: string | null, picture: string | null)}
+{#snippet renderUserCard(
+	email: string,
+	name: string | null,
+	picture: string | null,
+	isCurrentUser: boolean
+)}
 	{@const memberName = name || m.witty_wise_grebe_empower()}
 	<div class="flex items-center font-medium">
 		<div>
@@ -76,7 +82,12 @@
 			</Avatar.Root>
 		</div>
 		<div>
-			{memberName}
+			<div class="flex items-center gap-1 {isCurrentUser ? 'font-bold' : ''}">
+				{memberName}
+				{#if isCurrentUser}
+					<User class="text-muted-foreground h-3.5 w-3.5" />
+				{/if}
+			</div>
 			<div class="text-xs">{email}</div>
 		</div>
 	</div>
@@ -97,7 +108,12 @@
 				{#each organization.members as member, i (i)}
 					<Table.Row>
 						<Table.Cell>
-							{@render renderUserCard(member.email, member.name, member.picture)}
+							{@render renderUserCard(
+								member.email,
+								member.name,
+								member.picture,
+								member.userId === user?.id
+							)}
 						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
 						<Table.Cell>{@render renderStatus(member.status)}</Table.Cell>
@@ -185,7 +201,12 @@
 					</Dialog.Title>
 					<div class="pt-4">
 						<dir class="mb-3 rounded border p-3">
-							{@render renderUserCard(selectedItem.email, selectedItem.name, selectedItem.picture)}
+							{@render renderUserCard(
+								selectedItem.email,
+								selectedItem.name,
+								selectedItem.picture,
+								selectedItem.userId === user?.id
+							)}
 						</dir>
 						<ManageOrganizationMemberForm
 							organizationId={organization.id}
