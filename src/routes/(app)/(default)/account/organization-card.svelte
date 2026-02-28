@@ -105,7 +105,7 @@
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#each organization.members as member, i (i)}
+				{#each [...organization.members].sort( (a, b) => (a.userId === user?.id ? -1 : b.userId === user?.id ? 1 : 0) ) as member, i (i)}
 					<Table.Row>
 						<Table.Cell>
 							{@render renderUserCard(
