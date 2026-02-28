@@ -43,14 +43,19 @@
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action={formAction}>
-		<!-- <Form.Field {form} name="name" class="mb-2">
-			<Text
-				label={m.crazy_solid_cow_cuddle()}
-				bind:value={$formData.name}
-				{...$constraints.name}
-				type="text"
-			/>
-		</Form.Field> -->
+		<Form.Field {form} name="name" class="py-4">
+			<Form.Control let:attrs>
+				<Form.Label>{m.crazy_solid_cow_cuddle()} ({m.busy_brief_beaver_favor()})</Form.Label>
+				<Input
+					{...attrs}
+					bind:value={$formData.name}
+					{...$constraints.name}
+					type="text"
+					placeholder="Jane Doe"
+				/>
+			</Form.Control>
+			<Form.FieldErrors />
+		</Form.Field>
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
