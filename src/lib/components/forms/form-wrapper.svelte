@@ -2,8 +2,6 @@
 	import type { Snippet } from 'svelte';
 	import { toast } from 'svelte-sonner';
 
-	// import * as Alert from '$lib/components/ui/alert';
-
 	type Props = {
 		children: Snippet;
 		message: App.Superforms.Message | undefined;
@@ -13,15 +11,18 @@
 	$effect(() => {
 		if (message) {
 			if (message.status === 'success' && message.title) {
-				toast.success(message.title);
+				toast.success(message.title, {
+					description: message.description || undefined
+				});
 			}
 			if (message.status === 'error' && message.title) {
-				toast.error(message.title);
+				toast.error(message.title, {
+					description: message.description || undefined
+				});
 			}
 		}
 	});
 </script>
 
-<!-- Global error messages were previously here as Alerts, now using toasts -->
 <!-- Form contents -->
 {@render children?.()}
