@@ -2,16 +2,16 @@
 	import { type FormOptions, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
+	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
+	import { MembershipRole } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import {
 		type InviteOrganizationMemberFormSchema,
 		inviteOrganizationMemberFormSchema
 	} from '$lib/validators/formSchemas';
-	import { MembershipRole } from '$lib/data/enums';
 
-	import RadioGroup from './form-fields/radio-group.svelte';
 	// import Text from './form-fields/text.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
@@ -68,6 +68,7 @@
 				label={m.bad_close_anaconda_forgive()}
 				bind:value={$formData.role}
 			/>
+			<input type="hidden" name="role" bind:value={$formData.role} />
 		</Form.Fieldset>
 		<input type="hidden" name="organizationId" bind:value={organizationId} />
 
