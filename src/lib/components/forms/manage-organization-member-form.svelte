@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { toast } from 'svelte-sonner';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
@@ -45,10 +44,7 @@
 				description: result.error.message || 'Some error'
 			};
 		},
-		onUpdated: ({ form }) => {
-			if (form.message?.status === 'success' && form.message?.title) {
-				toast.success(form.message.title);
-			}
+		onUpdated: () => {
 			onSuccess();
 		}
 	});
