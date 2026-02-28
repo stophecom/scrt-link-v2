@@ -4,11 +4,11 @@ import fs from 'fs/promises';
 import path from 'path';
 
 // Using Gemini API (currently used AI model)
-// User must export GEMINI_API_KEY
+// Will automatically use GEMINI_API_KEY from .env
 const API_KEY = process.env.GEMINI_API_KEY;
 
 if (!API_KEY) {
-	console.error('Error: Please provide GEMINI_API_KEY in your environment to run translation.');
+	console.error('Error: Please provide GEMINI_API_KEY in your .env file to run translation.');
 	console.error('Example: GEMINI_API_KEY=your_key npm run machine-translate');
 	process.exit(1);
 }
