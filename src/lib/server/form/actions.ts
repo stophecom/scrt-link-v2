@@ -5,7 +5,10 @@ import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { isOriginalHost } from '$lib/app-routing';
-import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
+import {
+	MAX_API_KEYS_PER_USER,
+	MAX_ORGANIZATION_TEAM_SIZE,
+	MAX_ORGANIZATIONS_PER_USER} from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
@@ -306,8 +309,6 @@ export const addMemberToOrganization: Action = async (event) => {
 
 	const { email, organizationId, role } = form.data;
 
-	console.log(role);
-
 	const user = event.locals.user;
 
 	if (!form.valid) {
@@ -337,11 +338,10 @@ export const addMemberToOrganization: Action = async (event) => {
 		);
 	}
 
-	// Limit amount of team members. @todo Think about metered pricing.
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	// Limit amount of team members. @todo Think about metered pricing for organizations.
 	const membersByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
 
-	if (membersByOrganization.length >= planLimits.organizationTeamSize) {
+	if (membersByOrganization.length >= MAX_ORGANIZATION_TEAM_SIZE) {
 		return message(
 			form,
 			{

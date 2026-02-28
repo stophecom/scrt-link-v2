@@ -557,7 +557,7 @@
 	"safe_gray_hawk_empower": "Продолжить",
 	"white_long_parakeet_buy": "Ваше приглашение",
 	"aloof_zany_cheetah_greet": "Собственный домен, логотип и тема",
-	"proud_cool_lemur_commend": "До 30 приватных участников",
+	"proud_cool_lemur_commend": "До {amount} приватных участников",
 	"east_plain_anaconda_pinch": "Документация",
 	"royal_lofty_ocelot_cuddle": "Поделитесь секретом",
 	"antsy_moving_hare_bloom": "См. планы",

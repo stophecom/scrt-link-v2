@@ -563,7 +563,7 @@
 	"safe_gray_hawk_empower": "Weiter",
 	"white_long_parakeet_buy": "Ihre Einladung",
 	"aloof_zany_cheetah_greet": "Eigene Domain, Logo und Thema",
-	"proud_cool_lemur_commend": "Bis zu 30 private Mitglieder",
+	"proud_cool_lemur_commend": "Bis zu {amount} private Mitglieder",
 	"east_plain_anaconda_pinch": "Dokumentation",
 	"weary_any_loris_work": "Organisation verlassen",
 	"wild_funny_dog_dazzle": "Mitglied entfernen",
