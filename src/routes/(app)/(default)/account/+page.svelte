@@ -56,6 +56,9 @@
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="api"
 					>{m.super_funny_jackal_pause()}</Tabs.Trigger
 				>
+				<Tabs.Trigger class="data-[state=active]:bg-muted" value="organization"
+					>{m.drab_dark_squirrel_fetch()}</Tabs.Trigger
+				>
 				<Tabs.Trigger class="data-[state=active]:bg-muted" value="secretService"
 					>{TierOptions.SECRET_SERVICE}</Tabs.Trigger
 				>
@@ -148,17 +151,16 @@
 					>
 				</Card>
 			</Tabs.Content>
+			<Tabs.Content value="organization">
+				<OrganizationCard
+					{user}
+					organization={data.userOrganization}
+					organizationForm={data.organizationForm}
+					inviteOrganizationMemberForm={data.inviteOrganizationMemberForm}
+					manageOrganizationMemberForm={data.manageOrganizationMemberForm}
+				/>
+			</Tabs.Content>
 			<Tabs.Content value="secretService">
-				{#if planLimits.whiteLabel}
-					<OrganizationCard
-						{user}
-						organization={data.userOrganization}
-						organizationForm={data.organizationForm}
-						inviteOrganizationMemberForm={data.inviteOrganizationMemberForm}
-						manageOrganizationMemberForm={data.manageOrganizationMemberForm}
-					/>
-				{/if}
-
 				<Card
 					class="mb-6"
 					title={m.big_next_tortoise_ascend()}
