@@ -8,7 +8,8 @@ import { isOriginalHost } from '$lib/app-routing';
 import {
 	MAX_API_KEYS_PER_USER,
 	MAX_ORGANIZATION_TEAM_SIZE,
-	MAX_ORGANIZATIONS_PER_USER} from '$lib/constants';
+	MAX_ORGANIZATIONS_PER_USER
+} from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
