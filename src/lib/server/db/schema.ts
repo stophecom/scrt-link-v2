@@ -20,7 +20,7 @@ import {
 	Role,
 	SecretType,
 	TierOptions
-} from '$lib/data/enums';
+} from '../../data/enums';
 
 export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,
@@ -32,7 +32,7 @@ export const subscriptionTier = pgEnum('subscription_tier', [
 export const role = pgEnum('role', [Role.USER, Role.ADMIN]);
 
 export const user = pgTable('user', {
-	id: uuid('id').defaultRandom().primaryKey().unique(),
+	id: uuid('id').defaultRandom().primaryKey(),
 	email: text('email').notNull().unique(),
 	passwordHash: text('password_hash'),
 	name: text('name'),
@@ -113,6 +113,7 @@ export const invite = pgTable(
 	'invite',
 	{
 		id: uuid('id').primaryKey().defaultRandom(),
+		name: text('name'),
 		email: text('email').notNull(),
 		organizationId: uuid('organization_id').references(() => organization.id, {
 			onDelete: 'cascade'
