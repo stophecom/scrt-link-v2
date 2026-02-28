@@ -1,7 +1,7 @@
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { MembershipRole, SecretType } from '$lib/data/enums';
+import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import {
@@ -69,8 +69,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 	const userOrganizations = await getOrganizationsByUserId(user.id);
 
-	// We allow (and assume) only one organization with OWNER role.
-	const userOrganization = userOrganizations.find((item) => item.role === MembershipRole.OWNER);
+	// Allow organization regardless of role. Limits currently restrict to 1 organization.
+	const userOrganization = userOrganizations[0];
 
 	let membersAndInvitesByOrganization: MembersAndInvitesByOrganization[] = [];
 
@@ -121,7 +121,11 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		secrets: secrets,
 		organizationIdOptions: getOrganizationIdOptions(),
 		userOrganization: userOrganization
-			? { ...userOrganization, members: membersAndInvitesByOrganization }
+			? {
+					...userOrganization,
+					members: membersAndInvitesByOrganization,
+					role: userOrganization.role
+				}
 			: null,
 		organizationForm: await organizationFormValidator(),
 		inviteOrganizationMemberForm: await inviteOrganizationMemberFormValidator(),

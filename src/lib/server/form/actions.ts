@@ -432,13 +432,14 @@ export const removeMemberFromOrganization: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	// Make sure user is owner of the organization
+	// Make sure user is owner of the organization, OR they are removing themselves
 	const userOrganizations = await getOrganizationsByUserId(user.id);
-	const userOrganization = userOrganizations.find(
-		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
-	);
+	const userOrganization = userOrganizations.find((item) => item.id === organizationId);
 
-	if (!organizationId || !userOrganization) {
+	const isOwner = userOrganization?.role === MembershipRole.OWNER;
+	const isSelf = userId === user.id;
+
+	if (!organizationId || !userOrganization || (!isOwner && !isSelf)) {
 		return message(
 			form,
 			{

@@ -25,6 +25,7 @@
 	import type { PageServerData } from './$types';
 
 	let {
+		user,
 		organizationForm,
 		inviteOrganizationMemberForm,
 		manageOrganizationMemberForm,
@@ -39,8 +40,17 @@
 
 	let openDialogName = $state(false);
 	let openDialogInvite = $state(false);
+	let openDialogManage = $state(false);
 
 	let selectedItem: MembersAndInvitesByOrganization | null = $state(null);
+
+	$effect(() => {
+		if (selectedItem) {
+			openDialogManage = true;
+		} else {
+			openDialogManage = false;
+		}
+	});
 </script>
 
 {#snippet renderStatus(status: InviteStatus | null)}
@@ -92,8 +102,8 @@
 						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
 						<Table.Cell>{@render renderStatus(member.status)}</Table.Cell>
-						<Table.Cell>
-							{#if member.role !== MembershipRole.OWNER}
+						<Table.Cell class="text-right">
+							{#if organization.role === MembershipRole.OWNER && member.role !== MembershipRole.OWNER}
 								<Button
 									size="icon"
 									variant="ghost"
@@ -103,6 +113,16 @@
 								>
 									<Pen class="h-4 w-4" /><span class="sr-only">{m.helpful_noble_swan_mop()}</span>
 								</Button>
+							{:else if organization.role !== MembershipRole.OWNER && member.userId === user?.id}
+								<Button
+									size="sm"
+									variant="outline"
+									onclick={() => {
+										selectedItem = member;
+									}}
+								>
+									{m.helpful_noble_swan_mop()}
+								</Button>
 							{/if}
 						</Table.Cell>
 					</Table.Row>
@@ -110,50 +130,59 @@
 			</Table.Body>
 		</Table.Root>
 
-		<Separator class="my-6" />
-		<div class="xs:grid-rows-1 xs:grid-cols-2 grid grid-rows-2 gap-2">
-			<div>
-				<Dialog.Root bind:open={openDialogName}>
-					<Dialog.Trigger class={buttonVariants({ variant: 'outline', class: 'max-xs:w-full' })}
-						>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
-					>
-					<Dialog.Content class="sm:max-w-[425px]">
-						<Dialog.Header>
-							<Dialog.Title>{m.spry_every_kangaroo_flip()}</Dialog.Title>
-						</Dialog.Header>
-						<OrganizationForm
-							formAction="?/editOrganization"
-							form={organizationForm}
-							onSuccess={() => {
-								wait(200).then(async () => {
-									openDialogName = false;
-								});
-							}}
-						/>
-					</Dialog.Content>
-				</Dialog.Root>
+		{#if organization.role === MembershipRole.OWNER}
+			<Separator class="my-6" />
+			<div class="xs:grid-rows-1 xs:grid-cols-2 grid grid-rows-2 gap-2">
+				<div>
+					<Dialog.Root bind:open={openDialogName}>
+						<Dialog.Trigger class={buttonVariants({ variant: 'outline', class: 'max-xs:w-full' })}
+							>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
+						>
+						<Dialog.Content class="sm:max-w-[425px]">
+							<Dialog.Header>
+								<Dialog.Title>{m.spry_every_kangaroo_flip()}</Dialog.Title>
+							</Dialog.Header>
+							<OrganizationForm
+								formAction="?/editOrganization"
+								form={organizationForm}
+								onSuccess={() => {
+									wait(200).then(async () => {
+										openDialogName = false;
+									});
+								}}
+							/>
+						</Dialog.Content>
+					</Dialog.Root>
+				</div>
+				<div class="xs:ms-auto">
+					<Dialog.Root bind:open={openDialogInvite}>
+						<Dialog.Trigger class={buttonVariants({ variant: 'default', class: 'max-xs:w-full' })}
+							>{m.spare_lazy_jackal_slide()}</Dialog.Trigger
+						>
+						<Dialog.Content class="sm:max-w-[425px]">
+							<Dialog.Header>
+								<Dialog.Title>{m.mealy_few_mantis_absorb()}</Dialog.Title>
+							</Dialog.Header>
+							<InviteOrganizationMemberForm
+								formAction="?/addMemberToOrganization"
+								form={inviteOrganizationMemberForm}
+								organizationId={organization.id}
+							/>
+						</Dialog.Content>
+					</Dialog.Root>
+				</div>
 			</div>
-			<div class="xs:ms-auto">
-				<Dialog.Root bind:open={openDialogInvite}>
-					<Dialog.Trigger class={buttonVariants({ variant: 'default', class: 'max-xs:w-full' })}
-						>{m.spare_lazy_jackal_slide()}</Dialog.Trigger
-					>
-					<Dialog.Content class="sm:max-w-[425px]">
-						<Dialog.Header>
-							<Dialog.Title>{m.mealy_few_mantis_absorb()}</Dialog.Title>
-						</Dialog.Header>
-						<InviteOrganizationMemberForm
-							formAction="?/addMemberToOrganization"
-							form={inviteOrganizationMemberForm}
-							organizationId={organization.id}
-						/>
-					</Dialog.Content>
-				</Dialog.Root>
-			</div>
-		</div>
+		{/if}
 	</Card>
 
-	<Dialog.Root bind:open={selectedItem} on:openChange={(e) => !e.detail && close()}>
+	<Dialog.Root
+		bind:open={openDialogManage}
+		onOpenChange={(isOpen) => {
+			if (!isOpen) {
+				selectedItem = null;
+			}
+		}}
+	>
 		<Dialog.Content class="sm:max-w-[425px]">
 			<Dialog.Header>
 				{#if selectedItem}
