@@ -420,6 +420,7 @@ export const addMemberToOrganization: Action = async (event) => {
 export const removeMemberFromOrganization: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(manageOrganizationMemberFormSchema()));
 
+	console.log('removeMemberFromOrganization', form.data);
 	const { organizationId, inviteId, userId } = form.data;
 
 	const user = event.locals.user;
@@ -476,8 +477,28 @@ export const removeMemberFromOrganization: Action = async (event) => {
 		});
 	}
 
-	// Prevent removing yourself from the organization
-	if (userId && userId !== user.id) {
+	if (userId) {
+		if (isSelf && isOwner) {
+			const owners = await db.query.membership.findMany({
+				where: (fields, { eq, and }) =>
+					and(eq(fields.organizationId, organizationId), eq(fields.role, MembershipRole.OWNER))
+			});
+
+			if (owners.length <= 1) {
+				return message(
+					form,
+					{
+						status: 'error',
+						title: 'Cannot remove yourself.',
+						description:
+							'You are the sole owner of this organization. Please transfer ownership or delete the organization instead.'
+					},
+					{
+						status: 400
+					}
+				);
+			}
+		}
 		const result = await db.delete(membership).where(eq(membership.userId, userId)).returning();
 
 		if (!result.length) {

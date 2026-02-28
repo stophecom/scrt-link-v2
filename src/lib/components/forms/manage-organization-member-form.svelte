@@ -3,6 +3,7 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
+	import { m } from '$lib/paraglide/messages';
 	import {
 		type ManageOrganizationMemberFormSchema,
 		manageOrganizationMemberFormSchema
@@ -19,6 +20,7 @@
 		userId?: string;
 		organizationId: string;
 		formAction: string;
+		isCurrentUser?: boolean;
 	};
 
 	let {
@@ -27,6 +29,7 @@
 		organizationId,
 		formAction,
 		form: formProp,
+		isCurrentUser,
 		onSuccess = () => {}
 	}: Props = $props();
 
@@ -56,7 +59,13 @@
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action={formAction}>
 		{#if userId}
-			<Button type="submit" variant="destructive">Remove member</Button>
+			<Button type="submit" variant="destructive">
+				{#if isCurrentUser}
+					{m.weary_any_loris_work()}
+				{:else}
+					{m.wild_funny_dog_dazzle()}
+				{/if}
+			</Button>
 			<input type="hidden" name="userId" value={userId} />
 		{/if}
 		{#if inviteId}

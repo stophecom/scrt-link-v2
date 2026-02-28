@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Pen } from '@lucide/svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { wait } from '$lib/client/utils';
@@ -103,17 +102,7 @@
 						<Table.Cell>{member.role}</Table.Cell>
 						<Table.Cell>{@render renderStatus(member.status)}</Table.Cell>
 						<Table.Cell class="text-right">
-							{#if organization.role === MembershipRole.OWNER && member.role !== MembershipRole.OWNER}
-								<Button
-									size="icon"
-									variant="ghost"
-									onclick={() => {
-										selectedItem = member;
-									}}
-								>
-									<Pen class="h-4 w-4" /><span class="sr-only">{m.helpful_noble_swan_mop()}</span>
-								</Button>
-							{:else if organization.role !== MembershipRole.OWNER && member.userId === user?.id}
+							{#if organization.role === MembershipRole.OWNER || member.userId === user?.id}
 								<Button
 									size="sm"
 									variant="outline"
@@ -201,6 +190,7 @@
 							organizationId={organization.id}
 							userId={selectedItem.userId}
 							inviteId={selectedItem.inviteId}
+							isCurrentUser={selectedItem.userId === user?.id}
 							form={manageOrganizationMemberForm}
 							formAction="?/removeMemberFromOrganization"
 							onSuccess={() => {
