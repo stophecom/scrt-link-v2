@@ -456,7 +456,8 @@ export const manageOrganizationMember: Action = async (event) => {
 					{
 						status: 'error',
 						title: 'Cannot change role.',
-						description: 'You are the sole owner of this organization. Please transfer ownership first.'
+						description:
+							'You are the sole owner of this organization. Please transfer ownership first.'
 					},
 					{ status: 400 }
 				);
@@ -473,7 +474,11 @@ export const manageOrganizationMember: Action = async (event) => {
 			return message(form, { status: 'error', title: `Member doesn't exist.` }, { status: 401 });
 		}
 
-		return message(form, { status: 'success', title: 'Role updated.', description: 'The member role has been updated.' });
+		return message(form, {
+			status: 'success',
+			title: 'Role updated.',
+			description: 'The member role has been updated.'
+		});
 	}
 
 	if (inviteId) {
@@ -487,7 +492,11 @@ export const manageOrganizationMember: Action = async (event) => {
 			return message(form, { status: 'error', title: `Invite doesn't exist.` }, { status: 401 });
 		}
 
-		return message(form, { status: 'success', title: 'Role updated.', description: 'The invite role has been updated.' });
+		return message(form, {
+			status: 'success',
+			title: 'Role updated.',
+			description: 'The invite role has been updated.'
+		});
 	}
 
 	return message(form, { status: 'error', title: 'Invalid request.' }, { status: 400 });

@@ -94,9 +94,13 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	};
 
 	const manageOrganizationMemberFormValidator = async () => {
-		return await superValidate({ role: MembershipRole.MEMBER }, zod4(manageOrganizationMemberFormSchema()), {
-			errors: false
-		});
+		return await superValidate(
+			{ role: MembershipRole.MEMBER },
+			zod4(manageOrganizationMemberFormSchema()),
+			{
+				errors: false
+			}
+		);
 	};
 
 	const getOrganizationIdOptions = () => [

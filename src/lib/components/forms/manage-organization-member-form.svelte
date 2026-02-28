@@ -4,6 +4,7 @@
 
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
 	import * as Form from '$lib/components/ui/form';
+	import { Separator } from '$lib/components/ui/separator';
 	import { MembershipRole } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages';
 	import {
@@ -14,7 +15,6 @@
 	import Button from '../ui/button/button.svelte';
 	// import Text from './form-fields/text.svelte';
 	import FormWrapper from './form-wrapper.svelte';
-	import { Separator } from '$lib/components/ui/separator';
 
 	type Props = {
 		form: SuperValidated<ManageOrganizationMemberFormSchema>;
