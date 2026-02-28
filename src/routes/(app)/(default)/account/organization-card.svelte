@@ -151,6 +151,7 @@
 						<Dialog.Content class="sm:max-w-[425px]">
 							<Dialog.Header>
 								<Dialog.Title>{m.mealy_few_mantis_absorb()}</Dialog.Title>
+								<Dialog.Description>{m.mean_key_marmot_fall()}</Dialog.Description>
 							</Dialog.Header>
 							<InviteOrganizationMemberForm
 								formAction="?/addMemberToOrganization"
