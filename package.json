@@ -20,7 +20,7 @@
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
 		"prepare": "husky",
-		"machine-translate": "inlang machine translate --project project.inlang",
+		"machine-translate": "node bin/machine-translate.js",
 		"cleanup-translation-keys": "node bin/cleanup-translation-keys.js",
 		"build-client-module": "esbuild packages/client/src/index.ts --bundle --format=esm --minify --outfile=.vercel/output/static/client-module.js"
 	},
