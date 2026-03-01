@@ -17,11 +17,11 @@
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
 	import DarkModeSwitcher from './dark-mode-switcher.svelte';
 
-	type Props = { user: App.Locals['user']; minimal?: boolean; business?: boolean };
+	type Props = { user: App.Locals['user']; minimal?: boolean; tag?: string; breadcrumb?: string };
 
-	let { user, minimal, business }: Props = $props();
+	let { user, minimal, tag, breadcrumb }: Props = $props();
 
-	let persistHeader = $derived(minimal || business);
+	let persistHeader = $derived(minimal || !!tag);
 </script>
 
 <IntersectionObserver bottom={persistHeader ? 0 : 100}>
@@ -49,9 +49,14 @@
 								? 'hidden translate-x-4 scale-150 opacity-0'
 								: 'visible translate-x-0 scale-100 opacity-100'}">{appName}</span
 						>
-						{#if business}
+						{#if !!tag}
 							<span class="bg-foreground text-background inline-flex rounded-md px-2 py-1 text-xs"
-								>business</span
+								>{tag}</span
+							>
+						{/if}
+						{#if !!breadcrumb}
+							<span class="text-muted-foreground inline-flex items-center py-1 font-medium">
+								{breadcrumb}</span
 							>
 						{/if}
 					</a>

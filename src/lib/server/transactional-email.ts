@@ -65,11 +65,13 @@ export const sendSubscriptionTrialStartEmail = async (
 export const sendOrganisationInvitationEmail = async (
 	email: string,
 	token: string,
-	name: string
+	organizationName: string
 ) => {
-	const { html } = render(EmailOrganizationInvitation, { props: { token, name } });
+	const { html } = render(EmailOrganizationInvitation, {
+		props: { token, name: organizationName }
+	});
 	await sendTransactionalEmail({
-		subject: m.formal_each_zebra_pull({ name }),
+		subject: m.formal_each_zebra_pull({ name: organizationName }),
 		to: email,
 		html: html
 	});

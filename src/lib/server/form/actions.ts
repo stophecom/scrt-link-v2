@@ -5,7 +5,11 @@ import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { isOriginalHost } from '$lib/app-routing';
-import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
+import {
+	MAX_API_KEYS_PER_USER,
+	MAX_ORGANIZATION_TEAM_SIZE,
+	MAX_ORGANIZATIONS_PER_USER
+} from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
@@ -304,7 +308,7 @@ export const editOrganization: Action = async (event) => {
 export const addMemberToOrganization: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(inviteOrganizationMemberFormSchema()));
 
-	const { email, organizationId } = form.data;
+	const { email, organizationId, role, name } = form.data;
 
 	const user = event.locals.user;
 
@@ -335,11 +339,10 @@ export const addMemberToOrganization: Action = async (event) => {
 		);
 	}
 
-	// Limit amount of team members. @todo Think about metered pricing.
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	// Limit amount of team members. @todo Think about metered pricing for organizations.
 	const membersByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
 
-	if (membersByOrganization.length >= planLimits.organizationTeamSize) {
+	if (membersByOrganization.length >= MAX_ORGANIZATION_TEAM_SIZE) {
 		return message(
 			form,
 			{
@@ -406,7 +409,8 @@ export const addMemberToOrganization: Action = async (event) => {
 	await inviteUserToOrganization({
 		userId: user.id,
 		email,
-		membershipRole: MembershipRole.MEMBER,
+		name,
+		membershipRole: role,
 		organizationId
 	});
 
@@ -417,11 +421,10 @@ export const addMemberToOrganization: Action = async (event) => {
 	});
 };
 
-export const removeMemberFromOrganization: Action = async (event) => {
+export const manageOrganizationMember: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(manageOrganizationMemberFormSchema()));
 
-	const { organizationId, inviteId, userId } = form.data;
-
+	const { organizationId, userId, inviteId, role } = form.data;
 	const user = event.locals.user;
 
 	if (!form.valid) {
@@ -434,11 +437,94 @@ export const removeMemberFromOrganization: Action = async (event) => {
 
 	// Make sure user is owner of the organization
 	const userOrganizations = await getOrganizationsByUserId(user.id);
-	const userOrganization = userOrganizations.find(
-		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
-	);
+	const userOrganization = userOrganizations.find((item) => item.id === organizationId);
+	const isOwner = userOrganization?.role === MembershipRole.OWNER;
 
-	if (!organizationId || !userOrganization) {
+	if (!organizationId || !userOrganization || !isOwner || !role) {
+		return message(form, { status: 'error', title: 'Not allowed.' }, { status: 401 });
+	}
+
+	if (userId) {
+		if (role !== MembershipRole.OWNER) {
+			const owners = await db.query.membership.findMany({
+				where: (fields, { eq, and }) =>
+					and(eq(fields.organizationId, organizationId), eq(fields.role, MembershipRole.OWNER))
+			});
+
+			if (owners.length <= 1 && owners[0].userId === userId) {
+				return message(
+					form,
+					{
+						status: 'error',
+						title: 'Cannot change role.',
+						description:
+							'You are the sole owner of this organization. Please transfer ownership first.'
+					},
+					{ status: 400 }
+				);
+			}
+		}
+
+		const result = await db
+			.update(membership)
+			.set({ role })
+			.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId)))
+			.returning();
+
+		if (!result.length) {
+			return message(form, { status: 'error', title: `Member doesn't exist.` }, { status: 401 });
+		}
+
+		return message(form, {
+			status: 'success',
+			title: 'Role updated.',
+			description: 'The member role has been updated.'
+		});
+	}
+
+	if (inviteId) {
+		const result = await db
+			.update(invite)
+			.set({ membershipRole: role })
+			.where(and(eq(invite.id, inviteId), eq(invite.organizationId, organizationId)))
+			.returning();
+
+		if (!result.length) {
+			return message(form, { status: 'error', title: `Invite doesn't exist.` }, { status: 401 });
+		}
+
+		return message(form, {
+			status: 'success',
+			title: 'Role updated.',
+			description: 'The invite role has been updated.'
+		});
+	}
+
+	return message(form, { status: 'error', title: 'Invalid request.' }, { status: 400 });
+};
+
+export const removeOrganizationMember: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(manageOrganizationMemberFormSchema()));
+
+	const { organizationId, inviteId, userId } = form.data;
+	const user = event.locals.user;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	// Make sure user is owner of the organization, OR they are removing themselves
+	const userOrganizations = await getOrganizationsByUserId(user.id);
+	const userOrganization = userOrganizations.find((item) => item.id === organizationId);
+
+	const isOwner = userOrganization?.role === MembershipRole.OWNER;
+	const isSelf = userId === user.id;
+
+	if (!organizationId || !userOrganization || (!isOwner && !isSelf)) {
 		return message(
 			form,
 			{
@@ -475,8 +561,29 @@ export const removeMemberFromOrganization: Action = async (event) => {
 		});
 	}
 
-	// Prevent removing yourself from the organization
-	if (userId && userId !== user.id) {
+	if (userId) {
+		if (isSelf && isOwner) {
+			const owners = await db.query.membership.findMany({
+				where: (fields, { eq, and }) =>
+					and(eq(fields.organizationId, organizationId), eq(fields.role, MembershipRole.OWNER))
+			});
+
+			if (owners.length <= 1) {
+				return message(
+					form,
+					{
+						status: 'error',
+						title: 'Cannot remove yourself.',
+						description:
+							'You are the sole owner of this organization. Please transfer ownership or delete the organization instead.'
+					},
+					{
+						status: 400
+					}
+				);
+			}
+		}
+
 		const result = await db.delete(membership).where(eq(membership.userId, userId)).returning();
 
 		if (!result.length) {
@@ -499,6 +606,8 @@ export const removeMemberFromOrganization: Action = async (event) => {
 			description: 'The member has been removed from your organization.'
 		});
 	}
+
+	return message(form, { status: 'error', title: 'Invalid request.' }, { status: 400 });
 };
 
 export const loginWithEmail: Action = async (event) => {

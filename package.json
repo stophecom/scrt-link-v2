@@ -20,7 +20,8 @@
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
 		"prepare": "husky",
-		"machine-translate": "inlang machine translate --project project.inlang",
+		"machine-translate": "node --env-file=.env bin/machine-translate.js",
+		"cleanup-translation-keys": "node bin/cleanup-translation-keys.js",
 		"build-client-module": "esbuild packages/client/src/index.ts --bundle --format=esm --minify --outfile=.vercel/output/static/client-module.js"
 	},
 	"engines": {
@@ -43,7 +44,7 @@
 		"@vitest/browser": "^3.0.1",
 		"bits-ui": "^2.15.4",
 		"clsx": "^2.1.1",
-		"drizzle-kit": "^0.30.1",
+		"drizzle-kit": "^0.31.9",
 		"esbuild": "^0.25.1",
 		"eslint": "^9.21.0",
 		"eslint-config-prettier": "^9.1.0",
@@ -85,7 +86,7 @@
 		"arctic": "^2.3.3",
 		"axios": "^1.12.0",
 		"axios-retry": "^4.5.0",
-		"drizzle-orm": "^0.38.3",
+		"drizzle-orm": "^0.45.1",
 		"drizzle-zod": "^0.6.1",
 		"highlight.js": "^11.11.1",
 		"jwt-decode": "^4.0.0",

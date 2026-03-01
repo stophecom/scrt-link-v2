@@ -59,6 +59,7 @@ export const getInvitesByOrganizationId = async (organizationId: Organization['i
 	await db
 		.select({
 			inviteId: invite.id,
+			name: invite.name,
 			email: invite.email,
 			expiresAt: invite.expiresAt,
 			acceptedAt: invite.acceptedAt,
@@ -71,12 +72,14 @@ export const getInvitesByOrganizationId = async (organizationId: Organization['i
 type InviteUserToOrganization = {
 	userId: string;
 	email: string;
+	name?: string;
 	membershipRole: MembershipRole;
 	organizationId: string;
 };
 export const inviteUserToOrganization = async ({
 	userId,
 	email,
+	name,
 	membershipRole,
 	organizationId
 }: InviteUserToOrganization) => {
@@ -87,6 +90,7 @@ export const inviteUserToOrganization = async ({
 
 	await db.insert(invite).values({
 		email,
+		name,
 		organizationId,
 		membershipRole,
 		invitedByUserId: userId,
@@ -95,9 +99,9 @@ export const inviteUserToOrganization = async ({
 	});
 
 	const organization = await getOrganizationById({ organizationId });
-	const name = organization.name;
+	const organizationName = organization.name;
 
-	await sendOrganisationInvitationEmail(email, otpToken, name);
+	await sendOrganisationInvitationEmail(email, otpToken, organizationName);
 };
 
 export type MembersAndInvitesByOrganization = {
@@ -139,7 +143,7 @@ export const getMembersAndInvitesByOrganization = async (organizationId: Organiz
 
 			mergedMap.set(invite.email, {
 				inviteId: invite.inviteId,
-				name: null,
+				name: invite.name ?? null,
 				email: invite.email,
 				picture: null,
 				role: invite.role ?? null,

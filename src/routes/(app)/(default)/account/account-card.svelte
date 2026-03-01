@@ -11,9 +11,19 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
+	import type { User as AuthUser } from '$lib/server/db/schema';
 	import type { UserFormSchema } from '$lib/validators/formSchemas';
 
-	let { user, form }: { user: App.Locals['user']; form: SuperValidated<UserFormSchema> } = $props();
+	let {
+		user,
+		form
+	}: {
+		user: Pick<AuthUser, 'id' | 'name' | 'email' | 'role' | 'subscriptionTier' | 'picture'> & {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			preferences: any;
+		};
+		form: SuperValidated<UserFormSchema>;
+	} = $props();
 
 	let open = $state(false);
 </script>
@@ -34,7 +44,7 @@
 				</Dialog.Header>
 				<UserForm
 					{form}
-					onSubmit={() => {
+					onSuccess={() => {
 						wait(600).then(async () => {
 							open = false;
 						});
