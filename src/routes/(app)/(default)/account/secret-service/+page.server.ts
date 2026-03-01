@@ -51,7 +51,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		organizationIdOptions: getOrganizationIdOptions(),
 		whiteLabelDomain: whiteLabel?.customDomain,
 		whiteLabelForm: await whiteLabelFormValidator(),
-		pageTitle: m.big_next_tortoise_ascend()
+		pageTitle: m.pink_short_walrus_dine()
 	};
 };
 

@@ -51,7 +51,7 @@
 			icon: Users
 		},
 		{
-			href: localizeHref('/account/white-label'),
+			href: localizeHref('/account/secret-service'),
 			label: TierOptions.SECRET_SERVICE,
 			icon: ShieldCheck
 		},
