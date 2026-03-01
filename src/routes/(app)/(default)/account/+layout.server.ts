@@ -1,7 +1,7 @@
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { getOrganizationsByUserId } from '$lib/server/organization';
 import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
-
+import { m } from '$lib/paraglide/messages.js';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ locals }) => {
@@ -20,6 +20,8 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		user: user,
 		userOrganization: userOrganization,
 		whiteLabelDomain: whiteLabel?.customDomain,
-		whiteLabel: whiteLabel
+		whiteLabel: whiteLabel,
+		isMinimalHeader: true,
+		headerBreadcrumb: m.vivid_frail_ox_accept()
 	};
 };

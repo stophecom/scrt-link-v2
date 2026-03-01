@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	return {
 		user,
 		secrets,
-		secretForm
+		secretForm,
 	};
 };
 

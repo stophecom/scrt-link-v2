@@ -2,7 +2,6 @@
 	import { Trash } from '@lucide/svelte';
 
 	import { enhance } from '$app/forms';
-	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import UpgradeNotice from '$lib/components/blocks/upgrade-notice.svelte';
 	import ApiTokenForm from '$lib/components/forms/api-token-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -14,16 +13,12 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	import type { LayoutData } from '../$types';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
-	let activeTokens = $derived(data.apiTokens);
 	let planLimits = $derived(getUserPlanLimits(data.user?.subscriptionTier));
 </script>
-
-<PageTitle title={m.super_funny_jackal_pause()} />
 
 <Card class="mb-6" title={m.super_funny_jackal_pause()} description={m.patchy_swift_fish_cuddle()}>
 	{#if planLimits.apiAccess}

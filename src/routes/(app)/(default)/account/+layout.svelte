@@ -67,7 +67,7 @@
 
 <QueryClientProvider client={queryClient}>
 	<PageWrapper metaTitle={currentItem.label}>
-		<Container variant="wide">
+		<Container variant="wide" class="py-6">
 			<div class="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
 				<!-- Mobile Navigation (Dropdown) -->
 				<div class="mb-4 block lg:hidden">

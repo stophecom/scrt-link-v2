@@ -16,8 +16,6 @@
 	let planLimits = $derived(getUserPlanLimits(data.user?.subscriptionTier));
 </script>
 
-<PageTitle title={TierOptions.SECRET_SERVICE} />
-
 <Card class="mb-6" title={m.big_next_tortoise_ascend()} description={m.solid_north_ostrich_cheer()}>
 	{#if planLimits.whiteLabel}
 		<WhiteLabelForm
