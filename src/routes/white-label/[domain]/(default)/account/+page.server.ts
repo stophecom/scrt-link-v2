@@ -1,5 +1,4 @@
 import { redirectLocalized } from '$lib/i18n';
-
 import { logout } from '$lib/server/form/actions';
 
 import type { Actions, PageServerLoad } from './$types';

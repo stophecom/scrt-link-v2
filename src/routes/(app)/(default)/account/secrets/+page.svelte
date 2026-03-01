@@ -10,7 +10,7 @@
 
 <CreateSecret
 	class="mb-6"
-	cardTitle={m.arable_proof_ladybug_drip()}
+	cardTitle={m.witty_mealy_seal_kick()}
 	form={data.secretForm}
 	user={data.user}
 	hidePrimaryFeatureList

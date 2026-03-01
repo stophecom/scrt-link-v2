@@ -13,7 +13,11 @@
 	let planLimits = $derived(getUserPlanLimits(data.user?.subscriptionTier));
 </script>
 
-<Card class="mb-6" title={m.big_next_tortoise_ascend()} description={m.solid_north_ostrich_cheer()}>
+<Card
+	class="mb-6"
+	title={m.curly_slimy_buzzard_support()}
+	description={m.solid_north_ostrich_cheer()}
+>
 	{#if planLimits.whiteLabel}
 		<WhiteLabelForm
 			organizationIdOptions={data.organizationIdOptions}
