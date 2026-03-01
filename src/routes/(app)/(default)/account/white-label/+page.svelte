@@ -2,14 +2,11 @@
 	import WhiteLabelForm from '$lib/components/forms/white-label-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
-	import PageTitle from '$lib/components/blocks/page-title.svelte';
-	import { TierOptions } from '$lib/data/enums';
 	import { whiteLabelDemoWebsite } from '$lib/data/app';
 	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	import type { LayoutData } from '../$types';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();

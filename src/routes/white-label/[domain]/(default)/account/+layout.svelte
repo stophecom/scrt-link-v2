@@ -2,19 +2,17 @@
 	import Lock from '@lucide/svelte/icons/lock';
 	import Menu from '@lucide/svelte/icons/menu';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
-	import { mode } from 'mode-watcher';
 	import type { Snippet } from 'svelte';
 
 	import { page } from '$app/stores';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
-	import Container from '$lib/components/ui/container/container.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Container from '$lib/components/ui/container/container.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	let { data, children }: { data: any; children: Snippet } = $props();
+	let { children }: { children: Snippet } = $props();
 
 	// Navigation items
 	const navItems = [
@@ -34,7 +32,6 @@
 	let currentItem = $derived(
 		navItems.find((item) => currentPath.startsWith(item.href)) || navItems[0]
 	);
-	let logo = $derived(mode.current === 'dark' ? data.logoDarkMode : data.logo);
 </script>
 
 <PageWrapper metaTitle={currentItem.label}>

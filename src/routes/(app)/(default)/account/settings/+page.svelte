@@ -1,9 +1,7 @@
 <script lang="ts">
 	import LogOut from '@lucide/svelte/icons/log-out';
 
-	import { enhance } from '$app/forms';
 	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
-
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -17,7 +15,7 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData & LayoutData } = $props();
-	let currentThemeColor = $derived(data.currentThemeColor);
+
 	const { user } = data;
 	const isAdminFlag = $derived(user?.role === Role.ADMIN);
 </script>

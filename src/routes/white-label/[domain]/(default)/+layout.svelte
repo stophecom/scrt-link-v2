@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
-	import { page } from '$app/stores';
 
+	import { page } from '$app/stores';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 

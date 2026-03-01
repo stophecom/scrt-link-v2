@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ChevronRight, Factory, Plus, User } from '@lucide/svelte';
+	import { Factory, Plus, User } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
 

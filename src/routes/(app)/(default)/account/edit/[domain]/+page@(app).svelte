@@ -36,11 +36,10 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
-	import type { PageData } from './$types';
+	import type { PageServerData } from './$types';
 
 	let { data }: { data: PageServerData } = $props();
 
-	let whiteLabelSite = $derived(data.whiteLabelSite);
 	let showSuccess = $state(false);
 	let showSpinner = $state(false);
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { page } from '$app/state';
 
+	import { page } from '$app/state';
 	import Footer from '$lib/components/blocks/footer.svelte';
 	import Header from '$lib/components/blocks/header.svelte';
 

@@ -27,8 +27,7 @@
 		}
 	});
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	let { data, children }: { data: any; children: Snippet } = $props();
+	let { children }: { children: Snippet } = $props();
 
 	// Navigation items
 	const navItems = [
@@ -105,7 +104,7 @@
 				<!-- Desktop Navigation (Sidebar) -->
 				<aside class="hidden lg:block lg:w-1/4">
 					<nav class="flex flex-col space-y-1">
-						{#each navItems as item}
+						{#each navItems as item (item.href)}
 							<Button
 								href={item.href}
 								variant={currentPath === item.href ? 'secondary' : 'ghost'}

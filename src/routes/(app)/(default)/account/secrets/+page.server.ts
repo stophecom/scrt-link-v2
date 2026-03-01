@@ -1,6 +1,3 @@
-import { superValidate } from 'sveltekit-superforms';
-import { zod4 } from 'sveltekit-superforms/adapters';
-
 import { redirectLocalized } from '$lib/i18n';
 import { postSecret } from '$lib/server/form/actions';
 import { secretFormValidator } from '$lib/server/form/validators';
@@ -21,7 +18,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	return {
 		user,
 		secrets,
-		secretForm,
+		secretForm
 	};
 };
 

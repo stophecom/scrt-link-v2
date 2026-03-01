@@ -1,7 +1,8 @@
-import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
+import { redirectLocalized } from '$lib/i18n';
+import { m } from '$lib/paraglide/messages.js';
 import { getOrganizationsByUserId } from '$lib/server/organization';
 import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
-import { m } from '$lib/paraglide/messages.js';
+
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ locals }) => {
