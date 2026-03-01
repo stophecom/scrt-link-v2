@@ -2,6 +2,7 @@
 	import Lock from '@lucide/svelte/icons/lock';
 	import Menu from '@lucide/svelte/icons/menu';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
+	import User from '@lucide/svelte/icons/user';
 	import type { Snippet } from 'svelte';
 
 	import { page } from '$app/stores';
@@ -22,8 +23,13 @@
 			icon: Lock
 		},
 		{
-			href: localizeHref('/account/settings'),
+			href: localizeHref('/account/profile'),
 			label: m.super_flaky_wallaby_pick(),
+			icon: User
+		},
+		{
+			href: localizeHref('/account/settings'),
+			label: m.nimble_quick_bird_sew(),
 			icon: SettingsGroup
 		}
 	];

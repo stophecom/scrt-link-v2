@@ -1,4 +1,5 @@
 import { redirectLocalized } from '$lib/i18n';
+import { m } from '$lib/paraglide/messages';
 import { createAPIToken, revokeAPIToken } from '$lib/server/form/actions';
 import { apiKeyFormValidator } from '$lib/server/form/validators';
 import { getActiveApiKeys } from '$lib/server/user';
@@ -16,7 +17,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return {
 		user,
 		apiKeys,
-		apiKeyForm: await apiKeyFormValidator()
+		apiKeyForm: await apiKeyFormValidator(),
+		pageTitle: m.super_funny_jackal_pause()
 	};
 };
 

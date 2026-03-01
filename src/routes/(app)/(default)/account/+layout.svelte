@@ -4,11 +4,14 @@
 	import Menu from '@lucide/svelte/icons/menu';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
 	import ShieldCheck from '@lucide/svelte/icons/shield-check';
+	import User from '@lucide/svelte/icons/user';
 	import Users from '@lucide/svelte/icons/users';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import type { Snippet } from 'svelte';
 
 	import { browser } from '$app/environment';
+	import { page } from '$app/state';
+	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
@@ -16,8 +19,6 @@
 	import { TierOptions } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
-	import PageTitle from '$lib/components/blocks/page-title.svelte';
-	import { page } from '$app/state';
 
 	// Create a client for react query
 	const queryClient = new QueryClient({
@@ -40,11 +41,6 @@
 			icon: Lock
 		},
 		{
-			href: localizeHref('/account/settings'),
-			label: m.super_flaky_wallaby_pick(),
-			icon: SettingsGroup
-		},
-		{
 			href: localizeHref('/account/api'),
 			label: m.super_funny_jackal_pause(),
 			icon: Key
@@ -58,6 +54,16 @@
 			href: localizeHref('/account/white-label'),
 			label: TierOptions.SECRET_SERVICE,
 			icon: ShieldCheck
+		},
+		{
+			href: localizeHref('/account/profile'),
+			label: m.super_flaky_wallaby_pick(),
+			icon: User
+		},
+		{
+			href: localizeHref('/account/settings'),
+			label: m.nimble_quick_bird_sew(),
+			icon: SettingsGroup
 		}
 	];
 
