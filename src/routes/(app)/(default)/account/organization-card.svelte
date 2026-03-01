@@ -30,6 +30,7 @@
 		organization
 	}: {
 		user: App.Locals['user'];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		organization: any;
 		organizationForm: SuperValidated<OrganizationFormSchema>;
 		inviteOrganizationMemberForm: SuperValidated<InviteOrganizationMemberFormSchema>;

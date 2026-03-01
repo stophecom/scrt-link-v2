@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type FormOptions, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
@@ -16,7 +16,7 @@
 
 	let { form: formProp, onSuccess = () => {} }: Props = $props();
 
-	const form = superForm(() => formProp, {
+	const form = superForm(formProp, {
 		validators: zod4Client(userFormSchema()),
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates

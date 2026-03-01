@@ -1,4 +1,5 @@
 <script lang="ts">
+	import UpgradeNotice from '$lib/components/blocks/upgrade-notice.svelte';
 	import WhiteLabelForm from '$lib/components/forms/white-label-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
@@ -25,8 +26,9 @@
 			whiteLabelDomain={data.whiteLabelDomain}
 		/>
 	{:else}
-		<div class="text-destructive mb-2">{m.slow_zesty_whale_type()}</div>
-		<Button href={localizeHref('/business')}>{m.only_weird_walrus_promise()}</Button>
+		<UpgradeNotice user={data.user} class="mb-6" />
+
+		<Button href={localizeHref('/business')}>{m.inclusive_lost_parakeet_forgive()}</Button>
 		<Button variant="outline" target="_blank" href={whiteLabelDemoWebsite}
 			>{m.lower_fine_okapi_imagine()}</Button
 		>

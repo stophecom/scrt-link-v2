@@ -12,15 +12,17 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import type { User as AuthUser } from '$lib/server/db/schema';
+	import type { UserFormSchema } from '$lib/validators/formSchemas';
 
 	let {
 		user,
 		form
 	}: {
 		user: Pick<AuthUser, 'id' | 'name' | 'email' | 'role' | 'subscriptionTier' | 'picture'> & {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			preferences: any;
 		};
-		form: SuperValidated<any, any, any>;
+		form: SuperValidated<UserFormSchema>;
 	} = $props();
 
 	let open = $state(false);
