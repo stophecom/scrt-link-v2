@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Lock from '@lucide/svelte/icons/lock';
+	import LogOut from '@lucide/svelte/icons/log-out';
 	import Menu from '@lucide/svelte/icons/menu';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
 	import User from '@lucide/svelte/icons/user';
@@ -70,6 +71,15 @@
 								</DropdownMenu.Item>
 							{/each}
 						</DropdownMenu.Group>
+						<DropdownMenu.Separator />
+						<DropdownMenu.Item>
+							<form class="w-full" method="post" action="/account/settings?/logout">
+								<button type="submit" class="flex w-full items-center text-left">
+									<LogOut class="mr-2 h-4 w-4" />
+									<span>{m.wacky_big_raven_honor()}</span>
+								</button>
+							</form>
+						</DropdownMenu.Item>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			</div>
@@ -90,6 +100,18 @@
 						</Button>
 					{/each}
 				</nav>
+				<div class="mt-4 px-3">
+					<form method="post" action="/account/settings?/logout">
+						<Button
+							type="submit"
+							variant="ghost"
+							class="w-full justify-start hover:bg-transparent hover:underline"
+						>
+							<LogOut class="mr-2 h-4 w-4" />
+							{m.wacky_big_raven_honor()}
+						</Button>
+					</form>
+				</div>
 			</aside>
 
 			<!-- Main Content Area -->

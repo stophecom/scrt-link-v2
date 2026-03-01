@@ -1,6 +1,4 @@
 <script lang="ts">
-	import LogOut from '@lucide/svelte/icons/log-out';
-
 	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';
@@ -25,9 +23,3 @@
 	</div>
 	<DarkModeSwitcher variant="outline" />
 </Card>
-
-<form class="flex justify-center" method="post" action="?/logout">
-	<Button type="submit" variant="outline"
-		><LogOut class="me-2 h-4 w-4" />{m.wacky_big_raven_honor()}</Button
-	>
-</form>
