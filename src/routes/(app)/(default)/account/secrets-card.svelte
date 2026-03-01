@@ -5,7 +5,6 @@
 
 	import { invalidateAll } from '$app/navigation';
 	import { api } from '$lib/api';
-	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
@@ -21,23 +20,9 @@
 	const currentDate = new Date();
 
 	let {
-		secrets,
-		user,
-		secretForm
+		secrets
 	}: {
 		secrets: any;
-		user: Pick<
-			AuthUser,
-			| 'id'
-			| 'name'
-			| 'email'
-			| 'role'
-			| 'subscriptionTier'
-			| 'picture'
-			| 'googleId'
-			| 'stripeCustomerId'
-		> & { preferences: any };
-		secretForm: SuperValidated<any, any, any>;
 	} = $props();
 
 	let showExpired = $state(false);
@@ -97,20 +82,6 @@
 {/snippet}
 
 <Card class="mb-6" title="My Secret Links">
-	<div class="flex justify-start py-4">
-		<Dialog.Root>
-			<Dialog.Trigger class={buttonVariants({ variant: 'default' })}
-				>{m.round_slow_hyena_pause()}</Dialog.Trigger
-			>
-			<Dialog.Content class="">
-				<Dialog.Header>
-					<Dialog.Title>{m.arable_proof_ladybug_drip()}</Dialog.Title>
-				</Dialog.Header>
-				<CreateSecret form={secretForm} {user} hidePrimaryFeatureList />
-			</Dialog.Content>
-		</Dialog.Root>
-	</div>
-
 	<Table.Root>
 		<Table.Caption
 			><strong>{m.polite_weird_chicken_buy()}</strong>

@@ -25,12 +25,16 @@
 		user: App.Locals['user'];
 		hidePrimaryFeatureList?: boolean;
 		secretTypes?: SecretType[];
+		cardTitle?: string;
+		class?: string;
 	};
 	let {
 		form,
 		user,
 		hidePrimaryFeatureList = false,
-		secretTypes = [SecretType.TEXT, SecretType.FILE, SecretType.REDIRECT, SecretType.SNAP]
+		secretTypes = [SecretType.TEXT, SecretType.FILE, SecretType.REDIRECT, SecretType.SNAP],
+		cardTitle,
+		class: className = ''
 	}: Props = $props();
 
 	let masterKey = $state('');
@@ -80,7 +84,7 @@
 		><Reply class="mr-2 h-4 w-4" />{m.trite_fun_starfish_ripple()}</Button
 	>
 {:else}
-	<Card>
+	<Card title={cardTitle} class={className}>
 		{#if secretTypes.length === 1}
 			<SecretForm {form} {user} secretType={secretTypes[0]} bind:masterKey bind:successMessage />
 		{:else}
