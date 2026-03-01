@@ -2,6 +2,8 @@
 	import WhiteLabelForm from '$lib/components/forms/white-label-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
+	import PageTitle from '$lib/components/blocks/page-title.svelte';
+	import { TierOptions } from '$lib/data/enums';
 	import { whiteLabelDemoWebsite } from '$lib/data/app';
 	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
@@ -13,6 +15,8 @@
 	let { data }: { data: PageData } = $props();
 	let planLimits = $derived(getUserPlanLimits(data.user?.subscriptionTier));
 </script>
+
+<PageTitle title={TierOptions.SECRET_SERVICE} />
 
 <Card class="mb-6" title={m.big_next_tortoise_ascend()} description={m.solid_north_ostrich_cheer()}>
 	{#if planLimits.whiteLabel}

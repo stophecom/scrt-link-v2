@@ -1,6 +1,7 @@
 <script lang="ts">
 	import LogOut from '@lucide/svelte/icons/log-out';
 
+	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
@@ -10,6 +11,8 @@
 
 	let { data }: { data: PageData & LayoutData } = $props();
 </script>
+
+<PageTitle title={m.super_flaky_wallaby_pick()} />
 
 <AccountCard user={data.user} form={data.userForm} />
 

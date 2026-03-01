@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
+	import { page } from '$app/stores';
 
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { m } from '$lib/paraglide/messages.js';
@@ -10,7 +11,7 @@
 	let { children, data }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
-<Header user={data.user} />
+<Header user={data.user} minimal={$page.data.minimalHeader} />
 {@render children()}
 
 <footer class="border-border bg-background border-t py-4 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">

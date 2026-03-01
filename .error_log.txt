@@ -325,21 +325,21 @@ https://svelte.dev/e/state_referenced_locally (svelte)
 	const form = superForm(formProp, {
 		validators: zod4Client(whiteLabelMetaSchema()),
 
-/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/+layout.svelte:86:12
+/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/+layout.svelte:80:12
 Warn: `<svelte:component>` is deprecated in runes mode — components are dynamic by default
 https://svelte.dev/e/svelte_component_deprecated (svelte)
 										{#if currentItem}
 											<svelte:component this={currentItem.icon} class="mr-2 h-4 w-4" />
 											{currentItem.label}
 
-/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/+layout.svelte:101:12
+/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/+layout.svelte:95:12
 Warn: `<svelte:component>` is deprecated in runes mode — components are dynamic by default
 https://svelte.dev/e/svelte_component_deprecated (svelte)
 										<a href={item.href} class="flex w-full items-center">
 											<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
 											<span>{item.label}</span>
 
-/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/+layout.svelte:122:9
+/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/+layout.svelte:116:9
 Warn: `<svelte:component>` is deprecated in runes mode — components are dynamic by default
 https://svelte.dev/e/svelte_component_deprecated (svelte)
 							>
@@ -352,7 +352,7 @@ Error: Parameter 'item' implicitly has an 'any' type. (ts)
 			: secrets.filter((item) => item.expiresAt > currentDate || item.retrievedAt !== null)
 	);
 
-/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/api/+page.svelte:21:35
+/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/api/+page.svelte:22:35
 Error: Property 'apiTokens' does not exist on type '{ whiteLabel: { id: string; customDomain: string | null; published: boolean | null; private: boolean | null; name: string | null; locale: string | null; theme: unknown; messages: unknown; enabledSecretTypes: SecretType[]; ... 7 more ...; userId: string; }; ... 5 more ...; apiKeyForm: SuperValidated<...>; }'. (ts)
 
 	let activeTokens = $derived(data.apiTokens);
@@ -370,16 +370,16 @@ Error: Cannot find name 'PageServerData'. (ts)
 
 	let { data }: { data: PageServerData } = $props();
 
-/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/settings/+page.svelte:20:19
+/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/settings/+page.svelte:21:19
 Warn: This reference only captures the initial value of `data`. Did you mean to reference it inside a closure instead?
 https://svelte.dev/e/state_referenced_locally (svelte)
 	let currentThemeColor = $derived(data.currentThemeColor);
 	const { user } = data;
 	const isAdminFlag = $derived(user?.role === Role.ADMIN);
 
-/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/settings/+page.svelte:19:40
-Error: Property 'currentThemeColor' does not exist on type '{ whiteLabel: { id: string; customDomain: string | null; published: boolean | null; private: boolean | null; name: string | null; locale: string | null; theme: unknown; messages: unknown; enabledSecretTypes: SecretType[]; ... 7 more ...; userId: string; }; ... 6 more ...; userForm: SuperValidated<...>; }'. (ts)
-	let { data }: { data: PageData } = $props();
+/Users/stophe/Projects/scrt-link-v2/src/routes/(app)/(default)/account/settings/+page.svelte:20:40
+Error: Property 'currentThemeColor' does not exist on type '{ whiteLabel: { id: string; customDomain: string | null; published: boolean | null; private: boolean | null; name: string | null; locale: string | null; theme: unknown; messages: unknown; enabledSecretTypes: SecretType[]; ... 7 more ...; userId: string; }; ... 6 more ...; userForm: SuperValidated<...>; } & { ...; }'. (ts)
+	let { data }: { data: PageData & LayoutData } = $props();
 	let currentThemeColor = $derived(data.currentThemeColor);
 	const { user } = data;
 
@@ -480,26 +480,26 @@ https://svelte.dev/e/state_referenced_locally (svelte)
 		? `${data.appIcon}?auto=compress&w=1200&h=630&fit=crop&fm=png`
 		: '/og-image.png';
 
-/Users/stophe/Projects/scrt-link-v2/src/routes/white-label/[domain]/(default)/account/+layout.svelte:57:10
+/Users/stophe/Projects/scrt-link-v2/src/routes/white-label/[domain]/(default)/account/+layout.svelte:51:11
 Warn: `<svelte:component>` is deprecated in runes mode — components are dynamic by default
 https://svelte.dev/e/svelte_component_deprecated (svelte)
-								{#if currentItem}
-									<svelte:component this={currentItem.icon} class="mr-2 h-4 w-4" />
-									{currentItem.label}
+									{#if currentItem}
+										<svelte:component this={currentItem.icon} class="mr-2 h-4 w-4" />
+										{currentItem.label}
 
-/Users/stophe/Projects/scrt-link-v2/src/routes/white-label/[domain]/(default)/account/+layout.svelte:70:10
+/Users/stophe/Projects/scrt-link-v2/src/routes/white-label/[domain]/(default)/account/+layout.svelte:64:11
 Warn: `<svelte:component>` is deprecated in runes mode — components are dynamic by default
 https://svelte.dev/e/svelte_component_deprecated (svelte)
-								<a href={item.href} class="flex w-full items-center">
-									<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
-									<span>{item.label}</span>
+									<a href={item.href} class="flex w-full items-center">
+										<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
+										<span>{item.label}</span>
 
-/Users/stophe/Projects/scrt-link-v2/src/routes/white-label/[domain]/(default)/account/+layout.svelte:91:7
+/Users/stophe/Projects/scrt-link-v2/src/routes/white-label/[domain]/(default)/account/+layout.svelte:85:8
 Warn: `<svelte:component>` is deprecated in runes mode — components are dynamic by default
 https://svelte.dev/e/svelte_component_deprecated (svelte)
-					>
-						<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
-						{item.label}
+						>
+							<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
+							{item.label}
 
 ====================================
 svelte-check found 40 errors and 39 warnings in 38 files

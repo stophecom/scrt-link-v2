@@ -10,7 +10,7 @@
 
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	import Page from '$lib/components/page/default-page.svelte';
+	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
@@ -66,13 +66,8 @@
 </script>
 
 <QueryClientProvider client={queryClient}>
-	<Page
-		title={m.zany_jolly_cuckoo_scoop({
-			name: data.user?.name || m.quiet_long_beaver_scold()
-		})}
-		lead={m.gray_quiet_tern_bubble()}
-	>
-		<Container>
+	<PageWrapper metaTitle={currentItem.label}>
+		<Container variant="wide">
 			<div class="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
 				<!-- Mobile Navigation (Dropdown) -->
 				<div class="mb-4 block lg:hidden">
@@ -131,5 +126,5 @@
 				</div>
 			</div>
 		</Container>
-	</Page>
+	</PageWrapper>
 </QueryClientProvider>

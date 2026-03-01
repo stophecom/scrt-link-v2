@@ -3,6 +3,7 @@
 
 	import { enhance } from '$app/forms';
 	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
+	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -15,11 +16,13 @@
 	import AccountCard from '../account-card.svelte';
 	import type { PageData } from './$types';
 
-	let { data }: { data: PageData } = $props();
+	let { data }: { data: PageData & LayoutData } = $props();
 	let currentThemeColor = $derived(data.currentThemeColor);
 	const { user } = data;
 	const isAdminFlag = $derived(user?.role === Role.ADMIN);
 </script>
+
+<PageTitle title={m.super_flaky_wallaby_pick()} />
 
 {#if isAdminFlag}
 	<Card class="mb-6" title="Admin">
