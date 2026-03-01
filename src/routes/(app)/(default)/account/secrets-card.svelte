@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { CheckCircle2, Flame } from '@lucide/svelte';
 	import { toast } from 'svelte-sonner';
+	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { invalidateAll } from '$app/navigation';
 	import { api } from '$lib/api';
@@ -15,14 +16,29 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { formatDateTime } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
-	import type { Secret } from '$lib/server/db/schema';
-
-	import type { PageServerData } from './$types';
+	import type { Secret, User as AuthUser } from '$lib/server/db/schema';
 
 	const currentDate = new Date();
 
-	let { secrets, user, secretForm }: Pick<PageServerData, 'secrets' | 'user' | 'secretForm'> =
-		$props();
+	let {
+		secrets,
+		user,
+		secretForm
+	}: {
+		secrets: any;
+		user: Pick<
+			AuthUser,
+			| 'id'
+			| 'name'
+			| 'email'
+			| 'role'
+			| 'subscriptionTier'
+			| 'picture'
+			| 'googleId'
+			| 'stripeCustomerId'
+		> & { preferences: any };
+		secretForm: SuperValidated<any, any, any>;
+	} = $props();
 
 	let showExpired = $state(false);
 	let isConfirmationDialogOpen = $state(false);

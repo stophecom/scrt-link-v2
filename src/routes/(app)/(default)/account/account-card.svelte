@@ -11,9 +11,17 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
-	import type { UserFormSchema } from '$lib/validators/formSchemas';
+	import type { User as AuthUser } from '$lib/server/db/schema';
 
-	let { user, form }: { user: App.Locals['user']; form: SuperValidated<UserFormSchema> } = $props();
+	let {
+		user,
+		form
+	}: {
+		user: Pick<AuthUser, 'id' | 'name' | 'email' | 'role' | 'subscriptionTier' | 'picture'> & {
+			preferences: any;
+		};
+		form: SuperValidated<any, any, any>;
+	} = $props();
 
 	let open = $state(false);
 </script>

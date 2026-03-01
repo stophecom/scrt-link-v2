@@ -38,8 +38,9 @@
 
 	import type { PageData } from './$types';
 
-	let { data }: { data: PageData } = $props();
+	let { data }: { data: PageServerData } = $props();
 
+	let whiteLabelSite = $derived(data.whiteLabelSite);
 	let showSuccess = $state(false);
 	let showSpinner = $state(false);
 

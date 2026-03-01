@@ -22,8 +22,6 @@
 		OrganizationFormSchema
 	} from '$lib/validators/formSchemas';
 
-	import type { PageServerData } from './$types';
-
 	let {
 		user,
 		organizationForm,
@@ -32,7 +30,7 @@
 		organization
 	}: {
 		user: App.Locals['user'];
-		organization: PageServerData['userOrganization'];
+		organization: any;
 		organizationForm: SuperValidated<OrganizationFormSchema>;
 		inviteOrganizationMemberForm: SuperValidated<InviteOrganizationMemberFormSchema>;
 		manageOrganizationMemberForm: SuperValidated<ManageOrganizationMemberFormSchema>;
