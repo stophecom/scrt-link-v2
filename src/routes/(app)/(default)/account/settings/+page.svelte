@@ -2,7 +2,6 @@
 	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
 	import SettingsForm from '$lib/components/forms/settings-form.svelte';
 	import ThemeForm from '$lib/components/forms/theme-form.svelte';
-
 	import Card from '$lib/components/ui/card';
 	import { m } from '$lib/paraglide/messages.js';
 
