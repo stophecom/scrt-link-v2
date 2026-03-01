@@ -92,7 +92,8 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 			: null,
 		organizationForm: await organizationFormValidator(),
 		inviteOrganizationMemberForm: await inviteOrganizationMemberFormValidator(),
-		manageOrganizationMemberForm: await manageOrganizationMemberFormValidator()
+		manageOrganizationMemberForm: await manageOrganizationMemberFormValidator(),
+		pageTitle: m.wild_inner_fox_honor()
 	};
 };
 

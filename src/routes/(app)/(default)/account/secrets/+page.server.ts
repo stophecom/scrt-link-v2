@@ -1,4 +1,5 @@
 import { redirectLocalized } from '$lib/i18n';
+import { m } from '$lib/paraglide/messages';
 import { postSecret } from '$lib/server/form/actions';
 import { secretFormValidator } from '$lib/server/form/validators';
 import { fetchSecrets } from '$lib/server/secrets';
@@ -18,7 +19,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	return {
 		user,
 		secrets,
-		secretForm
+		secretForm,
+		pageTitle: m.free_nimble_whale_fry()
 	};
 };
 

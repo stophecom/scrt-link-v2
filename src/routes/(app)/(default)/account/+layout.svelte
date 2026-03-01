@@ -9,7 +9,6 @@
 	import type { Snippet } from 'svelte';
 
 	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
@@ -17,6 +16,8 @@
 	import { TierOptions } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
+	import PageTitle from '$lib/components/blocks/page-title.svelte';
+	import { page } from '$app/state';
 
 	// Create a client for react query
 	const queryClient = new QueryClient({
@@ -28,6 +29,8 @@
 	});
 
 	let { children }: { children: Snippet } = $props();
+
+	let pageTitle = $derived(page.data.pageTitle);
 
 	// Navigation items
 	const navItems = [
@@ -58,7 +61,7 @@
 		}
 	];
 
-	let currentPath = $derived($page.url.pathname);
+	let currentPath = $derived(page.url.pathname);
 	let currentItem = $derived(
 		navItems.find((item) => currentPath.startsWith(item.href)) || navItems[0]
 	);
@@ -121,6 +124,8 @@
 
 				<!-- Main Content Area -->
 				<div class="flex-1 lg:max-w-3xl">
+					<PageTitle class="xs:text-2xl mb-4 text-2xl md:text-4xl" title={pageTitle} />
+
 					{@render children()}
 				</div>
 			</div>
