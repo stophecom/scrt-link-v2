@@ -1,6 +1,6 @@
 import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
-import { logout, saveSettings, saveTheme } from '$lib/server/form/actions';
+import { saveSettings, saveTheme } from '$lib/server/form/actions';
 import { settingsFormValidator, themeFormValidator } from '$lib/server/form/validators';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -21,6 +21,5 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	saveTheme: saveTheme,
-	saveSettings: saveSettings,
-	logout: logout
+	saveSettings: saveSettings
 };

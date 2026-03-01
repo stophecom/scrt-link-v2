@@ -73,7 +73,7 @@
 						</DropdownMenu.Group>
 						<DropdownMenu.Separator />
 						<DropdownMenu.Item>
-							<form class="w-full" method="post" action="/account/settings?/logout">
+							<form class="w-full" method="post" action="/account?/logout">
 								<button type="submit" class="flex w-full items-center text-left">
 									<LogOut class="mr-2 h-4 w-4" />
 									<span>{m.wacky_big_raven_honor()}</span>
@@ -101,7 +101,7 @@
 					{/each}
 				</nav>
 				<div class="mt-4 px-3">
-					<form method="post" action="/account/settings?/logout">
+					<form method="post" action="/account?/logout">
 						<Button
 							type="submit"
 							variant="ghost"
