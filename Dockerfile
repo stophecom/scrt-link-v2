@@ -1,4 +1,4 @@
-FROM node:24-alpine AS builder
+FROM node:25-alpine AS builder
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ ENV CSRF_CHECK_ORIGIN=$CSRF_CHECK_ORIGIN
 RUN pnpm build
 
 # Minimal runner image
-FROM node:24-alpine AS runner
+FROM node:25-alpine AS runner
 
 WORKDIR /app
 
