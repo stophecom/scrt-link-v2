@@ -325,8 +325,8 @@
 	"sleek_heavy_shad_exhale": "API key saved",
 	"cool_white_frog_scold": "API key revoked!",
 	"blue_jumpy_shell_climb": "API Access",
-	"actual_keen_rooster_find": "Create API-key",
-	"lost_slimy_pelican_achieve": "API-keys",
+	"actual_keen_rooster_find": "Create API key",
+	"lost_slimy_pelican_achieve": "API keys",
 	"patchy_swift_fish_cuddle": "Use the API to programmatically create secrets — right from your own application.",
 	"super_funny_jackal_pause": "API Keys",
 	"aloof_such_mare_dance": "edit",
@@ -569,5 +569,6 @@
 	"witty_mealy_seal_kick": "Create a Secret",
 	"any_jumpy_fox_wave": "Secret Service",
 	"curly_slimy_buzzard_support": "My Website",
-	"lower_few_turtle_propel": "Owner"
+	"lower_few_turtle_propel": "Owner",
+	"firm_zippy_warthog_chop": "Are you sure you want to revoke the API key **{description}**?"
 }

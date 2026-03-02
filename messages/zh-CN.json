@@ -569,5 +569,6 @@
 	"witty_mealy_seal_kick": "创建秘密",
 	"any_jumpy_fox_wave": "秘密服务",
 	"curly_slimy_buzzard_support": "我的网站",
-	"lower_few_turtle_propel": "所有者"
+	"lower_few_turtle_propel": "所有者",
+	"firm_zippy_warthog_chop": "您确定要撤销API密钥 **{description}** 吗？"
 }
