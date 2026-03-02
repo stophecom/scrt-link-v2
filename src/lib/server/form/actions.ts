@@ -284,7 +284,7 @@ export const editOrganization: Action = async (event) => {
 			form,
 			{
 				status: 'error',
-				title: 'Not allowed.'
+				title: m.east_ago_hedgehog_pause()
 			},
 			{
 				status: 401
@@ -347,8 +347,8 @@ export const addMemberToOrganization: Action = async (event) => {
 			form,
 			{
 				status: 'error',
-				title: 'Limit reached',
-				description: 'Member limit reached on your current plan.'
+				title: m.early_honest_grizzly_clasp(),
+				description: m.salty_active_toucan_kiss()
 			},
 			{
 				status: 401
@@ -369,8 +369,8 @@ export const addMemberToOrganization: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: 'Invitation failed',
-					description: 'User is already a member of your organization.'
+					title: m.vivid_swift_firefox_devour(),
+					description: m.white_odd_osprey_adapt()
 				},
 				{
 					status: 401
@@ -395,8 +395,8 @@ export const addMemberToOrganization: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: 'Invitation failed',
-					description: 'User has already been invited to the organization.'
+					title: m.lost_stock_warthog_care(),
+					description: m.tidy_this_fly_aid()
 				},
 				{
 					status: 401
@@ -416,8 +416,8 @@ export const addMemberToOrganization: Action = async (event) => {
 
 	return message(form, {
 		status: 'success',
-		title: 'Invite successful.',
-		description: 'We have sent out an invitation.'
+		title: m.weak_stock_elephant_build(),
+		description: m.maroon_light_tern_treat()
 	});
 };
 
@@ -456,9 +456,8 @@ export const manageOrganizationMember: Action = async (event) => {
 					form,
 					{
 						status: 'error',
-						title: 'Cannot change role.',
-						description:
-							'You are the sole owner of this organization. Please transfer ownership first.'
+						title: m.east_major_millipede_support(),
+						description: m.front_chunky_shad_zip()
 					},
 					{ status: 400 }
 				);
@@ -477,8 +476,8 @@ export const manageOrganizationMember: Action = async (event) => {
 
 		return message(form, {
 			status: 'success',
-			title: 'Role updated.',
-			description: 'The member role has been updated.'
+			title: m.slow_tense_niklas_adore(),
+			description: m.bald_great_flea_splash()
 		});
 	}
 
@@ -490,17 +489,21 @@ export const manageOrganizationMember: Action = async (event) => {
 			.returning();
 
 		if (!result.length) {
-			return message(form, { status: 'error', title: `Invite doesn't exist.` }, { status: 401 });
+			return message(
+				form,
+				{ status: 'error', title: m.main_orange_okapi_cuddle() },
+				{ status: 401 }
+			);
 		}
 
 		return message(form, {
 			status: 'success',
-			title: 'Role updated.',
-			description: 'The invite role has been updated.'
+			title: m.just_plane_puffin_explore(),
+			description: m.mild_orange_racoon_lend()
 		});
 	}
 
-	return message(form, { status: 'error', title: 'Invalid request.' }, { status: 400 });
+	return message(form, { status: 'error', title: m.free_smug_hound_boil() }, { status: 400 });
 };
 
 export const removeOrganizationMember: Action = async (event) => {
@@ -529,7 +532,7 @@ export const removeOrganizationMember: Action = async (event) => {
 			form,
 			{
 				status: 'error',
-				title: 'Not allowed.'
+				title: m.tame_mushy_martin_loop()
 			},
 			{
 				status: 401
@@ -545,8 +548,8 @@ export const removeOrganizationMember: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: `Invitation doesn't exist.`,
-					description: `The invitation you try to delete no longer exists. It might have been deleted before.`
+					title: m.sunny_minor_platypus_ascend(),
+					description: m.gross_weary_rook_stir()
 				},
 				{
 					status: 401
@@ -556,8 +559,8 @@ export const removeOrganizationMember: Action = async (event) => {
 
 		return message(form, {
 			status: 'success',
-			title: 'Revoked invitation.',
-			description: 'The invitation has been deleted.'
+			title: m.red_loved_grebe_startle(),
+			description: m.new_grand_hyena_evoke()
 		});
 	}
 
@@ -573,9 +576,8 @@ export const removeOrganizationMember: Action = async (event) => {
 					form,
 					{
 						status: 'error',
-						title: 'Cannot remove yourself.',
-						description:
-							'You are the sole owner of this organization. Please transfer ownership or delete the organization instead.'
+						title: m.cuddly_wide_tiger_yell(),
+						description: m.patchy_equal_myna_affirm()
 					},
 					{
 						status: 400
@@ -591,8 +593,8 @@ export const removeOrganizationMember: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: `Member doesn't exist.`,
-					description: `The member you try to delete no longer exists. It might have been deleted before.`
+					title: m.broad_tasty_fox_slide(),
+					description: m.this_home_stingray_yell()
 				},
 				{
 					status: 401
@@ -602,12 +604,12 @@ export const removeOrganizationMember: Action = async (event) => {
 
 		return message(form, {
 			status: 'success',
-			title: 'Removed member.',
-			description: 'The member has been removed from your organization.'
+			title: m.salty_tense_pug_roam(),
+			description: m.least_maroon_stork_slide()
 		});
 	}
 
-	return message(form, { status: 'error', title: 'Invalid request.' }, { status: 400 });
+	return message(form, { status: 'error', title: m.next_keen_sheep_endure() }, { status: 400 });
 };
 
 export const loginWithEmail: Action = async (event) => {
