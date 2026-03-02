@@ -570,5 +570,6 @@
 	"any_jumpy_fox_wave": "Service secret",
 	"curly_slimy_buzzard_support": "Mon site web",
 	"lower_few_turtle_propel": "Propriétaire",
-	"firm_zippy_warthog_chop": "Êtes-vous sûr de vouloir révoquer la clé API **{description}** ?"
+	"firm_zippy_warthog_chop": "Êtes-vous sûr de vouloir révoquer la clé API **{description}** ?",
+	"dry_tame_warthog_hurl": "Aucune clé API pour l'instant."
 }

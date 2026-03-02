@@ -64,7 +64,7 @@
 			{/each}
 		{:else}
 			<p class="text-muted-foreground text-sm">
-				{m.stale_slow_halibut_spur() || 'No API keys yet.'}
+				{m.dry_tame_warthog_hurl()}
 			</p>
 		{/if}
 	</Card>

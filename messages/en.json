@@ -570,5 +570,6 @@
 	"any_jumpy_fox_wave": "Secret Service",
 	"curly_slimy_buzzard_support": "My Website",
 	"lower_few_turtle_propel": "Owner",
-	"firm_zippy_warthog_chop": "Are you sure you want to revoke the API key **{description}**?"
+	"firm_zippy_warthog_chop": "Are you sure you want to revoke the API key **{description}**?",
+	"dry_tame_warthog_hurl": "No API keys yet."
 }
