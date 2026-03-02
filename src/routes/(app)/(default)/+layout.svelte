@@ -9,12 +9,12 @@
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
-	let isMinimal = $derived(!!page.data.isMinimalHeader);
+	let isPersistent = $derived(!!page.data.isPersistentHeader);
 	let tag = $derived(page.data.headerTag);
 	let breadcrumb = $derived(page.data.headerBreadcrumb);
 </script>
 
-<Header user={data.user} minimal={isMinimal} {tag} {breadcrumb} />
+<Header user={data.user} {isPersistent} {tag} {breadcrumb} />
 <main>
 	{@render children()}
 </main>

@@ -17,11 +17,17 @@
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
 	import DarkModeSwitcher from './dark-mode-switcher.svelte';
 
-	type Props = { user: App.Locals['user']; minimal?: boolean; tag?: string; breadcrumb?: string };
+	type Props = {
+		user: App.Locals['user'];
+		isMinimal?: boolean;
+		isPersistent?: boolean;
+		tag?: string;
+		breadcrumb?: string;
+	};
 
-	let { user, minimal, tag, breadcrumb }: Props = $props();
+	let { user, isMinimal, isPersistent: isPersistent, tag, breadcrumb }: Props = $props();
 
-	let persistHeader = $derived(minimal || !!tag);
+	let persistHeader = $derived(isPersistent || !!tag);
 </script>
 
 <IntersectionObserver bottom={persistHeader ? 0 : 100}>
@@ -62,7 +68,7 @@
 					</a>
 
 					<div class="ml-auto grid grid-flow-col items-center gap-2">
-						{#if !persistHeader && user}
+						{#if !isMinimal && user}
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger>
 									{#snippet child({ props })}

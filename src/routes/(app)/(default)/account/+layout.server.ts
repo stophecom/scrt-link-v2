@@ -22,7 +22,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		userOrganization: userOrganization,
 		whiteLabelDomain: whiteLabel?.customDomain,
 		whiteLabel: whiteLabel,
-		isMinimalHeader: true,
+		isPersistentHeader: true,
 		headerBreadcrumb: m.vivid_frail_ox_accept()
 	};
 };

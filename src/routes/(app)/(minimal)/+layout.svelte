@@ -8,7 +8,7 @@
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
-<Header user={data.user} minimal={true} />
+<Header user={data.user} isPersistent={true} />
 <main>
 	{@render children()}
 </main>
