@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	return redirectLocalized(302, 'account/secrets');
+	return redirectLocalized(302, '/account/secrets');
 };
 
 export const actions: Actions = {

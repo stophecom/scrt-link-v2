@@ -11,6 +11,7 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 
 	return {
 		user,
-		minimalHeader: true
+		isPersistentHeader: true,
+		wideLayout: true
 	};
 };

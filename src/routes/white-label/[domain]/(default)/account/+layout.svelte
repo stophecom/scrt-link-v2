@@ -3,7 +3,6 @@
 	import LogOut from '@lucide/svelte/icons/log-out';
 	import Menu from '@lucide/svelte/icons/menu';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
-	import User from '@lucide/svelte/icons/user';
 	import type { Snippet } from 'svelte';
 
 	import { page } from '$app/stores';
@@ -22,11 +21,6 @@
 			href: localizeHref('/account/secrets'),
 			label: m.free_nimble_whale_fry(),
 			icon: Lock
-		},
-		{
-			href: localizeHref('/account/profile'),
-			label: m.super_flaky_wallaby_pick(),
-			icon: User
 		},
 		{
 			href: localizeHref('/account/settings'),
@@ -100,7 +94,7 @@
 						</Button>
 					{/each}
 				</nav>
-				<div class="mt-4 px-3">
+				<div class="mt-1">
 					<form method="post" action="/account?/logout">
 						<Button
 							type="submit"
