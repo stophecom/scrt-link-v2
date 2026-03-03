@@ -7,5 +7,11 @@
 	let { children, data }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
-<Header user={data.user} minimal={true} logo={data.logo} logoDarkMode={data.logoDarkMode} />
+<Header
+	user={data.user}
+	name={data?.name}
+	isPersistent={true}
+	logo={data.logo}
+	logoDarkMode={data.logoDarkMode}
+/>
 {@render children()}

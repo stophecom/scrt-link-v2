@@ -19,8 +19,7 @@ const defaultLimits = {
 	passwordAllowed: false,
 	readReceiptsAllowed: false,
 	expirationOptions: [] as number[],
-	whiteLabel: false,
-	organizationTeamSize: 0
+	whiteLabel: false
 };
 
 const plans = () => [
@@ -44,8 +43,7 @@ const plans = () => [
 			passwordAllowed: false,
 			readReceiptsAllowed: false,
 			expirationOptions: [],
-			whiteLabel: false,
-			organizationTeamSize: 0
+			whiteLabel: false
 		}
 	},
 	{
@@ -72,8 +70,7 @@ const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptions,
-			whiteLabel: false,
-			organizationTeamSize: 0
+			whiteLabel: false
 		}
 	},
 	{
@@ -96,8 +93,7 @@ const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
-			whiteLabel: false,
-			organizationTeamSize: 0
+			whiteLabel: false
 		}
 	},
 	{
@@ -106,7 +102,7 @@ const plans = () => [
 		title: m.muddy_any_tapir_roar(),
 		contents: [
 			m.aloof_zany_cheetah_greet(),
-			m.proud_cool_lemur_commend(),
+			m.proud_cool_lemur_commend({ amount: 30 }),
 			m.formal_mealy_chipmunk_advise(),
 			m.new_still_dingo_create({ limit: formatBytes(100 * MB) }),
 			m.ideal_low_mouse_splash(),
@@ -123,8 +119,7 @@ const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
-			whiteLabel: true,
-			organizationTeamSize: 30
+			whiteLabel: true
 		}
 	}
 ];
@@ -168,8 +163,7 @@ export const getPlanLimits = (host: string, tier?: TierOptions | null) => {
 			passwordAllowed: true,
 			readReceiptsAllowed: false,
 			expirationOptions: expiresInOptions,
-			whiteLabel: false,
-			organizationTeamSize: 0
+			whiteLabel: false
 		};
 	} else {
 		return getUserPlanLimits(tier);

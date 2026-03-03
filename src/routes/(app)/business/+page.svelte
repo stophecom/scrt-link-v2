@@ -59,7 +59,7 @@
 		lead={m.fuzzy_patchy_flamingo_hike()}
 	>
 		<IntersectionObserver top={-50} once={true}>
-			{#snippet children(intersecting)}
+			{#snippet children(intersecting: boolean)}
 				<div
 					class="grid grid-rows-6 gap-4 sm:grid-cols-2 sm:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
 				>

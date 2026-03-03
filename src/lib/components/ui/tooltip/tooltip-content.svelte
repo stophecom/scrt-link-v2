@@ -6,7 +6,7 @@
 	let {
 		ref = $bindable(null),
 		children,
-		class: className,
+		class: className = undefined,
 		sideOffset = 4,
 		...restProps
 	} = $props();

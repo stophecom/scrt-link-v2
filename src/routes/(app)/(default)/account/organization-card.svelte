@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Pen } from '@lucide/svelte';
+	import { User } from '@lucide/svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { wait } from '$lib/client/utils';
@@ -22,16 +22,16 @@
 		OrganizationFormSchema
 	} from '$lib/validators/formSchemas';
 
-	import type { PageServerData } from './$types';
-
 	let {
+		user,
 		organizationForm,
 		inviteOrganizationMemberForm,
 		manageOrganizationMemberForm,
 		organization
 	}: {
 		user: App.Locals['user'];
-		organization: PageServerData['userOrganization'];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		organization: any;
 		organizationForm: SuperValidated<OrganizationFormSchema>;
 		inviteOrganizationMemberForm: SuperValidated<InviteOrganizationMemberFormSchema>;
 		manageOrganizationMemberForm: SuperValidated<ManageOrganizationMemberFormSchema>;
@@ -39,8 +39,17 @@
 
 	let openDialogName = $state(false);
 	let openDialogInvite = $state(false);
+	let openDialogManage = $state(false);
 
 	let selectedItem: MembersAndInvitesByOrganization | null = $state(null);
+
+	$effect(() => {
+		if (selectedItem) {
+			openDialogManage = true;
+		} else {
+			openDialogManage = false;
+		}
+	});
 </script>
 
 {#snippet renderStatus(status: InviteStatus | null)}
@@ -55,7 +64,12 @@
 	{/if}
 {/snippet}
 
-{#snippet renderUserCard(email: string, name: string | null, picture: string | null)}
+{#snippet renderUserCard(
+	email: string,
+	name: string | null,
+	picture: string | null,
+	isCurrentUser: boolean
+)}
 	{@const memberName = name || m.witty_wise_grebe_empower()}
 	<div class="flex items-center font-medium">
 		<div>
@@ -67,7 +81,12 @@
 			</Avatar.Root>
 		</div>
 		<div>
-			{memberName}
+			<div class="flex items-center gap-1 {isCurrentUser ? 'font-bold' : ''}">
+				{memberName}
+				{#if isCurrentUser}
+					<User class="text-muted-foreground h-3.5 w-3.5" />
+				{/if}
+			</div>
 			<div class="text-xs">{email}</div>
 		</div>
 	</div>
@@ -85,23 +104,28 @@
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#each organization.members as member, i (i)}
+				{#each [...organization.members].sort( (a, b) => (a.userId === user?.id ? -1 : b.userId === user?.id ? 1 : 0) ) as member, i (i)}
 					<Table.Row>
 						<Table.Cell>
-							{@render renderUserCard(member.email, member.name, member.picture)}
+							{@render renderUserCard(
+								member.email,
+								member.name,
+								member.picture,
+								member.userId === user?.id
+							)}
 						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
 						<Table.Cell>{@render renderStatus(member.status)}</Table.Cell>
-						<Table.Cell>
-							{#if member.role !== MembershipRole.OWNER}
+						<Table.Cell class="text-right">
+							{#if organization.role === MembershipRole.OWNER || member.userId === user?.id}
 								<Button
-									size="icon"
-									variant="ghost"
+									size="sm"
+									variant="outline"
 									onclick={() => {
 										selectedItem = member;
 									}}
 								>
-									<Pen class="h-4 w-4" /><span class="sr-only">{m.helpful_noble_swan_mop()}</span>
+									{m.helpful_noble_swan_mop()}
 								</Button>
 							{/if}
 						</Table.Cell>
@@ -110,50 +134,60 @@
 			</Table.Body>
 		</Table.Root>
 
-		<Separator class="my-6" />
-		<div class="xs:grid-rows-1 xs:grid-cols-2 grid grid-rows-2 gap-2">
-			<div>
-				<Dialog.Root bind:open={openDialogName}>
-					<Dialog.Trigger class={buttonVariants({ variant: 'outline', class: 'max-xs:w-full' })}
-						>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
-					>
-					<Dialog.Content class="sm:max-w-[425px]">
-						<Dialog.Header>
-							<Dialog.Title>{m.spry_every_kangaroo_flip()}</Dialog.Title>
-						</Dialog.Header>
-						<OrganizationForm
-							formAction="?/editOrganization"
-							form={organizationForm}
-							onSuccess={() => {
-								wait(200).then(async () => {
-									openDialogName = false;
-								});
-							}}
-						/>
-					</Dialog.Content>
-				</Dialog.Root>
+		{#if organization.role === MembershipRole.OWNER}
+			<Separator class="my-6" />
+			<div class="xs:grid-rows-1 xs:grid-cols-2 grid grid-rows-2 gap-2">
+				<div>
+					<Dialog.Root bind:open={openDialogName}>
+						<Dialog.Trigger class={buttonVariants({ variant: 'outline', class: 'max-xs:w-full' })}
+							>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
+						>
+						<Dialog.Content class="sm:max-w-[425px]">
+							<Dialog.Header>
+								<Dialog.Title>{m.spry_every_kangaroo_flip()}</Dialog.Title>
+							</Dialog.Header>
+							<OrganizationForm
+								formAction="?/editOrganization"
+								form={organizationForm}
+								onSuccess={() => {
+									wait(200).then(async () => {
+										openDialogName = false;
+									});
+								}}
+							/>
+						</Dialog.Content>
+					</Dialog.Root>
+				</div>
+				<div class="xs:ms-auto">
+					<Dialog.Root bind:open={openDialogInvite}>
+						<Dialog.Trigger class={buttonVariants({ variant: 'default', class: 'max-xs:w-full' })}
+							>{m.spare_lazy_jackal_slide()}</Dialog.Trigger
+						>
+						<Dialog.Content class="sm:max-w-[425px]">
+							<Dialog.Header>
+								<Dialog.Title>{m.mealy_few_mantis_absorb()}</Dialog.Title>
+								<Dialog.Description>{m.mean_key_marmot_fall()}</Dialog.Description>
+							</Dialog.Header>
+							<InviteOrganizationMemberForm
+								formAction="?/addMemberToOrganization"
+								form={inviteOrganizationMemberForm}
+								organizationId={organization.id}
+							/>
+						</Dialog.Content>
+					</Dialog.Root>
+				</div>
 			</div>
-			<div class="xs:ms-auto">
-				<Dialog.Root bind:open={openDialogInvite}>
-					<Dialog.Trigger class={buttonVariants({ variant: 'default', class: 'max-xs:w-full' })}
-						>{m.spare_lazy_jackal_slide()}</Dialog.Trigger
-					>
-					<Dialog.Content class="sm:max-w-[425px]">
-						<Dialog.Header>
-							<Dialog.Title>{m.mealy_few_mantis_absorb()}</Dialog.Title>
-						</Dialog.Header>
-						<InviteOrganizationMemberForm
-							formAction="?/addMemberToOrganization"
-							form={inviteOrganizationMemberForm}
-							organizationId={organization.id}
-						/>
-					</Dialog.Content>
-				</Dialog.Root>
-			</div>
-		</div>
+		{/if}
 	</Card>
 
-	<Dialog.Root bind:open={selectedItem} on:openChange={(e) => !e.detail && close()}>
+	<Dialog.Root
+		bind:open={openDialogManage}
+		onOpenChange={(isOpen) => {
+			if (!isOpen) {
+				selectedItem = null;
+			}
+		}}
+	>
 		<Dialog.Content class="sm:max-w-[425px]">
 			<Dialog.Header>
 				{#if selectedItem}
@@ -165,15 +199,22 @@
 						{/if}
 					</Dialog.Title>
 					<div class="pt-4">
-						<dir class="mb-3 rounded border p-3">
-							{@render renderUserCard(selectedItem.email, selectedItem.name, selectedItem.picture)}
+						<dir class="bg-card mb-3 rounded border p-3">
+							{@render renderUserCard(
+								selectedItem.email,
+								selectedItem.name,
+								selectedItem.picture,
+								selectedItem.userId === user?.id
+							)}
 						</dir>
 						<ManageOrganizationMemberForm
 							organizationId={organization.id}
 							userId={selectedItem.userId}
 							inviteId={selectedItem.inviteId}
+							isCurrentUser={selectedItem.userId === user?.id}
+							isOwner={organization.role === MembershipRole.OWNER}
+							initialRole={selectedItem.role}
 							form={manageOrganizationMemberForm}
-							formAction="?/removeMemberFromOrganization"
 							onSuccess={() => {
 								selectedItem = null;
 							}}

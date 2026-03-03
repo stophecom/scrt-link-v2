@@ -7,6 +7,7 @@
 </script>
 
 <Sonner
+	richColors
 	theme={mode.current}
 	class="toaster group"
 	toastOptions={{

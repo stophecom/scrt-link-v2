@@ -42,3 +42,6 @@ temp.*
 static/client-module.js
 # Local testing
 static/test.html
+
+# Antigravity logs
+.error_log.txt

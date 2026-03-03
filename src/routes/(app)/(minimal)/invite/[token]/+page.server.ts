@@ -35,6 +35,7 @@ export const load = async (event) => {
 		// Create or update user
 		const { userId, passwordHash } = await createOrUpdateUser({
 			email: existingInvite.email,
+			name: existingInvite.name,
 			emailVerified: true
 		});
 

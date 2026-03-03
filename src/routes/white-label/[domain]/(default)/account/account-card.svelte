@@ -33,7 +33,7 @@
 				</Dialog.Header>
 				<UserForm
 					{form}
-					onSubmit={() => {
+					onSuccess={() => {
 						wait(600).then(async () => {
 							open = false;
 						});
