@@ -34,7 +34,9 @@ test('Add text secret ', async ({ baseURL }) => {
 		}
 	});
 
-	const responsePromise = page.waitForResponse((response) => response.url().includes('?/postSecret'));
+	const responsePromise = page.waitForResponse((response) =>
+		response.url().includes('?/postSecret')
+	);
 	await expect(page.getByTestId('secret-form-submit')).toBeEnabled();
 	await page.getByTestId('secret-form-submit').click();
 	await responsePromise;
