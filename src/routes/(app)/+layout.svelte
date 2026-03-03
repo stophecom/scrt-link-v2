@@ -4,6 +4,7 @@
 	import { page } from '$app/state';
 	import { PUBLIC_ENV } from '$env/static/public';
 	import { plausible } from '$lib/client/plausible';
+	import Progress from '$lib/components/blocks/progress.svelte';
 	import { appName } from '$lib/data/app';
 	import { getLocale } from '$lib/paraglide/runtime';
 
@@ -51,5 +52,5 @@
 		<meta name="robots" content="noindex" />
 	{/if}
 </svelte:head>
-
+<Progress />
 {@render children()}
