@@ -5,16 +5,17 @@ const isLocalTest = process.env.PUBLIC_ENV === 'development';
 
 // Runs in local webserver
 const config: PlaywrightTestConfig = {
+	webServer: {
+		command: 'VERCEL_URL=http://localhost:5173 pnpm run build && pnpm run preview',
+		port: 4173
+	},
 	use: {
+		baseURL: 'http://localhost:4173',
 		contextOptions: {
 			permissions: ['clipboard-read', 'clipboard-write']
 		},
 		video: 'off',
 		screenshot: 'only-on-failure'
-	},
-	webServer: {
-		command: 'VERCEL_URL=http://localhost:5173 pnpm run build && pnpm run preview',
-		port: 4173
 	},
 	testDir: 'e2e'
 };

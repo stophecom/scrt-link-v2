@@ -36,9 +36,9 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
-	import type { PageData } from './$types';
+	import type { PageServerData } from './$types';
 
-	let { data }: { data: PageData } = $props();
+	let { data }: { data: PageServerData } = $props();
 
 	let showSuccess = $state(false);
 	let showSpinner = $state(false);
@@ -106,7 +106,7 @@
 			class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b shadow-[0_0_10px_0_rgba(0,0,0,0.05)]"
 		>
 			<Container variant="wide" class="flex h-full items-center justify-between">
-				<Button href={localizeHref('/account')} variant="ghost" class="ps-2">
+				<Button href={localizeHref('/account/secret-service')} variant="ghost" class="ps-2">
 					<ChevronLeft class="me-2 h-5 w-5" />
 					{m.solid_clean_insect_stir()}
 				</Button>

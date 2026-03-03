@@ -5,7 +5,11 @@ import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { isOriginalHost } from '$lib/app-routing';
-import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
+import {
+	MAX_API_KEYS_PER_USER,
+	MAX_ORGANIZATION_TEAM_SIZE,
+	MAX_ORGANIZATIONS_PER_USER
+} from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
@@ -73,7 +77,6 @@ import {
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
-
 	const host = event.url.host;
 
 	if (!form.valid) {
@@ -280,7 +283,7 @@ export const editOrganization: Action = async (event) => {
 			form,
 			{
 				status: 'error',
-				title: 'Not allowed.'
+				title: m.east_ago_hedgehog_pause()
 			},
 			{
 				status: 401
@@ -304,7 +307,7 @@ export const editOrganization: Action = async (event) => {
 export const addMemberToOrganization: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(inviteOrganizationMemberFormSchema()));
 
-	const { email, organizationId } = form.data;
+	const { email, organizationId, role, name } = form.data;
 
 	const user = event.locals.user;
 
@@ -335,17 +338,16 @@ export const addMemberToOrganization: Action = async (event) => {
 		);
 	}
 
-	// Limit amount of team members. @todo Think about metered pricing.
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	// Limit amount of team members. @todo Think about metered pricing for organizations.
 	const membersByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
 
-	if (membersByOrganization.length >= planLimits.organizationTeamSize) {
+	if (membersByOrganization.length >= MAX_ORGANIZATION_TEAM_SIZE) {
 		return message(
 			form,
 			{
 				status: 'error',
-				title: 'Limit reached',
-				description: 'Member limit reached on your current plan.'
+				title: m.early_honest_grizzly_clasp(),
+				description: m.salty_active_toucan_kiss()
 			},
 			{
 				status: 401
@@ -366,8 +368,8 @@ export const addMemberToOrganization: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: 'Invitation failed',
-					description: 'User is already a member of your organization.'
+					title: m.vivid_swift_firefox_devour(),
+					description: m.white_odd_osprey_adapt()
 				},
 				{
 					status: 401
@@ -392,8 +394,8 @@ export const addMemberToOrganization: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: 'Invitation failed',
-					description: 'User has already been invited to the organization.'
+					title: m.lost_stock_warthog_care(),
+					description: m.tidy_this_fly_aid()
 				},
 				{
 					status: 401
@@ -406,22 +408,22 @@ export const addMemberToOrganization: Action = async (event) => {
 	await inviteUserToOrganization({
 		userId: user.id,
 		email,
-		membershipRole: MembershipRole.MEMBER,
+		name,
+		membershipRole: role,
 		organizationId
 	});
 
 	return message(form, {
 		status: 'success',
-		title: 'Invite successful.',
-		description: 'We have sent out an invitation.'
+		title: m.weak_stock_elephant_build(),
+		description: m.maroon_light_tern_treat()
 	});
 };
 
-export const removeMemberFromOrganization: Action = async (event) => {
+export const manageOrganizationMember: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(manageOrganizationMemberFormSchema()));
 
-	const { organizationId, inviteId, userId } = form.data;
-
+	const { organizationId, userId, inviteId, role } = form.data;
 	const user = event.locals.user;
 
 	if (!form.valid) {
@@ -434,16 +436,102 @@ export const removeMemberFromOrganization: Action = async (event) => {
 
 	// Make sure user is owner of the organization
 	const userOrganizations = await getOrganizationsByUserId(user.id);
-	const userOrganization = userOrganizations.find(
-		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
-	);
+	const userOrganization = userOrganizations.find((item) => item.id === organizationId);
+	const isOwner = userOrganization?.role === MembershipRole.OWNER;
 
-	if (!organizationId || !userOrganization) {
+	if (!organizationId || !userOrganization || !isOwner || !role) {
+		return message(form, { status: 'error', title: 'Not allowed.' }, { status: 401 });
+	}
+
+	if (userId) {
+		if (role !== MembershipRole.OWNER) {
+			const owners = await db.query.membership.findMany({
+				where: (fields, { eq, and }) =>
+					and(eq(fields.organizationId, organizationId), eq(fields.role, MembershipRole.OWNER))
+			});
+
+			if (owners.length <= 1 && owners[0].userId === userId) {
+				return message(
+					form,
+					{
+						status: 'error',
+						title: m.east_major_millipede_support(),
+						description: m.front_chunky_shad_zip()
+					},
+					{ status: 400 }
+				);
+			}
+		}
+
+		const result = await db
+			.update(membership)
+			.set({ role })
+			.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId)))
+			.returning();
+
+		if (!result.length) {
+			return message(form, { status: 'error', title: `Member doesn't exist.` }, { status: 401 });
+		}
+
+		return message(form, {
+			status: 'success',
+			title: m.slow_tense_niklas_adore(),
+			description: m.bald_great_flea_splash()
+		});
+	}
+
+	if (inviteId) {
+		const result = await db
+			.update(invite)
+			.set({ membershipRole: role })
+			.where(and(eq(invite.id, inviteId), eq(invite.organizationId, organizationId)))
+			.returning();
+
+		if (!result.length) {
+			return message(
+				form,
+				{ status: 'error', title: m.main_orange_okapi_cuddle() },
+				{ status: 401 }
+			);
+		}
+
+		return message(form, {
+			status: 'success',
+			title: m.just_plane_puffin_explore(),
+			description: m.mild_orange_racoon_lend()
+		});
+	}
+
+	return message(form, { status: 'error', title: m.free_smug_hound_boil() }, { status: 400 });
+};
+
+export const removeOrganizationMember: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(manageOrganizationMemberFormSchema()));
+
+	const { organizationId, inviteId, userId } = form.data;
+	const user = event.locals.user;
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	// Make sure user is owner of the organization, OR they are removing themselves
+	const userOrganizations = await getOrganizationsByUserId(user.id);
+	const userOrganization = userOrganizations.find((item) => item.id === organizationId);
+
+	const isOwner = userOrganization?.role === MembershipRole.OWNER;
+	const isSelf = userId === user.id;
+
+	if (!organizationId || !userOrganization || (!isOwner && !isSelf)) {
 		return message(
 			form,
 			{
 				status: 'error',
-				title: 'Not allowed.'
+				title: m.tame_mushy_martin_loop()
 			},
 			{
 				status: 401
@@ -459,8 +547,8 @@ export const removeMemberFromOrganization: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: `Invitation doesn't exist.`,
-					description: `The invitation you try to delete no longer exists. It might have been deleted before.`
+					title: m.sunny_minor_platypus_ascend(),
+					description: m.gross_weary_rook_stir()
 				},
 				{
 					status: 401
@@ -470,13 +558,33 @@ export const removeMemberFromOrganization: Action = async (event) => {
 
 		return message(form, {
 			status: 'success',
-			title: 'Revoked invitation.',
-			description: 'The invitation has been deleted.'
+			title: m.red_loved_grebe_startle(),
+			description: m.new_grand_hyena_evoke()
 		});
 	}
 
-	// Prevent removing yourself from the organization
-	if (userId && userId !== user.id) {
+	if (userId) {
+		if (isSelf && isOwner) {
+			const owners = await db.query.membership.findMany({
+				where: (fields, { eq, and }) =>
+					and(eq(fields.organizationId, organizationId), eq(fields.role, MembershipRole.OWNER))
+			});
+
+			if (owners.length <= 1) {
+				return message(
+					form,
+					{
+						status: 'error',
+						title: m.cuddly_wide_tiger_yell(),
+						description: m.patchy_equal_myna_affirm()
+					},
+					{
+						status: 400
+					}
+				);
+			}
+		}
+
 		const result = await db.delete(membership).where(eq(membership.userId, userId)).returning();
 
 		if (!result.length) {
@@ -484,8 +592,8 @@ export const removeMemberFromOrganization: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: `Member doesn't exist.`,
-					description: `The member you try to delete no longer exists. It might have been deleted before.`
+					title: m.broad_tasty_fox_slide(),
+					description: m.this_home_stingray_yell()
 				},
 				{
 					status: 401
@@ -495,10 +603,12 @@ export const removeMemberFromOrganization: Action = async (event) => {
 
 		return message(form, {
 			status: 'success',
-			title: 'Removed member.',
-			description: 'The member has been removed from your organization.'
+			title: m.salty_tense_pug_roam(),
+			description: m.least_maroon_stork_slide()
 		});
 	}
+
+	return message(form, { status: 'error', title: m.next_keen_sheep_endure() }, { status: 400 });
 };
 
 export const loginWithEmail: Action = async (event) => {

@@ -140,6 +140,7 @@
 
 	let isButtonDisabled = $derived(
 		isFileUploading ||
+			!privateKey ||
 			((secretType === SecretType.FILE || secretType === SecretType.SNAP) && !$formData.content)
 	);
 

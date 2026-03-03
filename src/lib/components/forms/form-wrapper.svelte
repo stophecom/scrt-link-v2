@@ -1,25 +1,28 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-
-	import * as Alert from '$lib/components/ui/alert';
+	import { toast } from 'svelte-sonner';
 
 	type Props = {
 		children: Snippet;
 		message: App.Superforms.Message | undefined;
 	};
 	let { children, message }: Props = $props();
+
+	$effect(() => {
+		if (message) {
+			if (message.status === 'success' && message.title) {
+				toast.success(message.title, {
+					description: message.description || undefined
+				});
+			}
+			if (message.status === 'error' && message.title) {
+				toast.error(message.title, {
+					description: message.description || undefined
+				});
+			}
+		}
+	});
 </script>
 
-<!-- Global error messages -->
-{#if message}
-	<div class="py-3">
-		<Alert.Root
-			title={message.title}
-			variant={message.status === 'error' ? 'destructive' : 'success'}
-		>
-			{message.description}
-		</Alert.Root>
-	</div>
-{/if}
 <!-- Form contents -->
 {@render children?.()}

@@ -4,7 +4,6 @@
 
 	import { invalidateAll } from '$app/navigation';
 	import { api } from '$lib/api';
-	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
@@ -17,20 +16,27 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import type { Secret } from '$lib/server/db/schema';
 
-	import type { PageServerData } from './$types';
-
 	const currentDate = new Date();
 
-	let { secrets, user, secretForm }: Pick<PageServerData, 'secrets' | 'user' | 'secretForm'> =
-		$props();
+	let {
+		secrets
+	}: {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		secrets: any;
+	} = $props();
 
 	let showExpired = $state(false);
 	let isConfirmationDialogOpen = $state(false);
+	let selectedSecretForDeletion = $state<Pick<
+		Secret,
+		'receiptId' | 'expiresAt' | 'retrievedAt'
+	> | null>(null);
 
 	let filteredSecrets = $derived(
 		showExpired
 			? secrets
-			: secrets.filter((item) => item.expiresAt > currentDate || item.retrievedAt !== null)
+			: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+				secrets.filter((item: any) => item.expiresAt > currentDate || item.retrievedAt !== null)
 	);
 
 	const deleteSecretByReceiptId = async (receiptId: string | null) => {
@@ -77,20 +83,6 @@
 {/snippet}
 
 <Card class="mb-6" title="My Secret Links">
-	<div class="flex justify-start py-4">
-		<Dialog.Root>
-			<Dialog.Trigger class={buttonVariants({ variant: 'default' })}
-				>{m.round_slow_hyena_pause()}</Dialog.Trigger
-			>
-			<Dialog.Content class="">
-				<Dialog.Header>
-					<Dialog.Title>{m.arable_proof_ladybug_drip()}</Dialog.Title>
-				</Dialog.Header>
-				<CreateSecret form={secretForm} {user} hidePrimaryFeatureList />
-			</Dialog.Content>
-		</Dialog.Root>
-	</div>
-
 	<Table.Root>
 		<Table.Caption
 			><strong>{m.polite_weird_chicken_buy()}</strong>
@@ -118,38 +110,47 @@
 					<Table.Cell>{@render renderStatus(secret)}</Table.Cell>
 					<Table.Cell>
 						{#if !secret.retrievedAt && secret.expiresAt > currentDate}
-							<Dialog.Root bind:open={isConfirmationDialogOpen}>
-								<Dialog.Trigger class="text-destructive inline-flex p-1 hover:underline">
-									<span>{m.arable_mellow_wolf_bubble()}</span>
-									<Flame class="ms-1 h-4 w-4" />
-								</Dialog.Trigger>
-								<Dialog.Content>
-									<Dialog.Header>
-										<Dialog.Title>{m.soft_aloof_barbel_splash()}</Dialog.Title>
-										<Dialog.Description>
-											<Markdown
-												format
-												markdown={m.that_deft_alpaca_type({ receiptId: secret.receiptId || '' })}
-											/>
-										</Dialog.Description>
-									</Dialog.Header>
-									<Dialog.Footer>
-										<Dialog.Close class={buttonVariants({ variant: 'outline' })}
-											>{m.big_due_warthog_rest()}</Dialog.Close
-										>
-										<Button
-											onclick={() => deleteSecretByReceiptId(secret.receiptId)}
-											class="max-sm:mb-2">{m.simple_active_cowfish_spur()}</Button
-										>
-									</Dialog.Footer>
-								</Dialog.Content>
-							</Dialog.Root>
+							<button
+								class="text-destructive inline-flex p-1 hover:underline"
+								onclick={() => {
+									selectedSecretForDeletion = secret;
+									isConfirmationDialogOpen = true;
+								}}
+							>
+								<span>{m.arable_mellow_wolf_bubble()}</span>
+								<Flame class="ms-1 h-4 w-4" />
+							</button>
 						{/if}
 					</Table.Cell>
 				</Table.Row>
 			{/each}
 		</Table.Body>
 	</Table.Root>
+
+	<Dialog.Root bind:open={isConfirmationDialogOpen}>
+		<Dialog.Content>
+			<Dialog.Header>
+				<Dialog.Title>{m.soft_aloof_barbel_splash()}</Dialog.Title>
+				<Dialog.Description>
+					<Markdown
+						format
+						markdown={m.that_deft_alpaca_type({
+							receiptId: selectedSecretForDeletion?.receiptId || ''
+						})}
+					/>
+				</Dialog.Description>
+			</Dialog.Header>
+			<Dialog.Footer>
+				<Dialog.Close class={buttonVariants({ variant: 'outline' })}
+					>{m.big_due_warthog_rest()}</Dialog.Close
+				>
+				<Button
+					onclick={() => deleteSecretByReceiptId(selectedSecretForDeletion?.receiptId ?? null)}
+					class="max-sm:mb-2">{m.simple_active_cowfish_spur()}</Button
+				>
+			</Dialog.Footer>
+		</Dialog.Content>
+	</Dialog.Root>
 
 	<Separator class=" my-6" />
 	<div class="inline-flex items-center">

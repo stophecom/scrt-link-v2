@@ -9,7 +9,7 @@
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 </script>
 
-<Header user={data.user} business />
+<Header user={data.user} tag="business" />
 <main>
 	{@render children()}
 </main>
