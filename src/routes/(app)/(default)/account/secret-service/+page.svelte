@@ -28,7 +28,7 @@
 	{:else}
 		<UpgradeNotice user={data.user} class="mb-6" />
 
-		<Button href={localizeHref('/business')}>{m.inclusive_lost_parakeet_forgive()}</Button>
+		<Button href={localizeHref('/business')}>{m.fit_ok_worm_lead()}</Button>
 		<Button variant="outline" target="_blank" href={whiteLabelDemoWebsite}
 			>{m.lower_fine_okapi_imagine()}</Button
 		>
