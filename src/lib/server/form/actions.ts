@@ -77,7 +77,6 @@ import {
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
-
 	const host = event.url.host;
 
 	if (!form.valid) {

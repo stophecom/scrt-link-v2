@@ -34,9 +34,12 @@ test('Add text secret ', async ({ baseURL }) => {
 		}
 	});
 
+	const responsePromise = page.waitForResponse((response) => response.url().includes('?/postSecret'));
+	await expect(page.getByTestId('secret-form-submit')).toBeEnabled();
 	await page.getByTestId('secret-form-submit').click();
+	await responsePromise;
 
-	await expect(page.getByTestId('copy-link')).toBeVisible();
+	await expect(page.getByTestId('copy-link')).toBeVisible({ timeout: 15000 });
 	await page.getByTestId('copy-link').click();
 	secretUrl = await page.evaluate(() => navigator.clipboard.readText());
 
