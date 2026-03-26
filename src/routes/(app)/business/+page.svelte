@@ -132,7 +132,7 @@
 					<Dialog.Header>
 						<Dialog.Title>{m.arable_proof_ladybug_drip()}</Dialog.Title>
 					</Dialog.Header>
-					<CreateSecret form={data.secretForm} user={data.user} hidePrimaryFeatureList />
+					<CreateSecret form={data.secretForm} effectiveTier={data.user?.subscriptionTier} hidePrimaryFeatureList />
 				</Dialog.Content>
 			</Dialog.Root>
 		</div>

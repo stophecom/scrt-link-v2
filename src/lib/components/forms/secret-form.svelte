@@ -16,6 +16,7 @@
 	import { zod4 } from 'sveltekit-superforms/adapters';
 
 	import { page } from '$app/state';
+	import { isOriginalHost } from '$lib/app-routing';
 	import { plausible } from '$lib/client/plausible';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
@@ -23,7 +24,8 @@
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import { getPlanLimits } from '$lib/data/plans';
+	import { type TierOptions } from '$lib/data/enums';
+	import { getUserPlanLimits } from '$lib/data/plans';
 	import type { FileMeta } from '$lib/file-transfer';
 	import { m } from '$lib/paraglide/messages.js';
 	import { type SecretFormSchema, secretFormSchema } from '$lib/validators/formSchemas';
@@ -42,7 +44,7 @@
 
 	export type SecretFormProps = {
 		form: SuperValidated<SecretFormSchema>;
-		user: App.Locals['user'];
+		effectiveTier?: TierOptions | null;
 		secretType: SecretType;
 		successMessage?: string;
 		masterKey: string;
@@ -51,13 +53,15 @@
 		successMessage = $bindable(),
 		masterKey = $bindable(),
 		form: formProp,
-		user,
+		effectiveTier,
 		secretType
 	}: SecretFormProps = $props();
 
 	let neogramDestructionTimer = $state(5);
 
-	let planLimits = $derived(getPlanLimits(page.url.host, user?.subscriptionTier));
+	let isLoggedIn = $derived(!!effectiveTier);
+	let isWhiteLabel = $derived(!isOriginalHost(page.url.host));
+	let planLimits = $derived(getUserPlanLimits(effectiveTier));
 
 	const form = superForm(formProp, {
 		validators: zod4(secretFormSchema()),
@@ -101,7 +105,7 @@
 						secretType: secretType,
 						whiteLabelDomain: page.url.host,
 						withPassword: !!$formData.password,
-						subscriptionTier: user?.subscriptionTier || 'none'
+						subscriptionTier: effectiveTier || 'none'
 					}
 				});
 			}
@@ -188,7 +192,7 @@
 					{/if}
 					{#if charactersLeft <= 0 || (secretType === SecretType.NEOGRAM && !planLimits.neogram)}
 						<div class="pt-2">
-							<UpgradeNotice {user} />
+							<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
 						</div>
 					{/if}
 				</div>
@@ -216,7 +220,7 @@
 							</div>
 						{/if}
 					{:else}
-						<UpgradeNotice {user} />
+						<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
 					{/if}
 				</div>
 			</div>
@@ -237,7 +241,7 @@
 							/>
 						</Form.Field>
 					{:else}
-						<UpgradeNotice {user} />
+						<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
 					{/if}
 				</div>
 			</div>
@@ -265,7 +269,7 @@
 				/>
 			</Form.Fieldset>
 
-			{#if user}
+			{#if isLoggedIn}
 				<Form.Field {form} name="publicNote">
 					<Text
 						label={m.only_basic_buzzard_kiss()}
@@ -289,7 +293,7 @@
 			{/if}
 
 			{#if (!planLimits.expirationOptions.length || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}
-				<UpgradeNotice {user} />
+				<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
 			{/if}
 		</div>
 

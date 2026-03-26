@@ -10,7 +10,7 @@
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { privacyFeatures } from '$lib/data/app';
-	import { SecretType } from '$lib/data/enums';
+	import { SecretType, type TierOptions } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 
 	import { getSecretTypes } from '../../data/secretSettings';
@@ -22,7 +22,7 @@
 
 	type Props = {
 		form: SecretFormProps['form'];
-		user: App.Locals['user'];
+		effectiveTier?: TierOptions | null;
 		hidePrimaryFeatureList?: boolean;
 		secretTypes?: SecretType[];
 		cardTitle?: string;
@@ -30,7 +30,7 @@
 	};
 	let {
 		form,
-		user,
+		effectiveTier,
 		hidePrimaryFeatureList = false,
 		secretTypes = [SecretType.TEXT, SecretType.FILE, SecretType.REDIRECT, SecretType.SNAP],
 		cardTitle,
@@ -87,7 +87,7 @@
 	{:else}
 		<Card title={cardTitle}>
 			{#if secretTypes.length === 1}
-				<SecretForm {form} {user} secretType={secretTypes[0]} bind:masterKey bind:successMessage />
+				<SecretForm {form} {effectiveTier} secretType={secretTypes[0]} bind:masterKey bind:successMessage />
 			{:else}
 				<Tabs.Root bind:value={currentTab}>
 					<Tabs.List class="max-w-full overflow-scroll">
@@ -98,7 +98,7 @@
 					<Tabs.Content value={currentTab}>
 						<SecretForm
 							{form}
-							{user}
+							{effectiveTier}
 							secretType={currentTab as SecretType}
 							bind:masterKey
 							bind:successMessage

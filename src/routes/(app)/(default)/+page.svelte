@@ -22,7 +22,7 @@
 
 <Page title={m.lucky_warm_mayfly_engage()} lead={m.aloof_quaint_snail_pave()}>
 	<Container class="mb-12">
-		<CreateSecret form={data.secretForm} user={data.user} />
+		<CreateSecret form={data.secretForm} effectiveTier={data.user?.subscriptionTier} />
 	</Container>
 	<Section title={m.full_minor_fireant_accept()} lead={m.dirty_bright_robin_earn()}>
 		<HowItWorks />

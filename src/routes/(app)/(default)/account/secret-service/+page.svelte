@@ -26,7 +26,7 @@
 			whiteLabelDomain={data.whiteLabelDomain}
 		/>
 	{:else}
-		<UpgradeNotice user={data.user} class="mb-6" />
+		<UpgradeNotice tier={data.user?.subscriptionTier} class="mb-6" />
 
 		<Button href={localizeHref('/business')}>{m.fit_ok_worm_lead()}</Button>
 		<Button variant="outline" target="_blank" href={whiteLabelDemoWebsite}

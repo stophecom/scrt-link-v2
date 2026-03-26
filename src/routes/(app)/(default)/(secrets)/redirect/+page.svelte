@@ -17,6 +17,6 @@
 	metaKeywords={m.tiny_watery_panda_hike()}
 >
 	<Container>
-		<CreateSecret form={data.secretForm} user={data.user} secretTypes={[SecretType.REDIRECT]} />
+		<CreateSecret form={data.secretForm} effectiveTier={data.user?.subscriptionTier} secretTypes={[SecretType.REDIRECT]} />
 	</Container>
 </Page>

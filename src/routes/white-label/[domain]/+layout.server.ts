@@ -1,7 +1,10 @@
 import { error } from '@sveltejs/kit';
 
 import { PUBLIC_IMGIX_CDN_URL } from '$env/static/public';
-import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
+import {
+	getWhiteLabelSiteByHost,
+	getWhiteLabelSiteOwnerTier
+} from '$lib/server/whiteLabelSite';
 import type { Theme } from '$lib/types';
 
 import type { LayoutServerLoad } from './$types';
@@ -14,6 +17,7 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 	}
 
 	const { name, logo, logoDarkMode, appIcon, ogImage, theme } = result;
+	const ownerTier = await getWhiteLabelSiteOwnerTier(result.userId);
 
 	const getImageUrl = (src: string | null) =>
 		src ? `https://${PUBLIC_IMGIX_CDN_URL}/${src}` : undefined;
@@ -23,6 +27,7 @@ export const load: LayoutServerLoad = async ({ params, locals }) => {
 
 	return {
 		user: locals.user,
+		ownerTier,
 		domain: params.domain,
 		name,
 		appIcon: getImageUrl(appIcon),

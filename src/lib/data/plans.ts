@@ -1,6 +1,5 @@
 import { Factory, Plane, Rocket, Send } from '@lucide/svelte';
 
-import { isOriginalHost } from '$lib/app-routing';
 import { SecretType, TierOptions } from '$lib/data/enums';
 import { GB, MB } from '$lib/data/units';
 import { formatBytes } from '$lib/i18n';
@@ -97,14 +96,14 @@ const plans = () => [
 		}
 	},
 	{
-		name: TierOptions.SECRET_SERVICE, // Limits apply to owner, contents apply to public (see below in getPlanLimits). @todo refactor this.
+		name: TierOptions.SECRET_SERVICE, // Limits apply to owner and org members on white-label sites.
 		icon: Factory,
 		title: m.muddy_any_tapir_roar(),
 		contents: [
 			m.aloof_zany_cheetah_greet(),
 			m.proud_cool_lemur_commend({ amount: 30 }),
 			m.formal_mealy_chipmunk_advise(),
-			m.new_still_dingo_create({ limit: formatBytes(100 * MB) }),
+			m.new_still_dingo_create({ limit: formatBytes(100 * GB) }),
 			m.ideal_low_mouse_splash(),
 			m.active_mellow_swan_list({ amount: 7 }),
 			m.inner_fun_mink_push()
@@ -146,26 +145,11 @@ export const getUserPlanLimits = (tier?: TierOptions | null) => {
 	return limits;
 };
 
+/**
+ * @deprecated Use `getUserPlanLimits(effectiveTier)` directly instead.
+ * The caller is responsible for determining the effective tier
+ * (e.g. the owner's tier for org members on white-label sites).
+ */
 export const getPlanLimits = (host: string, tier?: TierOptions | null) => {
-	const isWhiteLabel = !isOriginalHost(host);
-
-	// We make sure the plan limits for white-label prevent the display of UpgradeNotice within secret-form.
-	// This is a workaround.
-	// @todo We should make this less error-prone for the future.
-	if (isWhiteLabel) {
-		return {
-			[SecretType.TEXT]: 100_000,
-			[SecretType.FILE]: 100 * MB,
-			[SecretType.REDIRECT]: true,
-			[SecretType.SNAP]: true,
-			[SecretType.NEOGRAM]: true,
-			apiAccess: false,
-			passwordAllowed: true,
-			readReceiptsAllowed: false,
-			expirationOptions: expiresInOptions,
-			whiteLabel: false
-		};
-	} else {
-		return getUserPlanLimits(tier);
-	}
+	return getUserPlanLimits(tier);
 };
