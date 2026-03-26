@@ -144,12 +144,3 @@ export const getUserPlanLimits = (tier?: TierOptions | null) => {
 	}
 	return limits;
 };
-
-/**
- * @deprecated Use `getUserPlanLimits(effectiveTier)` directly instead.
- * The caller is responsible for determining the effective tier
- * (e.g. the owner's tier for org members on white-label sites).
- */
-export const getPlanLimits = (host: string, tier?: TierOptions | null) => {
-	return getUserPlanLimits(tier);
-};
