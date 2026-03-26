@@ -87,7 +87,13 @@
 	{:else}
 		<Card title={cardTitle}>
 			{#if secretTypes.length === 1}
-				<SecretForm {form} {effectiveTier} secretType={secretTypes[0]} bind:masterKey bind:successMessage />
+				<SecretForm
+					{form}
+					{effectiveTier}
+					secretType={secretTypes[0]}
+					bind:masterKey
+					bind:successMessage
+				/>
 			{:else}
 				<Tabs.Root bind:value={currentTab}>
 					<Tabs.List class="max-w-full overflow-scroll">

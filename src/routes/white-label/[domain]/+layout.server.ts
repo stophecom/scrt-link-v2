@@ -1,10 +1,7 @@
 import { error } from '@sveltejs/kit';
 
 import { PUBLIC_IMGIX_CDN_URL } from '$env/static/public';
-import {
-	getWhiteLabelSiteByHost,
-	getWhiteLabelSiteOwnerTier
-} from '$lib/server/whiteLabelSite';
+import { getWhiteLabelSiteByHost, getWhiteLabelSiteOwnerTier } from '$lib/server/whiteLabelSite';
 import type { Theme } from '$lib/types';
 
 import type { LayoutServerLoad } from './$types';

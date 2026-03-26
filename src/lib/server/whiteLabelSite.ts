@@ -34,9 +34,7 @@ export const getWhiteLabelSiteById = async (id: string) => {
 	return whiteLabelResult;
 };
 
-export const getWhiteLabelSiteOwnerTier = async (
-	ownerUserId: string
-): Promise<TierOptions> => {
+export const getWhiteLabelSiteOwnerTier = async (ownerUserId: string): Promise<TierOptions> => {
 	const [owner] = await db
 		.select({ subscriptionTier: user.subscriptionTier })
 		.from(user)
