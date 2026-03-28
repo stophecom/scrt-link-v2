@@ -53,7 +53,7 @@
 		</Form.Fieldset>
 
 		{#if $formData.readReceiptOption !== 'none' && !planLimits.readReceiptsAllowed}
-			<UpgradeNotice {user} />
+			<UpgradeNotice tier={user?.subscriptionTier} />
 		{/if}
 
 		{#if $formData.readReceiptOption === 'email'}

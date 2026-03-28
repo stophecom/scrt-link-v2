@@ -1,9 +1,10 @@
 import { eq } from 'drizzle-orm';
 
 import { isOriginalHost } from '$lib/app-routing';
+import { TierOptions } from '$lib/data/enums';
 
 import { db } from './db';
-import { whiteLabelSite } from './db/schema';
+import { user, whiteLabelSite } from './db/schema';
 import { getMembersByOrganizationId } from './organization';
 
 export const getWhiteLabelSiteByHost = async (host: string) => {
@@ -31,6 +32,15 @@ export const getWhiteLabelSiteById = async (id: string) => {
 		.where(eq(whiteLabelSite.id, id));
 
 	return whiteLabelResult;
+};
+
+export const getWhiteLabelSiteOwnerTier = async (ownerUserId: string): Promise<TierOptions> => {
+	const [owner] = await db
+		.select({ subscriptionTier: user.subscriptionTier })
+		.from(user)
+		.where(eq(user.id, ownerUserId));
+
+	return owner?.subscriptionTier ?? TierOptions.CONFIDENTIAL;
 };
 
 export const checkIsUserAllowedOnWhiteLabelSite = async (host: string, userId: string) => {
