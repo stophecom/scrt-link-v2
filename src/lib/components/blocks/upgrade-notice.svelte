@@ -9,16 +9,22 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	type Props = {
-		user?: App.Locals['user'];
+		tier?: TierOptions | null;
 		upgradeDescription?: string;
+		isWhiteLabel?: boolean;
 	};
-	let { user, upgradeDescription, ...rest }: Props & SvelteHTMLElements['div'] = $props();
+	let {
+		tier,
+		upgradeDescription,
+		isWhiteLabel = false,
+		...rest
+	}: Props & SvelteHTMLElements['div'] = $props();
 
 	// Defaults
 	let description = $derived(upgradeDescription || m.cool_spicy_gopher_earn());
 
 	let tierInfo = $derived.by(() => {
-		switch (user?.subscriptionTier) {
+		switch (tier) {
 			case TierOptions.CONFIDENTIAL:
 				return {
 					title: m.fair_red_warbler_bake(),
@@ -44,7 +50,9 @@
 		<p>
 			{description}
 		</p>
-		{#if user}
+		{#if isWhiteLabel}
+			<Link href={localizeHref('/login')}>{m.legal_weak_jay_bless()}</Link>
+		{:else if tier}
 			<Link href={localizeHref('/pricing')}>{tierInfo.link}</Link>
 		{:else}
 			<Link href={localizeHref('/signup')}>{m.loved_legal_clownfish_kiss()}</Link>

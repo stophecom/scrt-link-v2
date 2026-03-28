@@ -69,7 +69,7 @@
 		{/if}
 	</Card>
 {:else}
-	<UpgradeNotice user={data.user} class="mb-6" />
+	<UpgradeNotice tier={data.user?.subscriptionTier} class="mb-6" />
 {/if}
 
 <Dialog.Root bind:open={isConfirmationDialogOpen}>

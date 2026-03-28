@@ -23,7 +23,7 @@
 	<div class="mb-12">
 		<CreateSecret
 			form={data.secretForm}
-			user={data.user}
+			effectiveTier={data.user ? data.ownerTier : null}
 			hidePrimaryFeatureList
 			secretTypes={data.enabledSecretTypes}
 		/>

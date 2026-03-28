@@ -17,6 +17,10 @@
 	metaKeywords={m.spry_few_horse_drum()}
 >
 	<Container>
-		<CreateSecret form={data.secretForm} user={data.user} secretTypes={[SecretType.SNAP]} />
+		<CreateSecret
+			form={data.secretForm}
+			effectiveTier={data.user?.subscriptionTier}
+			secretTypes={[SecretType.SNAP]}
+		/>
 	</Container>
 </Page>
