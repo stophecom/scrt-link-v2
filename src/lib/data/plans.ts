@@ -98,14 +98,12 @@ const plans = () => [
 	{
 		name: TierOptions.SECRET_SERVICE, // Limits apply to owner and org members on white-label sites.
 		icon: Factory,
-		title: m.muddy_any_tapir_roar(),
+		title: m.bold_warm_falcon_soar(),
 		contents: [
 			m.aloof_zany_cheetah_greet(),
 			m.proud_cool_lemur_commend({ amount: 30 }),
-			m.formal_mealy_chipmunk_advise(),
-			m.new_still_dingo_create({ limit: formatBytes(100 * GB) }),
-			m.ideal_low_mouse_splash(),
-			m.active_mellow_swan_list({ amount: 7 }),
+			m.muddy_any_tapir_roar(),
+			m.calm_bright_otter_rest(),
 			m.inner_fun_mink_push()
 		],
 		limits: {
