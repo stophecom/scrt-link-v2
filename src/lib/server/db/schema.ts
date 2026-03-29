@@ -43,6 +43,7 @@ export const user = pgTable('user', {
 	subscriptionTier: subscriptionTier().default(TierOptions.CONFIDENTIAL),
 	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified'),
+	encryptionEnabled: boolean('encryption_enabled').default(false),
 	createdAt: timestamp('created_att', { mode: 'date' }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date' })
 		.notNull()
@@ -65,6 +66,30 @@ export const userSettings = pgTable('user_settings', {
 		.notNull()
 		.unique()
 		.references(() => user.id, { onDelete: 'cascade' })
+});
+
+export const userEncryptionKey = pgTable('user_encryption_key', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	userId: uuid('user_id')
+		.notNull()
+		.unique()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	// PBKDF2 salt for deriving the Password-Derived Key (hex-encoded, 16 bytes)
+	pdkSalt: text('pdk_salt').notNull(),
+	// Stored so we can upgrade iterations per-user without global migration
+	pdkIterations: integer('pdk_iterations').notNull().default(600000),
+	// Master Key encrypted by PDK: base64(IV || ciphertext || authTag)
+	encryptedMasterKey: text('encrypted_master_key').notNull(),
+	// Master Key encrypted by Recovery Key (null until recovery is set up)
+	recoveryEncryptedMasterKey: text('recovery_encrypted_master_key'),
+	// SHA-256 hash of recovery key (for verification during recovery)
+	recoveryKeyHash: text('recovery_key_hash'),
+	// True if user uses a separate encryption passphrase (OAuth users)
+	usesEncryptionPassphrase: boolean('uses_encryption_passphrase').notNull().default(false),
+	createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date' })
+		.notNull()
+		.$onUpdate(() => new Date())
 });
 
 export const secretTypeEnum = pgEnum('secret_type_enum', [
@@ -210,6 +235,7 @@ export const stats = pgTable('stats', {
 });
 
 export type User = typeof user.$inferSelect;
+export type UserEncryptionKey = typeof userEncryptionKey.$inferSelect;
 export type Organization = typeof organization.$inferSelect;
 export type Membership = typeof membership.$inferSelect;
 export type Invite = typeof invite.$inferSelect;
