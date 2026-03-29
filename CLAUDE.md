@@ -107,6 +107,11 @@ Schema changes: edit `schema.ts` then `pnpm run db:push`
 - E2E tests: `e2e/` directory with Playwright
 - CI: GitHub Actions on Vercel preview deployments
 
+## Rules
+
+- **Never modify translation files** (`messages/*.json`) unless explicitly adding new keys to `messages/en.json`. Prettier converts Unicode escapes (`\u00e9`) to UTF-8 characters which creates noisy diffs. Only touch `en.json` for new keys.
+- **Always translate new keys**: After adding keys to `messages/en.json`, run `pnpm machine-translate` to generate translations for all locales, then `pnpm cleanup-translation-keys` to remove unused keys.
+
 ## Environment
 
 Key env vars: `POSTGRES_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `RESEND_API`, `PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`, `PUBLIC_S3_ENDPOINT`, `S3_ACCESS_KEY`

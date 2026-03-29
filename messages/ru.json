@@ -454,9 +454,7 @@
 	"deft_bright_insect_attend": "Прочитать документацию",
 	"honest_quiet_millipede_loop": "Привет, {name}",
 	"watery_caring_crab_trim": "Мой аккаунт",
-	"formal_mealy_chipmunk_advise": "Все типы секретов",
 	"mild_away_warthog_twirl": "Вы можете отменить подписку в любое время. Управляйте ею через [аккаунт](/account).",
-	"ideal_low_mouse_splash": "Дополнительный пароль",
 	"inner_fun_mink_push": "SLA с 99,9% аптаймом",
 	"chunky_raw_osprey_dial": "Компания",
 	"tiny_suave_nils_accept": "Продукт",
@@ -602,5 +600,8 @@
 	"salty_tense_pug_roam": "Участник удален.",
 	"least_maroon_stork_slide": "Участник удален из вашей организации.",
 	"next_keen_sheep_endure": "Неверный запрос.",
-	"east_ago_hedgehog_pause": "Запрещено."
+	"east_ago_hedgehog_pause": "Запрещено.",
+	"fit_ok_worm_lead": "Дополнительная информация",
+	"plain_aloof_gopher_pop": "Успех",
+	"trick_dizzy_bobcat_wish": "Пароль успешно обновлен!"
 }

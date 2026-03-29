@@ -49,7 +49,8 @@ export async function validateSessionToken(token: string) {
 				role: table.user.role,
 				subscriptionTier: table.user.subscriptionTier,
 				picture: table.user.picture,
-				preferences: table.user.preferences
+				preferences: table.user.preferences,
+				encryptionEnabled: table.user.encryptionEnabled
 			},
 			session: table.session
 		})

@@ -454,9 +454,7 @@
 	"deft_bright_insect_attend": "阅读文档",
 	"honest_quiet_millipede_loop": "你好，{name}",
 	"watery_caring_crab_trim": "我的账户",
-	"formal_mealy_chipmunk_advise": "所有秘密类型",
 	"mild_away_warthog_twirl": "您可以随时取消订阅，无需解释。只需登录并通过[账户页面](/account)管理订阅。",
-	"ideal_low_mouse_splash": "附加密码",
 	"inner_fun_mink_push": "99.9% 正常运行时间SLA",
 	"chunky_raw_osprey_dial": "公司",
 	"tiny_suave_nils_accept": "产品",
@@ -602,5 +600,8 @@
 	"salty_tense_pug_roam": "已移除成员。",
 	"least_maroon_stork_slide": "该成员已从您的组织中移除。",
 	"next_keen_sheep_endure": "无效请求。",
-	"east_ago_hedgehog_pause": "不允许。"
+	"east_ago_hedgehog_pause": "不允许。",
+	"fit_ok_worm_lead": "更多信息",
+	"plain_aloof_gopher_pop": "成功",
+	"trick_dizzy_bobcat_wish": "密码更新成功！"
 }
