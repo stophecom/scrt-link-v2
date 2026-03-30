@@ -1,5 +1,8 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 
+// Load .env file for E2E credentials and config
+process.loadEnvFile('.env');
+
 // Run local tests headed: PUBLIC_ENV=development npm run test -- --headed
 const isLocalTest = process.env.PUBLIC_ENV === 'development';
 
