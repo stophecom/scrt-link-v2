@@ -29,6 +29,7 @@ const config = {
 };
 export default defineConfig({
 	server: {
+		allowedHosts: ['wl.scrt.link'], // To test multi-tenant setup. Add to /etc/hosts locally
 		fs: {
 			allow: [
 				// Search for the workspace root (where pnpm-workspace.yaml is)
