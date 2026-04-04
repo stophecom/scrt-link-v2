@@ -48,7 +48,6 @@
 	let encError = $state<App.Superforms.Message | undefined>(undefined);
 
 	// Crypto values generated during step transition, bound to hidden inputs
-	let userPassword = $state('');
 	let generatedPdkSalt = $state('');
 	let generatedPdkIterations = $state('600000');
 	let generatedEncryptedMasterKey = $state('');
@@ -62,7 +61,6 @@
 		try {
 			const setup = await generateEncryptionSetup(password);
 
-			userPassword = password;
 			generatedPdkSalt = setup.pdkSalt;
 			generatedPdkIterations = String(setup.pdkIterations);
 			generatedEncryptedMasterKey = setup.encryptedMasterKey;
@@ -81,9 +79,6 @@
 	// --- Step 1: Password verification form ---
 	const pwForm = superForm(passwordFormData, {
 		validators: zod4Client(passwordFormSchema()),
-		onSubmit: async () => {
-			userPassword = $pwFormData.password;
-		},
 		onUpdated: async ({ form }) => {
 			if (form.message?.status === 'success' && !form.errors.password) {
 				const ok = await runEncryptionSetup(form.data.password);
@@ -289,7 +284,6 @@
 						<span class="text-sm">I have saved my recovery key in a safe place</span>
 					</Checkbox.Root>
 
-					<input type="hidden" name="password" value={userPassword} />
 					<input type="hidden" name="pdkSalt" value={generatedPdkSalt} />
 					<input type="hidden" name="pdkIterations" value={generatedPdkIterations} />
 					<input type="hidden" name="encryptedMasterKey" value={generatedEncryptedMasterKey} />

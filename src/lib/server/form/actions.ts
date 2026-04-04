@@ -1,6 +1,5 @@
-import { timingSafeEqual } from 'crypto';
-
 import { type Action, error, fail, isRedirect } from '@sveltejs/kit';
+import { timingSafeEqual } from 'crypto';
 import { and, desc, eq } from 'drizzle-orm';
 import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
@@ -684,12 +683,14 @@ export const loginWithPassword: Action = async (event) => {
 	try {
 		const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
 
+		if (!result?.passwordHash) {
+			// Normalize timing: run a dummy scrypt to prevent user-enumeration via response time
+			await verifyPassword(password, 'deadbeefdeadbeefdeadbeefdeadbeef:64:' + '00'.repeat(64));
+			throw Error('Invalid credentials.');
+		}
+
 		// Restrict login to white-label
 		await checkIsUserAllowedOnWhiteLabelSite(event.url.hostname, result.id);
-
-		if (!result.passwordHash) {
-			throw Error('No password hash in DB.');
-		}
 
 		if (!result.emailVerified) {
 			throw Error('Email not verified.');
@@ -915,6 +916,8 @@ export const setPassword: Action = async (event) => {
 	if (user.encryptionEnabled) {
 		const form = await superValidate(event.request, zod4(passwordChangeWithEncryptionFormSchema()));
 
+		if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
 		if (!form.valid) {
 			return fail(400, { form });
 		}
@@ -931,7 +934,7 @@ export const setPassword: Action = async (event) => {
 			} else {
 				// No currentPassword — only allow if recovery flow was verified server-side
 				const recoveryVerified = event.cookies.get('recovery-verified');
-				if (!recoveryVerified) {
+				if (!recoveryVerified || recoveryVerified !== user.id) {
 					return message(
 						form,
 						{
@@ -979,6 +982,9 @@ export const setPassword: Action = async (event) => {
 
 	// Original flow for users without encryption
 	const passwordForm = await superValidate(event.request, zod4(passwordFormSchema()));
+
+	if (await isRateLimited(event))
+		return message(passwordForm, rateLimitErrorMessage(), { status: 429 });
 
 	if (!passwordForm.valid) {
 		return fail(400, { form: passwordForm });
@@ -1331,6 +1337,16 @@ export const verifyCurrentPassword: Action = async (event) => {
 		return { form };
 	}
 
+	// Set a short-lived cookie proving password was verified.
+	// Checked by setupRecoveryKey and setupEncryptionKeys.
+	event.cookies.set('password-verified', user.id, {
+		path: '/',
+		httpOnly: true,
+		secure: !dev,
+		sameSite: 'strict',
+		maxAge: 60 * 5 // 5 minutes
+	});
+
 	return message(form, { status: 'success', title: 'Password verified' });
 };
 
@@ -1348,8 +1364,23 @@ export const setupEncryptionKeys: Action = async (event) => {
 	}
 
 	const user = event.locals.user;
+
+	// Require recent password verification via cookie (set by verifyCurrentPassword)
+	const passwordVerified = event.cookies.get('password-verified');
+	if (!passwordVerified || passwordVerified !== user.id) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Error',
+				description: 'Password verification required.'
+			},
+			{ status: 401 }
+		);
+	}
+	event.cookies.delete('password-verified', { path: '/' });
+
 	const {
-		password,
 		pdkSalt,
 		pdkIterations,
 		encryptedMasterKey,
@@ -1358,12 +1389,6 @@ export const setupEncryptionKeys: Action = async (event) => {
 	} = form.data;
 
 	try {
-		// Verify password before setting up encryption
-		if (!(await verifyUserPassword(user.id, password))) {
-			setError(form, 'password', m.petty_flaky_lynx_boil());
-			return { form };
-		}
-
 		// Check if encryption is already set up
 		const existing = await getUserEncryptionKeyStore(user.id);
 
@@ -1415,6 +1440,22 @@ export const setupRecoveryKey: Action = async (event) => {
 	}
 
 	const user = event.locals.user;
+
+	// Require recent password verification
+	const passwordVerified = event.cookies.get('password-verified');
+	if (!passwordVerified || passwordVerified !== user.id) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: 'Error',
+				description: 'Password verification required. Please re-enter your password.'
+			},
+			{ status: 401 }
+		);
+	}
+	event.cookies.delete('password-verified', { path: '/' });
+
 	const { recoveryEncryptedMasterKey, recoveryKeyHash } = form.data;
 
 	try {
@@ -1486,7 +1527,7 @@ export const verifyRecoveryKey: Action = async (event) => {
 
 		// Set a short-lived cookie to prove recovery was verified server-side.
 		// This is checked by setPassword to allow skipping currentPassword.
-		event.cookies.set('recovery-verified', '1', {
+		event.cookies.set('recovery-verified', user.id, {
 			path: '/',
 			httpOnly: true,
 			secure: !dev,

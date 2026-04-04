@@ -199,10 +199,6 @@ export const apiKeyFormSchema = () =>
 
 export const encryptionSetupFormSchema = () =>
 	z.object({
-		password: z
-			.string()
-			.min(8, m.aloof_careful_trout_dine({ number: 8 }))
-			.max(255),
 		pdkSalt: z.string().length(32), // 16 bytes hex-encoded
 		pdkIterations: z.coerce.number().int().min(100000),
 		encryptedMasterKey: z.string().min(1),
