@@ -2,7 +2,7 @@ import { sha256Hash } from '@scrt-link/core';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-import { isOriginalHost } from '$lib/app-routing';
+import { isOriginalHostname } from '$lib/app-routing';
 import { db } from '$lib/server/db';
 import { apiKey } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/schema';
@@ -73,7 +73,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	}
 
 	let whiteLabelSiteId;
-	if (host && !isOriginalHost(host)) {
+	if (host && !isOriginalHostname(host)) {
 		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
 		whiteLabelSiteId = whiteLabelSiteResult.id;
 
