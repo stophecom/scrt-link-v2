@@ -4,6 +4,7 @@ import { Google } from 'arctic';
 import { eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
+import { dev } from '$app/environment';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
@@ -97,7 +98,10 @@ export async function invalidateSession(sessionId: string) {
 export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date) {
 	event.cookies.set(sessionCookieName, token, {
 		expires: expiresAt,
-		path: '/'
+		path: '/',
+		httpOnly: true,
+		secure: !dev,
+		sameSite: 'lax'
 	});
 }
 
