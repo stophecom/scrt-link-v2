@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const secrets = await fetchSecrets({ userId: user.id, host: url.host });
+	const secrets = await fetchSecrets({ userId: user.id, host: url.hostname });
 	const secretForm = await secretFormValidator();
 
 	return {
