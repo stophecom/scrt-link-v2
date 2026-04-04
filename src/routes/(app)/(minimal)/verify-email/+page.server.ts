@@ -4,12 +4,12 @@ import {
 	emailVerificationFormValidator,
 	resendEmailVerificationFormValidator
 } from '$lib/server/form/validators';
-import { limiter } from '$lib/server/rate-limit';
+import { rateLimiterPreflight } from '$lib/server/rate-limit';
 
 import type { Actions, RequestEvent } from './$types';
 
 export async function load(event: RequestEvent) {
-	await limiter.cookieLimiter?.preflight(event);
+	await rateLimiterPreflight(event);
 	const email = event.cookies.get('email_verification');
 
 	// Already logged in

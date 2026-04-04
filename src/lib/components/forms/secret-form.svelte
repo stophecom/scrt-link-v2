@@ -16,7 +16,7 @@
 	import { zod4 } from 'sveltekit-superforms/adapters';
 
 	import { page } from '$app/state';
-	import { isOriginalHost } from '$lib/app-routing';
+	import { isOriginalHostname } from '$lib/app-routing';
 	import { plausible } from '$lib/client/plausible';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
@@ -60,7 +60,7 @@
 	let neogramDestructionTimer = $state(5);
 
 	let isLoggedIn = $derived(!!effectiveTier);
-	let isWhiteLabel = $derived(!isOriginalHost(page.url.host));
+	let isWhiteLabel = $derived(!isOriginalHostname(page.url.hostname));
 	let planLimits = $derived(getUserPlanLimits(effectiveTier));
 
 	const form = superForm(formProp, {

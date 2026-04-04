@@ -1,13 +1,14 @@
 import { redirectLocalized } from '$lib/i18n';
 import { loginWithPassword } from '$lib/server/form/actions';
 import { loginPasswordFormValidator } from '$lib/server/form/validators';
-import { limiter } from '$lib/server/rate-limit';
+import { rateLimiterPreflight } from '$lib/server/rate-limit';
 
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
-	const email = event.cookies.get('email_verification');
-	await limiter.cookieLimiter?.preflight(event);
+	const email = event.cookies.get('email_verification') || '';
+
+	await rateLimiterPreflight(event);
 
 	if (event.locals.user) {
 		return redirectLocalized(307, '/account');
@@ -18,12 +19,8 @@ export const load: PageServerLoad = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const defaultValues = {
-		email
-	};
-
 	return {
-		passwordForm: await loginPasswordFormValidator(defaultValues)
+		passwordForm: await loginPasswordFormValidator({ email })
 	};
 };
 

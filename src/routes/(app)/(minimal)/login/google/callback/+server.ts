@@ -31,7 +31,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		const googleUser: UserInfoResponse = await response.json();
 
 		// Create or update user
-		const { userId, name } = await createOrUpdateUser({
+		const { userId, name, encryptionEnabled, passwordHash } = await createOrUpdateUser({
 			email: googleUser.email,
 			emailVerified: googleUser.email_verified || false,
 			googleId: googleUser.sub,
@@ -44,10 +44,23 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		// Create session
 		await auth.createSession(event, userId);
 
+		// Determine redirect based on encryption status
+		let location = '/account';
+		if (!encryptionEnabled && !passwordHash) {
+			// OAuth user without password — need to set password before encryption setup
+			location = '/set-password';
+		} else if (!encryptionEnabled) {
+			// Has password but no encryption — go to encryption setup
+			location = '/encryption';
+		} else if (encryptionEnabled) {
+			// Encryption enabled — need to unlock MK with password
+			location = '/encryption';
+		}
+
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: '/account'
+				Location: location
 			}
 		});
 	} catch (e) {
