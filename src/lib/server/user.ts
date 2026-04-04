@@ -81,7 +81,9 @@ export const createOrUpdateUser = async ({
 }: PartialExcept<User, 'email'>) => {
 	// Only include explicitly provided fields in the update set,
 	// so we don't overwrite existing values (e.g. name) with null.
-	const updateSet: Record<string, unknown> = { emailVerified };
+	const updateSet: Partial<Pick<User, 'emailVerified' | 'googleId' | 'name' | 'picture'>> = {
+		emailVerified
+	};
 	if (googleId !== undefined) updateSet.googleId = googleId;
 	if (name !== undefined) updateSet.name = name;
 	if (picture !== undefined) updateSet.picture = picture;

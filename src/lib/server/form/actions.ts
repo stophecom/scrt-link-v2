@@ -1,3 +1,5 @@
+import { timingSafeEqual } from 'crypto';
+
 import { type Action, error, fail, isRedirect } from '@sveltejs/kit';
 import { and, desc, eq } from 'drizzle-orm';
 import type { PostgresError } from 'postgres';
@@ -920,12 +922,28 @@ export const setPassword: Action = async (event) => {
 		const { currentPassword, password, pdkSalt, encryptedMasterKey } = form.data;
 
 		try {
-			// Verify current password (skipped in recovery flow where MK is already unlocked client-side)
+			// Verify current password, or check recovery-verified cookie for recovery flow
 			if (currentPassword) {
 				if (!(await verifyUserPassword(user.id, currentPassword))) {
 					setError(form, 'currentPassword', m.petty_flaky_lynx_boil());
 					return { form };
 				}
+			} else {
+				// No currentPassword — only allow if recovery flow was verified server-side
+				const recoveryVerified = event.cookies.get('recovery-verified');
+				if (!recoveryVerified) {
+					return message(
+						form,
+						{
+							status: 'error',
+							title: 'Error',
+							description: 'Current password is required.'
+						},
+						{ status: 401 }
+					);
+				}
+				// Consume the cookie so it can't be reused
+				event.cookies.delete('recovery-verified', { path: '/' });
 			}
 
 			const hashedPassword = await scryptHash(password);
@@ -1323,6 +1341,8 @@ export const setupEncryptionKeys: Action = async (event) => {
 
 	const form = await superValidate(event.request, zod4(encryptionSetupFormSchema()));
 
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
 	if (!form.valid) {
 		return fail(400, { form });
 	}
@@ -1447,7 +1467,10 @@ export const verifyRecoveryKey: Action = async (event) => {
 			);
 		}
 
-		const hashMatch = keyStore.recoveryKeyHash === recoveryKeyHash;
+		const storedBuf = Buffer.from(keyStore.recoveryKeyHash, 'utf8');
+		const suppliedBuf = Buffer.from(recoveryKeyHash, 'utf8');
+		const hashMatch =
+			storedBuf.length === suppliedBuf.length && timingSafeEqual(storedBuf, suppliedBuf);
 
 		if (!hashMatch) {
 			return message(
@@ -1460,6 +1483,16 @@ export const verifyRecoveryKey: Action = async (event) => {
 				{ status: 401 }
 			);
 		}
+
+		// Set a short-lived cookie to prove recovery was verified server-side.
+		// This is checked by setPassword to allow skipping currentPassword.
+		event.cookies.set('recovery-verified', '1', {
+			path: '/',
+			httpOnly: true,
+			secure: !dev,
+			sameSite: 'strict',
+			maxAge: 60 * 5 // 5 minutes
+		});
 
 		return {
 			form,

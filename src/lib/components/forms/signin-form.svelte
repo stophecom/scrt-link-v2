@@ -30,8 +30,6 @@
 				if (result.data.keyStore) {
 					// Encryption enabled: derive PDK, unwrap MK, then navigate
 					try {
-						console.log('formdata', $formData.password);
-						console.log('pdk', result.data.keyStore);
 						const { pdkSalt, pdkIterations, encryptedMasterKey } = result.data.keyStore;
 						const pdk = await derivePDK($formData.password, pdkSalt, pdkIterations);
 						const masterKey = await unwrapMasterKey(encryptedMasterKey, pdk);

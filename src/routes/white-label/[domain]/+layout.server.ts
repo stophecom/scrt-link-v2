@@ -46,7 +46,6 @@ export const load: LayoutServerLoad = async ({ locals, url, params }) => {
 		);
 
 		if (!isExcluded) {
-			console.error('is excluded');
 			if (!user.hasPassword) {
 				redirect(302, '/set-password');
 			} else {
