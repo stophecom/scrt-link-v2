@@ -264,6 +264,67 @@ export async function unwrapMasterKeyWithRecovery(
 	);
 }
 
+// --- High-level orchestration ---
+
+export interface EncryptionSetupResult {
+	pdkSalt: string;
+	pdkIterations: number;
+	encryptedMasterKey: string;
+	recoveryEncryptedMasterKey: string;
+	recoveryKeyHash: string;
+	recoveryCode: string;
+	masterKey: CryptoKey;
+}
+
+/**
+ * Generate all crypto artifacts needed for initial encryption setup.
+ * Creates MK, wraps it with password-derived PDK, generates recovery key and wraps MK with it.
+ */
+export async function generateEncryptionSetup(password: string): Promise<EncryptionSetupResult> {
+	const pdkSalt = generatePdkSalt();
+	const pdkIterations = DEFAULT_PDK_ITERATIONS;
+	const pdk = await derivePDK(password, pdkSalt, pdkIterations);
+
+	const masterKey = await generateMasterKey();
+	const encryptedMasterKey = await wrapMasterKey(masterKey, pdk);
+
+	const { rawBytes, displayCode } = generateRecoveryKey();
+	const recoveryKeyHash = await hashRecoveryKey(rawBytes);
+	const recoveryEncryptedMasterKey = await wrapMasterKeyWithRecovery(masterKey, rawBytes);
+
+	return {
+		pdkSalt,
+		pdkIterations,
+		encryptedMasterKey,
+		recoveryEncryptedMasterKey,
+		recoveryKeyHash,
+		recoveryCode: displayCode,
+		masterKey
+	};
+}
+
+export interface RecoveryKeyResult {
+	recoveryEncryptedMasterKey: string;
+	recoveryKeyHash: string;
+	recoveryCode: string;
+}
+
+/**
+ * Generate a new recovery key for an existing master key.
+ * Used when regenerating the recovery key.
+ */
+export async function generateNewRecoveryKey(masterKey: CryptoKey): Promise<RecoveryKeyResult> {
+	const { rawBytes, displayCode } = generateRecoveryKey();
+	const recoveryKeyHash = await hashRecoveryKey(rawBytes);
+	const recoveryEncryptedMasterKey = await wrapMasterKeyWithRecovery(masterKey, rawBytes);
+
+	return {
+		recoveryEncryptedMasterKey,
+		recoveryKeyHash,
+		recoveryCode: displayCode
+	};
+}
+
 // --- Helpers ---
 
 function hexToBytes(hex: string): Uint8Array {
