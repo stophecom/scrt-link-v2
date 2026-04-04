@@ -19,6 +19,12 @@ export const limiter = new RateLimiter({
 	}
 });
 
+/** Set up rate limiter cookie. No-op in development. Call in load functions. */
+export async function rateLimiterPreflight(event: RequestEvent): Promise<void> {
+	if (dev) return;
+	await limiter.cookieLimiter?.preflight(event);
+}
+
 /** Returns true when the request should be blocked. Always false in development. */
 export async function isRateLimited(event: RequestEvent): Promise<boolean> {
 	if (dev) return false;
