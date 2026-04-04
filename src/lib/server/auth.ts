@@ -1,7 +1,7 @@
 import { sha256Hash } from '@scrt-link/core';
 import type { RequestEvent } from '@sveltejs/kit';
 import { Google } from 'arctic';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
@@ -50,7 +50,8 @@ export async function validateSessionToken(token: string) {
 				subscriptionTier: table.user.subscriptionTier,
 				picture: table.user.picture,
 				preferences: table.user.preferences,
-				encryptionEnabled: table.user.encryptionEnabled
+				encryptionEnabled: table.user.encryptionEnabled,
+				hasPassword: sql<boolean>`${table.user.passwordHash} IS NOT NULL`.as('has_password')
 			},
 			session: table.session
 		})
