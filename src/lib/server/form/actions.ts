@@ -5,7 +5,6 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { dev } from '$app/environment';
 import { isOriginalHostname } from '$lib/app-routing';
 import {
 	MAX_API_KEYS_PER_USER,
@@ -56,6 +55,14 @@ import {
 	whiteLabelSiteSchema
 } from '$lib/validators/formSchemas';
 
+import {
+	consumeVerificationCookie,
+	deleteEmailVerificationCookie,
+	PASSWORD_VERIFIED_COOKIE,
+	RECOVERY_VERIFIED_COOKIE,
+	setEmailVerificationCookie,
+	setVerificationCookie
+} from '../cookies';
 import {
 	createEmailVerificationRequest,
 	createEmailVerificationRequestAndRedirect,
@@ -661,10 +668,7 @@ export const loginWithEmail: Action = async (event) => {
 		);
 	}
 
-	event.cookies.set('email_verification', email, {
-		path: '/',
-		secure: !dev
-	});
+	setEmailVerificationCookie(event, email);
 
 	return redirectLocalized(303, '/login/password');
 };
@@ -685,7 +689,7 @@ export const loginWithPassword: Action = async (event) => {
 
 		if (!result?.passwordHash) {
 			// Normalize timing: run a dummy scrypt to prevent user-enumeration via response time
-			await verifyPassword(password, 'deadbeefdeadbeefdeadbeefdeadbeef:64:' + '00'.repeat(64));
+			await verifyPassword(password, DUMMY_PASSWORD_HASH);
 			throw Error('Invalid credentials.');
 		}
 
@@ -704,7 +708,7 @@ export const loginWithPassword: Action = async (event) => {
 		// Create session
 		await auth.createSession(event, result.id);
 
-		event.cookies.delete('email_verification', { path: '/' });
+		deleteEmailVerificationCookie(event);
 
 		// If user has encryption enabled, return key store data for client-side key derivation
 		if (result.encryptionEnabled) {
@@ -835,7 +839,7 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 
 		// Cleanup DB and Cookies
 		await deleteEmailVerificationRequests(email);
-		event.cookies.delete('email_verification', { path: '/' });
+		deleteEmailVerificationCookie(event);
 
 		// Check if user has encryption enabled — redirect to recovery flow
 		const [existingUser] = await db
@@ -931,22 +935,12 @@ export const setPassword: Action = async (event) => {
 					setError(form, 'currentPassword', m.petty_flaky_lynx_boil());
 					return { form };
 				}
-			} else {
-				// No currentPassword — only allow if recovery flow was verified server-side
-				const recoveryVerified = event.cookies.get('recovery-verified');
-				if (!recoveryVerified || recoveryVerified !== user.id) {
-					return message(
-						form,
-						{
-							status: 'error',
-							title: 'Error',
-							description: 'Current password is required.'
-						},
-						{ status: 401 }
-					);
-				}
-				// Consume the cookie so it can't be reused
-				event.cookies.delete('recovery-verified', { path: '/' });
+			} else if (!consumeVerificationCookie(event, RECOVERY_VERIFIED_COOKIE, user.id)) {
+				return message(
+					form,
+					{ status: 'error', title: 'Error', description: 'Current password is required.' },
+					{ status: 401 }
+				);
 			}
 
 			const hashedPassword = await scryptHash(password);
@@ -1316,6 +1310,9 @@ export const saveWhiteLabelSite: Action = async (event) => {
 
 // --- Encryption Key Management Actions ---
 
+// Dummy hash for timing normalization when user doesn't exist (prevents user enumeration)
+const DUMMY_PASSWORD_HASH = 'deadbeefdeadbeefdeadbeefdeadbeef:64:' + '00'.repeat(64);
+
 export const verifyCurrentPassword: Action = async (event) => {
 	if (!event.locals.user) {
 		return redirectLocalized(307, '/login');
@@ -1337,15 +1334,7 @@ export const verifyCurrentPassword: Action = async (event) => {
 		return { form };
 	}
 
-	// Set a short-lived cookie proving password was verified.
-	// Checked by setupRecoveryKey and setupEncryptionKeys.
-	event.cookies.set('password-verified', user.id, {
-		path: '/',
-		httpOnly: true,
-		secure: !dev,
-		sameSite: 'strict',
-		maxAge: 60 * 5 // 5 minutes
-	});
+	setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);
 
 	return message(form, { status: 'success', title: 'Password verified' });
 };
@@ -1365,20 +1354,13 @@ export const setupEncryptionKeys: Action = async (event) => {
 
 	const user = event.locals.user;
 
-	// Require recent password verification via cookie (set by verifyCurrentPassword)
-	const passwordVerified = event.cookies.get('password-verified');
-	if (!passwordVerified || passwordVerified !== user.id) {
+	if (!consumeVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id)) {
 		return message(
 			form,
-			{
-				status: 'error',
-				title: 'Error',
-				description: 'Password verification required.'
-			},
+			{ status: 'error', title: 'Error', description: 'Password verification required.' },
 			{ status: 401 }
 		);
 	}
-	event.cookies.delete('password-verified', { path: '/' });
 
 	const {
 		pdkSalt,
@@ -1441,20 +1423,13 @@ export const setupRecoveryKey: Action = async (event) => {
 
 	const user = event.locals.user;
 
-	// Require recent password verification
-	const passwordVerified = event.cookies.get('password-verified');
-	if (!passwordVerified || passwordVerified !== user.id) {
+	if (!consumeVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id)) {
 		return message(
 			form,
-			{
-				status: 'error',
-				title: 'Error',
-				description: 'Password verification required. Please re-enter your password.'
-			},
+			{ status: 'error', title: 'Error', description: 'Password verification required.' },
 			{ status: 401 }
 		);
 	}
-	event.cookies.delete('password-verified', { path: '/' });
 
 	const { recoveryEncryptedMasterKey, recoveryKeyHash } = form.data;
 
@@ -1525,15 +1500,8 @@ export const verifyRecoveryKey: Action = async (event) => {
 			);
 		}
 
-		// Set a short-lived cookie to prove recovery was verified server-side.
-		// This is checked by setPassword to allow skipping currentPassword.
-		event.cookies.set('recovery-verified', user.id, {
-			path: '/',
-			httpOnly: true,
-			secure: !dev,
-			sameSite: 'strict',
-			maxAge: 60 * 5 // 5 minutes
-		});
+		// Prove recovery was verified server-side (checked by setPassword)
+		setVerificationCookie(event, RECOVERY_VERIFIED_COOKIE, user.id);
 
 		return {
 			form,

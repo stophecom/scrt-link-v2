@@ -3,6 +3,7 @@ import { redirect } from '@sveltejs/kit';
 import { generateCodeVerifier, generateState } from 'arctic';
 
 import { google } from '$lib/server/auth';
+import { setGoogleOAuthCookies } from '$lib/server/cookies';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const state = generateState();
@@ -10,15 +11,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	const scopes = ['openid', 'profile', 'email'];
 	const url = google.createAuthorizationURL(state, codeVerifier, scopes);
 
-	event.cookies.set('google_oauth_state', state, {
-		path: '/',
-		maxAge: 60 * 10
-	});
-
-	event.cookies.set('google_code_verifier', codeVerifier, {
-		path: '/',
-		maxAge: 60 * 10 // 10 min
-	});
+	setGoogleOAuthCookies(event, state, codeVerifier);
 
 	redirect(307, url.toString());
 }

@@ -3,11 +3,11 @@ import { ArcticFetchError, OAuth2RequestError, type OAuth2Tokens } from 'arctic'
 
 import * as auth from '$lib/server/auth';
 import { google } from '$lib/server/auth';
+import { getGoogleOAuthCookies } from '$lib/server/cookies';
 import { createOrUpdateUser, welcomeNewUser } from '$lib/server/user';
 
 export async function GET(event: RequestEvent): Promise<Response> {
-	const storedState = event.cookies.get('google_oauth_state') ?? null;
-	const codeVerifier = event.cookies.get('google_code_verifier') ?? null;
+	const { state: storedState, codeVerifier } = getGoogleOAuthCookies(event);
 	const code = event.url.searchParams.get('code');
 	const state = event.url.searchParams.get('state');
 

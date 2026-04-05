@@ -1,4 +1,5 @@
 import { redirectLocalized } from '$lib/i18n';
+import { getEmailVerificationCookie } from '$lib/server/cookies';
 import { resendEmailVerificationCode, verifyEmailVerificationCode } from '$lib/server/form/actions';
 import {
 	emailVerificationFormValidator,
@@ -10,7 +11,7 @@ import type { Actions, RequestEvent } from './$types';
 
 export async function load(event: RequestEvent) {
 	await rateLimiterPreflight(event);
-	const email = event.cookies.get('email_verification');
+	const email = getEmailVerificationCookie(event);
 
 	// Already logged in
 	if (event.locals.user) {

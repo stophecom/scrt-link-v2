@@ -1,11 +1,11 @@
 import { type Action, error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-import { dev } from '$app/environment';
 import { redirectLocalized } from '$lib/i18n';
 import { type EmailVerificationRequest, emailVerificationRequest } from '$lib/server/db/schema';
 
 import { generateOtp, scryptHash } from '../crypto';
+import { setEmailVerificationCookie } from './cookies';
 import { db } from './db';
 import { sendVerificationEmail } from './transactional-email';
 
@@ -13,10 +13,7 @@ export const createEmailVerificationRequestAndRedirect = async (
 	event: Parameters<Action>[0],
 	email: string
 ) => {
-	event.cookies.set('email_verification', email, {
-		path: '/',
-		secure: !dev
-	});
+	setEmailVerificationCookie(event, email);
 
 	await createEmailVerificationRequest(email);
 	return redirectLocalized(303, '/verify-email');
