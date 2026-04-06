@@ -967,6 +967,9 @@ export const setPassword: Action = async (event) => {
 			error(500, 'Failed to set password.');
 		}
 
+		// Password was just set/changed — grant verification for encryption setup
+		setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);
+
 		return message(form, {
 			status: 'success',
 			title: m.flat_moving_finch_assure(),
@@ -997,6 +1000,9 @@ export const setPassword: Action = async (event) => {
 		console.error(e);
 		error(500, 'Failed to set password.');
 	}
+
+	// Password was just set — grant verification for encryption setup
+	setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);
 
 	return message(passwordForm, {
 		status: 'success',
