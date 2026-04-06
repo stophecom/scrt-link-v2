@@ -199,7 +199,10 @@
 			</div>
 
 			<p class="text-muted-foreground text-center text-xs">
-				<a href={localizeHref('/recover-encryption')} class="text-primary hover:text-primary/80 underline">
+				<a
+					href={localizeHref('/recover-encryption')}
+					class="text-primary hover:text-primary/80 underline"
+				>
 					Forgot your password? Use recovery key
 				</a>
 			</p>
