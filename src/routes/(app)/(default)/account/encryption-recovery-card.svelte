@@ -102,11 +102,7 @@
 	} = pwForm;
 </script>
 
-<Card
-	class="mb-6"
-	title={m.deft_mean_camel_nourish()}
-	description={m.rich_proud_eagle_view()}
->
+<Card class="mb-6" title={m.deft_mean_camel_nourish()} description={m.rich_proud_eagle_view()}>
 	{#if step === 'done'}
 		<Alert variant="success" title={m.swift_keen_otter_gaze()}>
 			{m.soft_warm_finch_sing()}
