@@ -5,12 +5,7 @@
 
 	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import {
-		getMasterKey,
-		isKeyUnlocked,
-		setMasterKey,
-		tryRestoreKey
-	} from '$lib/client/key-manager';
+	import { getMasterKey, isKeyUnlocked, setMasterKey } from '$lib/client/key-manager';
 	import { setPendingPassword } from '$lib/client/pending-password';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import FormWrapper from '$lib/components/forms/form-wrapper.svelte';
@@ -48,15 +43,10 @@
 
 	let success = $state(false);
 
-	// In recovery flow, MK is already unlocked in memory (set by /recover-encryption)
-	// Check synchronously first, then try IndexedDB restore
-	let isRecoveryFlow = $state(encryptionEnabled && isKeyUnlocked());
-
-	if (encryptionEnabled && !isRecoveryFlow) {
-		tryRestoreKey().then((restored) => {
-			if (restored) isRecoveryFlow = true;
-		});
-	}
+	// Recovery flow: MK already unlocked in memory (set by /recover-encryption)
+	// Don't use tryRestoreKey() here — a restored key from IndexedDB doesn't have
+	// the server-side recovery cookie, so currentPassword must still be required.
+	const isRecoveryFlow = encryptionEnabled && isKeyUnlocked();
 
 	// Encryption-aware password change form
 	const encryptionForm = encryptionFormData
