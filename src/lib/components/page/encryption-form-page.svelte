@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { derivePDK, generateEncryptionSetup, unwrapMasterKey } from '@scrt-link/core';
 	import { Checkbox } from 'bits-ui';
-	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
+	import { dev } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { setMasterKey, tryRestoreKey } from '$lib/client/key-manager';
@@ -82,16 +83,22 @@
 	// --- Step 1: Password verification form ---
 	const pwForm = superForm(passwordFormData, {
 		validators: zod4Client(passwordFormSchema()),
+		validationMethod: 'auto',
+		applyAction: false,
+
 		onUpdated: async ({ form }) => {
 			if (form.message?.status === 'success' && !form.errors.password) {
-				const ok = await runEncryptionSetup(form.data.password);
-				if (!ok) {
-					$pwMessage = {
-						status: 'error',
-						title: 'Error',
-						description: 'Failed to generate encryption keys. Please try again.'
-					};
-				}
+				const pw = form.data.password;
+
+				runEncryptionSetup(pw).then((ok) => {
+					if (!ok) {
+						$pwMessage = {
+							status: 'error',
+							title: 'Error',
+							description: 'Failed to generate encryption keys. Please try again.'
+						};
+					}
+				});
 			}
 		},
 		onError({ result }) {
@@ -108,7 +115,7 @@
 		message: pwMessage,
 		delayed: pwDelayed,
 		constraints: pwConstraints,
-		enhance: pwEnhance
+		enhance: enhancePW
 	} = pwForm;
 
 	// Unlock MK with password (for OAuth users or returning sessions)
@@ -125,7 +132,7 @@
 			const pdk = await derivePDK($pwFormData.password, pdkSalt, pdkIterations);
 			const masterKey = await unwrapMasterKey(encryptedMasterKey, pdk);
 			setMasterKey(masterKey);
-			goto('/account');
+			goto(localizeHref('/account'));
 		} catch {
 			unlockError = 'Incorrect password. Please try again.';
 		} finally {
@@ -192,14 +199,14 @@
 			</div>
 
 			<p class="text-muted-foreground text-center text-xs">
-				<a href="/recover-encryption" class="text-primary hover:text-primary/80 underline">
+				<a href={localizeHref('/recover-encryption')} class="text-primary hover:text-primary/80 underline">
 					Forgot your password? Use recovery key
 				</a>
 			</p>
 		</form>
 	{:else if step === 'password'}
 		<FormWrapper message={$pwMessage}>
-			<form method="POST" use:pwEnhance action="?/verifyCurrentPassword">
+			<form method="POST" use:enhancePW action="?/verifyCurrentPassword">
 				<Form.Field form={pwForm} name="password" class="py-4">
 					<Password
 						bind:value={$pwFormData.password}
@@ -213,6 +220,12 @@
 						{$pwDelayed ? 'Verifying...' : 'Continue'}
 					</Form.Button>
 				</div>
+
+				{#if dev}
+					<div class="py-3">
+						<SuperDebug data={$pwFormData} />
+					</div>
+				{/if}
 			</form>
 		</FormWrapper>
 	{:else if step === 'recovery'}
