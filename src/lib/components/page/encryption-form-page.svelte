@@ -6,13 +6,12 @@
 
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import { isKeyUnlocked, setMasterKey, tryRestoreKey } from '$lib/client/key-manager';
+	import { setMasterKey, tryRestoreKey } from '$lib/client/key-manager';
 	import { getPendingPassword } from '$lib/client/pending-password';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import FormWrapper from '$lib/components/forms/form-wrapper.svelte';
 	import { SingleFormPage } from '$lib/components/page';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
-	import { Button } from '$lib/components/ui/button';
 	import CheckboxUi from '$lib/components/ui/checkbox/checkbox.svelte';
 	import CopyButton from '$lib/components/ui/copy-button';
 	import * as Form from '$lib/components/ui/form';
@@ -31,14 +30,18 @@
 
 	let { passwordForm: passwordFormData, encryptionEnabled, keyStore }: Props = $props();
 
-	type Step = 'loading' | 'unlock' | 'password' | 'recovery' | 'done';
+	type Step = 'loading' | 'unlock' | 'password' | 'recovery';
 	let step = $state<Step>(encryptionEnabled ? 'loading' : 'password');
 
 	// Resolve initial step after attempting IndexedDB key restore
 	if (encryptionEnabled) {
 		tryRestoreKey().then((restored) => {
 			if (step === 'loading') {
-				step = restored ? 'done' : 'unlock';
+				if (restored) {
+					goto(localizeHref('/account'));
+				} else {
+					step = 'unlock';
+				}
 			}
 		});
 	}
@@ -142,7 +145,6 @@
 
 	const stepDescriptions: Record<Step, string> = {
 		loading: 'Checking encryption status...',
-		done: 'Your account is ready.',
 		unlock: 'Enter your password to unlock your encryption keys for this session.',
 		password:
 			'Enter your password to set up encryption. This will generate a master encryption key protected by your password. The server never sees your encryption keys.',
@@ -151,7 +153,6 @@
 
 	const stepTitles: Record<Step, string> = {
 		loading: 'Encryption',
-		done: 'Done',
 		unlock: 'Unlock Encryption',
 		password: 'Set Up Encryption',
 		recovery: 'Recovery Key'
@@ -162,20 +163,6 @@
 	{#if step === 'loading'}
 		<div class="py-8 text-center">
 			<p class="text-muted-foreground text-sm">Loading...</p>
-		</div>
-	{:else if step === 'done'}
-		<div class="space-y-4" data-testid="encryption-done">
-			{#if isKeyUnlocked()}
-				<p class="text-muted-foreground text-sm">Keys are unlocked for this session.</p>
-			{/if}
-			<div class="mb-4">
-				<a href="/account/profile" class="text-primary hover:text-primary/80 text-sm underline">
-					Manage recovery key
-				</a>
-			</div>
-			<div>
-				<Button href={localizeHref('/')}>Home</Button>
-			</div>
 		</div>
 	{:else if step === 'unlock'}
 		<form
@@ -245,7 +232,7 @@
 								setMasterKey(pendingMasterKey);
 								pendingMasterKey = null;
 							}
-							step = 'done';
+							goto(localizeHref('/account'));
 						} else {
 							console.error('[encryption] Server result:', result);
 							encError = {
