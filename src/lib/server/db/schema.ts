@@ -103,7 +103,7 @@ export const secretTypeEnum = pgEnum('secret_type_enum', [
 export const organization = pgTable('organization', {
 	id: uuid('id').primaryKey().defaultRandom(),
 	name: text('name').notNull(),
-	createdBy: uuid('created_by').references(() => user.id)
+	createdBy: uuid('created_by').references(() => user.id, { onDelete: 'set null' })
 });
 
 export const membershipRole = pgEnum('membership_role', [
