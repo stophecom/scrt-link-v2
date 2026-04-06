@@ -48,7 +48,7 @@
 					setPendingPassword($formData.password);
 				}
 
-				goto(redirect);
+				goto(localizeHref(redirect));
 			}
 		},
 

@@ -47,10 +47,7 @@ export function consumeVerificationCookie(
 
 export function setNeedsRecoveryCookie(event: RequestEvent, userId: string) {
 	event.cookies.set(NEEDS_RECOVERY_COOKIE, userId, {
-		path: '/',
-		httpOnly: true,
-		secure: !dev,
-		sameSite: 'strict' as const,
+		...SECURE_COOKIE_OPTIONS,
 		maxAge: 60 * 60 // 1 hour
 	});
 }

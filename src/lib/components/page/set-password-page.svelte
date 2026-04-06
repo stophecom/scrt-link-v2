@@ -16,6 +16,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 	import {
 		passwordChangeWithEncryptionFormSchema,
 		type PasswordFormSchema
@@ -54,7 +55,7 @@
 				applyAction: false,
 				resetForm: false,
 				onSubmit: async ({ jsonData, cancel }) => {
-					if (!keyStore) {
+					if (!keyStore || !encFormData) {
 						$encMessage = {
 							status: 'error',
 							title: 'Error',
@@ -143,7 +144,7 @@
 			<Alert variant="success" title={m.plain_aloof_gopher_pop()}>
 				{m.trick_dizzy_bobcat_wish()}
 			</Alert>
-			<a href="/account">
+			<a href={localizeHref('/account')}>
 				<Button class="w-full" size="lg">Go to Account</Button>
 			</a>
 		</div>
@@ -195,7 +196,7 @@
 				if (!encryptionEnabled) {
 					// First-time password set (e.g. OAuth user) — redirect to encryption setup
 					setPendingPassword(password);
-					goto('/encryption');
+					goto(localizeHref('/encryption'));
 				} else {
 					success = true;
 				}

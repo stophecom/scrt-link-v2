@@ -14,6 +14,7 @@
 	import { SingleFormPage } from '$lib/components/page';
 	import * as Form from '$lib/components/ui/form';
 	import Input from '$lib/components/ui/input/input.svelte';
+	import { localizeHref } from '$lib/paraglide/runtime';
 	import { recoveryVerifyFormSchema } from '$lib/validators/formSchemas';
 
 	type RecoveryVerifySchema = ReturnType<typeof recoveryVerifyFormSchema>;
@@ -52,7 +53,7 @@
 					setMasterKey(masterKey);
 
 					// Navigate to set-password where the user can set a new password
-					return goto('/set-password');
+					return goto(localizeHref('/set-password'));
 				} catch (e) {
 					console.error('Failed to unwrap master key:', e);
 					$message = {
@@ -89,7 +90,7 @@
 				</p>
 			</div>
 			<a
-				href="/set-password"
+				href={localizeHref('/set-password')}
 				class="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 w-full items-center justify-center rounded-md px-4 text-sm font-medium"
 			>
 				Continue to Set Password

@@ -1,6 +1,5 @@
-import { redirect } from '@sveltejs/kit';
-
 import { getBaseUrl } from '$lib/constants';
+import { redirectLocalized } from '$lib/i18n';
 import { hasNeedsRecoveryCookie } from '$lib/server/cookies';
 
 import type { LayoutServerLoad } from './$types';
@@ -43,7 +42,7 @@ export const load: LayoutServerLoad = async (event) => {
 			(allowed) => path === allowed || path.startsWith(allowed + '/')
 		);
 		if (!isAllowed && !path.startsWith('/api/')) {
-			redirect(302, '/recover-encryption');
+			return redirectLocalized(302, '/recover-encryption');
 		}
 	}
 
@@ -55,9 +54,9 @@ export const load: LayoutServerLoad = async (event) => {
 
 		if (!isExcluded && !path.startsWith('/api/')) {
 			if (!user.hasPassword) {
-				redirect(302, '/set-password');
+				return redirectLocalized(302, '/set-password');
 			} else {
-				redirect(302, '/encryption');
+				return redirectLocalized(302, '/encryption');
 			}
 		}
 	}

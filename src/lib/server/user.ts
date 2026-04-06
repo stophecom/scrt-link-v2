@@ -56,10 +56,6 @@ export async function verifyUserPassword(userId: User['id'], password: string): 
 		throw Error('Invalid credentials.');
 	}
 
-	if (!userData?.passwordHash) {
-		return false;
-	}
-
 	return verifyPassword(password, userData.passwordHash);
 }
 

@@ -687,28 +687,33 @@ export const loginWithPassword: Action = async (event) => {
 	}
 
 	try {
-		const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
+		const [user] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
+
+		if (!user) {
+			throw Error('No user found.');
+		}
 
 		// Restrict login to white-label
-		await checkIsUserAllowedOnWhiteLabelSite(event.url.hostname, result.id);
+		await checkIsUserAllowedOnWhiteLabelSite(event.url.hostname, user.id);
 
-		if (!result.emailVerified) {
+		if (!user.emailVerified) {
 			throw Error('Email not verified.');
 		}
 
-		const isPasswordValid = await verifyUserPassword(password, result.id);
+		const isPasswordValid = await verifyUserPassword(user.id, password);
 		if (!isPasswordValid) {
 			throw Error(`Password doesn't match`);
 		}
 
 		// Create session
-		await auth.createSession(event, result.id);
+		await auth.createSession(event, user.id);
 
 		deleteEmailVerificationCookie(event);
+		setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);
 
 		// If user has encryption enabled, return key store data for client-side key derivation
-		if (result.encryptionEnabled) {
-			const keyStore = await getUserEncryptionKeyStore(result.id);
+		if (user.encryptionEnabled) {
+			const keyStore = await getUserEncryptionKeyStore(user.id);
 
 			if (keyStore) {
 				return {
@@ -930,7 +935,7 @@ export const setPassword: Action = async (event) => {
 			if (currentPassword) {
 				if (!(await verifyUserPassword(user.id, currentPassword))) {
 					setError(form, 'currentPassword', m.petty_flaky_lynx_boil());
-					return { form };
+					return fail(400, { form });
 				}
 			} else if (!consumeVerificationCookie(event, RECOVERY_VERIFIED_COOKIE, user.id)) {
 				return message(
