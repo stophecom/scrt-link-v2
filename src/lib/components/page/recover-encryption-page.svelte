@@ -14,6 +14,7 @@
 	import { SingleFormPage } from '$lib/components/page';
 	import * as Form from '$lib/components/ui/form';
 	import Input from '$lib/components/ui/input/input.svelte';
+	import { m } from '$lib/paraglide/messages';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { recoveryVerifyFormSchema } from '$lib/validators/formSchemas';
 
@@ -58,8 +59,8 @@
 					console.error('Failed to unwrap master key:', e);
 					$message = {
 						status: 'error',
-						title: 'Decryption failed',
-						description: 'Could not decrypt with this recovery key.'
+						title: m.mad_such_albatross_cherish(),
+						description: m.fun_lime_shark_talk()
 					};
 				}
 			}
@@ -76,31 +77,27 @@
 	const { form: recFormData, message, delayed, constraints, enhance } = recoveryForm;
 </script>
 
-<SingleFormPage
-	title="Recover Encryption"
-	description="Enter your recovery key to restore access to your encrypted data."
->
+<SingleFormPage title={m.direct_left_buzzard_propel()} description={m.fuzzy_true_bird_fond()}>
 	{#if !hasRecoveryKey}
 		<div class="space-y-4">
 			<div class="border-destructive/50 bg-destructive/10 rounded-lg border p-4">
-				<p class="text-destructive text-sm font-semibold">No recovery key found</p>
+				<p class="text-destructive text-sm font-semibold">{m.short_candid_termite_sway()}</p>
 				<p class="text-muted-foreground mt-1 text-sm">
-					No recovery key was set up for this account. Your encrypted data cannot be recovered. You
-					can still reset your password, but a new encryption key will be generated.
+					{m.home_vexed_turtle_boost()}
 				</p>
 			</div>
 			<a
 				href={localizeHref('/set-password')}
 				class="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 w-full items-center justify-center rounded-md px-4 text-sm font-medium"
 			>
-				Continue to Set Password
+				{m.mean_swift_crossbill_clip()}
 			</a>
 		</div>
 	{:else}
 		<FormWrapper message={$message}>
 			<form method="POST" use:enhance action="?/verifyRecoveryKey">
 				<Form.Field form={recoveryForm} name="recoveryKeyHash" class="py-4">
-					<label for="recoveryKey" class="text-sm font-medium">Recovery Key</label>
+					<label for="recoveryKey" class="text-sm font-medium">{m.deft_mean_camel_nourish()}</label>
 					<Input
 						id="recoveryKey"
 						type="text"
@@ -116,7 +113,7 @@
 
 				<div class="py-4">
 					<Form.Button delayed={$delayed} class="w-full" size="lg">
-						{$delayed ? 'Verifying...' : 'Recover Encryption Keys'}
+						{$delayed ? m.cute_seemly_poodle_reside() : m.simple_bad_haddock_agree()}
 					</Form.Button>
 				</div>
 

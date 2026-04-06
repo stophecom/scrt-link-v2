@@ -14,6 +14,7 @@
 	import CheckboxUi from '$lib/components/ui/checkbox/checkbox.svelte';
 	import CopyButton from '$lib/components/ui/copy-button';
 	import * as Form from '$lib/components/ui/form';
+	import { m } from '$lib/paraglide/messages';
 	import {
 		type PasswordFormSchema,
 		passwordFormSchema,
@@ -57,8 +58,8 @@
 				if (!keyStore) {
 					$pwMessage = {
 						status: 'error',
-						title: 'Error',
-						description: 'No encryption key store found.'
+						title: m.weak_quaint_lamb_fry(),
+						description: m.dry_tame_robin_lift()
 					};
 					return;
 				}
@@ -77,8 +78,8 @@
 					console.error('[recovery] Key unlock/generation failed:', e);
 					$pwMessage = {
 						status: 'error',
-						title: 'Error',
-						description: 'Failed to unlock encryption keys. Please check your password.'
+						title: m.weak_quaint_lamb_fry(),
+						description: m.cool_shy_walrus_dare()
 					};
 				}
 			}
@@ -103,17 +104,17 @@
 
 <Card
 	class="mb-6"
-	title="Recovery Key"
-	description="Your recovery key lets you restore your account if you forget your password."
+	title={m.deft_mean_camel_nourish()}
+	description={m.rich_proud_eagle_view()}
 >
 	{#if step === 'done'}
-		<Alert variant="success" title="Recovery key saved">
-			Your new recovery key has been saved. You can regenerate it at any time.
+		<Alert variant="success" title={m.swift_keen_otter_gaze()}>
+			{m.soft_warm_finch_sing()}
 		</Alert>
 	{:else if step === 'password'}
 		{#if hasRecoveryKey}
-			<Alert variant="info" title="Existing recovery key" class="mb-4">
-				Generating a new recovery key will replace the existing one.
+			<Alert variant="info" title={m.dark_bold_raven_soar()} class="mb-4">
+				{m.wise_calm_dove_rest()}
 			</Alert>
 		{/if}
 
@@ -129,7 +130,7 @@
 
 				<div class="py-4">
 					<Form.Button delayed={$pwDelayed} class="w-full" size="lg">
-						{$pwDelayed ? 'Verifying...' : 'Generate Recovery Key'}
+						{$pwDelayed ? m.aware_tense_pig_vent() : m.pale_swift_hawk_call()}
 					</Form.Button>
 				</div>
 			</form>
@@ -152,18 +153,17 @@
 							console.error('[recovery] Server result:', result);
 							encError = {
 								status: 'error',
-								title: 'Error',
-								description: 'Failed to save recovery key. Please try again.'
+								title: m.weak_quaint_lamb_fry(),
+								description: m.vast_deep_heron_wade()
 							};
 						}
 					};
 				}}
 			>
 				<div class="space-y-4">
-					<Alert variant="info" title="Save this recovery key now. It will only be shown once.">
+					<Alert variant="info" title={m.save_this_recovery_key()}>
 						<p class="mb-3">
-							Store it somewhere safe and offline. If you lose both your password and this key, your
-							encrypted data cannot be recovered.
+							{m.flat_pink_weasel_gulp()}
 						</p>
 						<code
 							class="bg-background text-foreground block rounded p-3 text-center font-mono text-sm tracking-wider select-all"
@@ -181,7 +181,7 @@
 						class="flex cursor-pointer items-center gap-3"
 					>
 						<CheckboxUi checked={saved} />
-						<span class="text-sm">I have saved my recovery key in a safe place</span>
+						<span class="text-sm">{m.petty_sweet_quail_believe()}</span>
 					</Checkbox.Root>
 
 					<input
@@ -192,7 +192,7 @@
 					<input type="hidden" name="recoveryKeyHash" value={generatedRecoveryKeyHash} />
 
 					<Form.Button delayed={isSubmitting} class="w-full" size="lg" disabled={!saved}>
-						{isSubmitting ? 'Saving...' : 'Confirm and Save'}
+						{isSubmitting ? m.blue_kind_crane_step() : m.gold_true_lark_rise()}
 					</Form.Button>
 				</div>
 			</form>

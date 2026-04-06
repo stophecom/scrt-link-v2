@@ -16,6 +16,7 @@
 	import CheckboxUi from '$lib/components/ui/checkbox/checkbox.svelte';
 	import CopyButton from '$lib/components/ui/copy-button';
 	import * as Form from '$lib/components/ui/form';
+	import { m } from '$lib/paraglide/messages';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type PasswordFormSchema, passwordFormSchema } from '$lib/validators/formSchemas';
 
@@ -94,8 +95,8 @@
 					if (!ok) {
 						$pwMessage = {
 							status: 'error',
-							title: 'Error',
-							description: 'Failed to generate encryption keys. Please try again.'
+							title: m.weak_quaint_lamb_fry(),
+							description: m.warm_kind_pigeon_dream()
 						};
 					}
 				});
@@ -134,7 +135,7 @@
 			setMasterKey(masterKey);
 			goto(localizeHref('/account'));
 		} catch {
-			unlockError = 'Incorrect password. Please try again.';
+			unlockError = m.keen_calm_puma_glow();
 		} finally {
 			isUnlocking = false;
 		}
@@ -151,25 +152,24 @@
 	}
 
 	const stepDescriptions: Record<Step, string> = {
-		loading: 'Checking encryption status...',
-		unlock: 'Enter your password to unlock your encryption keys for this session.',
-		password:
-			'Enter your password to set up encryption. This will generate a master encryption key protected by your password. The server never sees your encryption keys.',
-		recovery: 'Store your recovery key in a safe place.'
+		loading: m.whole_close_lobster_urge(),
+		unlock: m.glad_day_larva_stop(),
+		password: m.awake_raw_marten_twirl(),
+		recovery: m.calm_best_grebe_expand()
 	};
 
 	const stepTitles: Record<Step, string> = {
-		loading: 'Encryption',
-		unlock: 'Unlock Encryption',
-		password: 'Set Up Encryption',
-		recovery: 'Recovery Key'
+		loading: m.lost_loose_butterfly_foster(),
+		unlock: m.safe_shy_gopher_talk(),
+		password: m.bold_quick_lobster_thrive(),
+		recovery: m.deft_mean_camel_nourish()
 	};
 </script>
 
 <SingleFormPage title={stepTitles[step]} description={stepDescriptions[step]}>
 	{#if step === 'loading'}
 		<div class="py-8 text-center">
-			<p class="text-muted-foreground text-sm">Loading...</p>
+			<p class="text-muted-foreground text-sm">{m.polite_quiet_termite_dial()}</p>
 		</div>
 	{:else if step === 'unlock'}
 		<form
@@ -179,7 +179,7 @@
 			}}
 		>
 			{#if unlockError}
-				<Alert variant="destructive" title="Error" class="mb-4">
+				<Alert variant="destructive" title={m.weak_quaint_lamb_fry()} class="mb-4">
 					{unlockError}
 				</Alert>
 			{/if}
@@ -194,7 +194,7 @@
 
 			<div class="py-4">
 				<Form.Button delayed={isUnlocking} class="w-full" size="lg">
-					{isUnlocking ? 'Unlocking...' : 'Unlock'}
+					{isUnlocking ? m.ago_agent_sawfish_nurture() : m.patient_minor_anteater_tear()}
 				</Form.Button>
 			</div>
 
@@ -203,7 +203,7 @@
 					href={localizeHref('/recover-encryption')}
 					class="text-primary hover:text-primary/80 underline"
 				>
-					Forgot your password? Use recovery key
+					{m.fit_orange_snail_snap()}
 				</a>
 			</p>
 		</form>
@@ -220,7 +220,7 @@
 
 				<div class="py-4">
 					<Form.Button delayed={$pwDelayed} class="w-full" size="lg">
-						{$pwDelayed ? 'Verifying...' : 'Continue'}
+						{$pwDelayed ? m.aware_tense_pig_vent() : m.civil_left_ocelot_amuse()}
 					</Form.Button>
 				</div>
 
@@ -253,18 +253,17 @@
 							console.error('[encryption] Server result:', result);
 							encError = {
 								status: 'error',
-								title: 'Error',
-								description: 'Server failed to save encryption keys. Please try again.'
+								title: m.safe_lucky_jannes_kiss(),
+								description: m.extra_calm_swan_clip()
 							};
 						}
 					};
 				}}
 			>
 				<div class="space-y-4">
-					<Alert variant="info" title="Save this recovery key now. It will only be shown once.">
+					<Alert variant="info" title={m.save_this_recovery_key()}>
 						<p class="mb-3">
-							Store it somewhere safe and offline. If you lose both your password and this key, your
-							encrypted data cannot be recovered.
+							{m.flat_pink_weasel_gulp()}
 						</p>
 						<code
 							class="bg-background text-foreground block rounded p-3 text-center font-mono text-sm tracking-wider select-all"
@@ -284,7 +283,7 @@
 						data-testid="checkbox-saved-recovery"
 					>
 						<CheckboxUi checked={saved} />
-						<span class="text-sm">I have saved my recovery key in a safe place</span>
+						<span class="text-sm">{m.petty_sweet_quail_believe()}</span>
 					</Checkbox.Root>
 
 					<input type="hidden" name="pdkSalt" value={generatedPdkSalt} />
@@ -304,7 +303,7 @@
 						disabled={!saved}
 						data-testid="submit-encryption"
 					>
-						{isSubmitting ? 'Setting up encryption...' : 'Enable Encryption'}
+						{isSubmitting ? m.zesty_crisp_iguana_tend() : m.key_male_haddock_relish()}
 					</Form.Button>
 				</div>
 			</form>

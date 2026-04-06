@@ -38,8 +38,8 @@
 						console.error('Failed to unlock encryption keys:', e);
 						$message = {
 							status: 'error',
-							title: 'Decryption failed',
-							description: 'Could not unlock encryption keys. Try resetting your password.'
+							title: m.mad_such_albatross_cherish(),
+							description: m.slim_fair_owl_peek()
 						};
 						return;
 					}

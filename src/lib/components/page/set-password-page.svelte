@@ -58,12 +58,15 @@
 					if (!keyStore || !encFormData) {
 						$encMessage = {
 							status: 'error',
-							title: 'Error',
-							description: 'Encryption key data not found.'
+							title: m.agent_crisp_cougar_feast(),
+							description: m.ago_strong_bird_rise()
 						};
 						cancel();
 						return;
 					}
+
+					// Safe: encFormData is checked above
+					const formValues = $encFormData!;
 
 					try {
 						let masterKey: CryptoKey;
@@ -75,7 +78,7 @@
 						} else {
 							// Normal flow: derive old PDK and unwrap MK using current password
 							const oldPdk = await derivePDK(
-								$encFormData.currentPassword ?? '',
+								formValues.currentPassword ?? '',
 								oldSalt,
 								pdkIterations
 							);
@@ -85,18 +88,18 @@
 
 						// Derive new PDK with fresh salt and re-wrap master key
 						const newSalt = generatePdkSalt();
-						const newPdk = await derivePDK($encFormData.password, newSalt, pdkIterations);
+						const newPdk = await derivePDK(formValues.password, newSalt, pdkIterations);
 						const newWrappedMk = await wrapMasterKey(masterKey, newPdk);
 
 						const payload: Record<string, string> = {
-							password: $encFormData.password,
+							password: formValues.password,
 							pdkSalt: newSalt,
 							encryptedMasterKey: newWrappedMk
 						};
 
 						// Only include currentPassword when not in recovery flow
-						if (!isRecoveryFlow && $encFormData.currentPassword) {
-							payload.currentPassword = $encFormData.currentPassword;
+						if (!isRecoveryFlow && formValues.currentPassword) {
+							payload.currentPassword = formValues.currentPassword;
 						}
 
 						jsonData(payload);
@@ -104,8 +107,8 @@
 						console.error('Failed to re-wrap master key:', e);
 						$encMessage = {
 							status: 'error',
-							title: 'Decryption failed',
-							description: 'Could not decrypt with current password. Please check your password.'
+							title: m.day_clear_bear_grip(),
+							description: m.fancy_raw_rook_win()
 						};
 						cancel();
 					}
@@ -145,7 +148,7 @@
 				{m.trick_dizzy_bobcat_wish()}
 			</Alert>
 			<a href={localizeHref('/account')}>
-				<Button class="w-full" size="lg">Go to Account</Button>
+				<Button class="w-full" size="lg">{m.empty_born_squirrel_jump()}</Button>
 			</a>
 		</div>
 	{:else if encryptionForm}
@@ -154,7 +157,7 @@
 				{#if !isRecoveryFlow}
 					<Form.Field form={encryptionForm} name="currentPassword" class="py-4">
 						<Form.Control let:attrs>
-							<Form.Label>{m.yummy_fair_gazelle_link()} (current)</Form.Label>
+							<Form.Label>{m.yummy_fair_gazelle_link()} {m.neat_proud_crow_label()}</Form.Label>
 							<Input
 								type="password"
 								placeholder={m.yummy_fair_gazelle_link()}
@@ -178,7 +181,7 @@
 
 				<div class="py-4">
 					<Form.Button delayed={$encDelayed} class="w-full" size="lg">
-						{$encDelayed ? 'Updating...' : m.flat_moving_finch_assure()}
+						{$encDelayed ? m.bold_warm_falcon_type() : m.flat_moving_finch_assure()}
 					</Form.Button>
 				</div>
 
