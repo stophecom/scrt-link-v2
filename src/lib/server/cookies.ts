@@ -7,6 +7,7 @@ import { dev } from '$app/environment';
 export const EMAIL_VERIFICATION_COOKIE = 'email_verification';
 export const PASSWORD_VERIFIED_COOKIE = 'password-verified';
 export const RECOVERY_VERIFIED_COOKIE = 'recovery-verified';
+export const NEEDS_RECOVERY_COOKIE = 'needs-recovery';
 const GOOGLE_OAUTH_STATE_COOKIE = 'google_oauth_state';
 const GOOGLE_CODE_VERIFIER_COOKIE = 'google_code_verifier';
 
@@ -40,6 +41,26 @@ export function consumeVerificationCookie(
 	if (!value || value !== userId) return false;
 	event.cookies.delete(name, { path: '/' });
 	return true;
+}
+
+// --- Recovery flow guard cookie ---
+
+export function setNeedsRecoveryCookie(event: RequestEvent, userId: string) {
+	event.cookies.set(NEEDS_RECOVERY_COOKIE, userId, {
+		path: '/',
+		httpOnly: true,
+		secure: !dev,
+		sameSite: 'strict' as const,
+		maxAge: 60 * 60 // 1 hour
+	});
+}
+
+export function hasNeedsRecoveryCookie(event: RequestEvent, userId: string): boolean {
+	return event.cookies.get(NEEDS_RECOVERY_COOKIE) === userId;
+}
+
+export function deleteNeedsRecoveryCookie(event: RequestEvent) {
+	event.cookies.delete(NEEDS_RECOVERY_COOKIE, { path: '/' });
 }
 
 // --- Email verification cookie ---

@@ -8,6 +8,7 @@
 
 <SetPasswordPage
 	encryptionEnabled={data.encryptionEnabled}
+	isRecoveryFlow={data.isRecoveryFlow}
 	keyStore={data.keyStore}
 	form={data.form}
 	encryptionForm={data.encryptionForm}

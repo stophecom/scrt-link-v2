@@ -58,9 +58,11 @@ import {
 import {
 	consumeVerificationCookie,
 	deleteEmailVerificationCookie,
+	deleteNeedsRecoveryCookie,
 	PASSWORD_VERIFIED_COOKIE,
 	RECOVERY_VERIFIED_COOKIE,
 	setEmailVerificationCookie,
+	setNeedsRecoveryCookie,
 	setVerificationCookie
 } from '../cookies';
 import {
@@ -687,12 +689,6 @@ export const loginWithPassword: Action = async (event) => {
 	try {
 		const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
 
-		if (!result?.passwordHash) {
-			// Normalize timing: run a dummy scrypt to prevent user-enumeration via response time
-			await verifyPassword(password, DUMMY_PASSWORD_HASH);
-			throw Error('Invalid credentials.');
-		}
-
 		// Restrict login to white-label
 		await checkIsUserAllowedOnWhiteLabelSite(event.url.hostname, result.id);
 
@@ -700,7 +696,7 @@ export const loginWithPassword: Action = async (event) => {
 			throw Error('Email not verified.');
 		}
 
-		const isPasswordValid = await verifyPassword(password, result.passwordHash);
+		const isPasswordValid = await verifyUserPassword(password, result.id);
 		if (!isPasswordValid) {
 			throw Error(`Password doesn't match`);
 		}
@@ -849,6 +845,7 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 			.limit(1);
 
 		if (existingUser?.encryptionEnabled) {
+			setNeedsRecoveryCookie(event, userId);
 			return redirectLocalized(303, '/recover-encryption');
 		}
 	} catch (e) {
@@ -969,6 +966,7 @@ export const setPassword: Action = async (event) => {
 
 		// Password was just set/changed — grant verification for encryption setup
 		setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);
+		deleteNeedsRecoveryCookie(event);
 
 		return message(form, {
 			status: 'success',
@@ -1314,11 +1312,6 @@ export const saveWhiteLabelSite: Action = async (event) => {
 	});
 };
 
-// --- Encryption Key Management Actions ---
-
-// Dummy hash for timing normalization when user doesn't exist (prevents user enumeration)
-const DUMMY_PASSWORD_HASH = 'deadbeefdeadbeefdeadbeefdeadbeef:64:' + '00'.repeat(64);
-
 export const verifyCurrentPassword: Action = async (event) => {
 	if (!event.locals.user) {
 		return redirectLocalized(307, '/login');
@@ -1337,7 +1330,7 @@ export const verifyCurrentPassword: Action = async (event) => {
 
 	if (!(await verifyUserPassword(user.id, password))) {
 		setError(form, 'password', m.petty_flaky_lynx_boil());
-		return { form };
+		return fail(400, { form });
 	}
 
 	setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);

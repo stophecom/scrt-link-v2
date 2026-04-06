@@ -5,7 +5,7 @@
 
 	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { getMasterKey, isKeyUnlocked, setMasterKey } from '$lib/client/key-manager';
+	import { getMasterKey, setMasterKey } from '$lib/client/key-manager';
 	import { setPendingPassword } from '$lib/client/pending-password';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import FormWrapper from '$lib/components/forms/form-wrapper.svelte';
@@ -25,6 +25,7 @@
 
 	interface Props {
 		encryptionEnabled: boolean;
+		isRecoveryFlow: boolean;
 		keyStore: {
 			pdkSalt: string;
 			pdkIterations: number;
@@ -36,17 +37,13 @@
 
 	let {
 		encryptionEnabled,
+		isRecoveryFlow,
 		keyStore,
 		form: passwordFormData,
 		encryptionForm: encryptionFormData
 	}: Props = $props();
 
 	let success = $state(false);
-
-	// Recovery flow: MK already unlocked in memory (set by /recover-encryption)
-	// Don't use tryRestoreKey() here — a restored key from IndexedDB doesn't have
-	// the server-side recovery cookie, so currentPassword must still be required.
-	const isRecoveryFlow = encryptionEnabled && isKeyUnlocked();
 
 	// Encryption-aware password change form
 	const encryptionForm = encryptionFormData
@@ -150,7 +147,7 @@
 				<Button class="w-full" size="lg">Go to Account</Button>
 			</a>
 		</div>
-	{:else if encryptionEnabled && encryptionForm}
+	{:else if encryptionForm}
 		<FormWrapper message={$encMessage}>
 			<form method="POST" use:encEnhance action="?/setPassword">
 				{#if !isRecoveryFlow}

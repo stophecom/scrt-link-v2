@@ -15,6 +15,11 @@ import { addContactToAudience } from './resend';
 import stripeInstance from './stripe';
 import { sendWelcomeEmail } from './transactional-email';
 
+// --- Encryption Key Management Actions ---
+
+// Dummy hash for timing normalization when user doesn't exist (prevents user enumeration)
+const DUMMY_PASSWORD_HASH = 'deadbeefdeadbeefdeadbeefdeadbeef:64:' + '00'.repeat(64);
+
 /**
  * Get the encryption key store for a user. Returns null if no keys are set up.
  */
@@ -44,6 +49,12 @@ export async function verifyUserPassword(userId: User['id'], password: string): 
 		.from(userSchema)
 		.where(eq(userSchema.id, userId))
 		.limit(1);
+
+	if (!userData?.passwordHash) {
+		// Normalize timing: run a dummy scrypt to prevent user-enumeration via response time
+		await verifyPassword(password, DUMMY_PASSWORD_HASH);
+		throw Error('Invalid credentials.');
+	}
 
 	if (!userData?.passwordHash) {
 		return false;
