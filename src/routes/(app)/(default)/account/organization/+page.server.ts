@@ -66,23 +66,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		);
 	};
 
-	const getOrganizationIdOptions = () => [
-		{
-			value: '',
-			label: m.fuzzy_cool_ape_blend()
-		},
-		...(baseUserOrganization
-			? [
-					{
-						value: baseUserOrganization.id,
-						label: m.elegant_whole_swallow_edit({ organization: baseUserOrganization.name })
-					}
-				]
-			: [])
-	];
-
 	return {
-		organizationIdOptions: getOrganizationIdOptions(),
 		userOrganization: baseUserOrganization
 			? {
 					...baseUserOrganization,

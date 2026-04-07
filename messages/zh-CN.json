@@ -459,7 +459,7 @@
 	"chunky_raw_osprey_dial": "公司",
 	"tiny_suave_nils_accept": "产品",
 	"civil_dizzy_gopher_glow": "法律信息",
-	"muddy_any_tapir_roar": "为您的整个团队提供 Top Secret 计划",
+	"muddy_any_tapir_roar": "包含Top Secret（个人版）所有功能，加上您自己的秘密共享服务：",
 	"shy_sharp_seahorse_catch": "已发布",
 	"heavy_inclusive_yak_skip": "新",
 	"civil_formal_firefox_surge": "切换至：{planName}",
@@ -556,7 +556,7 @@
 	"safe_gray_hawk_empower": "继续",
 	"white_long_parakeet_buy": "您的邀请",
 	"aloof_zany_cheetah_greet": "自定义域名、徽标和主题",
-	"proud_cool_lemur_commend": "包含 {amount} 位私人成员",
+	"proud_cool_lemur_commend": "最多 30 位私人成员",
 	"bold_warm_falcon_soar": "您自己的秘密共享服务",
 	"calm_bright_otter_rest": "公开或私密访问",
 	"east_plain_anaconda_pinch": "文档",
@@ -656,5 +656,6 @@
 	"vast_deep_heron_wade": "未能保存恢复密钥。请重试。",
 	"blue_kind_crane_step": "正在保存…",
 	"gold_true_lark_rise": "确认并保存",
-	"slim_fair_owl_peek": "未能解锁加密密钥。请尝试重置您的密码。"
+	"slim_fair_owl_peek": "未能解锁加密密钥。请尝试重置您的密码。",
+	"misty_real_florian_startle": "无"
 }
