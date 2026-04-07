@@ -53,7 +53,7 @@
 					disabled={!planLimits.apiAccess}
 				/>
 			</Form.Field>
-			<Form.Button delayed={$delayed} class="my-2">{m.steep_equal_newt_grin()}</Form.Button>
+			<Form.Button delayed={$delayed} class="my-2">{m.actual_keen_rooster_find()}</Form.Button>
 		</div>
 	</form>
 </FormWrapper>

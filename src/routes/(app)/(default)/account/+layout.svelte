@@ -58,7 +58,7 @@
 		},
 		{
 			href: localizeHref('/account/profile'),
-			label: m.super_flaky_wallaby_pick(),
+			label: m.novel_proud_anaconda_zoom(),
 			icon: User
 		},
 		{

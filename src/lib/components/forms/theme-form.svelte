@@ -47,7 +47,7 @@
 		<Form.Fieldset {form} name="themeOption">
 			<RadioGroupColors
 				options={getThemeOptions()}
-				label={m.loved_yummy_kangaroo_dance()}
+				label={m.last_wild_mongoose_heart()}
 				bind:value={$formData.themeOption}
 			/>
 		</Form.Fieldset>

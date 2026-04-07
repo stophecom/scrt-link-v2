@@ -220,7 +220,7 @@
 
 				<div class="py-4">
 					<Form.Button delayed={$pwDelayed} class="w-full" size="lg">
-						{$pwDelayed ? m.aware_tense_pig_vent() : m.civil_left_ocelot_amuse()}
+						{$pwDelayed ? m.aware_tense_pig_vent() : m.few_blue_wallaby_read()}
 					</Form.Button>
 				</div>
 
@@ -253,7 +253,7 @@
 							console.error('[encryption] Server result:', result);
 							encError = {
 								status: 'error',
-								title: m.safe_lucky_jannes_kiss(),
+								title: m.weak_quaint_lamb_fry(),
 								description: m.extra_calm_swan_clip()
 							};
 						}

@@ -11,7 +11,7 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<Page title={m.sour_caring_panda_dazzle()} lead={m.alert_sound_hornet_adapt()}>
+<Page title={m.early_bright_salmon_comfort()} lead={m.alert_sound_hornet_adapt()}>
 	<Container>
 		<Card class="mb-6" title={m.royal_cuddly_kitten_tickle()}>
 			<ContactForm data={data.form} />

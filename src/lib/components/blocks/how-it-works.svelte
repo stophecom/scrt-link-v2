@@ -14,7 +14,7 @@
 			description: m.petty_any_eel_fulfill()
 		},
 		{
-			title: m.sunny_house_raven_pat(),
+			title: m.careful_bald_frog_harbor(),
 			illustration: Share,
 			description: m.dark_brief_donkey_pick()
 		},
