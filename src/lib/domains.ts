@@ -41,21 +41,6 @@ export const removeDomainFromVercelProject = async (domain: string) => {
 	).then((res) => res.json());
 };
 
-// @todo check if needed
-export const removeDomainFromVercelTeam = async (domain: string) => {
-	return await fetch(
-		`https://api.vercel.com/v6/domains/${domain}${
-			VERCEL_TEAM_ID ? `?teamId=${VERCEL_TEAM_ID}` : ''
-		}`,
-		{
-			headers: {
-				Authorization: `Bearer ${VERCEL_API_TOKEN}`
-			},
-			method: 'DELETE'
-		}
-	).then((res) => res.json());
-};
-
 export const getDomainResponse = async (
 	domain: string
 ): Promise<DomainResponse & { error: { code: string; message: string } }> => {
