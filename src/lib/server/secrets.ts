@@ -1,6 +1,6 @@
 import { and, desc, eq, isNull, sql } from 'drizzle-orm';
 
-import { isOriginalHost } from '$lib/app-routing';
+import { isOriginalHostname } from '$lib/app-routing';
 import { generateRandomUrlSafeString, scryptHash } from '$lib/crypto';
 import type { SecretFormSchema } from '$lib/validators/formSchemas';
 
@@ -87,7 +87,7 @@ type FetchSecrets = {
 export const fetchSecrets = async ({ userId, host }: FetchSecrets) => {
 	let whiteLabelSiteId;
 
-	if (host && !isOriginalHost(host)) {
+	if (host && !isOriginalHostname(host)) {
 		const whiteLabelResult = await getWhiteLabelSiteByHost(host);
 
 		whiteLabelSiteId = whiteLabelResult.id;

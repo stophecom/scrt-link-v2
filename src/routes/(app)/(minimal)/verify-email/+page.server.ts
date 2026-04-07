@@ -1,16 +1,17 @@
 import { redirectLocalized } from '$lib/i18n';
+import { getEmailVerificationCookie } from '$lib/server/cookies';
 import { resendEmailVerificationCode, verifyEmailVerificationCode } from '$lib/server/form/actions';
 import {
 	emailVerificationFormValidator,
 	resendEmailVerificationFormValidator
 } from '$lib/server/form/validators';
-import { limiter } from '$lib/server/rate-limit';
+import { rateLimiterPreflight } from '$lib/server/rate-limit';
 
 import type { Actions, RequestEvent } from './$types';
 
 export async function load(event: RequestEvent) {
-	await limiter.cookieLimiter?.preflight(event);
-	const email = event.cookies.get('email_verification');
+	await rateLimiterPreflight(event);
+	const email = getEmailVerificationCookie(event);
 
 	// Already logged in
 	if (event.locals.user) {

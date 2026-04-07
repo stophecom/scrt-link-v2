@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm';
 
-import { isOriginalHost } from '$lib/app-routing';
+import { isOriginalHostname } from '$lib/app-routing';
 import { TierOptions } from '$lib/data/enums';
 
 import { db } from './db';
@@ -46,7 +46,7 @@ export const getWhiteLabelSiteOwnerTier = async (ownerUserId: string): Promise<T
 export const checkIsUserAllowedOnWhiteLabelSite = async (host: string, userId: string) => {
 	// Restrict login to white-label
 
-	if (host && !isOriginalHost(host)) {
+	if (host && !isOriginalHostname(host)) {
 		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
 
 		// Site is restricted to either user (owner) or members of the assigned organization
