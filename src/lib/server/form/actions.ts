@@ -1,10 +1,11 @@
-import { type Action, error, fail } from '@sveltejs/kit';
+import { type Action, error, fail, isRedirect } from '@sveltejs/kit';
+import { timingSafeEqual } from 'crypto';
 import { and, desc, eq } from 'drizzle-orm';
 import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { isOriginalHost } from '$lib/app-routing';
+import { isOriginalHostname } from '$lib/app-routing';
 import {
 	MAX_API_KEYS_PER_USER,
 	MAX_ORGANIZATION_TEAM_SIZE,
@@ -27,6 +28,7 @@ import {
 	membership,
 	organization,
 	user as userSchema,
+	userEncryptionKey,
 	userSettings,
 	whiteLabelSite
 } from '$lib/server/db/schema';
@@ -36,10 +38,14 @@ import {
 	apiKeyFormSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
+	encryptionSetupFormSchema,
 	inviteOrganizationMemberFormSchema,
 	manageOrganizationMemberFormSchema,
 	organizationFormSchema,
+	passwordChangeWithEncryptionFormSchema,
 	passwordFormSchema,
+	recoverySetupFormSchema,
+	recoveryVerifyFormSchema,
 	secretFormSchema,
 	settingsFormSchema,
 	signInFormSchema,
@@ -50,6 +56,16 @@ import {
 } from '$lib/validators/formSchemas';
 
 import {
+	consumeVerificationCookie,
+	deleteEmailVerificationCookie,
+	deleteNeedsRecoveryCookie,
+	PASSWORD_VERIFIED_COOKIE,
+	RECOVERY_VERIFIED_COOKIE,
+	setEmailVerificationCookie,
+	setNeedsRecoveryCookie,
+	setVerificationCookie
+} from '../cookies';
+import {
 	createEmailVerificationRequest,
 	createEmailVerificationRequestAndRedirect,
 	deleteEmailVerificationRequests
@@ -59,7 +75,7 @@ import {
 	getOrganizationsByUserId,
 	inviteUserToOrganization
 } from '../organization';
-import { ALLOWED_REQUESTS_PER_MINUTE, limiter } from '../rate-limit';
+import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
 import { saveSecret } from '../secrets';
 import {
 	checkIfUserExists,
@@ -67,6 +83,8 @@ import {
 	createOrUpdateUser,
 	getActiveApiKeys,
 	getUserByEmail,
+	getUserEncryptionKeyStore,
+	verifyUserPassword,
 	welcomeNewUser
 } from '../user';
 import {
@@ -77,7 +95,7 @@ import {
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
-	const host = event.url.host;
+	const hostname = event.url.hostname;
 
 	if (!form.valid) {
 		return fail(400, { form });
@@ -86,8 +104,8 @@ export const postSecret: Action = async (event) => {
 	const user = event.locals.user;
 
 	let whiteLabelSiteId;
-	if (host && !isOriginalHost(host)) {
-		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
+	if (hostname && !isOriginalHostname(hostname)) {
+		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(hostname);
 
 		whiteLabelSiteId = whiteLabelSiteResult.id;
 	}
@@ -368,7 +386,7 @@ export const addMemberToOrganization: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: m.vivid_swift_firefox_devour(),
+					title: m.lost_stock_warthog_care(),
 					description: m.white_odd_osprey_adapt()
 				},
 				{
@@ -475,7 +493,7 @@ export const manageOrganizationMember: Action = async (event) => {
 
 		return message(form, {
 			status: 'success',
-			title: m.slow_tense_niklas_adore(),
+			title: m.just_plane_puffin_explore(),
 			description: m.bald_great_flea_splash()
 		});
 	}
@@ -531,7 +549,7 @@ export const removeOrganizationMember: Action = async (event) => {
 			form,
 			{
 				status: 'error',
-				title: m.tame_mushy_martin_loop()
+				title: m.east_ago_hedgehog_pause()
 			},
 			{
 				status: 401
@@ -608,23 +626,13 @@ export const removeOrganizationMember: Action = async (event) => {
 		});
 	}
 
-	return message(form, { status: 'error', title: m.next_keen_sheep_endure() }, { status: 400 });
+	return message(form, { status: 'error', title: m.free_smug_hound_boil() }, { status: 400 });
 };
 
 export const loginWithEmail: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(emailFormSchema()));
 
-	if (await limiter.isLimited(event)) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.nimble_fancy_pony_amuse(),
-				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
-			},
-			{ status: 429 }
-		);
-	}
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
 
 	const { email } = form.data;
 
@@ -647,7 +655,7 @@ export const loginWithEmail: Action = async (event) => {
 	try {
 		// Restrict login to white-label
 		// @todo: refactor this
-		await checkIsUserAllowedOnWhiteLabelSite(event.url.host, result.id);
+		await checkIsUserAllowedOnWhiteLabelSite(event.url.hostname, result.id);
 	} catch (error) {
 		console.error(error);
 
@@ -662,9 +670,7 @@ export const loginWithEmail: Action = async (event) => {
 		);
 	}
 
-	event.cookies.set('email_verification', email, {
-		path: '/'
-	});
+	setEmailVerificationCookie(event, email);
 
 	return redirectLocalized(303, '/login/password');
 };
@@ -672,17 +678,7 @@ export const loginWithEmail: Action = async (event) => {
 export const loginWithPassword: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(signInFormSchema()));
 
-	if (await limiter.isLimited(event)) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.nimble_fancy_pony_amuse(),
-				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
-			},
-			{ status: 429 }
-		);
-	}
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
 
 	const { email, password } = form.data;
 
@@ -691,28 +687,48 @@ export const loginWithPassword: Action = async (event) => {
 	}
 
 	try {
-		const [result] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
+		const [user] = await db.select().from(userSchema).where(eq(userSchema.email, email)).limit(1);
 
-		// Restrict login to white-label
-		await checkIsUserAllowedOnWhiteLabelSite(event.url.host, result.id);
-
-		if (!result.passwordHash) {
-			throw Error('No password hash in DB.');
+		if (!user) {
+			throw Error('No user found.');
 		}
 
-		if (!result.emailVerified) {
+		// Restrict login to white-label
+		await checkIsUserAllowedOnWhiteLabelSite(event.url.hostname, user.id);
+
+		if (!user.emailVerified) {
 			throw Error('Email not verified.');
 		}
 
-		const isPasswordValid = await verifyPassword(password, result.passwordHash);
+		const isPasswordValid = await verifyUserPassword(user.id, password);
 		if (!isPasswordValid) {
 			throw Error(`Password doesn't match`);
 		}
 
 		// Create session
-		await auth.createSession(event, result.id);
+		await auth.createSession(event, user.id);
 
-		event.cookies.delete('email_verification', { path: '/' });
+		deleteEmailVerificationCookie(event);
+		setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);
+
+		// If user has encryption enabled, return key store data for client-side key derivation
+		if (user.encryptionEnabled) {
+			const keyStore = await getUserEncryptionKeyStore(user.id);
+
+			if (keyStore) {
+				return {
+					form,
+					keyStore,
+					redirect: '/account'
+				};
+			}
+		}
+
+		// Encryption not set up — redirect to encryption setup (client-side navigation to preserve password)
+		return {
+			form,
+			redirect: '/encryption'
+		};
 	} catch (e) {
 		console.error(e);
 
@@ -726,8 +742,6 @@ export const loginWithPassword: Action = async (event) => {
 			{ status: 401 }
 		);
 	}
-
-	return redirectLocalized(303, '/account');
 };
 
 export const signupWithEmail: Action = async (event) => {
@@ -756,17 +770,8 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 		zod4(emailVerificationCodeFormSchema())
 	);
 
-	if (await limiter.isLimited(event)) {
-		return message(
-			verificationForm,
-			{
-				status: 'error',
-				title: m.nimble_fancy_pony_amuse(),
-				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
-			},
-			{ status: 429 }
-		);
-	}
+	if (await isRateLimited(event))
+		return message(verificationForm, rateLimitErrorMessage(), { status: 429 });
 
 	const { code, email } = verificationForm.data;
 
@@ -827,6 +832,7 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 			emailVerified: true
 		});
 
+		// This is only triggered, if new user
 		await welcomeNewUser({ email, name });
 
 		// Create session
@@ -834,9 +840,22 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 
 		// Cleanup DB and Cookies
 		await deleteEmailVerificationRequests(email);
-		event.cookies.delete('email_verification', { path: '/' });
+		deleteEmailVerificationCookie(event);
+
+		// Check if user has encryption enabled — redirect to recovery flow
+		const [existingUser] = await db
+			.select({ encryptionEnabled: userSchema.encryptionEnabled })
+			.from(userSchema)
+			.where(eq(userSchema.id, userId))
+			.limit(1);
+
+		if (existingUser?.encryptionEnabled) {
+			setNeedsRecoveryCookie(event, userId);
+			return redirectLocalized(303, '/recover-encryption');
+		}
 	} catch (e) {
 		console.error(e);
+		if (isRedirect(e)) throw e; // SvelteKit needs to handle redirect
 		error(500, 'Failed to register');
 	}
 
@@ -848,17 +867,8 @@ export const resendEmailVerificationCode: Action = async (event) => {
 		id: 'resend-form'
 	});
 
-	if (await limiter.isLimited(event)) {
-		return message(
-			resendForm,
-			{
-				status: 'error',
-				title: m.nimble_fancy_pony_amuse(),
-				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
-			},
-			{ status: 429 }
-		);
-	}
+	if (await isRateLimited(event))
+		return message(resendForm, rateLimitErrorMessage(), { status: 429 });
 
 	const { email } = resendForm.data;
 
@@ -883,17 +893,7 @@ export const resendEmailVerificationCode: Action = async (event) => {
 export const resetPassword: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(emailFormSchema()));
 
-	if (await limiter.isLimited(event)) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.nimble_fancy_pony_amuse(),
-				description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
-			},
-			{ status: 429 }
-		);
-	}
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
 
 	const { email } = form.data;
 
@@ -913,11 +913,78 @@ export const resetPassword: Action = async (event) => {
 };
 
 export const setPassword: Action = async (event) => {
-	if (!event.locals.user) {
+	const user = event.locals.user;
+	if (!user) {
 		return redirectLocalized(307, '/login');
 	}
 
+	// If encryption is enabled, use the extended schema with current password + re-wrapped key
+	if (user.encryptionEnabled) {
+		const form = await superValidate(event.request, zod4(passwordChangeWithEncryptionFormSchema()));
+
+		if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		const { currentPassword, password, pdkSalt, encryptedMasterKey } = form.data;
+
+		try {
+			// Verify current password, or check recovery-verified cookie for recovery flow
+			if (currentPassword) {
+				if (!(await verifyUserPassword(user.id, currentPassword))) {
+					setError(form, 'currentPassword', m.petty_flaky_lynx_boil());
+					return fail(400, { form });
+				}
+			} else if (!consumeVerificationCookie(event, RECOVERY_VERIFIED_COOKIE, user.id)) {
+				return message(
+					form,
+					{ status: 'error', title: 'Error', description: 'Current password is required.' },
+					{ status: 401 }
+				);
+			}
+
+			const hashedPassword = await scryptHash(password);
+
+			// Update password and re-wrapped encryption key in one transaction
+			await db.transaction(async (tx) => {
+				await tx
+					.update(userSchema)
+					.set({ passwordHash: hashedPassword })
+					.where(eq(userSchema.id, user.id));
+
+				if (pdkSalt && encryptedMasterKey) {
+					await tx
+						.update(userEncryptionKey)
+						.set({
+							pdkSalt,
+							encryptedMasterKey
+						})
+						.where(eq(userEncryptionKey.userId, user.id));
+				}
+			});
+		} catch (e) {
+			console.error(e);
+			error(500, 'Failed to set password.');
+		}
+
+		// Password was just set/changed — grant verification for encryption setup
+		setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);
+		deleteNeedsRecoveryCookie(event);
+
+		return message(form, {
+			status: 'success',
+			title: m.flat_moving_finch_assure(),
+			description: m.male_ornate_mantis_feel()
+		});
+	}
+
+	// Original flow for users without encryption
 	const passwordForm = await superValidate(event.request, zod4(passwordFormSchema()));
+
+	if (await isRateLimited(event))
+		return message(passwordForm, rateLimitErrorMessage(), { status: 429 });
 
 	if (!passwordForm.valid) {
 		return fail(400, { form: passwordForm });
@@ -926,19 +993,25 @@ export const setPassword: Action = async (event) => {
 	const { password } = passwordForm.data;
 
 	try {
-		// Update user
 		const hashedPassword = await scryptHash(password);
 
 		await db
 			.update(userSchema)
 			.set({ passwordHash: hashedPassword })
-			.where(eq(userSchema.id, event.locals.user.id));
+			.where(eq(userSchema.id, user.id));
 	} catch (e) {
 		console.error(e);
 		error(500, 'Failed to set password.');
 	}
 
-	return redirectLocalized(303, '/account');
+	// Password was just set — grant verification for encryption setup
+	setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);
+
+	return message(passwordForm, {
+		status: 'success',
+		title: m.flat_moving_finch_assure(),
+		description: m.male_ornate_mantis_feel()
+	});
 };
 
 export const logout: Action = async (event) => {
@@ -1242,4 +1315,204 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		status: 'success',
 		title: 'Success'
 	});
+};
+
+export const verifyCurrentPassword: Action = async (event) => {
+	if (!event.locals.user) {
+		return redirectLocalized(307, '/login');
+	}
+
+	const form = await superValidate(event.request, zod4(passwordFormSchema()));
+
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+	const { password } = form.data;
+
+	if (!(await verifyUserPassword(user.id, password))) {
+		setError(form, 'password', m.petty_flaky_lynx_boil());
+		return fail(400, { form });
+	}
+
+	setVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id);
+
+	return message(form, { status: 'success', title: 'Password verified' });
+};
+
+export const setupEncryptionKeys: Action = async (event) => {
+	if (!event.locals.user) {
+		return redirectLocalized(307, '/login');
+	}
+
+	const form = await superValidate(event.request, zod4(encryptionSetupFormSchema()));
+
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+
+	if (!consumeVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id)) {
+		return message(
+			form,
+			{ status: 'error', title: 'Error', description: 'Password verification required.' },
+			{ status: 401 }
+		);
+	}
+
+	const {
+		pdkSalt,
+		pdkIterations,
+		encryptedMasterKey,
+		recoveryEncryptedMasterKey,
+		recoveryKeyHash
+	} = form.data;
+
+	try {
+		// Check if encryption is already set up
+		const existing = await getUserEncryptionKeyStore(user.id);
+
+		if (existing) {
+			return message(
+				form,
+				{ status: 'error', title: 'Error', description: 'Encryption is already set up.' },
+				{ status: 400 }
+			);
+		}
+
+		// Store encryption keys, recovery key, and enable encryption in one transaction
+		await db.transaction(async (tx) => {
+			await tx.insert(userEncryptionKey).values({
+				userId: user.id,
+				pdkSalt,
+				pdkIterations,
+				encryptedMasterKey,
+				recoveryEncryptedMasterKey,
+				recoveryKeyHash
+			});
+
+			await tx
+				.update(userSchema)
+				.set({ encryptionEnabled: true })
+				.where(eq(userSchema.id, user.id));
+		});
+
+		return message(form, {
+			status: 'success',
+			title: 'Success',
+			description: 'End-to-end encryption has been set up.'
+		});
+	} catch (e) {
+		console.error(e);
+		error(500, 'Failed to set up encryption.');
+	}
+};
+
+export const setupRecoveryKey: Action = async (event) => {
+	if (!event.locals.user) {
+		return redirectLocalized(307, '/login');
+	}
+
+	const form = await superValidate(event.request, zod4(recoverySetupFormSchema()));
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+
+	if (!consumeVerificationCookie(event, PASSWORD_VERIFIED_COOKIE, user.id)) {
+		return message(
+			form,
+			{ status: 'error', title: 'Error', description: 'Password verification required.' },
+			{ status: 401 }
+		);
+	}
+
+	const { recoveryEncryptedMasterKey, recoveryKeyHash } = form.data;
+
+	try {
+		await db
+			.update(userEncryptionKey)
+			.set({ recoveryEncryptedMasterKey, recoveryKeyHash })
+			.where(eq(userEncryptionKey.userId, user.id));
+
+		return message(form, {
+			status: 'success',
+			title: 'Success',
+			description: 'Recovery key has been saved.'
+		});
+	} catch (e) {
+		console.error(e);
+		error(500, 'Failed to save recovery key.');
+	}
+};
+
+export const verifyRecoveryKey: Action = async (event) => {
+	if (!event.locals.user) {
+		return redirectLocalized(307, '/login');
+	}
+
+	const form = await superValidate(event.request, zod4(recoveryVerifyFormSchema()), {
+		id: 'recovery-form'
+	});
+
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+	const { recoveryKeyHash } = form.data;
+
+	try {
+		const keyStore = await getUserEncryptionKeyStore(user.id);
+
+		if (!keyStore?.recoveryKeyHash || !keyStore?.recoveryEncryptedMasterKey) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: 'Error',
+					description: 'No recovery key has been set up.'
+				},
+				{ status: 400 }
+			);
+		}
+
+		const storedBuf = Buffer.from(keyStore.recoveryKeyHash, 'utf8');
+		const suppliedBuf = Buffer.from(recoveryKeyHash, 'utf8');
+		const hashMatch =
+			storedBuf.length === suppliedBuf.length && timingSafeEqual(storedBuf, suppliedBuf);
+
+		if (!hashMatch) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: 'Error',
+					description: 'Invalid recovery key.'
+				},
+				{ status: 401 }
+			);
+		}
+
+		// Prove recovery was verified server-side (checked by setPassword)
+		setVerificationCookie(event, RECOVERY_VERIFIED_COOKIE, user.id);
+
+		return {
+			form,
+			recoveryEncryptedMasterKey: keyStore.recoveryEncryptedMasterKey
+		};
+	} catch (e) {
+		console.error('[verifyRecoveryKey] Unexpected error:', e);
+		error(500, 'Failed to verify recovery key.');
+	}
 };

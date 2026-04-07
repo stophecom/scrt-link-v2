@@ -2,17 +2,17 @@
 import { error } from '@sveltejs/kit';
 
 import { PUBLIC_PRODUCTION_URL } from '$env/static/public';
-import { isOriginalHost } from '$lib/app-routing.js';
+import { isOriginalHostname } from '$lib/app-routing.js';
 
 export async function GET({ fetch, url }) {
 	const originalUrl = url;
-	const host = originalUrl.host;
+	const hostname = originalUrl.hostname;
 
-	if (!host) {
+	if (!hostname) {
 		throw error(404, 'Host not found.');
 	}
 
-	if (!isOriginalHost(host)) {
+	if (!isOriginalHostname(hostname)) {
 		throw error(
 			405,
 			`Not allowed. Only requests to original host (${PUBLIC_PRODUCTION_URL}) are allowed.`

@@ -10,11 +10,25 @@
 
 	import FormWrapper from './form-wrapper.svelte';
 
-	export let form: SuperValidated<Infer<PasswordFormSchema>>;
+	type Props = {
+		form: SuperValidated<Infer<PasswordFormSchema>>;
+		onSuccess?: (password: string) => void;
+	};
+	let { form, onSuccess }: Props = $props();
+
+	let submittedPassword = '';
 
 	const passwordForm = superForm(form, {
 		validators: zod4Client(passwordFormSchema()),
 		validationMethod: 'auto',
+		onSubmit() {
+			submittedPassword = $formData.password;
+		},
+		onUpdated({ form }) {
+			if (form.message?.status === 'success') {
+				onSuccess?.(submittedPassword);
+			}
+		},
 		onError(event) {
 			$message = {
 				status: 'error',

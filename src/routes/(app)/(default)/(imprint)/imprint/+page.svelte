@@ -8,7 +8,7 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 </script>
 
-<Page title={m.broad_green_hamster_exhale()} lead={m.solid_lofty_nuthatch_devour()}>
+<Page title={m.basic_cool_fish_conquer()} lead={m.solid_lofty_nuthatch_devour()}>
 	<Container class="prose">
 		<Markdown markdown={imprint} />
 

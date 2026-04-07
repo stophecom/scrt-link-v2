@@ -45,3 +45,8 @@ static/test.html
 
 # Antigravity logs
 .error_log.txt
+
+# Claude Code
+.claude/settings.local.json
+.claude/plans/
+.claude/worktrees/

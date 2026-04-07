@@ -7,7 +7,7 @@
 </script>
 
 <Page
-	title={m.pretty_low_dove_transform()}
+	title={m.blue_aqua_hornet_link()}
 	lead={m.crazy_acidic_antelope_belong()}
 	markNotTranslated={true}
 >

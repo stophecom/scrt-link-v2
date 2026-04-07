@@ -94,7 +94,7 @@ export const businessFeatures = () => [
 
 export const securityFeatures = () => [
 	{
-		title: m.tasty_free_mallard_bloom(),
+		title: m.flat_zany_baboon_adapt(),
 		icon: Lock,
 		description: m.misty_giant_snake_swim()
 	},

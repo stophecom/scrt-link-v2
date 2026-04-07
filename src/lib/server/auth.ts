@@ -1,9 +1,10 @@
 import { sha256Hash } from '@scrt-link/core';
 import type { RequestEvent } from '@sveltejs/kit';
 import { Google } from 'arctic';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 
+import { dev } from '$app/environment';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
 import { getBaseUrl } from '$lib/constants';
 import { generateBase64Token } from '$lib/crypto';
@@ -49,7 +50,9 @@ export async function validateSessionToken(token: string) {
 				role: table.user.role,
 				subscriptionTier: table.user.subscriptionTier,
 				picture: table.user.picture,
-				preferences: table.user.preferences
+				preferences: table.user.preferences,
+				encryptionEnabled: table.user.encryptionEnabled,
+				hasPassword: sql<boolean>`${table.user.passwordHash} IS NOT NULL`.as('has_password')
 			},
 			session: table.session
 		})
@@ -95,7 +98,10 @@ export async function invalidateSession(sessionId: string) {
 export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date) {
 	event.cookies.set(sessionCookieName, token, {
 		expires: expiresAt,
-		path: '/'
+		path: '/',
+		httpOnly: true,
+		secure: !dev,
+		sameSite: 'lax'
 	});
 }
 

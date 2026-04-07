@@ -23,6 +23,6 @@ export const load: LayoutServerLoad = async ({ locals }) => {
 		whiteLabelDomain: whiteLabel?.customDomain,
 		whiteLabel: whiteLabel,
 		isPersistentHeader: true,
-		headerBreadcrumb: m.vivid_frail_ox_accept()
+		headerBreadcrumb: m.novel_proud_anaconda_zoom()
 	};
 };
