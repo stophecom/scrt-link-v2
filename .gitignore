@@ -36,8 +36,6 @@ temp.*
 # Backups
 /backups
 
-
-
 # Client module is generated during build
 static/client-module.js
 # Local testing
@@ -50,3 +48,6 @@ static/test.html
 .claude/settings.local.json
 .claude/plans/
 .claude/worktrees/
+
+# Config / Certificates
+*.pem

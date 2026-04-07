@@ -34,13 +34,13 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 	const getOrganizationIdOptions = () => [
 		{
 			value: '',
-			label: m.fuzzy_cool_ape_blend()
+			label: m.misty_real_florian_startle()
 		},
 		...(userOrganization
 			? [
 					{
 						value: userOrganization.id,
-						label: m.elegant_whole_swallow_edit({ organization: userOrganization.name })
+						label: userOrganization.name
 					}
 				]
 			: [])

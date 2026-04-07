@@ -9,6 +9,7 @@
 	import Container from '../ui/container/container.svelte';
 	import LanguageSwitcher from '../ui/language-switcher';
 	import FooterMenu from '../ui/menu';
+	import DarkModeSwitcher from './dark-mode-switcher.svelte';
 </script>
 
 <footer class="border-border bg-background border-t pt-14 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
@@ -52,7 +53,8 @@
 				</span>
 			</div>
 
-			<div class="ms-auto flex justify-center py-5 md:py-2">
+			<div class="ms-auto flex items-center gap-4 py-5 md:py-2">
+				<DarkModeSwitcher />
 				<LanguageSwitcher />
 			</div>
 		</div>

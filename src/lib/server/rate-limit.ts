@@ -5,16 +5,14 @@ import { dev } from '$app/environment';
 import { RATE_LIMIT_COOKIE_SECRET } from '$env/static/private';
 import { m } from '$lib/paraglide/messages.js';
 
-export const ALLOWED_REQUESTS_PER_MINUTE = 5;
-
 export const limiter = new RateLimiter({
-	IP: [10, 'h'], // IP address limiter
+	IP: [100, 'h'], // IP address limiter (relaxed for shared IPs)
 	IPUA: [5, 'm'], // IP + User Agent limiter
 	cookie: {
 		// Cookie limiter
 		name: 'limiterid', // Unique cookie name for this limiter
 		secret: RATE_LIMIT_COOKIE_SECRET, // Use $env/static/private
-		rate: [ALLOWED_REQUESTS_PER_MINUTE, 'm'],
+		rate: [5, 'm'],
 		preflight: true // Require preflight call (see load function)
 	}
 });
@@ -35,5 +33,5 @@ export async function isRateLimited(event: RequestEvent): Promise<boolean> {
 export const rateLimitErrorMessage = (): App.Superforms.Message => ({
 	status: 'error',
 	title: m.nimble_fancy_pony_amuse(),
-	description: m.that_dark_cockroach_hint({ amountOfMinutes: ALLOWED_REQUESTS_PER_MINUTE })
+	description: m.blue_this_raven_seek()
 });
