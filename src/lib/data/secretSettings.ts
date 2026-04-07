@@ -42,7 +42,7 @@ export const getReadReceiptOptions = () => [
 	},
 	{
 		value: ReadReceiptOptions.EMAIL,
-		label: m.neat_nice_shad_engage()
+		label: m.clear_lost_goose_beam()
 	},
 	{
 		value: ReadReceiptOptions.NTFY,
@@ -72,11 +72,11 @@ export const getThemeOptions = () => [
 export const getSecretTypes = () => [
 	{
 		value: SecretType.TEXT,
-		label: m.happy_dizzy_angelfish_stir()
+		label: m.aloof_caring_anteater_compose()
 	},
 	{
 		value: SecretType.FILE,
-		label: m.nice_male_zebra_stop()
+		label: m.formal_aware_platypus_charm()
 	},
 	{
 		value: SecretType.REDIRECT,

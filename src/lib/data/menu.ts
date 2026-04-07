@@ -40,7 +40,7 @@ export const productMenu = () => [
 	},
 	{
 		href: '/pricing',
-		label: m.same_that_cowfish_trip()
+		label: m.moving_quaint_buzzard_trip()
 	},
 	{
 		href: '/developers',
@@ -61,19 +61,19 @@ export const productMenu = () => [
 export const companyMenu = () => [
 	{
 		href: '/about',
-		label: m.sour_sound_porpoise_bloom()
+		label: m.polite_misty_jan_hint()
 	},
 	{
 		href: '/privacy',
-		label: m.red_round_cuckoo_embrace()
+		label: m.awake_frail_kitten_hush()
 	},
 	{
 		href: '/security',
-		label: m.warm_spry_jay_stir()
+		label: m.nice_last_quail_pop()
 	},
 	{
 		href: '/blog',
-		label: m.such_last_giraffe_cut()
+		label: m.crazy_tired_racoon_offer()
 	}
 ];
 
@@ -94,7 +94,7 @@ export const helpMenu = () => [
 
 const tos = () => ({
 	href: '/terms-of-service',
-	label: m.petty_strong_owl_fond()
+	label: m.bad_white_baboon_zap()
 });
 
 const cookiePolicy = () => ({
@@ -104,7 +104,7 @@ const cookiePolicy = () => ({
 
 const privacyPolicy = () => ({
 	href: '/privacy-policy',
-	label: m.loved_ago_pug_tend()
+	label: m.crazy_jumpy_mouse_hush()
 });
 
 const acceptableUsePolicy = () => ({

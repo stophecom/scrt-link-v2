@@ -368,7 +368,7 @@ export const addMemberToOrganization: Action = async (event) => {
 				form,
 				{
 					status: 'error',
-					title: m.vivid_swift_firefox_devour(),
+					title: m.lost_stock_warthog_care(),
 					description: m.white_odd_osprey_adapt()
 				},
 				{
@@ -475,7 +475,7 @@ export const manageOrganizationMember: Action = async (event) => {
 
 		return message(form, {
 			status: 'success',
-			title: m.slow_tense_niklas_adore(),
+			title: m.just_plane_puffin_explore(),
 			description: m.bald_great_flea_splash()
 		});
 	}
@@ -531,7 +531,7 @@ export const removeOrganizationMember: Action = async (event) => {
 			form,
 			{
 				status: 'error',
-				title: m.tame_mushy_martin_loop()
+				title: m.east_ago_hedgehog_pause()
 			},
 			{
 				status: 401
@@ -608,7 +608,7 @@ export const removeOrganizationMember: Action = async (event) => {
 		});
 	}
 
-	return message(form, { status: 'error', title: m.next_keen_sheep_endure() }, { status: 400 });
+	return message(form, { status: 'error', title: m.free_smug_hound_boil() }, { status: 400 });
 };
 
 export const loginWithEmail: Action = async (event) => {

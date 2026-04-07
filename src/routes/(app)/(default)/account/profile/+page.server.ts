@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return {
 		user,
 		userForm: await userFormValidator(user),
-		pageTitle: m.super_flaky_wallaby_pick()
+		pageTitle: m.novel_proud_anaconda_zoom()
 	};
 };
 

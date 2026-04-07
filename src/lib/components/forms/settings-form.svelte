@@ -59,7 +59,7 @@
 		{#if $formData.readReceiptOption === 'email'}
 			<Form.Field {form} name="email">
 				<Text
-					label={m.just_every_oryx_flop()}
+					label={m.clear_lost_goose_beam()}
 					bind:value={$formData.email}
 					{...$constraints.email}
 					type="email"
