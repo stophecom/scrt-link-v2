@@ -113,7 +113,7 @@
 
 				<div class="py-4">
 					<Form.Button delayed={$delayed} class="w-full" size="lg">
-						{$delayed ? m.cute_seemly_poodle_reside() : m.simple_bad_haddock_agree()}
+						{$delayed ? m.aware_tense_pig_vent() : m.simple_bad_haddock_agree()}
 					</Form.Button>
 				</div>
 
