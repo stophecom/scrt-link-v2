@@ -1,5 +1,4 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
-
 // Run local tests headed: PUBLIC_ENV=development npm run test -- --headed
 const isLocalTest = process.env.PUBLIC_ENV === 'development';
 

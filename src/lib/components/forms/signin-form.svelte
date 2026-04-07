@@ -1,16 +1,20 @@
 <script lang="ts">
+	import { derivePDK, unwrapMasterKey } from '@scrt-link/core';
 	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import { dev } from '$app/environment';
+	import { goto } from '$app/navigation';
+	import { setMasterKey } from '$lib/client/key-manager';
+	import { setPendingPassword } from '$lib/client/pending-password';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
+	import Link from '$lib/components/ui/link';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type SignInFormSchema, signInFormSchema } from '$lib/validators/formSchemas';
 
-	import Link from '../ui/link';
 	import FormWrapper from './form-wrapper.svelte';
 
 	export let data: SuperValidated<Infer<SignInFormSchema>>;
@@ -19,8 +23,36 @@
 		validators: zod4Client(signInFormSchema()),
 		validationMethod: 'auto',
 
+		onResult: async ({ result }) => {
+			if (result.type === 'success' && result.data?.redirect) {
+				const redirect = result.data.redirect as string;
+
+				if (result.data.keyStore) {
+					// Encryption enabled: derive PDK, unwrap MK, then navigate
+					try {
+						const { pdkSalt, pdkIterations, encryptedMasterKey } = result.data.keyStore;
+						const pdk = await derivePDK($formData.password, pdkSalt, pdkIterations);
+						const masterKey = await unwrapMasterKey(encryptedMasterKey, pdk);
+						setMasterKey(masterKey);
+					} catch (e) {
+						console.error('Failed to unlock encryption keys:', e);
+						$message = {
+							status: 'error',
+							title: m.mad_such_albatross_cherish(),
+							description: m.slim_fair_owl_peek()
+						};
+						return;
+					}
+				} else {
+					// Encryption not set up: store password for encryption setup page
+					setPendingPassword($formData.password);
+				}
+
+				goto(localizeHref(redirect));
+			}
+		},
+
 		onError({ result }) {
-			// We use message for unexpected errors
 			$message = {
 				status: 'error',
 				title: 'Unknown error',
@@ -43,6 +75,7 @@
 					{...$constraints.email}
 					autocomplete="username"
 					type="email"
+					data-testid="input-email"
 				/>
 			</Form.Control>
 			<Form.FieldErrors />
@@ -53,6 +86,7 @@
 				bind:value={$formData.password}
 				{...$constraints.password}
 				autocomplete="current-password"
+				data-testid="input-password"
 			/>
 
 			<Form.Description
@@ -63,7 +97,7 @@
 		</Form.Field>
 
 		<div class="py-4">
-			<Form.Button delayed={$delayed} class="flex w-full" size="lg"
+			<Form.Button delayed={$delayed} class="flex w-full" size="lg" data-testid="submit-login"
 				>{m.legal_weak_jay_bless()}</Form.Button
 			>
 		</div>

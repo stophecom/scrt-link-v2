@@ -39,13 +39,21 @@
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
-				<Input {...attrs} bind:value={$formData.email} {...$constraints.email} type="email" />
+				<Input
+					{...attrs}
+					bind:value={$formData.email}
+					{...$constraints.email}
+					type="email"
+					data-testid="input-email"
+				/>
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<div class="py-4">
-			<Form.Button delayed={$delayed} class="w-full" size="lg">{buttonLabel}</Form.Button>
+			<Form.Button delayed={$delayed} class="w-full" size="lg" data-testid="submit-email"
+				>{buttonLabel}</Form.Button
+			>
 		</div>
 	</form>
 </FormWrapper>

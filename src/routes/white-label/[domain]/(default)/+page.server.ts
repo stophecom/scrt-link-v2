@@ -1,6 +1,3 @@
-import { error } from '@sveltejs/kit';
-
-import { isOriginalHost } from '$lib/app-routing';
 import { redirectLocalized } from '$lib/i18n';
 import { getLocale } from '$lib/paraglide/runtime';
 import { postSecret } from '$lib/server/form/actions';
@@ -10,18 +7,11 @@ import type { LocalizedWhiteLabelMessage } from '$lib/types';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ params, url, locals }) => {
+export const load: PageServerLoad = async ({ locals, params }) => {
 	const locale = getLocale();
 
-	const whiteLabel = await getWhiteLabelSiteByHost(params.domain);
-
-	if (!whiteLabel) {
-		throw error(500, `No data for ${params.domain} found.`);
-	}
-
-	if (!isOriginalHost(url.host) && !whiteLabel.published) {
-		throw error(403, `Page is not published.`);
-	}
+	const hostNameFromUrl = params.domain;
+	const whiteLabel = await getWhiteLabelSiteByHost(hostNameFromUrl);
 
 	// If site is private, force login
 	if (whiteLabel.private && !locals.user) {

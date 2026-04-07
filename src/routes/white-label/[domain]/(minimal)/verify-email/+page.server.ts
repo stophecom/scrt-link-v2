@@ -1,0 +1,39 @@
+import { redirectLocalized } from '$lib/i18n';
+import { getEmailVerificationCookie } from '$lib/server/cookies';
+import { resendEmailVerificationCode, verifyEmailVerificationCode } from '$lib/server/form/actions';
+import {
+	emailVerificationFormValidator,
+	resendEmailVerificationFormValidator
+} from '$lib/server/form/validators';
+import { rateLimiterPreflight } from '$lib/server/rate-limit';
+
+import type { Actions, RequestEvent } from './$types';
+
+export async function load(event: RequestEvent) {
+	await rateLimiterPreflight(event);
+	const email = getEmailVerificationCookie(event);
+
+	// Already logged in
+	if (event.locals.user) {
+		return redirectLocalized(307, '/');
+	}
+
+	// No email from cookie
+	if (!email) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	const defaultValues = {
+		email
+	};
+
+	return {
+		verificationForm: await emailVerificationFormValidator(defaultValues),
+		resendForm: await resendEmailVerificationFormValidator(defaultValues)
+	};
+}
+
+export const actions: Actions = {
+	verifyEmailVerificationCode: verifyEmailVerificationCode,
+	resend: resendEmailVerificationCode
+};

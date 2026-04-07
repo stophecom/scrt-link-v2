@@ -197,6 +197,41 @@ export const apiKeyFormSchema = () =>
 		description: z.string().max(50).optional()
 	});
 
+export const encryptionSetupFormSchema = () =>
+	z.object({
+		pdkSalt: z.string().length(32), // 16 bytes hex-encoded
+		pdkIterations: z.coerce.number().int().min(100000),
+		encryptedMasterKey: z.string().min(1),
+		recoveryEncryptedMasterKey: z.string().min(1),
+		recoveryKeyHash: z.string().length(64) // SHA-256 hex
+	});
+
+export const recoverySetupFormSchema = () =>
+	z.object({
+		recoveryEncryptedMasterKey: z.string().min(1),
+		recoveryKeyHash: z.string().length(64) // SHA-256 hex
+	});
+
+export const recoveryVerifyFormSchema = () =>
+	z.object({
+		recoveryKeyHash: z.string().length(64)
+	});
+
+export const passwordChangeWithEncryptionFormSchema = () =>
+	z.object({
+		currentPassword: z
+			.string()
+			.min(8, m.aloof_careful_trout_dine({ number: 8 }))
+			.max(255)
+			.optional(), // Optional for recovery flow (MK already in memory)
+		password: z
+			.string()
+			.min(8, m.aloof_careful_trout_dine({ number: 8 }))
+			.max(255),
+		pdkSalt: z.string().length(32).optional(),
+		encryptedMasterKey: z.string().min(1).optional()
+	});
+
 // @todo infer types by default
 export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = z.infer<ReturnType<typeof emailFormSchema>>;
@@ -219,3 +254,9 @@ export type ContactFormSchema = ReturnType<typeof contactFormSchema>;
 export type ApiTokenFormSchema = ReturnType<typeof apiKeyFormSchema>;
 export type WhiteLabelMetaSchema = z.infer<ReturnType<typeof whiteLabelMetaSchema>>;
 export type WhiteLabelSiteSchema = z.infer<ReturnType<typeof whiteLabelSiteSchema>>;
+export type EncryptionSetupFormSchema = z.infer<ReturnType<typeof encryptionSetupFormSchema>>;
+export type RecoverySetupFormSchema = z.infer<ReturnType<typeof recoverySetupFormSchema>>;
+export type RecoveryVerifyFormSchema = z.infer<ReturnType<typeof recoveryVerifyFormSchema>>;
+export type PasswordChangeWithEncryptionFormSchema = z.infer<
+	ReturnType<typeof passwordChangeWithEncryptionFormSchema>
+>;

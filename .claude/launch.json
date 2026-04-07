@@ -1,0 +1,23 @@
+{
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "dev",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["run", "dev"],
+			"port": 5173
+		},
+		{
+			"name": "db",
+			"runtimeExecutable": "docker",
+			"runtimeArgs": ["compose", "up"],
+			"port": 5433
+		},
+		{
+			"name": "db:studio",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["run", "db:studio"],
+			"port": 4983
+		}
+	]
+}
