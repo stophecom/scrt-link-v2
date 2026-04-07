@@ -9,7 +9,6 @@
 	"few_lime_kudu_imagine": "Introduza o código de 6 dígitos",
 	"orange_arable_sloth_cuddle": "Verifique seu e-mail",
 	"nimble_fancy_pony_amuse": "Muitas solicitações",
-	"that_dark_cockroach_hint": "Tente novamente em {amountOfMinutes} minutos.",
 	"yummy_fair_gazelle_link": "Senha",
 	"legal_weak_jay_bless": "Iniciar sessão",
 	"ago_crazy_pelican_pray": "para continuar para a sua conta.",
@@ -524,12 +523,9 @@
 	"tense_witty_gecko_relish": "Gerir a sua organização.",
 	"drab_dark_squirrel_fetch": "A minha organização",
 	"fresh_bad_midge_explore": "Com uma organização pode gerir o acesso privado ao seu serviço de segredos.",
-	"north_bright_tadpole_laugh": "Acesso restrito",
 	"mealy_keen_felix_believe": "Ativar o modo privado restringe o acesso apenas a utilizadores autenticados.",
 	"quaint_careful_ostrich_buy": "Modo privado",
 	"slow_mushy_rook_shine": "Tem de selecionar pelo menos um item.",
-	"fuzzy_cool_ape_blend": "Só eu",
-	"elegant_whole_swallow_edit": "Membros de {organization}",
 	"free_nimble_whale_fry": "Os meus segredos",
 	"quaint_solid_orangutan_devour": "Se o problema persistir, contacte o suporte.",
 	"upper_wise_dove_propel": "Organização criada",
@@ -657,5 +653,6 @@
 	"blue_kind_crane_step": "Salvando…",
 	"gold_true_lark_rise": "Confirmar e Salvar",
 	"slim_fair_owl_peek": "Não foi possível desbloquear as chaves de criptografia. Tente redefinir sua senha.",
-	"misty_real_florian_startle": "Nenhum"
+	"misty_real_florian_startle": "Nenhum",
+	"blue_this_raven_seek": "Tente novamente em um ou dois minutos."
 }

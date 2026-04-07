@@ -9,7 +9,6 @@
 	"few_lime_kudu_imagine": "6-stelligen Code eingeben",
 	"orange_arable_sloth_cuddle": "E-Mails überprüfen",
 	"nimble_fancy_pony_amuse": "Zu viele Anfragen",
-	"that_dark_cockroach_hint": "Versuche es in {amountOfMinutes} Minuten erneut.",
 	"yummy_fair_gazelle_link": "Passwort",
 	"legal_weak_jay_bless": "Anmelden",
 	"ago_crazy_pelican_pray": "um zu deinem Konto zu gelangen.",
@@ -524,12 +523,9 @@
 	"tense_witty_gecko_relish": "Verwalten Sie Ihre Organisation.",
 	"drab_dark_squirrel_fetch": "Meine Organisation",
 	"fresh_bad_midge_explore": "Mit einer Organisation können Sie den privaten Zugriff auf Ihren Geheimdienst verwalten.",
-	"north_bright_tadpole_laugh": "Eingeschränkter Zugriff",
 	"mealy_keen_felix_believe": "Die Aktivierung des privaten Modus beschränkt den Zugriff ausschließlich auf authentifizierte Benutzer.",
 	"quaint_careful_ostrich_buy": "Privater Modus",
 	"slow_mushy_rook_shine": "Sie müssen mindestens ein Element auswählen.",
-	"fuzzy_cool_ape_blend": "Nur ich",
-	"elegant_whole_swallow_edit": "Mitglieder von {organization}",
 	"free_nimble_whale_fry": "Meine Geheimnisse",
 	"quaint_solid_orangutan_devour": "Wenn das Problem weiterhin besteht, wenden Sie sich bitte an den Support.",
 	"upper_wise_dove_propel": "Organisation erstellt",
@@ -657,5 +653,6 @@
 	"blue_kind_crane_step": "Speichern…",
 	"gold_true_lark_rise": "Bestätigen und Speichern",
 	"slim_fair_owl_peek": "Verschlüsselungsschlüssel konnten nicht entsperrt werden. Versuchen Sie, Ihr Passwort zurückzusetzen.",
-	"misty_real_florian_startle": "Nichts"
+	"misty_real_florian_startle": "Nichts",
+	"blue_this_raven_seek": "Versuchen Sie es in ein oder zwei Minuten erneut."
 }
