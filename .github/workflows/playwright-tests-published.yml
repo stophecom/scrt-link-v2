@@ -21,6 +21,8 @@ jobs:
         run: xvfb-run npx playwright test
         env:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+          E2E_USER_EMAIL: e2e@scrt.link
+          E2E_USER_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
           PUBLIC_ENV: preview
           VERCEL_URL: ${{ github.event.deployment_status.target_url }}
           DEBUG: pw:api
@@ -28,6 +30,8 @@ jobs:
         if: github.event.deployment_status.environment == 'Production'
         run: npx playwright test
         env:
+          E2E_USER_EMAIL: e2e@scrt.link
+          E2E_USER_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
           PUBLIC_ENV: production
           VERCEL_URL: https://scrt.link
           DEBUG: pw:api
