@@ -3,10 +3,8 @@
 	import type { Snippet } from 'svelte';
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
-	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import Container from '$lib/components/ui/container/container.svelte';
-	import LanguageSwitcher from '$lib/components/ui/language-switcher';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	type Props = {
@@ -44,8 +42,6 @@
 			</a>
 		{/if}
 		<div class="ml-auto flex items-center">
-			<DarkModeSwitcher hideLabel variant="ghost" size="icon" class="me-2" />
-			<LanguageSwitcher />
 			{#if user}
 				<a href={localizeHref('/account')} class="relative ms-2">
 					<Avatar.Root>

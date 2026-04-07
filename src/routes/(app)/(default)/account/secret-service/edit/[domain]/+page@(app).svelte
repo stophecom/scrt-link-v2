@@ -14,7 +14,6 @@
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
-	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
 	import PageLead from '$lib/components/blocks/page-lead.svelte';
 	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import Color from '$lib/components/forms/form-fields/color.svelte';
@@ -193,8 +192,6 @@
 						/>
 					</Form.Field>
 				</div>
-				<Separator class="my-4" />
-				<DarkModeSwitcher variant="outline" />
 			</Card>
 
 			<Card class="mb-6" title={m.shy_smug_crow_sing()} description={m.strong_strong_swan_hurl()}>

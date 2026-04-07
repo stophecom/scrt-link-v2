@@ -2,7 +2,9 @@
 	import { type Snippet } from 'svelte';
 
 	import { page } from '$app/state';
+	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
+	import LanguageSwitcher from '$lib/components/ui/language-switcher';
 	import { m } from '$lib/paraglide/messages.js';
 
 	import Header from '../header.svelte';
@@ -30,5 +32,9 @@
 	>
 		<span class="py-2 pe-4">©{new Date().getFullYear()} {data.name} </span>
 		<small>{m.empty_spicy_firefox_fade()} <a href="https://scrt.link">scrt.link</a></small>
+		<div class="ms-auto flex items-center gap-4">
+			<DarkModeSwitcher />
+			<LanguageSwitcher />
+		</div>
 	</Container>
 </footer>
