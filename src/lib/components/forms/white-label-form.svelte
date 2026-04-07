@@ -79,13 +79,11 @@
 	<form method="POST" use:enhance action="?/saveWhiteLabelMeta">
 		<Form.Field {form} name="organizationId">
 			<Select
-				label="Organization"
+				label={m.wild_inner_fox_honor()}
 				options={organizationIdOptions}
 				bind:value={$organizationIdProxy}
 			/>
-			<Form.Description
-				>Members of the selected organization get full access by signing in.</Form.Description
-			>
+			<Form.Description>{m.blue_wild_snake_approve()}</Form.Description>
 		</Form.Field>
 		<!-- @todo Unclear why the hidden input is necessary. -->
 		<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />

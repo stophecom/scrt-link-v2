@@ -9,6 +9,7 @@
 	"few_lime_kudu_imagine": "Введите 6-значный код",
 	"orange_arable_sloth_cuddle": "Проверьте свою электронную почту",
 	"nimble_fancy_pony_amuse": "Слишком много запросов",
+	"that_dark_cockroach_hint": "Попробуйте снова через {amountOfMinutes} минут.",
 	"yummy_fair_gazelle_link": "Пароль",
 	"legal_weak_jay_bless": "Войти",
 	"ago_crazy_pelican_pray": "чтобы продолжить использование вашего аккаунта.",
@@ -523,9 +524,12 @@
 	"tense_witty_gecko_relish": "Управляйте своей организацией.",
 	"drab_dark_squirrel_fetch": "Моя организация",
 	"fresh_bad_midge_explore": "С помощью организации вы можете управлять приватным доступом к своему секретному сервису.",
+	"north_bright_tadpole_laugh": "Ограниченный доступ",
 	"mealy_keen_felix_believe": "Включение приватного режима ограничивает доступ только для аутентифицированных пользователей.",
 	"quaint_careful_ostrich_buy": "Приватный режим",
 	"slow_mushy_rook_shine": "Вы должны выбрать хотя бы один элемент.",
+	"fuzzy_cool_ape_blend": "Только я",
+	"elegant_whole_swallow_edit": "Члены {organization}",
 	"free_nimble_whale_fry": "Мои секреты",
 	"quaint_solid_orangutan_devour": "Если проблема сохраняется, обратитесь в поддержку.",
 	"upper_wise_dove_propel": "Организация создана",
@@ -653,6 +657,5 @@
 	"blue_kind_crane_step": "Сохранение…",
 	"gold_true_lark_rise": "Подтвердить и сохранить",
 	"slim_fair_owl_peek": "Не удалось разблокировать ключи шифрования. Попробуйте сбросить пароль.",
-	"misty_real_florian_startle": "Нет",
-	"blue_this_raven_seek": "Попробуйте снова через минуту или две."
+	"misty_real_florian_startle": "Нет"
 }

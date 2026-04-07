@@ -9,6 +9,7 @@
 	"few_lime_kudu_imagine": "Enter 6-digit code",
 	"orange_arable_sloth_cuddle": "Check your email",
 	"nimble_fancy_pony_amuse": "Too many requests",
+	"that_dark_cockroach_hint": "Try again in {amountOfMinutes} minutes.",
 	"yummy_fair_gazelle_link": "Password",
 	"legal_weak_jay_bless": "Sign in",
 	"ago_crazy_pelican_pray": "to continue to your account.",
@@ -523,9 +524,12 @@
 	"tense_witty_gecko_relish": "Manage your organization.",
 	"drab_dark_squirrel_fetch": "My Organization",
 	"fresh_bad_midge_explore": "With an organization you can manage private access to your secret service.",
+	"north_bright_tadpole_laugh": "Restricted access",
 	"mealy_keen_felix_believe": "Enabling private mode restricts access to authenticated users only.",
 	"quaint_careful_ostrich_buy": "Private mode",
 	"slow_mushy_rook_shine": "You have to select at least one item.",
+	"fuzzy_cool_ape_blend": "Only me",
+	"elegant_whole_swallow_edit": "Members of {organization}",
 	"free_nimble_whale_fry": "Secrets",
 	"quaint_solid_orangutan_devour": "If the problem persists, please contact support.",
 	"upper_wise_dove_propel": "Organization created",
@@ -654,5 +658,6 @@
 	"gold_true_lark_rise": "Confirm and Save",
 	"slim_fair_owl_peek": "Could not unlock encryption keys. Try resetting your password.",
 	"misty_real_florian_startle": "None",
-	"blue_this_raven_seek": "Try again in a minute or two."
+	"blue_this_raven_seek": "Try again in a minute or two.",
+	"blue_wild_snake_approve": "Members of the selected organization get full access by signing in."
 }
