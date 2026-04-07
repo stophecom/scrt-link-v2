@@ -33,4 +33,5 @@ export {
 	Separator as SelectSeparator,
 	Trigger as SelectTrigger,
 	Separator,
-	Trigger};
+	Trigger
+};
