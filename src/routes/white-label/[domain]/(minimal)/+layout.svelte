@@ -10,7 +10,6 @@
 <Header
 	user={data.user}
 	name={data?.name}
-	isPersistent={true}
 	logo={data.logo}
 	logoDarkMode={data.logoDarkMode}
 />

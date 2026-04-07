@@ -11,7 +11,6 @@
 	import type { LayoutData } from './$types';
 
 	let { children, data }: { data: LayoutData; children: Snippet } = $props();
-	let isPersistent = $derived(page.data.isPersistentHeader);
 	let isWideLayout = $derived(page.data.wideLayout);
 </script>
 
@@ -20,7 +19,6 @@
 	logoDarkMode={data.logoDarkMode}
 	user={data.user}
 	name={data.name}
-	{isPersistent}
 	wide={isWideLayout}
 />
 {@render children()}
