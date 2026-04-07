@@ -267,6 +267,35 @@ We store images (logo, app icons) for white-label sites on S3 and serve optimize
 PUBLIC_IMGIX_CDN_URL="scrt-link.imgix.net"
 ```
 
+## White-label with HTTPS (local)
+
+To test the white-label multi-tenant setup locally you need HTTPS with a custom domain.
+
+1. Install [mkcert](https://github.com/FiloSottile/mkcert) and set up a local CA:
+
+```bash
+brew install mkcert
+mkcert -install
+```
+
+2. Generate certificates for your white-label domain:
+
+```bash
+mkcert wl.scrt.link
+```
+
+This creates `wl.scrt.link.pem` and `wl.scrt.link-key.pem` in the current directory.
+
+3. Add the domain to `/etc/hosts`:
+
+```
+127.0.0.1 wl.scrt.link
+```
+
+4. The `vite.config.ts` automatically picks up the certificates if they exist. No config changes needed — HTTPS is enabled conditionally when `.pem` files are present.
+
+> **Note:** The `.pem` files are gitignored and must be generated per machine.
+
 ## Error Handling
 
 We use SvelteKit recommendation: https://svelte.dev/docs/kit/errors

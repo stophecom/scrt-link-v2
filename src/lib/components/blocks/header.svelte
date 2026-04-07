@@ -15,7 +15,6 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
-	import DarkModeSwitcher from './dark-mode-switcher.svelte';
 
 	type Props = {
 		user: App.Locals['user'];
@@ -127,7 +126,6 @@
 								{/if}
 							</a>
 						{:else}
-							<DarkModeSwitcher hideLabel variant="ghost" size="icon" class="max-xs:hidden" />
 							<Button
 								variant="outline"
 								href={localizeHref('/login')}

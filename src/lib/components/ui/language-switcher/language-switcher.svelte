@@ -17,7 +17,7 @@
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
 		{#snippet child({ props })}
-			<Button {...props} variant="outline">
+			<Button {...props} variant="outline" size="sm">
 				<Globe class="mr-2 h-4 w-4" />
 				{getSupportedLanguagesMap(getLocale())}
 				{#if showDropdownIndicator}

@@ -7,6 +7,10 @@ import { twMerge } from 'tailwind-merge';
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
+
+// Utility type for bits-ui component wrappers (used by shadcn-svelte)
+export type WithElementRef<T> = T & { ref?: HTMLElement | null };
+
 type FlyAndScaleParams = {
 	y?: number;
 	x?: number;

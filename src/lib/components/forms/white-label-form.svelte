@@ -19,7 +19,7 @@
 	import Separator from '../ui/separator/separator.svelte';
 	import Spinner from '../ui/spinner/spinner.svelte';
 	import Checkboxes from './form-fields/checkboxes.svelte';
-	import RadioGroup from './form-fields/radio-group.svelte';
+	import Select from './form-fields/select.svelte';
 	import Switch from './form-fields/switch.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
@@ -77,6 +77,17 @@
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/saveWhiteLabelMeta">
+		<Form.Field {form} name="organizationId">
+			<Select
+				label={m.wild_inner_fox_honor()}
+				options={organizationIdOptions}
+				bind:value={$organizationIdProxy}
+			/>
+			<Form.Description>{m.blue_wild_snake_approve()}</Form.Description>
+		</Form.Field>
+		<!-- @todo Unclear why the hidden input is necessary. -->
+		<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
+
 		<Form.Field {form} name="name">
 			<Text
 				label={m.quaint_flaky_swan_cry()}
@@ -156,17 +167,7 @@
 			<Switch bind:checked={$formData.isPrivate} label={m.quaint_careful_ostrich_buy()} />
 			<Form.Description>{m.mealy_keen_felix_believe()}</Form.Description>
 		</Form.Field>
-		{#if $formData.isPrivate}
-			<Form.Fieldset {form} name="organizationId">
-				<RadioGroup
-					options={organizationIdOptions}
-					bind:value={$organizationIdProxy}
-					label={m.north_bright_tadpole_laugh()}
-				/>
-			</Form.Fieldset>
-			<!-- @todo Unclear why the hidden input is necessary. -->
-			<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
-		{/if}
+
 		<div class="pt-4">
 			<Form.Button delayed={$delayed}
 				><Save class="me-2 h-4 w-4" /> {m.caring_light_tiger_taste()}</Form.Button
