@@ -8,9 +8,6 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<WhiteLabelPage
-	metaTitle={m.fine_aloof_skate_ascend()}
-	title={m.warm_clean_horse_seek()}
->
+<WhiteLabelPage metaTitle={m.fine_aloof_skate_ascend()} title={m.warm_clean_horse_seek()}>
 	<SPage form={data.form} />
 </WhiteLabelPage>
