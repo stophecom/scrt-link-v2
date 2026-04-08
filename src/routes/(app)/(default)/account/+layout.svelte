@@ -152,7 +152,7 @@
 
 				<!-- Main Content Area -->
 				<div class="flex-1 lg:max-w-3xl">
-					<PageTitle class="xs:text-2xl mb-4 text-2xl md:text-4xl" title={pageTitle} />
+					<PageTitle class="xs:text-2xl sr-only mb-4 text-2xl md:text-4xl" title={pageTitle} />
 
 					{@render children()}
 				</div>
