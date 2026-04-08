@@ -115,7 +115,7 @@ We use Stripe as payment provider.
 # Stripe CLI
 # Test webhooks
 stripe login
-stripe listen --forward-to localhost:5173/api/v1/webhooks
+stripe listen --forward-to https://localhost:5173/api/v1/webhooks
 
 # Trigger event
 stripe trigger payment_intent.succeeded
@@ -278,10 +278,10 @@ brew install mkcert
 mkcert -install
 ```
 
-2. Generate certificates for your white-label domain:
+2. Generate certificates for your white-label domain and localhost:
 
 ```bash
-mkcert wl.scrt.link
+mkcert wl.scrt.link localhost 127.0.0.1 ::1
 ```
 
 This creates `wl.scrt.link.pem` and `wl.scrt.link-key.pem` in the current directory.
