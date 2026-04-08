@@ -37,7 +37,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 				logoDarkMode: whiteLabel?.logoDarkMode,
 				appIcon: whiteLabel?.appIcon,
 				ogImage: whiteLabel?.ogImage,
-				primaryColor: (whiteLabel.theme as Theme)?.primaryColor || '#000000',
+				primaryColor: (whiteLabel.theme as Theme)?.primaryColor || '#3B82F6',
 				published: whiteLabel.published || false
 			},
 			zod4(whiteLabelSiteSchema())
