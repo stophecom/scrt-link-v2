@@ -28,7 +28,7 @@
 
 <Card
 	class="mb-6"
-	title={m.curly_slimy_buzzard_support()}
+	title={m.watery_basic_lemur_tickle()}
 	description={m.solid_north_ostrich_cheer()}
 >
 	{#if planLimits.whiteLabel}
