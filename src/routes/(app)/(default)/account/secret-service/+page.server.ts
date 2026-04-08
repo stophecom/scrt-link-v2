@@ -67,9 +67,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 	let membersAndInvitesByOrganization: MembersAndInvitesByOrganization[] = [];
 
 	if (userOrganization) {
-		membersAndInvitesByOrganization = await getMembersAndInvitesByOrganization(
-			userOrganization.id
-		);
+		membersAndInvitesByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
 	}
 
 	const organizationFormValidator = async () => {

@@ -45,7 +45,7 @@
 			label: m.super_funny_jackal_pause(),
 			icon: Key
 		},
-{
+		{
 			href: localizeHref('/account/secret-service'),
 			label: TierOptions.SECRET_SERVICE,
 			icon: ShieldCheck
