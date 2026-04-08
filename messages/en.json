@@ -660,7 +660,8 @@
 	"misty_real_florian_startle": "None",
 	"blue_this_raven_seek": "Try again in a minute or two.",
 	"blue_wild_snake_approve": "Members of the selected organization get full access by signing in.",
-	"warm_bright_fox_greet": "You're signed in with your scrt.link account.",
+	"warm_bright_fox_greet": "You're signed in with your scrt.link account. To manage your account settings, visit scrt.link.",
 	"keen_calm_wolf_watch": "Organization:",
-	"bold_swift_elk_march": "Manage account on scrt.link"
+	"bold_swift_elk_march": "Manage account on scrt.link",
+	"crisp_this_ladybug_prosper": "Change name"
 }

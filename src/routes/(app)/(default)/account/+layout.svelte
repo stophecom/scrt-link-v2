@@ -6,7 +6,6 @@
 	import SettingsGroup from '@lucide/svelte/icons/settings';
 	import ShieldCheck from '@lucide/svelte/icons/shield-check';
 	import User from '@lucide/svelte/icons/user';
-	import Users from '@lucide/svelte/icons/users';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import type { Snippet } from 'svelte';
 
@@ -46,12 +45,7 @@
 			label: m.super_funny_jackal_pause(),
 			icon: Key
 		},
-		{
-			href: localizeHref('/account/organization'),
-			label: m.wild_inner_fox_honor(),
-			icon: Users
-		},
-		{
+{
 			href: localizeHref('/account/secret-service'),
 			label: TierOptions.SECRET_SERVICE,
 			icon: ShieldCheck
