@@ -10,7 +10,7 @@ import { getWhiteLabelSiteById } from '$lib/server/whiteLabelSite';
 export const POST: RequestHandler = async ({ params, url }) => {
 	const secretId = params.id;
 
-	const host = url.host;
+	const hostname = url.hostname;
 
 	try {
 		if (!secretId) {
@@ -34,7 +34,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		if (result?.whiteLabelSiteId) {
 			const whiteLabelResult = await getWhiteLabelSiteById(result.whiteLabelSiteId);
 
-			if (host !== whiteLabelResult.customDomain) {
+			if (hostname !== whiteLabelResult.customDomain) {
 				throw Error(`Host mismatch. The secret can't get accessed from this host.`);
 			}
 		}
