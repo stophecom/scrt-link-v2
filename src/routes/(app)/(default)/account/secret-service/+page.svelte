@@ -95,13 +95,17 @@
 			#10b981,
 			#f97316
 		);
+		box-shadow:
+			0 4px 20px rgba(139, 92, 246, 0.15),
+			0 8px 40px rgba(236, 72, 153, 0.1),
+			0 2px 8px rgba(59, 130, 246, 0.12);
 	}
 
 	.customize-card :global(.caseBorder) {
 		box-shadow:
-			0 0 12px rgba(59, 130, 246, 0.2),
-			0 0 24px rgba(139, 92, 246, 0.15),
-			0 0 36px rgba(236, 72, 153, 0.1);
+			0 0 4px rgba(59, 130, 246, 0.2),
+			0 0 8px rgba(139, 92, 246, 0.15),
+			0 0 12px rgba(236, 72, 153, 0.1);
 	}
 
 	.customize-card :global(.iframe-zoomed) {
