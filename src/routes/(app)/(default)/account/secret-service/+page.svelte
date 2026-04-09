@@ -6,6 +6,7 @@
 	import WhiteLabelForm from '$lib/components/forms/white-label-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
+	import Stepper from '$lib/components/ui/stepper';
 	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -16,7 +17,18 @@
 
 	let { data }: { data: PageData & LayoutData } = $props();
 	let planLimits = $derived(getUserPlanLimits(data.user?.subscriptionTier));
+	let currentStep = $derived(!data.userOrganization ? 0 : !data.whiteLabelDomain ? 1 : 2);
 </script>
+
+<Stepper
+	steps={[
+		{ label: m.bold_neat_panda_learn(), completed: !!data.userOrganization },
+		{ label: m.warm_swift_eagle_build(), completed: !!data.whiteLabelDomain },
+		{ label: m.bright_keen_fox_paint(), completed: false }
+	]}
+	{currentStep}
+	class="mb-8"
+/>
 
 <OrganizationCard
 	user={data.user}
