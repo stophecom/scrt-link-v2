@@ -17,20 +17,22 @@
 </script>
 
 <nav aria-label="Progress" class={cn('w-full', className)}>
-	<ol class="flex items-center">
+	<ol class="@container flex items-center px-1 py-2 sm:px-5">
 		{#each steps as step, i (i)}
 			{@const isCompleted = step.completed}
 			{@const isCurrent = i === currentStep}
 
 			<li class={cn('flex items-center', i < steps.length - 1 && 'flex-1')}>
-				<div class="flex flex-col items-center gap-1.5">
+				<div class="relative flex flex-col items-center gap-1.5 pb-6">
 					<!-- Circle -->
 					<div
 						class={cn(
 							'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold transition-colors',
 							isCompleted && 'bg-primary text-primary-foreground',
 							isCurrent && !isCompleted && 'border-primary text-primary border-2 bg-transparent',
-							!isCurrent && !isCompleted && 'border-muted-foreground/30 text-muted-foreground border-2'
+							!isCurrent &&
+								!isCompleted &&
+								'border-muted-foreground/30 text-muted-foreground border-2'
 						)}
 					>
 						{#if isCompleted}
@@ -42,11 +44,14 @@
 					<!-- Label -->
 					<span
 						class={cn(
-							'text-center text-xs font-medium whitespace-nowrap',
+							'absolute top-full left-1/2 -translate-x-1/2 -translate-y-4 px-1 text-center text-xs font-medium wrap-break-word hyphens-auto',
+							i === 0 && 'left-0 translate-x-0 text-left',
+							i === steps.length - 1 && 'right-0 left-auto translate-x-0 text-right',
 							isCompleted && 'text-foreground',
 							isCurrent && !isCompleted && 'text-primary',
 							!isCurrent && !isCompleted && 'text-muted-foreground'
 						)}
+						style="width: {100 / steps.length}cqw"
 					>
 						{step.label}
 					</span>
