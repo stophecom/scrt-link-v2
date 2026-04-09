@@ -6,4 +6,4 @@
 	let { data }: { data: PageData & LayoutData } = $props();
 </script>
 
-<AccountCard user={data.user} form={data.userForm} />
+<AccountCard user={data.user} form={data.userForm} organizationName={data.userOrganization?.name} />

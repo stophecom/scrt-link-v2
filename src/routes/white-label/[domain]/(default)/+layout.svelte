@@ -25,12 +25,17 @@
 
 <footer class="border-border bg-background border-t py-4 shadow-[0_0_60px_0_rgba(0,0,0,0.08)]">
 	<Container
-		class="text-muted-foreground flex items-center justify-between"
+		class="text-muted-foreground xs:flex items-center justify-between"
 		variant={isWideLayout ? 'wide' : 'default'}
 	>
-		<span class="py-2 pe-4">©{new Date().getFullYear()} {data.name} </span>
-		<small>{m.empty_spicy_firefox_fade()} <a href="https://scrt.link">scrt.link</a></small>
-		<div class="ms-auto flex items-center gap-4">
+		<div class="xs:items-start flex flex-col items-center py-2 sm:flex-row">
+			<small class="pe-4">©{new Date().getFullYear()} {data.name}</small>
+			<small
+				>{m.empty_spicy_firefox_fade()}
+				<a class="underline" href="https://scrt.link">scrt.link</a></small
+			>
+		</div>
+		<div class="ms-auto flex items-center justify-center gap-4 py-2 sm:justify-end">
 			<DarkModeSwitcher />
 			<LanguageSwitcher />
 		</div>

@@ -10,6 +10,7 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	let isLoginPage = $derived(page.url.pathname.endsWith('/login'));
+	let isSPage = $derived(page.url.pathname.endsWith('/s'));
 
 	type Props = {
 		logoDarkMode?: string;
@@ -45,7 +46,7 @@
 						>
 					</Avatar.Root>
 				</a>
-			{:else if !isLoginPage}
+			{:else if !isLoginPage && !isSPage}
 				<Button variant="outline" href={localizeHref('/login')}>{m.simple_dry_boar_dazzle()}</Button
 				>
 			{/if}

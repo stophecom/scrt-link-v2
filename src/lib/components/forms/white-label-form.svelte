@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Palette, RefreshCcw, Save, SquareArrowUpRight } from '@lucide/svelte';
+	import { RefreshCcw, Save, SquareArrowUpRight } from '@lucide/svelte';
 	import { createQuery, useQueryClient } from '@tanstack/svelte-query';
 	import { derived } from 'svelte/store';
 	import { stringProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
@@ -10,7 +10,6 @@
 	import * as Form from '$lib/components/ui/form';
 	import { getSecretTypes } from '$lib/data/secretSettings';
 	import { m } from '$lib/paraglide/messages.js';
-	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type WhiteLabelMetaSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
 	import type { DomainStatusResponse } from '../../../routes/api/v1/domain-status/[name]/+server';
@@ -173,19 +172,13 @@
 				><Save class="me-2 h-4 w-4" /> {m.caring_light_tiger_taste()}</Form.Button
 			>
 		</div>
-		<Separator class="my-4" />
-		<div class="flex items-center">
-			<Button
-				class="me-2"
-				variant="outline"
-				href={localizeHref(`/account/secret-service/edit/${$formData.customDomain}`)}
-				><Palette class="me-2 h-5 w-5" />{m.home_witty_piranha_peek()}</Button
-			>
-			{#if $queryResult.data?.verified}
+		{#if $queryResult.data?.verified}
+			<Separator class="my-4" />
+			<div class="flex items-center">
 				<Button variant="ghost" href={`https://${$formData.customDomain}`}
 					>{$formData.customDomain} <SquareArrowUpRight class="ms-2 h-5 w-5" /></Button
 				>
-			{/if}
-		</div>
+			</div>
+		{/if}
 	</form>
 </FormWrapper>

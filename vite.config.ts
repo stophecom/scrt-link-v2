@@ -34,8 +34,8 @@ const httpsConfig = fs.existsSync('./wl.scrt.link-key.pem')
 
 export default defineConfig({
 	server: {
+		host: true,
 		allowedHosts: ['wl.scrt.link'], // To test multi-tenant setup. Add to /etc/hosts locally
-
 		https: httpsConfig,
 		fs: {
 			allow: [
