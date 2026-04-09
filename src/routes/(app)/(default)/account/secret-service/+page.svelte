@@ -6,6 +6,7 @@
 	import WhiteLabelForm from '$lib/components/forms/white-label-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
+	import Stepper from '$lib/components/ui/stepper';
 	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -16,7 +17,21 @@
 
 	let { data }: { data: PageData & LayoutData } = $props();
 	let planLimits = $derived(getUserPlanLimits(data.user?.subscriptionTier));
+	let hasOrg = $derived(!!data.userOrganization);
+	let hasDomain = $derived(!!data.whiteLabelDomain);
+	let isPublished = $derived(!!data.whiteLabel?.published);
+	let currentStep = $derived(!hasOrg ? 0 : !hasDomain ? 1 : 2);
 </script>
+
+<Stepper
+	steps={[
+		{ label: m.bold_neat_panda_learn(), completed: hasOrg },
+		{ label: m.warm_swift_eagle_build(), completed: hasDomain },
+		{ label: m.bright_keen_fox_paint(), completed: isPublished }
+	]}
+	{currentStep}
+	class="mb-8"
+/>
 
 <OrganizationCard
 	user={data.user}
@@ -26,25 +41,27 @@
 	manageOrganizationMemberForm={data.manageOrganizationMemberForm}
 />
 
-<Card
-	class="mb-6"
-	title={m.watery_basic_lemur_tickle()}
-	description={m.solid_north_ostrich_cheer()}
->
-	{#if planLimits.whiteLabel}
-		<WhiteLabelForm
-			organizationIdOptions={data.organizationIdOptions}
-			form={data.whiteLabelForm}
-			whiteLabelDomain={data.whiteLabelDomain}
-		/>
-	{:else}
-		<UpgradeNotice tier={data.user?.subscriptionTier} class="mb-6" />
+{#if hasOrg}
+	<Card
+		class="mb-6"
+		title={m.watery_basic_lemur_tickle()}
+		description={m.solid_north_ostrich_cheer()}
+	>
+		{#if planLimits.whiteLabel}
+			<WhiteLabelForm
+				organizationIdOptions={data.organizationIdOptions}
+				form={data.whiteLabelForm}
+				whiteLabelDomain={data.whiteLabelDomain}
+			/>
+		{:else}
+			<UpgradeNotice tier={data.user?.subscriptionTier} class="mb-6" />
 
-		<Button variant="outline" href={localizeHref('/business')}>{m.fit_ok_worm_lead()}</Button>
-	{/if}
-</Card>
+			<Button variant="outline" href={localizeHref('/business')}>{m.fit_ok_worm_lead()}</Button>
+		{/if}
+	</Card>
+{/if}
 
-{#if data.whiteLabelDomain}
+{#if hasDomain}
 	<div class="customize-card relative mb-6 rounded-lg p-0.5">
 		<div
 			class="bg-background relative grid grid-cols-[minmax(60%,1fr)_auto] overflow-hidden rounded-lg"
