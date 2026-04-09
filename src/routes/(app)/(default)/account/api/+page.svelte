@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Trash } from '@lucide/svelte';
+	import { Code, Trash } from '@lucide/svelte';
 
 	import { enhance } from '$app/forms';
 	import UpgradeNotice from '$lib/components/blocks/upgrade-notice.svelte';
@@ -104,6 +104,7 @@
 	</Dialog.Content>
 </Dialog.Root>
 
-<Button variant="outline" href={localizeHref('/developers')}>
+<Button variant="outline" href={localizeHref('/api-documentation')}>
+	<Code class="me-2 h-4 w-4" />
 	{m.deft_bright_insect_attend()}
 </Button>

@@ -16,7 +16,7 @@
 	let { metaTitle, title, lead, children }: Props = $props();
 </script>
 
-<PageWrapper class="pt-32 pb-16" {metaTitle}>
+<PageWrapper class="pt-24 pb-16 sm:pt-32" {metaTitle}>
 	<Container>
 		<PageTitle {title} />
 

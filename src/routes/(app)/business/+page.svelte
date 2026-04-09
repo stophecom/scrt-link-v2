@@ -86,7 +86,7 @@
 	>
 		<ApiPreview />
 
-		<Button variant="outline" href={localizeHref('/developers')}
+		<Button variant="outline" href={localizeHref('/api-documentation')}
 			><Code class="me-2 h-4 w-4" /> {m.this_sleek_toucan_radiate()}</Button
 		>
 	</Section>

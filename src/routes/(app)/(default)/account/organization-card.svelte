@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { User } from '@lucide/svelte';
+	import { Pen, User } from '@lucide/svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { wait } from '$lib/client/utils';
@@ -140,7 +140,7 @@
 				<div>
 					<Dialog.Root bind:open={openDialogName}>
 						<Dialog.Trigger class={buttonVariants({ variant: 'outline', class: 'max-xs:w-full' })}
-							>{m.patchy_polite_wombat_bump()}</Dialog.Trigger
+							><Pen class="me-2 h-4 w-4" /> {m.patchy_polite_wombat_bump()}</Dialog.Trigger
 						>
 						<Dialog.Content class="sm:max-w-[425px]">
 							<Dialog.Header>
