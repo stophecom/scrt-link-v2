@@ -13,13 +13,18 @@
 			heading: string;
 			body: string;
 		}[];
+		defaultOpen?: number[];
 	};
-	let { items }: Props = $props();
+	let { items, defaultOpen = [] }: Props = $props();
 </script>
 
-<AccordionPrimitive.Root class="mb-4 w-full" type="multiple">
+<AccordionPrimitive.Root
+	class="mb-4 w-full"
+	type="multiple"
+	value={defaultOpen.map((idx) => `${idx}`)}
+>
 	{#each items as item, i (i)}
-		<Item value="${i}" class="border-dark-10 group border-border border-b  px-1.5">
+		<Item value={`${i}`} class="border-dark-10 group border-border border-b  px-1.5">
 			<Trigger>
 				{item.heading}
 			</Trigger>

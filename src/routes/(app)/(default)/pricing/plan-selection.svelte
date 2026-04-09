@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Check from '@lucide/svelte/icons/check-circle';
-	import { PersistedState } from 'runed';
+import { PersistedState } from 'runed';
 	import { Stripe } from 'stripe';
 	import { toast } from 'svelte-sonner';
 
@@ -154,12 +154,15 @@
 			{@const isActiveProduct = plan.id === activeProduct}
 			{@const price = showYearlyPrice ? prices?.yearly : prices?.monthly}
 			{@const priceUnitAmount = price?.currency_options[currency.current]?.unit_amount || 0}
+			{@const monthlyPriceUnitAmount =
+				prices?.monthly?.currency_options[currency.current]?.unit_amount || 0}
 			{@const priceId = price.id}
 
 			<PlanView
 				name={plan.name}
 				{showYearlyPrice}
 				{priceUnitAmount}
+				{monthlyPriceUnitAmount}
 				currency={currency.current}
 				hidePromotion={!!subscription}
 				{isActiveProduct}
