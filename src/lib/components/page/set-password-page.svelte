@@ -58,7 +58,7 @@
 					if (!keyStore || !encFormData) {
 						$encMessage = {
 							status: 'error',
-							title: m.agent_crisp_cougar_feast(),
+							title: m.weak_quaint_lamb_fry(),
 							description: m.ago_strong_bird_rise()
 						};
 						cancel();

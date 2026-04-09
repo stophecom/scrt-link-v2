@@ -7,7 +7,7 @@
 </script>
 
 <Page
-	title={m.lofty_lofty_beetle_revive()}
+	title={m.dull_tidy_sawfish_find()}
 	lead={m.weary_crisp_newt_conquer()}
 	markNotTranslated={true}
 >

@@ -75,7 +75,7 @@
 
 		<div class="py-4">
 			<Form.Button delayed={$delayed} class="w-full" size="lg"
-				>{m.mild_best_ape_smile()}</Form.Button
+				>{m.flat_moving_finch_assure()}</Form.Button
 			>
 		</div>
 	</form>
