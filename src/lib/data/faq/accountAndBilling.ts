@@ -2,6 +2,12 @@ import { m } from '$lib/paraglide/messages.js';
 
 const accountAndBilling = () => [
 	{
+		id: 'subscriptions',
+		category: 'accountAndBilling',
+		heading: m.key_game_albatross_enjoy(),
+		body: m.flat_merry_cheetah_hope()
+	},
+	{
 		id: 'payment-provider',
 		category: 'accountAndBilling',
 		heading: m.fuzzy_funny_eel_kiss(),
@@ -12,12 +18,6 @@ const accountAndBilling = () => [
 		category: 'accountAndBilling',
 		heading: m.minor_last_rabbit_charm(),
 		body: m.sour_these_bobcat_blend({ paymentProcessor: '[Stripe](https://stripe.com/)' })
-	},
-	{
-		id: 'subscriptions',
-		category: 'accountAndBilling',
-		heading: m.key_game_albatross_enjoy(),
-		body: m.flat_merry_cheetah_hope()
 	},
 	{
 		id: 'promo-codes',
