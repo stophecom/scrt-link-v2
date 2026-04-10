@@ -87,6 +87,10 @@
 		cursor: pointer;
 	}
 
+	html {
+		scroll-behavior: smooth !important;
+	}
+
 	body {
 		@apply bg-background text-foreground;
 

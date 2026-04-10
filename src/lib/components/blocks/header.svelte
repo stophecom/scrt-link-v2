@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { Factory, Plus, User } from '@lucide/svelte';
+	import { Factory, Plus, Sparkles, User } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
 
+	import { page } from '$app/state';
 	import Logo from '$lib/assets/images/logo.svg?component';
 	import * as Avatar from '$lib/components/ui/avatar';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -68,6 +69,17 @@
 
 					<div class="ml-auto grid grid-flow-col items-center gap-2">
 						{#if !isMinimal && user}
+							{#if user.subscriptionTier === TierOptions.CONFIDENTIAL && !page.url.pathname.endsWith('/pricing')}
+								<Button
+									variant="rainbow"
+									href={localizeHref('/pricing')}
+									class="hidden text-xs sm:inline-flex"
+								>
+									<Sparkles class="h-3.5 w-3.5" />
+									{m.bold_vivid_swan_zoom()}
+								</Button>
+							{/if}
+
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger>
 									{#snippet child({ props })}
@@ -99,6 +111,7 @@
 								</DropdownMenu.Content>
 							</DropdownMenu.Root>
 						{/if}
+
 						{#if user}
 							<a href={localizeHref('/account')} class="relative mr-2">
 								<Avatar.Root>
