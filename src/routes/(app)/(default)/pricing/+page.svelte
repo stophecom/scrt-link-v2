@@ -62,6 +62,7 @@
 			text="Not every piece of information needs to be stored, tracked, or logged. Some messages are meant for one moment — and one moment only."
 			author="Chris"
 			role="Founder of scrt.link"
+			showIcon={false}
 		/>
 	</Section>
 
