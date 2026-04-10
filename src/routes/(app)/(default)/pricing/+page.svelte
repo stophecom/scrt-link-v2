@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MessageCircleQuestion } from '@lucide/svelte';
+	import { ListCheck, MessageCircleQuestionMark } from '@lucide/svelte';
 
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Quote from '$lib/components/blocks/quote.svelte';
@@ -32,6 +32,11 @@
 		{#if data.plans}
 			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
 		{/if}
+		<div class="flex justify-center">
+			<Button size="sm" variant="outline" href="#compare-plans"
+				><ListCheck class="me-2 h-4 w-4" /> {m.calm_thin_moth_view()}</Button
+			>
+		</div>
 	</Container>
 
 	<Section wide variant="card">
@@ -53,7 +58,7 @@
 		</IntersectionObserver>
 	</Section>
 
-	<Section wide title={m.calm_thin_moth_view()}>
+	<Section id="compare-plans" wide title={m.calm_thin_moth_view()}>
 		<ComparisonTable />
 	</Section>
 
@@ -82,7 +87,7 @@
 
 	<Section
 		wide
-		Icon={MessageCircleQuestion}
+		Icon={MessageCircleQuestionMark}
 		variant="contrast"
 		title={m.same_tidy_macaw_sail()}
 		lead={m.least_gross_midge_thrive()}
