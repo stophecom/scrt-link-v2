@@ -18,68 +18,68 @@
 		--header-height: 64px; /* Default value. May be overwritten in Header. */
 
 		--background: 0 0% 100%;
-		--foreground: 240 10% 20%;
+		--foreground: 220 14% 18%;
 
-		--muted: 0 0% 92%;
-		--muted-foreground: 0 0% 36%;
+		--muted: 220 9% 93%;
+		--muted-foreground: 220 6% 40%;
 
 		--popover: 0 0% 100%;
-		--popover-foreground: 240 10% 5%;
+		--popover-foreground: 220 14% 10%;
 
-		--card: 329 3% 98%;
-		--card-foreground: 240 10% 3.9%;
+		--card: 220 14% 97%;
+		--card-foreground: 220 14% 10%;
 
-		--border: 240 6% 84%;
-		--input: 240 6% 84%;
+		--border: 220 9% 83%;
+		--input: 220 9% 83%;
 
 		--primary-foreground: 0 0% 100%;
 
-		--secondary: 240 4.8% 91%;
-		--secondary-foreground: 240 7% 10%;
+		--secondary: 220 9% 92%;
+		--secondary-foreground: 220 14% 14%;
 
 		--destructive: 0 72% 40%;
 		--destructive-foreground: 0 0% 100%;
 
-		--success: 123 38% 37%;
-		--success-foreground: 123 38% 30%;
+		--success: 142 60% 32%;
+		--success-foreground: 142 60% 26%;
 
 		--info: 199 92% 36%;
 
-		--ring: 240 10% 3.9%;
+		--ring: 220 14% 18%;
 
 		--radius: 0.5rem;
 	}
 
 	.dark {
-		--background: 212 26% 8%;
-		--foreground: 0 0% 87%;
+		--background: 220 20% 8%;
+		--foreground: 220 5% 90%;
 
-		--muted: 212 12% 27%;
-		--muted-foreground: 240 5% 64.9%;
+		--muted: 220 12% 20%;
+		--muted-foreground: 220 5% 65%;
 
-		--popover: 0 0% 5%;
-		--popover-foreground: 240 10% 85%;
+		--popover: 220 20% 6%;
+		--popover-foreground: 220 5% 88%;
 
-		--card: 212 19% 15%;
-		--card-foreground: 0 0% 98%;
+		--card: 220 16% 13%;
+		--card-foreground: 220 5% 95%;
 
-		--border: 240 3.7% 30%;
-		--input: 240 3.7% 30%;
+		--border: 220 8% 25%;
+		--input: 220 8% 25%;
 
 		--primary-foreground: 0 0% 100%;
 
-		--secondary: 240 3.7% 15.9%;
-		--secondary-foreground: 0 0% 98%;
+		--secondary: 220 8% 18%;
+		--secondary-foreground: 220 5% 95%;
 
-		--destructive: 0 90% 60%;
+		--destructive: 0 85% 58%;
 		--destructive-foreground: 0 0% 100%;
 
-		--success: 123 38% 57%;
-		--success-foreground: 123 38% 88%;
+		--success: 142 50% 55%;
+		--success-foreground: 142 40% 90%;
 
-		--info: 199 92% 56%;
+		--info: 199 85% 58%;
 
-		--ring: 240 4.9% 83.9%;
+		--ring: 220 5% 80%;
 	}
 
 	button:not(:disabled),
