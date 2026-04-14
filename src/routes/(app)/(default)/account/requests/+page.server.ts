@@ -34,9 +34,9 @@ export const actions: Actions = {
 		}
 
 		const formData = await request.formData();
-		const requestId = formData.get('requestId') as string;
+		const requestId = formData.get('requestId');
 
-		if (!requestId) {
+		if (!requestId || typeof requestId !== 'string') {
 			return fail(400, { error: 'Missing request ID' });
 		}
 

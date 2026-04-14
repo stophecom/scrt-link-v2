@@ -700,5 +700,18 @@
 	"bold_true_ram_send": "Verschlüsselte Antwort senden",
 	"proud_glad_bear_cheer": "Antwort übermittelt!",
 	"calm_safe_seal_rest": "Ihre Antwort wurde sicher verschlüsselt und übermittelt. Nur der Anfragende kann sie entschlüsseln.",
-	"warm_clear_jay_speak": "Nachricht vom Anfragenden:"
+	"warm_clear_jay_speak": "Nachricht vom Anfragenden:",
+	"green_round_duck_trust": "Verifizierte E-Mail-Adresse. Antworten Sie nur Personen, denen Sie vertrauen.",
+	"maroon_heavy_lemur_emerge": "Verschlüsselung entsperren",
+	"ornate_fluffy_ox_explore": "Sie können den Tab jetzt schließen.",
+	"brave_clear_pug_greet": "Geheime Anfragen ist in der Beta-Phase",
+	"calm_swift_elk_guide": "Fordern Sie vertrauliche Informationen von jedermann an — Passwörter, Anmeldeinformationen oder private Details. Antworten sind Ende-zu-Ende verschlüsselt, sodass nur Sie sie lesen können.",
+	"flat_red_ant_burn": "Löschen",
+	"warm_quick_cow_warn": "Dies löscht diese geheime Anfrage und alle Antworten dauerhaft. Diese Aktion kann nicht rückgängig gemacht werden.",
+	"mild_blue_crab_warn": "Verschlüsselung muss aktiviert sein, um geheime Anfragen zu erstellen.",
+	"dark_cool_owl_miss": "Anfrage nicht gefunden.",
+	"pale_old_fox_fade": "Diese Anfrage ist abgelaufen.",
+	"gray_dim_bat_halt": "Diese Anfrage wurde bereits beantwortet.",
+	"soft_warm_eel_fail": "Antwort konnte nicht übermittelt werden.",
+	"calm_safe_seal_sent": "Ihre Antwort wurde sicher übermittelt."
 }

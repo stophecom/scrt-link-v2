@@ -707,5 +707,11 @@
 	"brave_clear_pug_greet": "Secret Requests is in beta",
 	"calm_swift_elk_guide": "Request sensitive information from anyone — passwords, credentials, or private details. Responses are end-to-end encrypted so only you can read them.",
 	"flat_red_ant_burn": "Delete",
-	"warm_quick_cow_warn": "This will permanently delete this secret request and any response. This action cannot be undone."
+	"warm_quick_cow_warn": "This will permanently delete this secret request and any response. This action cannot be undone.",
+	"mild_blue_crab_warn": "Encryption must be enabled to create secret requests.",
+	"dark_cool_owl_miss": "Request not found.",
+	"pale_old_fox_fade": "This request has expired.",
+	"gray_dim_bat_halt": "This request has already been answered.",
+	"soft_warm_eel_fail": "Failed to submit response.",
+	"calm_safe_seal_sent": "Your response has been securely submitted."
 }

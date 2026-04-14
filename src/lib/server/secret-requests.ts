@@ -1,4 +1,4 @@
-import { and, desc, eq, isNotNull, isNull } from 'drizzle-orm';
+import { and, count, desc, eq, isNotNull, isNull } from 'drizzle-orm';
 
 import type { SecretRequestFormSchema } from '$lib/validators/formSchemas';
 
@@ -126,8 +126,8 @@ export const deleteSecretRequest = async (requestId: string, userId: string) => 
 };
 
 export const countUnreadResponses = async (userId: string) => {
-	const results = await db
-		.select()
+	const [result] = await db
+		.select({ count: count() })
 		.from(secretRequest)
 		.where(
 			and(
@@ -137,5 +137,5 @@ export const countUnreadResponses = async (userId: string) => {
 			)
 		);
 
-	return results.length;
+	return result?.count ?? 0;
 };

@@ -700,5 +700,18 @@
 	"bold_true_ram_send": "提交加密回复",
 	"proud_glad_bear_cheer": "回复已提交！",
 	"calm_safe_seal_rest": "您的回复已安全加密并提交。只有请求者才能解密。",
-	"warm_clear_jay_speak": "来自请求者的消息："
+	"warm_clear_jay_speak": "来自请求者的消息：",
+	"green_round_duck_trust": "已验证的电子邮件地址。只回复您信任的人。",
+	"maroon_heavy_lemur_emerge": "解锁加密",
+	"ornate_fluffy_ox_explore": "您现在可以关闭此标签页了。",
+	"brave_clear_pug_greet": "秘密请求处于测试阶段",
+	"calm_swift_elk_guide": "向任何人请求敏感信息——密码、凭据或私人详细信息。响应是端到端加密的，只有您才能阅读。",
+	"flat_red_ant_burn": "删除",
+	"warm_quick_cow_warn": "这将永久删除此秘密请求和所有响应。此操作无法撤消。",
+	"mild_blue_crab_warn": "必须启用加密才能创建秘密请求。",
+	"dark_cool_owl_miss": "请求未找到。",
+	"pale_old_fox_fade": "此请求已过期。",
+	"gray_dim_bat_halt": "此请求已回复。",
+	"soft_warm_eel_fail": "提交响应失败。",
+	"calm_safe_seal_sent": "您的响应已安全提交。"
 }

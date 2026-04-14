@@ -700,5 +700,18 @@
 	"bold_true_ram_send": "Enviar Resposta Criptografada",
 	"proud_glad_bear_cheer": "Resposta Enviada!",
 	"calm_safe_seal_rest": "Sua resposta foi criptografada e enviada com segurança. Apenas o solicitante pode descriptografá-la.",
-	"warm_clear_jay_speak": "Mensagem do solicitante:"
+	"warm_clear_jay_speak": "Mensagem do solicitante:",
+	"green_round_duck_trust": "Endereço de e-mail verificado. Responda apenas a pessoas em quem confia.",
+	"maroon_heavy_lemur_emerge": "Desbloquear encriptação",
+	"ornate_fluffy_ox_explore": "Pode fechar o separador agora.",
+	"brave_clear_pug_greet": "Solicitações Secretas está em fase beta",
+	"calm_swift_elk_guide": "Solicite informações confidenciais a qualquer pessoa — palavras-passe, credenciais ou detalhes privados. As respostas são encriptadas de ponta a ponta para que só você as possa ler.",
+	"flat_red_ant_burn": "Eliminar",
+	"warm_quick_cow_warn": "Isto irá eliminar permanentemente esta solicitação secreta e qualquer resposta. Esta ação não pode ser desfeita.",
+	"mild_blue_crab_warn": "A encriptação deve estar ativada para criar solicitações secretas.",
+	"dark_cool_owl_miss": "Pedido não encontrado.",
+	"pale_old_fox_fade": "Este pedido expirou.",
+	"gray_dim_bat_halt": "Este pedido já foi respondido.",
+	"soft_warm_eel_fail": "Falha ao enviar resposta.",
+	"calm_safe_seal_sent": "A sua resposta foi enviada de forma segura."
 }

@@ -700,5 +700,18 @@
 	"bold_true_ram_send": "Soumettre la réponse chiffrée",
 	"proud_glad_bear_cheer": "Réponse soumise !",
 	"calm_safe_seal_rest": "Votre réponse a été chiffrée et soumise en toute sécurité. Seul le demandeur peut la déchiffrer.",
-	"warm_clear_jay_speak": "Message du demandeur :"
+	"warm_clear_jay_speak": "Message du demandeur :",
+	"green_round_duck_trust": "Adresse e-mail vérifiée. Ne répondez qu'aux personnes en qui vous avez confiance.",
+	"maroon_heavy_lemur_emerge": "Déverrouiller le chiffrement",
+	"ornate_fluffy_ox_explore": "Vous pouvez fermer l'onglet maintenant.",
+	"brave_clear_pug_greet": "Les Demandes Secrètes sont en version bêta",
+	"calm_swift_elk_guide": "Demandez des informations sensibles à n'importe qui — mots de passe, identifiants ou détails privés. Les réponses sont chiffrées de bout en bout afin que vous seul puissiez les lire.",
+	"flat_red_ant_burn": "Supprimer",
+	"warm_quick_cow_warn": "Ceci supprimera définitivement cette demande secrète et toute réponse. Cette action est irréversible.",
+	"mild_blue_crab_warn": "Le chiffrement doit être activé pour créer des demandes secrètes.",
+	"dark_cool_owl_miss": "Demande introuvable.",
+	"pale_old_fox_fade": "Cette demande a expiré.",
+	"gray_dim_bat_halt": "Cette demande a déjà été répondue.",
+	"soft_warm_eel_fail": "Échec de l'envoi de la réponse.",
+	"calm_safe_seal_sent": "Votre réponse a été soumise en toute sécurité."
 }

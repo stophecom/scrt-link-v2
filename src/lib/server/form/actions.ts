@@ -1548,7 +1548,7 @@ export const postSecretRequest: Action = async (event) => {
 			{
 				status: 'error',
 				title: m.sad_arable_canary_mop(),
-				description: 'Encryption must be enabled to create secret requests.'
+				description: m.mild_blue_crab_warn()
 			},
 			{ status: 403 }
 		);
@@ -1596,7 +1596,7 @@ export const postSecretResponse: Action = async (event) => {
 	if (!request) {
 		return message(
 			form,
-			{ status: 'error', title: 'Error', description: 'Request not found.' },
+			{ status: 'error', title: m.sad_arable_canary_mop(), description: m.dark_cool_owl_miss() },
 			{ status: 404 }
 		);
 	}
@@ -1604,7 +1604,7 @@ export const postSecretResponse: Action = async (event) => {
 	if (request.expiresAt < new Date()) {
 		return message(
 			form,
-			{ status: 'error', title: 'Error', description: 'This request has expired.' },
+			{ status: 'error', title: m.sad_arable_canary_mop(), description: m.pale_old_fox_fade() },
 			{ status: 410 }
 		);
 	}
@@ -1612,7 +1612,7 @@ export const postSecretResponse: Action = async (event) => {
 	if (request.respondedAt) {
 		return message(
 			form,
-			{ status: 'error', title: 'Error', description: 'This request has already been answered.' },
+			{ status: 'error', title: m.sad_arable_canary_mop(), description: m.gray_dim_bat_halt() },
 			{ status: 409 }
 		);
 	}
@@ -1628,14 +1628,14 @@ export const postSecretResponse: Action = async (event) => {
 		if (!result) {
 			return message(
 				form,
-				{ status: 'error', title: 'Error', description: 'Failed to submit response.' },
+				{ status: 'error', title: m.sad_arable_canary_mop(), description: m.soft_warm_eel_fail() },
 				{ status: 500 }
 			);
 		}
 
 		return message(form, {
 			status: 'success',
-			description: 'Your response has been securely submitted.'
+			description: m.calm_safe_seal_sent()
 		});
 	} catch (e) {
 		console.error(e);

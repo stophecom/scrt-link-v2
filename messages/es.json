@@ -700,5 +700,18 @@
 	"bold_true_ram_send": "Enviar respuesta cifrada",
 	"proud_glad_bear_cheer": "¡Respuesta enviada!",
 	"calm_safe_seal_rest": "Su respuesta ha sido cifrada y enviada de forma segura. Solo el solicitante puede descifrarla.",
-	"warm_clear_jay_speak": "Mensaje del solicitante:"
+	"warm_clear_jay_speak": "Mensaje del solicitante:",
+	"green_round_duck_trust": "Dirección de correo electrónico verificada. Responda solo a personas en las que confíe.",
+	"maroon_heavy_lemur_emerge": "Desbloquear cifrado",
+	"ornate_fluffy_ox_explore": "Ya puedes cerrar la pestaña.",
+	"brave_clear_pug_greet": "Solicitudes secretas está en beta",
+	"calm_swift_elk_guide": "Solicite información sensible a cualquier persona — contraseñas, credenciales o detalles privados. Las respuestas están cifradas de extremo a extremo para que solo usted pueda leerlas.",
+	"flat_red_ant_burn": "Eliminar",
+	"warm_quick_cow_warn": "Esto eliminará permanentemente esta solicitud secreta y cualquier respuesta. Esta acción no se puede deshacer.",
+	"mild_blue_crab_warn": "El cifrado debe estar habilitado para crear solicitudes secretas.",
+	"dark_cool_owl_miss": "Solicitud no encontrada.",
+	"pale_old_fox_fade": "Esta solicitud ha caducado.",
+	"gray_dim_bat_halt": "Esta solicitud ya ha sido respondida.",
+	"soft_warm_eel_fail": "Error al enviar la respuesta.",
+	"calm_safe_seal_sent": "Su respuesta ha sido enviada de forma segura."
 }
