@@ -4,7 +4,11 @@ import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages';
 import { postSecretRequest } from '$lib/server/form/actions';
 import { secretRequestFormValidator } from '$lib/server/form/validators';
-import { deleteSecretRequest, fetchUserRequests } from '$lib/server/secret-requests';
+import {
+	countUnreadResponses,
+	deleteSecretRequest,
+	fetchUserRequests
+} from '$lib/server/secret-requests';
 
 import type { PageServerLoad } from './$types';
 
@@ -15,11 +19,15 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const requests = await fetchUserRequests(user.id);
+	const [requests, unreadCount] = await Promise.all([
+		fetchUserRequests(user.id),
+		countUnreadResponses(user.id)
+	]);
 
 	return {
 		user,
 		requests,
+		unreadCount,
 		secretRequestForm: await secretRequestFormValidator(),
 		pageTitle: m.calm_proud_ibis_list()
 	};
