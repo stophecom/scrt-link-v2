@@ -47,6 +47,8 @@ import {
 	recoverySetupFormSchema,
 	recoveryVerifyFormSchema,
 	secretFormSchema,
+	secretRequestFormSchema,
+	secretResponseFormSchema,
 	settingsFormSchema,
 	signInFormSchema,
 	themeFormSchema,
@@ -76,6 +78,11 @@ import {
 	inviteUserToOrganization
 } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
+import {
+	getSecretRequestByHash,
+	saveSecretRequest,
+	submitSecretResponse
+} from '../secret-requests';
 import { saveSecret } from '../secrets';
 import {
 	checkIfUserExists,
@@ -1514,5 +1521,124 @@ export const verifyRecoveryKey: Action = async (event) => {
 	} catch (e) {
 		console.error('[verifyRecoveryKey] Unexpected error:', e);
 		error(500, 'Failed to verify recovery key.');
+	}
+};
+
+// --- Secret Requests ---
+
+export const postSecretRequest: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(secretRequestFormSchema()));
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	if (await isRateLimited(event)) {
+		return message(form, rateLimitErrorMessage(), { status: 429 });
+	}
+
+	if (!user.encryptionEnabled) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.sad_arable_canary_mop(),
+				description: 'Encryption must be enabled to create secret requests.'
+			},
+			{ status: 403 }
+		);
+	}
+
+	try {
+		const { expiresIn, expiresAt } = await saveSecretRequest({
+			userId: user.id,
+			data: form.data
+		});
+
+		const expirationPeriod =
+			getExpiresInOptions().find((item) => item.value === expiresIn)?.label || '';
+		const expirationDate = formatDateTime(new Date(expiresAt));
+
+		return message(form, {
+			status: 'success',
+			description: m.real_actual_cockroach_type({
+				time: `${expirationPeriod}: ${expirationDate}`
+			})
+		});
+	} catch (e) {
+		console.error(e);
+		error(500, `Couldn't save secret request.`);
+	}
+};
+
+export const postSecretResponse: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(secretResponseFormSchema()));
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (await isRateLimited(event)) {
+		return message(form, rateLimitErrorMessage(), { status: 429 });
+	}
+
+	const { requestIdHash, encryptedResponseContent, wrappedResponseKey, encryptedResponseMeta } =
+		form.data;
+
+	// Verify the request exists, is not expired, and has no response yet
+	const request = await getSecretRequestByHash(requestIdHash);
+
+	if (!request) {
+		return message(
+			form,
+			{ status: 'error', title: 'Error', description: 'Request not found.' },
+			{ status: 404 }
+		);
+	}
+
+	if (request.expiresAt < new Date()) {
+		return message(
+			form,
+			{ status: 'error', title: 'Error', description: 'This request has expired.' },
+			{ status: 410 }
+		);
+	}
+
+	if (request.respondedAt) {
+		return message(
+			form,
+			{ status: 'error', title: 'Error', description: 'This request has already been answered.' },
+			{ status: 409 }
+		);
+	}
+
+	try {
+		const result = await submitSecretResponse({
+			requestIdHash,
+			encryptedResponseContent,
+			wrappedResponseKey,
+			encryptedResponseMeta
+		});
+
+		if (!result) {
+			return message(
+				form,
+				{ status: 'error', title: 'Error', description: 'Failed to submit response.' },
+				{ status: 500 }
+			);
+		}
+
+		return message(form, {
+			status: 'success',
+			description: 'Your response has been securely submitted.'
+		});
+	} catch (e) {
+		console.error(e);
+		error(500, `Couldn't save response.`);
 	}
 };
