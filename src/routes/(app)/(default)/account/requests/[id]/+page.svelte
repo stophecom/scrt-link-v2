@@ -121,7 +121,7 @@
 				action="?/deleteRequest"
 				use:enhance={() => {
 					return async ({ update }) => {
-						toast.success('Request deleted.');
+						toast.success(m.bold_kind_ram_gone());
 						await update();
 					};
 				}}

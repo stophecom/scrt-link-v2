@@ -3,8 +3,8 @@
 	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
-	import type { PageData } from './$types';
 	import RequestsCard from '../requests-card.svelte';
+	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 </script>
