@@ -21,7 +21,7 @@
 <Form.Legend>{label}</Form.Legend>
 <RadioGroup.Root bind:value class="px-1 md:flex">
 	{#each options as option (option.value)}
-		<div class="flex items-center py-1 pe-3">
+		<div class="flex items-center pe-3 pb-1">
 			<Form.Control let:attrs>
 				<RadioGroup.Item value={option.value} {...attrs} disabled={!!option.disabled} />
 				<Form.Label
