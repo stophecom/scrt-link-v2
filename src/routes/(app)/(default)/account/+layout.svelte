@@ -128,7 +128,7 @@
 				</div>
 
 				<!-- Desktop Navigation (Sidebar) -->
-				<aside class="hidden lg:block lg:w-1/4">
+				<aside class="hidden shrink-0 lg:block lg:w-1/4">
 					<nav class="flex flex-col space-y-1">
 						{#each navItems as item (item.href)}
 							<Button
@@ -164,7 +164,7 @@
 				</aside>
 
 				<!-- Main Content Area -->
-				<div class="flex-1 lg:max-w-3xl">
+				<div class="min-w-0 flex-1 lg:max-w-3xl">
 					<PageTitle class="xs:text-2xl sr-only mb-4 text-2xl md:text-4xl" title={pageTitle} />
 
 					{@render children()}

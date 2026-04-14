@@ -1,4 +1,4 @@
-import { type Actions,error, fail } from '@sveltejs/kit';
+import { type Actions, error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 
 import { redirectLocalized } from '$lib/i18n';

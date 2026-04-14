@@ -70,8 +70,8 @@
 			<h3 class="text-primary mb-7 text-2xl font-semibold sm:text-3xl">
 				{m.proud_vivid_hawk_cheer()}
 			</h3>
-			<div class="shrink overflow-hidden pe-2">
-				<div class="mb-2 truncate text-xl font-normal whitespace-pre">{requestLink}</div>
+			<div class="min-w-0 shrink overflow-hidden pe-2">
+				<div class="mb-2 truncate text-lg font-normal">{requestLink}</div>
 				<div class="text-muted-foreground block text-sm">
 					<Markdown markdown={successMessage} />
 				</div>
