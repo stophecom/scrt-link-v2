@@ -1,11 +1,11 @@
-import { error } from '@sveltejs/kit';
+import { type Actions,error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 
 import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages';
 import { db } from '$lib/server/db';
 import { secretRequest } from '$lib/server/db/schema';
-import { markRequestViewed } from '$lib/server/secret-requests';
+import { deleteSecretRequest, markRequestViewed } from '$lib/server/secret-requests';
 
 import type { PageServerLoad } from './$types';
 
@@ -45,4 +45,24 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		},
 		pageTitle: m.keen_bright_fox_peek()
 	};
+};
+
+export const actions: Actions = {
+	deleteRequest: async ({ locals, params }) => {
+		const user = locals.user;
+		if (!user) {
+			return fail(401, { error: 'Unauthorized' });
+		}
+
+		if (!params.id) {
+			return fail(400, { error: 'Missing request ID' });
+		}
+
+		const result = await deleteSecretRequest(params.id, user.id);
+		if (!result) {
+			return fail(404, { error: 'Request not found' });
+		}
+
+		return redirectLocalized(303, '/account/requests');
+	}
 };

@@ -1,12 +1,16 @@
 <script lang="ts">
-	import { AlertTriangle, Lock, Unlock } from '@lucide/svelte';
+	import { AlertTriangle, Lock, Trash2, Unlock } from '@lucide/svelte';
 	import { decryptResponseContent, unwrapAESKeyWithRSA, unwrapPrivateKey } from '@scrt-link/core';
 	import { onMount } from 'svelte';
+	import { toast } from 'svelte-sonner';
 
+	import { enhance } from '$app/forms';
 	import { getMasterKey, isKeyUnlocked } from '$lib/client/key-manager';
+	import { buttonVariants } from '$lib/components/ui/button';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import CopyButton from '$lib/components/ui/copy-button';
+	import * as Dialog from '$lib/components/ui/dialog';
 	import { formatDateTime } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -18,6 +22,7 @@
 	let decryptedResponse = $state('');
 	let decryptionError = $state('');
 	let isDecrypting = $state(false);
+	let isConfirmationDialogOpen = $state(false);
 
 	const decrypt = async () => {
 		if (!isKeyUnlocked()) {
@@ -89,8 +94,40 @@
 		<div class="bg-muted rounded-lg p-4">
 			<pre class="font-mono text-sm break-words whitespace-pre-wrap">{decryptedResponse}</pre>
 		</div>
-		<div class="mt-4">
+		<div class="mt-4 flex justify-end gap-2">
+			<Button variant="outline" onclick={() => (isConfirmationDialogOpen = true)}>
+				<Trash2 class="mr-2 h-4 w-4" />
+				{m.flat_red_ant_burn()}
+			</Button>
 			<CopyButton text={decryptedResponse} />
 		</div>
 	{/if}
 </Card>
+
+<Dialog.Root bind:open={isConfirmationDialogOpen}>
+	<Dialog.Content>
+		<Dialog.Header>
+			<Dialog.Title>{m.soft_aloof_barbel_splash()}</Dialog.Title>
+			<Dialog.Description>
+				{m.warm_quick_cow_warn()}
+			</Dialog.Description>
+		</Dialog.Header>
+		<Dialog.Footer>
+			<Dialog.Close class={buttonVariants({ variant: 'outline' })}
+				>{m.big_due_warthog_rest()}</Dialog.Close
+			>
+			<form
+				method="POST"
+				action="?/deleteRequest"
+				use:enhance={() => {
+					return async ({ update }) => {
+						toast.success('Request deleted.');
+						await update();
+					};
+				}}
+			>
+				<Button type="submit" class="max-sm:mb-2">{m.simple_active_cowfish_spur()}</Button>
+			</form>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
