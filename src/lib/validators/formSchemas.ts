@@ -232,6 +232,39 @@ export const passwordChangeWithEncryptionFormSchema = () =>
 		encryptedMasterKey: z.string().min(1).optional()
 	});
 
+export const secretRequestFormSchema = () =>
+	z.object({
+		requestIdHash: z.string().length(64), // SHA-256 hash
+		publicKey: z.string().min(1), // RSA public key as JWK string
+		encryptedPrivateKey: z.string().min(1), // RSA private key wrapped with Master Key
+		encryptedNote: z.string().max(10_000).optional(),
+		expiresIn: z
+			.union(
+				[
+					z.literal(expiresInOptionsValues[0]),
+					z.literal(expiresInOptionsValues[1]),
+					...expiresInOptionsValues.slice(2).map((item) => z.literal(item))
+				],
+				{
+					error: (error) => {
+						if (error.code === 'invalid_union') {
+							return `Valid options are: ${expiresInOptionsValues.join(', ')}`;
+						}
+						return error.message ?? 'Unknown validation error.';
+					}
+				}
+			)
+			.default(defaultExpiresInValue)
+	});
+
+export const secretResponseFormSchema = () =>
+	z.object({
+		requestIdHash: z.string().length(64),
+		encryptedResponseContent: z.string().min(1).max(1_000_000),
+		wrappedResponseKey: z.string().min(1),
+		encryptedResponseMeta: z.string().max(1_000).optional()
+	});
+
 // @todo infer types by default
 export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = z.infer<ReturnType<typeof emailFormSchema>>;
@@ -260,3 +293,5 @@ export type RecoveryVerifyFormSchema = z.infer<ReturnType<typeof recoveryVerifyF
 export type PasswordChangeWithEncryptionFormSchema = z.infer<
 	ReturnType<typeof passwordChangeWithEncryptionFormSchema>
 >;
+export type SecretRequestFormSchema = z.infer<ReturnType<typeof secretRequestFormSchema>>;
+export type SecretResponseFormSchema = z.infer<ReturnType<typeof secretResponseFormSchema>>;
