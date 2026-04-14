@@ -1,10 +1,11 @@
 <script lang="ts">
-	import Key from '@lucide/svelte/icons/key';
-	import Lock from '@lucide/svelte/icons/lock';
+	import ConciergeBell from '@lucide/svelte/icons/concierge-bell';
+	import Factory from '@lucide/svelte/icons/factory';
+	import KeyRound from '@lucide/svelte/icons/key-round';
+	import Link from '@lucide/svelte/icons/link';
 	import LogOut from '@lucide/svelte/icons/log-out';
 	import Menu from '@lucide/svelte/icons/menu';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
-	import ShieldCheck from '@lucide/svelte/icons/shield-check';
 	import User from '@lucide/svelte/icons/user';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import type { Snippet } from 'svelte';
@@ -38,17 +39,23 @@
 		{
 			href: localizeHref('/account/secrets'),
 			label: m.free_nimble_whale_fry(),
-			icon: Lock
+			icon: Link
+		},
+		{
+			href: localizeHref('/account/requests'),
+			label: m.calm_proud_ibis_list(),
+			icon: ConciergeBell,
+			badge: 'Beta'
 		},
 		{
 			href: localizeHref('/account/api'),
 			label: m.super_funny_jackal_pause(),
-			icon: Key
+			icon: KeyRound
 		},
 		{
 			href: localizeHref('/account/secret-service'),
 			label: TierOptions.SECRET_SERVICE,
-			icon: ShieldCheck
+			icon: Factory
 		},
 		{
 			href: localizeHref('/account/profile'),
@@ -97,6 +104,12 @@
 										<a href={item.href} class="flex w-full items-center">
 											<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
 											<span>{item.label}</span>
+											{#if item.badge}
+												<span
+													class="bg-foreground text-background ms-1 inline-flex rounded-full px-[5px] py-[1px] text-[9px] font-semibold uppercase"
+													>{item.badge}</span
+												>
+											{/if}
 										</a>
 									</DropdownMenu.Item>
 								{/each}
@@ -127,6 +140,12 @@
 							>
 								<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
 								{item.label}
+								{#if item.badge}
+									<span
+										class="bg-foreground text-background ms-1 inline-flex rounded-full px-1.25 py-px text-[9px] font-semibold uppercase"
+										>{item.badge}</span
+									>
+								{/if}
 							</Button>
 						{/each}
 					</nav>

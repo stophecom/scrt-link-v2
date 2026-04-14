@@ -1,4 +1,11 @@
-import { MessageCircleDashed, Paperclip, Redo2, TypeOutline, Zap } from '@lucide/svelte';
+import {
+	ConciergeBell,
+	MessageCircleDashed,
+	Paperclip,
+	Redo2,
+	TypeOutline,
+	Zap
+} from '@lucide/svelte';
 
 import { m } from '$lib/paraglide/messages.js';
 
@@ -29,6 +36,11 @@ export const secretMenu = () => [
 		icon: MessageCircleDashed,
 		href: '/neogram',
 		label: 'Neogram'
+	},
+	{
+		icon: ConciergeBell,
+		href: '/account/requests',
+		label: m.keen_swift_heron_ask()
 	}
 ];
 

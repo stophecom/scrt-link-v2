@@ -43,13 +43,9 @@ export async function exportPublicKeyJWK(key: CryptoKey): Promise<string> {
  */
 export async function importPublicKeyJWK(jwkString: string): Promise<CryptoKey> {
 	const jwk = JSON.parse(jwkString);
-	return crypto.subtle.importKey(
-		'jwk',
-		jwk,
-		{ name: RSA_ALGORITHM, hash: RSA_HASH },
-		false,
-		['wrapKey']
-	);
+	return crypto.subtle.importKey('jwk', jwk, { name: RSA_ALGORITHM, hash: RSA_HASH }, false, [
+		'wrapKey'
+	]);
 }
 
 // --- Private Key Wrapping with Master Key ---
