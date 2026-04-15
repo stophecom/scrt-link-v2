@@ -11,7 +11,14 @@ type SaveSecretRequest = {
 };
 
 export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => {
-	const { requestIdHash, publicKey, encryptedPrivateKey, encryptedNote, encryptedNoteForOwner, expiresIn } = data;
+	const {
+		requestIdHash,
+		publicKey,
+		encryptedPrivateKey,
+		encryptedNote,
+		encryptedNoteForOwner,
+		expiresIn
+	} = data;
 
 	const [result] = await db
 		.insert(secretRequest)
