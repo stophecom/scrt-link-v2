@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Clock, Eye, Hourglass, Mail, MailOpen, Trash2 } from '@lucide/svelte';
 	import { decryptResponseContent } from '@scrt-link/core';
-	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
 
 	import { enhance } from '$app/forms';
@@ -14,12 +13,14 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import Switch from '$lib/components/ui/switch/switch.svelte';
 	import * as Table from '$lib/components/ui/table';
+	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { formatDateTime } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	type Request = {
 		id: string;
+		receiptId: string | null;
 		hasNote: boolean;
 		encryptedNoteForOwner: string | null;
 		expiresAt: Date;
@@ -47,11 +48,11 @@
 		showExpired ? requests : requests.filter((r) => r.status !== 'expired')
 	);
 
-	onMount(async () => {
+	const decryptNotes = async (secretRequests: Request[]) => {
 		if (!isKeyUnlocked()) return;
 		const masterKey = getMasterKey();
 		const entries = await Promise.all(
-			requests
+			secretRequests
 				.filter((r) => r.encryptedNoteForOwner)
 				.map(async (r) => {
 					try {
@@ -63,6 +64,10 @@
 				})
 		);
 		decryptedNotes = Object.fromEntries(entries.filter((e): e is [string, string] => e !== null));
+	};
+
+	$effect(() => {
+		decryptNotes(requests);
 	});
 
 	const statusConfig = {
@@ -93,9 +98,9 @@
 		<Table.Root>
 			<Table.Header>
 				<Table.Row>
-					<Table.Head>{m.slim_true_ant_mark()}</Table.Head>
+					<Table.Head>{m.true_knotty_canary_work()}</Table.Head>
+					<Table.Head>{m.bright_calm_deer_note()}</Table.Head>
 					<Table.Head>{m.fair_keen_bee_check()}</Table.Head>
-					<Table.Head>{m.warm_old_crab_fade()}</Table.Head>
 					<Table.Head></Table.Head>
 				</Table.Row>
 			</Table.Header>
@@ -103,26 +108,41 @@
 				{#each filteredRequests as request (request.id)}
 					{@const config = statusConfig[request.status]}
 					<Table.Row>
+						<Table.Cell class="font-medium">
+							<span class="inline-block p-1 font-mono">{request.receiptId ?? '—'}</span>
+						</Table.Cell>
 						<Table.Cell>
-							<div>{formatDateTime(request.createdAt)}</div>
 							{#if decryptedNotes[request.id]}
-								<p class="text-muted-foreground mt-0.5 max-w-48 truncate text-xs">
-									{decryptedNotes[request.id]}
-								</p>
-							{/if}
-						</Table.Cell>
-						<Table.Cell>
-							<div class="inline-flex items-center gap-1.5 {config.class}">
-								<config.icon class="h-4 w-4 shrink-0" />
-								<span>{config.label}</span>
-							</div>
-						</Table.Cell>
-						<Table.Cell>
-							{#if request.expiresAt > currentDate}
-								{formatDateTime(request.expiresAt)}
+								<Tooltip.Root>
+									<Tooltip.Trigger>
+										<span class="inline-block max-w-32 truncate align-bottom sm:max-w-48">
+											{decryptedNotes[request.id]}
+										</span>
+									</Tooltip.Trigger>
+									<Tooltip.Content>
+										{decryptedNotes[request.id]}
+									</Tooltip.Content>
+								</Tooltip.Root>
 							{:else}
-								<span class="text-muted-foreground">{m.trick_caring_lionfish_grasp()}</span>
+								<span class="text-muted-foreground">—</span>
 							{/if}
+						</Table.Cell>
+						<Table.Cell>
+							<Tooltip.Root>
+								<Tooltip.Trigger>
+									<div class="inline-flex items-center gap-1.5 {config.class}">
+										<config.icon class="h-4 w-4 shrink-0" />
+										<span>{config.label}</span>
+									</div>
+								</Tooltip.Trigger>
+								<Tooltip.Content>
+									{#if request.expiresAt > currentDate}
+										{m.warm_old_crab_fade()}: {formatDateTime(request.expiresAt)}
+									{:else}
+										{m.trick_caring_lionfish_grasp()}
+									{/if}
+								</Tooltip.Content>
+							</Tooltip.Root>
 						</Table.Cell>
 						<Table.Cell>
 							<div class="flex items-center justify-end gap-2">

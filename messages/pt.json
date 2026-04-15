@@ -662,8 +662,6 @@
 	"swift_bold_hawk_soar": "SLA",
 	"fresh_kind_panda_glow": "Proteja cada segredo com uma camada extra de segurança, exigindo uma senha para acessá-lo.",
 	"bold_vivid_swan_zoom": "Atualizar",
-	"brave_warm_panda_ask": "Solicitar um Segredo",
-	"calm_deep_otter_glow": "Crie um link seguro para solicitar informações confidenciais a alguém. A resposta será criptografada para que só você possa lê-la.",
 	"fresh_bold_eagle_build": "Criar Solicitação de Segredo",
 	"soft_kind_swan_write": "Mensagem para o destinatário (opcional)",
 	"pale_quick_finch_hint": "Ex: Por favor, compartilhe sua chave de API para o servidor de produção.",
@@ -673,13 +671,10 @@
 	"tense_calm_seal_warn": "Você precisa ativar a criptografia para usar as Solicitações de Segredo.",
 	"bold_safe_tiger_lock": "Ativar Criptografia",
 	"dim_quiet_raven_lock": "Suas chaves de criptografia precisam ser desbloqueadas.",
-	"swift_plain_duck_go": "Ir para a Conta",
 	"keen_swift_heron_ask": "Solicitar um Segredo",
 	"calm_proud_ibis_list": "Solicitações",
 	"neat_warm_crane_view": "Minhas Solicitações de Segredo",
 	"mild_shy_parrot_rest": "Você ainda não criou nenhuma solicitação de segredo.",
-	"bold_fresh_owl_start": "Criar Nova Solicitação",
-	"slim_true_ant_mark": "Criado",
 	"fair_keen_bee_check": "Status",
 	"warm_old_crab_fade": "Expira em",
 	"still_calm_snail_wait": "Pendente",
@@ -715,5 +710,6 @@
 	"soft_warm_eel_fail": "Falha ao enviar resposta.",
 	"calm_safe_seal_sent": "A sua resposta foi enviada de forma segura.",
 	"bold_kind_ram_gone": "Solicitação excluída.",
-	"trim_proud_coyote_glow": "Mostrar solicitações expiradas"
+	"trim_proud_coyote_glow": "Mostrar solicitações expiradas",
+	"bright_calm_deer_note": "Nota"
 }

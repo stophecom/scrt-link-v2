@@ -1555,7 +1555,7 @@ export const postSecretRequest: Action = async (event) => {
 	}
 
 	try {
-		const { expiresIn, expiresAt } = await saveSecretRequest({
+		const { expiresIn, expiresAt, receiptId } = await saveSecretRequest({
 			userId: user.id,
 			data: form.data
 		});
@@ -1564,11 +1564,14 @@ export const postSecretRequest: Action = async (event) => {
 			getExpiresInOptions().find((item) => item.value === expiresIn)?.label || '';
 		const expirationDate = formatDateTime(new Date(expiresAt));
 
+		const expirationMessage = m.real_actual_cockroach_type({
+			time: `${expirationPeriod}: ${expirationDate}`
+		});
+		const readReceiptMessage = m.deft_lucky_quail_pause({ receiptId });
+
 		return message(form, {
 			status: 'success',
-			description: m.real_actual_cockroach_type({
-				time: `${expirationPeriod}: ${expirationDate}`
-			})
+			description: [expirationMessage, readReceiptMessage].join('\n\n')
 		});
 	} catch (e) {
 		console.error(e);

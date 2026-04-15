@@ -51,7 +51,7 @@
 				<div class="text-muted-foreground block text-sm">
 					<Markdown markdown={successMessage} />
 				</div>
-			</div>
+				</div>
 		</div>
 		<div class="mt-auto flex items-center justify-end pt-6">
 			<ShareButton class="mr-2 shrink-0" url={requestLink} text={m.warm_neat_dove_share()} />

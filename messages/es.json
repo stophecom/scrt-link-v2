@@ -662,8 +662,6 @@
 	"swift_bold_hawk_soar": "SLA",
 	"fresh_kind_panda_glow": "Protege cada secreto con una capa adicional de seguridad al requerir una contraseña para acceder a él.",
 	"bold_vivid_swan_zoom": "Actualizar",
-	"brave_warm_panda_ask": "Solicitar un secreto",
-	"calm_deep_otter_glow": "Cree un enlace seguro para solicitar información confidencial a alguien. Su respuesta estará cifrada para que solo usted pueda leerla.",
 	"fresh_bold_eagle_build": "Crear una solicitud de secreto",
 	"soft_kind_swan_write": "Mensaje para el destinatario (opcional)",
 	"pale_quick_finch_hint": "ej. Comparta su clave API para el servidor de producción.",
@@ -673,13 +671,10 @@
 	"tense_calm_seal_warn": "Debe habilitar el cifrado para usar las solicitudes de secreto.",
 	"bold_safe_tiger_lock": "Habilitar cifrado",
 	"dim_quiet_raven_lock": "Sus claves de cifrado deben estar desbloqueadas.",
-	"swift_plain_duck_go": "Ir a la cuenta",
 	"keen_swift_heron_ask": "Solicitar un secreto",
 	"calm_proud_ibis_list": "Solicitudes",
 	"neat_warm_crane_view": "Mis solicitudes de secreto",
 	"mild_shy_parrot_rest": "Todavía no ha creado ninguna solicitud de secreto.",
-	"bold_fresh_owl_start": "Crear nueva solicitud",
-	"slim_true_ant_mark": "Creado",
 	"fair_keen_bee_check": "Estado",
 	"warm_old_crab_fade": "Expira",
 	"still_calm_snail_wait": "Pendiente",
@@ -715,5 +710,6 @@
 	"soft_warm_eel_fail": "Error al enviar la respuesta.",
 	"calm_safe_seal_sent": "Su respuesta ha sido enviada de forma segura.",
 	"bold_kind_ram_gone": "Solicitud eliminada.",
-	"trim_proud_coyote_glow": "Mostrar solicitudes caducadas"
+	"trim_proud_coyote_glow": "Mostrar solicitudes caducadas",
+	"bright_calm_deer_note": "Nota"
 }

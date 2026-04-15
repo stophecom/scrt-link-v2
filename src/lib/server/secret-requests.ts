@@ -1,3 +1,4 @@
+import { generateRandomUrlSafeString } from '@scrt-link/core';
 import { and, count, desc, eq, isNotNull, isNull } from 'drizzle-orm';
 
 import type { SecretRequestFormSchema } from '$lib/validators/formSchemas';
@@ -20,6 +21,8 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 		expiresIn
 	} = data;
 
+	const receiptId = generateRandomUrlSafeString(8);
+
 	const [result] = await db
 		.insert(secretRequest)
 		.values({
@@ -28,12 +31,13 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 			encryptedPrivateKey,
 			encryptedNote,
 			encryptedNoteForOwner,
+			receiptId,
 			expiresAt: new Date(Date.now() + expiresIn),
 			userId
 		})
 		.returning();
 
-	return { id: result.id, expiresAt: result.expiresAt, expiresIn };
+	return { id: result.id, receiptId, expiresAt: result.expiresAt, expiresIn };
 };
 
 export const getSecretRequestByHash = async (requestIdHash: string) => {
@@ -106,6 +110,7 @@ export const fetchUserRequests = async (userId: string) => {
 
 	return requests.map((r) => ({
 		id: r.id,
+		receiptId: r.receiptId ?? null,
 		hasNote: !!r.encryptedNote,
 		encryptedNoteForOwner: r.encryptedNoteForOwner ?? null,
 		expiresAt: r.expiresAt,

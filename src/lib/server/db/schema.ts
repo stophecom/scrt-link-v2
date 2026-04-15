@@ -227,6 +227,8 @@ export const secretRequest = pgTable(
 		encryptedNote: text('encrypted_note'),
 		// Same note encrypted with user's Master Key (for owner's dashboard)
 		encryptedNoteForOwner: text('encrypted_note_for_owner'),
+		// User-friendly tracking identifier
+		receiptId: text('receipt_id'),
 		// Response fields (nullable — filled when someone responds)
 		wrappedResponseKey: text('wrapped_response_key'),
 		encryptedResponseMeta: text('encrypted_response_meta'),

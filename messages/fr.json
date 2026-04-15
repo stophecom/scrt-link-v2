@@ -662,8 +662,6 @@
 	"swift_bold_hawk_soar": "SLA",
 	"fresh_kind_panda_glow": "Protégez chaque secret avec une couche de sécurité supplémentaire en exigeant un mot de passe pour y accéder.",
 	"bold_vivid_swan_zoom": "Mettre à niveau",
-	"brave_warm_panda_ask": "Demander un secret",
-	"calm_deep_otter_glow": "Créez un lien sécurisé pour demander des informations confidentielles à quelqu'un. Leur réponse sera chiffrée afin que vous seul puissiez la lire.",
 	"fresh_bold_eagle_build": "Créer une demande de secret",
 	"soft_kind_swan_write": "Message au destinataire (facultatif)",
 	"pale_quick_finch_hint": "ex. Veuillez partager votre clé API pour le serveur de production.",
@@ -673,13 +671,10 @@
 	"tense_calm_seal_warn": "Vous devez activer le chiffrement pour utiliser les demandes de secret.",
 	"bold_safe_tiger_lock": "Activer le chiffrement",
 	"dim_quiet_raven_lock": "Vos clés de chiffrement doivent être déverrouillées.",
-	"swift_plain_duck_go": "Aller au compte",
 	"keen_swift_heron_ask": "Demander un secret",
 	"calm_proud_ibis_list": "Demandes",
 	"neat_warm_crane_view": "Mes demandes de secret",
 	"mild_shy_parrot_rest": "Vous n'avez pas encore créé de demandes de secret.",
-	"bold_fresh_owl_start": "Créer une nouvelle demande",
-	"slim_true_ant_mark": "Créé",
 	"fair_keen_bee_check": "Statut",
 	"warm_old_crab_fade": "Expire",
 	"still_calm_snail_wait": "En attente",
@@ -715,5 +710,6 @@
 	"soft_warm_eel_fail": "Échec de l'envoi de la réponse.",
 	"calm_safe_seal_sent": "Votre réponse a été soumise en toute sécurité.",
 	"bold_kind_ram_gone": "Demande supprimée.",
-	"trim_proud_coyote_glow": "Afficher les demandes expirées"
+	"trim_proud_coyote_glow": "Afficher les demandes expirées",
+	"bright_calm_deer_note": "Note"
 }

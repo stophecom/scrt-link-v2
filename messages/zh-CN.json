@@ -662,8 +662,6 @@
 	"swift_bold_hawk_soar": "服务等级协议",
 	"fresh_kind_panda_glow": "通过要求密码才能访问每个密钥，为每个密钥提供额外的安全保护层。",
 	"bold_vivid_swan_zoom": "升级",
-	"brave_warm_panda_ask": "请求密钥",
-	"calm_deep_otter_glow": "创建一个安全链接，向他人请求机密信息。他们的回复将被加密，只有您才能阅读。",
 	"fresh_bold_eagle_build": "创建密钥请求",
 	"soft_kind_swan_write": "给收件人的消息（可选）",
 	"pale_quick_finch_hint": "例如：请分享您的生产服务器API密钥。",
@@ -673,13 +671,10 @@
 	"tense_calm_seal_warn": "您需要启用加密才能使用密钥请求。",
 	"bold_safe_tiger_lock": "启用加密",
 	"dim_quiet_raven_lock": "您的加密密钥需要解锁。",
-	"swift_plain_duck_go": "前往账户",
 	"keen_swift_heron_ask": "请求密钥",
 	"calm_proud_ibis_list": "请求",
 	"neat_warm_crane_view": "我的密钥请求",
 	"mild_shy_parrot_rest": "您尚未创建任何密钥请求。",
-	"bold_fresh_owl_start": "创建新请求",
-	"slim_true_ant_mark": "创建日期",
 	"fair_keen_bee_check": "状态",
 	"warm_old_crab_fade": "到期",
 	"still_calm_snail_wait": "待处理",
@@ -715,5 +710,6 @@
 	"soft_warm_eel_fail": "提交响应失败。",
 	"calm_safe_seal_sent": "您的响应已安全提交。",
 	"bold_kind_ram_gone": "请求已删除。",
-	"trim_proud_coyote_glow": "显示过期请求"
+	"trim_proud_coyote_glow": "显示过期请求",
+	"bright_calm_deer_note": "备注"
 }

@@ -662,8 +662,6 @@
 	"swift_bold_hawk_soar": "SLA",
 	"fresh_kind_panda_glow": "Protect each secret with an extra layer of security by requiring a password to access it.",
 	"bold_vivid_swan_zoom": "Upgrade",
-	"brave_warm_panda_ask": "Request a Secret",
-	"calm_deep_otter_glow": "Create a secure link to request confidential information from someone. Their response will be encrypted so only you can read it.",
 	"fresh_bold_eagle_build": "Create a Secret Request",
 	"soft_kind_swan_write": "Message to recipient (optional)",
 	"pale_quick_finch_hint": "e.g. Please share your API key for the production server.",
@@ -673,13 +671,10 @@
 	"tense_calm_seal_warn": "You need to enable encryption to use Secret Requests.",
 	"bold_safe_tiger_lock": "Enable encryption",
 	"dim_quiet_raven_lock": "Your encryption keys need to be unlocked.",
-	"swift_plain_duck_go": "Go to Account",
 	"keen_swift_heron_ask": "Request a Secret",
 	"calm_proud_ibis_list": "Secret Requests",
 	"neat_warm_crane_view": "My Secret Requests",
 	"mild_shy_parrot_rest": "You haven't created any secret requests yet.",
-	"bold_fresh_owl_start": "Create New Request",
-	"slim_true_ant_mark": "Created",
 	"fair_keen_bee_check": "Status",
 	"warm_old_crab_fade": "Expires",
 	"still_calm_snail_wait": "Pending",
@@ -715,5 +710,6 @@
 	"soft_warm_eel_fail": "Failed to submit response.",
 	"calm_safe_seal_sent": "Your response has been securely submitted.",
 	"bold_kind_ram_gone": "Request deleted.",
-	"trim_proud_coyote_glow": "Show expired requests"
+	"trim_proud_coyote_glow": "Show expired requests",
+	"bright_calm_deer_note": "Note"
 }

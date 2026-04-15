@@ -662,8 +662,6 @@
 	"swift_bold_hawk_soar": "SLA",
 	"fresh_kind_panda_glow": "Schützen Sie jedes Geheimnis mit einer zusätzlichen Sicherheitsebene, indem Sie ein Passwort für den Zugriff darauf verlangen.",
 	"bold_vivid_swan_zoom": "Upgrade",
-	"brave_warm_panda_ask": "Geheimnis anfordern",
-	"calm_deep_otter_glow": "Erstellen Sie einen sicheren Link, um vertrauliche Informationen von jemandem anzufordern. Deren Antwort wird verschlüsselt, sodass nur Sie sie lesen können.",
 	"fresh_bold_eagle_build": "Eine Geheimnisanfrage erstellen",
 	"soft_kind_swan_write": "Nachricht an den Empfänger (optional)",
 	"pale_quick_finch_hint": "z.B. Bitte teilen Sie Ihren API-Schlüssel für den Produktionsserver mit.",
@@ -673,13 +671,10 @@
 	"tense_calm_seal_warn": "Sie müssen die Verschlüsselung aktivieren, um Geheimnisanfragen nutzen zu können.",
 	"bold_safe_tiger_lock": "Verschlüsselung aktivieren",
 	"dim_quiet_raven_lock": "Ihre Verschlüsselungsschlüssel müssen entsperrt werden.",
-	"swift_plain_duck_go": "Zum Konto gehen",
 	"keen_swift_heron_ask": "Geheimnis anfordern",
 	"calm_proud_ibis_list": "Anfragen",
 	"neat_warm_crane_view": "Meine Geheimnisanfragen",
 	"mild_shy_parrot_rest": "Sie haben noch keine Geheimnisanfragen erstellt.",
-	"bold_fresh_owl_start": "Neue Anfrage erstellen",
-	"slim_true_ant_mark": "Erstellt",
 	"fair_keen_bee_check": "Status",
 	"warm_old_crab_fade": "Läuft ab",
 	"still_calm_snail_wait": "Ausstehend",
@@ -715,5 +710,6 @@
 	"soft_warm_eel_fail": "Antwort konnte nicht übermittelt werden.",
 	"calm_safe_seal_sent": "Ihre Antwort wurde sicher übermittelt.",
 	"bold_kind_ram_gone": "Anfrage gelöscht.",
-	"trim_proud_coyote_glow": "Abgelaufene Anfragen anzeigen"
+	"trim_proud_coyote_glow": "Abgelaufene Anfragen anzeigen",
+	"bright_calm_deer_note": "Notiz"
 }
