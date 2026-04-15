@@ -713,5 +713,6 @@
 	"pale_old_fox_fade": "Este pedido expirou.",
 	"gray_dim_bat_halt": "Este pedido já foi respondido.",
 	"soft_warm_eel_fail": "Falha ao enviar resposta.",
-	"calm_safe_seal_sent": "A sua resposta foi enviada de forma segura."
+	"calm_safe_seal_sent": "A sua resposta foi enviada de forma segura.",
+	"bold_kind_ram_gone": "Solicitação excluída."
 }

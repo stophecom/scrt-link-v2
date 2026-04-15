@@ -713,5 +713,6 @@
 	"pale_old_fox_fade": "Diese Anfrage ist abgelaufen.",
 	"gray_dim_bat_halt": "Diese Anfrage wurde bereits beantwortet.",
 	"soft_warm_eel_fail": "Antwort konnte nicht übermittelt werden.",
-	"calm_safe_seal_sent": "Ihre Antwort wurde sicher übermittelt."
+	"calm_safe_seal_sent": "Ihre Antwort wurde sicher übermittelt.",
+	"bold_kind_ram_gone": "Anfrage gelöscht."
 }

@@ -713,5 +713,6 @@
 	"pale_old_fox_fade": "Esta solicitud ha caducado.",
 	"gray_dim_bat_halt": "Esta solicitud ya ha sido respondida.",
 	"soft_warm_eel_fail": "Error al enviar la respuesta.",
-	"calm_safe_seal_sent": "Su respuesta ha sido enviada de forma segura."
+	"calm_safe_seal_sent": "Su respuesta ha sido enviada de forma segura.",
+	"bold_kind_ram_gone": "Solicitud eliminada."
 }
