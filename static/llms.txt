@@ -1,0 +1,119 @@
+# scrt.link
+
+> scrt.link is a secure, end-to-end encrypted one-time secret sharing platform. Secrets are encrypted in the browser, shared via a one-time link, and permanently destroyed after being viewed once. Built with a zero-knowledge architecture under Swiss jurisdiction.
+
+scrt.link lets users share sensitive information — passwords, credentials, private keys, confidential messages — without leaving a trace in email or chat history. The encryption key is embedded in the URL fragment (`#`), which is never transmitted to the server. The server only ever sees encrypted data.
+
+## How It Works
+
+1. **Write** — Enter your secret. It is encrypted client-side using AES-256-GCM before leaving your browser.
+2. **Share** — Send the generated one-time link to the recipient.
+3. **Burn** — The secret is permanently deleted after a single view. No backups, no recovery.
+
+## Secret Types
+
+- [Text](https://scrt.link/text): Share encrypted text messages (passwords, keys, notes).
+- [File](https://scrt.link/file): Share encrypted files up to 100 GB depending on plan.
+- [Redirect](https://scrt.link/redirect): Create a one-time secret redirect URL.
+- [Snap](https://scrt.link/snap): Share self-destructing image snapshots.
+- [Neogram](https://scrt.link/neogram): Send a self-destructing animated message, similar to a telegram.
+
+All secret types support optional password protection and configurable expiration (10 minutes to 30 days).
+
+## Security & Trust
+
+- **End-to-End Encryption**: AES-256-GCM via the Web Crypto API. Encryption and decryption happen entirely in the browser.
+- **Zero Knowledge**: The encryption key is part of the URL fragment (`#`). Browsers never send fragments to the server. The server cannot decrypt your secrets.
+- **Automatic Deletion**: Secrets are permanently removed after a single view. No backups exist.
+- **Optional Password Protection**: Adds a second encryption layer. Even with full infrastructure access, the secret cannot be decrypted without the password.
+- **Open Source**: Full codebase available under MIT license at [github.com/stophecom/scrt-link-v2](https://github.com/stophecom/scrt-link-v2).
+- **Swiss Privacy**: Operated by SANTiHANS GmbH under Swiss privacy law.
+- **Minimal Dependencies**: Reduced attack surface by design.
+- **No Tracking**: Uses Plausible Analytics (privacy-focused, cookieless).
+
+## API & Client Module
+
+The API supports programmatic creation of text-based secrets (Text, Redirect, Neogram). File and Snap secrets are not available via API due to encryption complexity. Requires a paid subscription (Top Secret plan or higher) and an API key from your account page.
+
+### Install
+
+```bash
+npm install @scrt-link/client
+```
+
+### Usage
+
+```typescript
+import { scrtLink, SecretType } from '@scrt-link/client';
+
+const client = scrtLink('your-api-key');
+
+const result = await client.createSecret('my secret content', {
+  secretType: SecretType.TEXT,   // 'text' | 'redirect' | 'neogram'
+  password: 'optional-password', // optional, adds extra encryption layer
+  publicNote: 'For John',       // optional, max 150 chars, visible on link page
+  expiresIn: 3600000,           // optional, milliseconds, default 7 days
+  host: 'custom.domain.com',    // optional, for white-label setups
+});
+```
+
+### Response
+
+```json
+{
+  "secretLink": "https://scrt.link/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
+  "receiptId": "D0waygL3",
+  "expiresIn": 86400000,
+  "expiresAt": "2025-04-24T16:15:52.172Z"
+}
+```
+
+### ESM Import (no bundler)
+
+```html
+<script type="module">
+  import { scrtLink } from 'https://scrt.link/api/v1/client-module';
+  const client = scrtLink('your-api-key');
+  client.createSecret('secret text').then(console.log);
+</script>
+```
+
+### SecretType Enum
+
+- `SecretType.TEXT` — Encrypted text message
+- `SecretType.REDIRECT` — One-time redirect URL
+- `SecretType.NEOGRAM` — Self-destructing animated message
+
+## Pricing
+
+- **Confidential (Free)**: Text, File (10 MB), Redirect secrets. End-to-end encrypted.
+- **Secret ($1/month)**: All free features + Snaps, Neograms, 1 GB files, read receipts, password protection, 7-day retention.
+- **Top Secret ($5/month)**: All Secret features + 100 GB files, 30-day retention, API access, priority support.
+- **Secret Service ($20/month)**: Custom domain, logo, theme (white-label). 30 private team members. SLA 99.9% uptime.
+
+All paid plans include a 7-day free trial. Annual billing saves 33%.
+
+## Links
+
+- [Homepage](https://scrt.link): Main landing page.
+- [Security](https://scrt.link/security): Detailed security architecture and encryption design.
+- [Pricing](https://scrt.link/pricing): Plans and feature comparison.
+- [API Documentation](https://scrt.link/api-documentation): Full API reference and client module docs.
+- [GitHub Repository](https://github.com/stophecom/scrt-link-v2): Open-source codebase (MIT license).
+- [NPM Package](https://www.npmjs.com/package/@scrt-link/client): Client module for programmatic secret creation.
+- [Demo Implementation](https://github.com/stophecom/scrt-link-demo): Example project using the client module.
+- [About](https://scrt.link/about): Company information and mission.
+- [Status Page](https://stats.uptimerobot.com/v5yqDuEr5z): Uptime monitoring.
+
+## Optional
+
+- [Privacy Policy](https://scrt.link/privacy-policy)
+- [Terms of Service](https://scrt.link/terms-of-service)
+- [GDPR](https://scrt.link/gdpr)
+- [SLA](https://scrt.link/sla)
+- [Cookie Policy](https://scrt.link/cookie-policy)
+- [Acceptable Use Policy](https://scrt.link/acceptable-use-policy)
+- [FAQ](https://scrt.link/faq)
+- [Blog](https://scrt.link/blog)
+- [Contact](https://scrt.link/contact)
+- [Business / White-Label](https://scrt.link/business)
