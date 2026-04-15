@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AlertTriangle, Lock, Trash2, Unlock } from '@lucide/svelte';
+	import { AlertTriangle, Trash2, Unlock } from '@lucide/svelte';
 	import { decryptResponseContent, unwrapAESKeyWithRSA, unwrapPrivateKey } from '@scrt-link/core';
 	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
@@ -78,12 +78,6 @@
 				<p class="font-medium">{m.red_sharp_viper_fail()}</p>
 				<p class="mt-1 text-sm opacity-80">{decryptionError}</p>
 			</div>
-		</div>
-	{:else if !isKeyUnlocked()}
-		<div class="flex flex-col items-center gap-4 py-8">
-			<Lock class="text-muted-foreground h-10 w-10" />
-			<p class="text-muted-foreground">{m.dim_quiet_raven_lock()}</p>
-			<Button href={localizeHref('/account')}>{m.swift_plain_duck_go()}</Button>
 		</div>
 	{:else if isDecrypting}
 		<div class="flex items-center gap-2 py-8">

@@ -12,9 +12,12 @@
 
 	import { browser } from '$app/environment';
 	import { page } from '$app/state';
+	import { isKeyUnlocked, tryRestoreKey } from '$lib/client/key-manager';
 	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Card from '$lib/components/ui/card/card.svelte';
+	import { Spinner } from '$lib/components/ui/spinner';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { TierOptions } from '$lib/data/enums';
@@ -33,6 +36,28 @@
 	let { children }: { children: Snippet } = $props();
 
 	let pageTitle = $derived(page.data.pageTitle);
+
+	// Centralized encryption key restoration
+	let keyRestoreAttempted = $state(false);
+	let encryptionEnabled = $derived(!!page.data.user?.encryptionEnabled);
+	let encryptionUnlocked = $derived(keyRestoreAttempted && isKeyUnlocked());
+
+	const encryptionRequiredPaths = ['/account/requests'];
+	let routeRequiresEncryption = $derived(
+		encryptionRequiredPaths.some((p) => page.url.pathname.includes(p))
+	);
+	let showEncryptionGate = $derived(
+		routeRequiresEncryption && encryptionEnabled && !encryptionUnlocked
+	);
+	let showEncryptionSetup = $derived(routeRequiresEncryption && !encryptionEnabled);
+
+	$effect(() => {
+		if (browser) {
+			tryRestoreKey().then(() => {
+				keyRestoreAttempted = true;
+			});
+		}
+	});
 
 	// Navigation items
 	const navItems = [
@@ -167,7 +192,27 @@
 				<div class="min-w-0 flex-1 lg:max-w-3xl">
 					<PageTitle class="xs:text-2xl sr-only mb-4 text-2xl md:text-4xl" title={pageTitle} />
 
-					{@render children()}
+					{#if routeRequiresEncryption && !keyRestoreAttempted}
+						<div class="flex justify-center py-12">
+							<Spinner class="h-6 w-6" />
+						</div>
+					{:else if showEncryptionSetup}
+						<Card>
+							<div class="py-8 text-center">
+								<p class="text-muted-foreground mb-4">{m.tense_calm_seal_warn()}</p>
+								<Button href={localizeHref('/account/settings')}>{m.bold_safe_tiger_lock()}</Button>
+							</div>
+						</Card>
+					{:else if showEncryptionGate}
+						<Card>
+							<div class="py-8 text-center">
+								<p class="text-muted-foreground mb-4">{m.dim_quiet_raven_lock()}</p>
+								<Button href={localizeHref('/encryption')}>{m.maroon_heavy_lemur_emerge()}</Button>
+							</div>
+						</Card>
+					{:else}
+						{@render children()}
+					{/if}
 				</div>
 			</div>
 		</Container>

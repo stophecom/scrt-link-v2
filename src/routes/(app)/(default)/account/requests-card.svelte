@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { Clock, Eye, Hourglass, Mail, MailOpen, Trash2 } from '@lucide/svelte';
+	import { decryptResponseContent } from '@scrt-link/core';
+	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
 
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
+	import { getMasterKey, isKeyUnlocked } from '$lib/client/key-manager';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';
@@ -18,6 +21,7 @@
 	type Request = {
 		id: string;
 		hasNote: boolean;
+		encryptedNoteForOwner: string | null;
 		expiresAt: Date;
 		respondedAt: Date | null;
 		viewedAt: Date | null;
@@ -37,10 +41,29 @@
 	let showExpired = $state(false);
 	let isConfirmationDialogOpen = $state(false);
 	let selectedRequestForDeletion = $state<Request | null>(null);
+	let decryptedNotes = $state<Record<string, string>>({});
 
 	let filteredRequests = $derived(
 		showExpired ? requests : requests.filter((r) => r.status !== 'expired')
 	);
+
+	onMount(async () => {
+		if (!isKeyUnlocked()) return;
+		const masterKey = getMasterKey();
+		const entries = await Promise.all(
+			requests
+				.filter((r) => r.encryptedNoteForOwner)
+				.map(async (r) => {
+					try {
+						const note = await decryptResponseContent(r.encryptedNoteForOwner!, masterKey);
+						return [r.id, note] as const;
+					} catch {
+						return null;
+					}
+				})
+		);
+		decryptedNotes = Object.fromEntries(entries.filter((e): e is [string, string] => e !== null));
+	});
 
 	const statusConfig = {
 		pending: { label: m.still_calm_snail_wait(), icon: Hourglass, class: 'text-info' },
@@ -80,7 +103,14 @@
 				{#each filteredRequests as request (request.id)}
 					{@const config = statusConfig[request.status]}
 					<Table.Row>
-						<Table.Cell>{formatDateTime(request.createdAt)}</Table.Cell>
+						<Table.Cell>
+							<div>{formatDateTime(request.createdAt)}</div>
+							{#if decryptedNotes[request.id]}
+								<p class="text-muted-foreground mt-0.5 max-w-48 truncate text-xs">
+									{decryptedNotes[request.id]}
+								</p>
+							{/if}
+						</Table.Cell>
 						<Table.Cell>
 							<div class="inline-flex items-center gap-1.5 {config.class}">
 								<config.icon class="h-4 w-4 shrink-0" />

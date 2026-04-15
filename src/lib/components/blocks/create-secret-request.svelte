@@ -4,7 +4,6 @@
 	import { fade } from 'svelte/transition';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
-	import { isKeyUnlocked, tryRestoreKey } from '$lib/client/key-manager';
 	import { copyText } from '$lib/client/utils';
 	import SecretRequestForm from '$lib/components/forms/secret-request-form.svelte';
 	import type { TierOptions } from '$lib/data/enums';
@@ -20,24 +19,15 @@
 
 	type Props = {
 		form: SuperValidated<SecretRequestFormSchema>;
-		encryptionEnabled: boolean;
 		subscriptionTier?: TierOptions | null;
 	};
 
-	let { form, encryptionEnabled, subscriptionTier }: Props = $props();
+	let { form, subscriptionTier }: Props = $props();
 
 	let successMessage = $state('');
 	let requestLink = $state('');
 
 	let planLimits = $derived(getUserPlanLimits(subscriptionTier));
-	let keyRestoreAttempted = $state(false);
-	let encryptionUnlocked = $derived(keyRestoreAttempted && isKeyUnlocked());
-
-	$effect(() => {
-		tryRestoreKey().then(() => {
-			keyRestoreAttempted = true;
-		});
-	});
 
 	$effect(() => {
 		if (successMessage && requestLink) {
@@ -46,21 +36,7 @@
 	});
 </script>
 
-{#if !encryptionEnabled}
-	<Card>
-		<div class="py-8 text-center">
-			<p class="text-muted-foreground mb-4">{m.tense_calm_seal_warn()}</p>
-			<Button href="/account/settings">{m.bold_safe_tiger_lock()}</Button>
-		</div>
-	</Card>
-{:else if !encryptionUnlocked}
-	<Card>
-		<div class="py-8 text-center">
-			<p class="text-muted-foreground mb-4">{m.dim_quiet_raven_lock()}</p>
-			<Button href="/encryption">{m.maroon_heavy_lemur_emerge()}</Button>
-		</div>
-	</Card>
-{:else if successMessage}
+{#if successMessage}
 	<div
 		in:fade
 		class="border-primary bg-card relative mb-2 flex min-h-[290px] w-full flex-col items-stretch overflow-hidden rounded border px-4 py-6 shadow-lg md:p-8"

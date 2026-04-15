@@ -2,6 +2,7 @@
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
 	import {
 		encryptRequestNote,
+		encryptResponseContent,
 		exportPublicKeyJWK,
 		generateRandomUrlSafeString,
 		generateRSAKeyPair,
@@ -58,14 +59,20 @@
 		onSubmit: async ({ jsonData }) => {
 			// Encrypt note if provided
 			let encryptedNote: string | undefined;
+			let encryptedNoteForOwner: string | undefined;
 			let noteKey = '';
 			if (noteText.trim()) {
 				const result = await encryptRequestNote(noteText);
 				encryptedNote = result.encryptedNote;
 				noteKey = result.noteKey;
+
+				// Also encrypt with Master Key so owner can read it back in dashboard
+				const masterKey = getMasterKey();
+				encryptedNoteForOwner = await encryptResponseContent(noteText, masterKey);
 			}
 
 			$formData.encryptedNote = encryptedNote;
+			$formData.encryptedNoteForOwner = encryptedNoteForOwner;
 
 			// Build the request link
 			const hashFragment = noteKey ? `${requestId}|${noteKey}` : requestId;

@@ -16,7 +16,6 @@
 <div class="mb-6">
 	<CreateSecretRequest
 		form={data.secretRequestForm}
-		encryptionEnabled={!!data.user?.encryptionEnabled}
 		subscriptionTier={data.user?.subscriptionTier}
 	/>
 </div>

@@ -225,6 +225,8 @@ export const secretRequest = pgTable(
 		encryptedPrivateKey: text('encrypted_private_key').notNull(),
 		// Request note encrypted with noteKey (key lives in URL hash)
 		encryptedNote: text('encrypted_note'),
+		// Same note encrypted with user's Master Key (for owner's dashboard)
+		encryptedNoteForOwner: text('encrypted_note_for_owner'),
 		// Response fields (nullable — filled when someone responds)
 		wrappedResponseKey: text('wrapped_response_key'),
 		encryptedResponseMeta: text('encrypted_response_meta'),

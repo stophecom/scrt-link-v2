@@ -11,7 +11,7 @@ type SaveSecretRequest = {
 };
 
 export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => {
-	const { requestIdHash, publicKey, encryptedPrivateKey, encryptedNote, expiresIn } = data;
+	const { requestIdHash, publicKey, encryptedPrivateKey, encryptedNote, encryptedNoteForOwner, expiresIn } = data;
 
 	const [result] = await db
 		.insert(secretRequest)
@@ -20,6 +20,7 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 			publicKey,
 			encryptedPrivateKey,
 			encryptedNote,
+			encryptedNoteForOwner,
 			expiresAt: new Date(Date.now() + expiresIn),
 			userId
 		})
@@ -99,6 +100,7 @@ export const fetchUserRequests = async (userId: string) => {
 	return requests.map((r) => ({
 		id: r.id,
 		hasNote: !!r.encryptedNote,
+		encryptedNoteForOwner: r.encryptedNoteForOwner ?? null,
 		expiresAt: r.expiresAt,
 		respondedAt: r.respondedAt,
 		viewedAt: r.viewedAt,

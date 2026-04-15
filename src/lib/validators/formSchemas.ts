@@ -238,6 +238,7 @@ export const secretRequestFormSchema = () =>
 		publicKey: z.string().min(1), // RSA public key as JWK string
 		encryptedPrivateKey: z.string().min(1), // RSA private key wrapped with Master Key
 		encryptedNote: z.string().max(10_000).optional(),
+		encryptedNoteForOwner: z.string().max(10_000).optional(),
 		expiresIn: z
 			.union(
 				[
