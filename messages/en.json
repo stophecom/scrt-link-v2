@@ -714,5 +714,6 @@
 	"gray_dim_bat_halt": "This request has already been answered.",
 	"soft_warm_eel_fail": "Failed to submit response.",
 	"calm_safe_seal_sent": "Your response has been securely submitted.",
-	"bold_kind_ram_gone": "Request deleted."
+	"bold_kind_ram_gone": "Request deleted.",
+	"trim_proud_coyote_glow": "Show expired requests"
 }

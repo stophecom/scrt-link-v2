@@ -714,5 +714,6 @@
 	"gray_dim_bat_halt": "На этот запрос уже дан ответ.",
 	"soft_warm_eel_fail": "Не удалось отправить ответ.",
 	"calm_safe_seal_sent": "Ваш ответ был безопасно отправлен.",
-	"bold_kind_ram_gone": "Запрос удален."
+	"bold_kind_ram_gone": "Запрос удален.",
+	"trim_proud_coyote_glow": "Показывать просроченные запросы"
 }

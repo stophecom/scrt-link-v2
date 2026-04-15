@@ -8,6 +8,8 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 	import CardTitle from '$lib/components/ui/card/card-title.svelte';
 	import * as Dialog from '$lib/components/ui/dialog';
+	import { Separator } from '$lib/components/ui/separator';
+	import Switch from '$lib/components/ui/switch/switch.svelte';
 	import * as Table from '$lib/components/ui/table';
 	import { formatDateTime } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
@@ -32,8 +34,13 @@
 
 	const currentDate = new Date();
 
+	let showExpired = $state(false);
 	let isConfirmationDialogOpen = $state(false);
 	let selectedRequestForDeletion = $state<Request | null>(null);
+
+	let filteredRequests = $derived(
+		showExpired ? requests : requests.filter((r) => r.status !== 'expired')
+	);
 
 	const statusConfig = {
 		pending: { label: m.still_calm_snail_wait(), icon: Hourglass, class: 'text-info' },
@@ -70,7 +77,7 @@
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#each requests as request (request.id)}
+				{#each filteredRequests as request (request.id)}
 					{@const config = statusConfig[request.status]}
 					<Table.Row>
 						<Table.Cell>{formatDateTime(request.createdAt)}</Table.Cell>
@@ -146,5 +153,13 @@
 				</Dialog.Footer>
 			</Dialog.Content>
 		</Dialog.Root>
+
+		<Separator class="my-6" />
+		<div class="inline-flex items-center">
+			<Switch id="expired-requests-switch" bind:checked={showExpired} /><label
+				for="expired-requests-switch"
+				class="ms-2 cursor-pointer">{m.trim_proud_coyote_glow()}</label
+			>
+		</div>
 	{/if}
 </Card>

@@ -714,5 +714,6 @@
 	"gray_dim_bat_halt": "Cette demande a déjà été répondue.",
 	"soft_warm_eel_fail": "Échec de l'envoi de la réponse.",
 	"calm_safe_seal_sent": "Votre réponse a été soumise en toute sécurité.",
-	"bold_kind_ram_gone": "Demande supprimée."
+	"bold_kind_ram_gone": "Demande supprimée.",
+	"trim_proud_coyote_glow": "Afficher les demandes expirées"
 }
