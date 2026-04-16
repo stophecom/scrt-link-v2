@@ -13,6 +13,7 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import Switch from '$lib/components/ui/switch/switch.svelte';
 	import * as Table from '$lib/components/ui/table';
+	import * as Tabs from '$lib/components/ui/tabs';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { formatDateTime } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
@@ -39,14 +40,18 @@
 
 	const currentDate = new Date();
 
+	let activeFilter = $state<'all' | 'unread' | 'pending'>('all');
 	let showExpired = $state(false);
 	let isConfirmationDialogOpen = $state(false);
 	let selectedRequestForDeletion = $state<Request | null>(null);
 	let decryptedNotes = $state<Record<string, string>>({});
 
-	let filteredRequests = $derived(
-		showExpired ? requests : requests.filter((r) => r.status !== 'expired')
-	);
+	let filteredRequests = $derived.by(() => {
+		let result = showExpired ? requests : requests.filter((r) => r.status !== 'expired');
+		if (activeFilter === 'unread') return result.filter((r) => r.status === 'responded');
+		if (activeFilter === 'pending') return result.filter((r) => r.status === 'pending');
+		return result;
+	});
 
 	const decryptNotes = async (secretRequests: Request[]) => {
 		if (!isKeyUnlocked()) return;
@@ -73,7 +78,7 @@
 	const statusConfig = {
 		pending: { label: m.still_calm_snail_wait(), icon: Hourglass, class: 'text-info' },
 		responded: {
-			label: m.glad_new_robin_sing(),
+			label: m.keen_bold_lark_unread(),
 			icon: Mail,
 			class: 'text-success'
 		},
@@ -83,18 +88,26 @@
 </script>
 
 <Card>
-	<CardTitle>
-		{m.neat_warm_crane_view()}
-		{#if unreadCount > 0}
-			<span
-				class="bg-primary text-primary-foreground ml-2 inline-flex items-center rounded-full px-2 py-0.5 align-middle text-xs font-semibold"
-				>{unreadCount}</span
-			>
-		{/if}
-	</CardTitle>
+	<CardTitle>{m.neat_warm_crane_view()}</CardTitle>
 	{#if requests.length === 0}
 		<p class="text-muted-foreground py-8 text-center">{m.mild_shy_parrot_rest()}</p>
 	{:else}
+		<Tabs.Root bind:value={activeFilter} class="mb-4">
+			<Tabs.List>
+				<Tabs.Trigger value="all">{m.warm_clear_fox_all()}</Tabs.Trigger>
+				<Tabs.Trigger value="unread">
+					{m.keen_bold_lark_unread()}
+					{#if unreadCount > 0}
+						<span
+							class="bg-primary text-primary-foreground ml-1.5 inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-semibold"
+							>{unreadCount}</span
+						>
+					{/if}
+				</Tabs.Trigger>
+				<Tabs.Trigger value="pending">{m.still_calm_snail_wait()}</Tabs.Trigger>
+			</Tabs.List>
+		</Tabs.Root>
+
 		<Table.Root>
 			<Table.Header>
 				<Table.Row>
@@ -130,16 +143,20 @@
 						<Table.Cell>
 							<Tooltip.Root>
 								<Tooltip.Trigger>
-									<div class="inline-flex items-center gap-1.5 {config.class}">
+									<div class="inline-flex items-center gap-1.5 whitespace-nowrap {config.class}">
 										<config.icon class="h-4 w-4 shrink-0" />
 										<span>{config.label}</span>
 									</div>
 								</Tooltip.Trigger>
-								<Tooltip.Content>
+								<Tooltip.Content class="text-left">
+									<p>{m.shy_brave_owl_born()}: {formatDateTime(request.createdAt)}</p>
+									{#if request.respondedAt}
+										<p>{m.calm_rich_puma_back()}: {formatDateTime(request.respondedAt)}</p>
+									{/if}
 									{#if request.expiresAt > currentDate}
-										{m.warm_old_crab_fade()}: {formatDateTime(request.expiresAt)}
+										<p>{m.warm_old_crab_fade()}: {formatDateTime(request.expiresAt)}</p>
 									{:else}
-										{m.trick_caring_lionfish_grasp()}
+										<p>{m.trick_caring_lionfish_grasp()}</p>
 									{/if}
 								</Tooltip.Content>
 							</Tooltip.Root>
