@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ChartNoAxesCombined from '@lucide/svelte/icons/chart-no-axes-combined';
 	import ConciergeBell from '@lucide/svelte/icons/concierge-bell';
 	import Factory from '@lucide/svelte/icons/factory';
 	import KeyRound from '@lucide/svelte/icons/key-round';
@@ -20,7 +21,7 @@
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { Spinner } from '$lib/components/ui/spinner';
-	import { TierOptions } from '$lib/data/enums';
+	import { Role, TierOptions } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -60,7 +61,17 @@
 	});
 
 	// Navigation items
-	const navItems = [
+	const isAdmin = $derived(page.data.user?.role === Role.ADMIN);
+	const navItems = $derived([
+		...(isAdmin
+			? [
+					{
+						href: localizeHref('/account/admin'),
+						label: 'Admin',
+						icon: ChartNoAxesCombined
+					}
+				]
+			: []),
 		{
 			href: localizeHref('/account/secrets'),
 			label: m.free_nimble_whale_fry(),
@@ -92,7 +103,7 @@
 			label: m.nimble_quick_bird_sew(),
 			icon: SettingsGroup
 		}
-	];
+	]);
 
 	let currentPath = $derived(page.url.pathname);
 	let currentItem = $derived(

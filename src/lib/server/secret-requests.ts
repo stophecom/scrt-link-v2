@@ -1,10 +1,10 @@
-import { and, count, desc, eq, isNotNull, isNull } from 'drizzle-orm';
+import { and, count, desc, eq, isNotNull, isNull, sql } from 'drizzle-orm';
 
 import { generateRandomAlphanumericString } from '$lib/crypto';
 import type { SecretRequestFormSchema } from '$lib/validators/formSchemas';
 
 import { db } from './db';
-import { type SecretRequest, secretRequest, user } from './db/schema';
+import { type SecretRequest, secretRequest, stats, user } from './db/schema';
 
 type SaveSecretRequest = {
 	userId: string;
@@ -36,6 +36,24 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 			userId
 		})
 		.returning();
+
+	// Global stats
+	await db
+		.insert(stats)
+		.values({ id: 1, scope: 'global' })
+		.onConflictDoUpdate({
+			target: stats.id,
+			set: { totalSecretRequests: sql`${stats.totalSecretRequests} + 1` }
+		});
+
+	// User stats
+	await db
+		.insert(stats)
+		.values({ userId, scope: 'user' })
+		.onConflictDoUpdate({
+			target: stats.userId,
+			set: { totalSecretRequests: sql`${stats.totalSecretRequests} + 1` }
+		});
 
 	return { id: result.id, receiptId, expiresAt: result.expiresAt, expiresIn };
 };

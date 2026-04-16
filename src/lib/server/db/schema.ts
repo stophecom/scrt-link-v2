@@ -261,6 +261,12 @@ export const stats = pgTable('stats', {
 	id: serial('id').primaryKey(),
 	scope: scope(),
 	totalSecrets: integer('total_secrets').default(1),
+	textSecrets: integer('text_secrets').default(0),
+	fileSecrets: integer('file_secrets').default(0),
+	redirectSecrets: integer('redirect_secrets').default(0),
+	snapSecrets: integer('snap_secrets').default(0),
+	neogramSecrets: integer('neogram_secrets').default(0),
+	totalSecretRequests: integer('total_secret_requests').default(0),
 	whiteLabelSiteId: uuid('white_label_site_id')
 		.unique()
 		.references(() => whiteLabelSite.id),

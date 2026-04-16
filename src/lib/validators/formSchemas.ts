@@ -73,7 +73,8 @@ export const secretFormSchema = () =>
 					}
 				}
 			)
-			.default(defaultExpiresInValue)
+			.default(defaultExpiresInValue),
+		secretType: z.nativeEnum(SecretType).optional()
 	});
 
 export const themeFormSchema = () => z.object({ themeOption: z.nativeEnum(ThemeOptions) });

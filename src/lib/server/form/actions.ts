@@ -121,6 +121,7 @@ export const postSecret: Action = async (event) => {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
 			userId: user?.id,
 			secretRequest: form.data,
+			secretType: form.data.secretType,
 			whiteLabelSiteId
 		});
 

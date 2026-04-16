@@ -1,3 +1,4 @@
+import { SecretType } from '@scrt-link/core';
 import { and, desc, eq, isNull, sql } from 'drizzle-orm';
 
 import { isOriginalHostname } from '$lib/app-routing';
@@ -8,12 +9,35 @@ import { db } from './db';
 import { type Secret, secret, stats } from './db/schema';
 import { getWhiteLabelSiteByHost } from './whiteLabelSite';
 
+const getSecretTypeStatsColumn = (secretType?: SecretType) => {
+	switch (secretType) {
+		case SecretType.TEXT:
+			return stats.textSecrets;
+		case SecretType.FILE:
+			return stats.fileSecrets;
+		case SecretType.REDIRECT:
+			return stats.redirectSecrets;
+		case SecretType.SNAP:
+			return stats.snapSecrets;
+		case SecretType.NEOGRAM:
+			return stats.neogramSecrets;
+		default:
+			return null;
+	}
+};
+
 type SaveSecret = {
 	userId?: string;
 	secretRequest: SecretFormSchema;
+	secretType?: SecretType;
 	whiteLabelSiteId?: string;
 };
-export const saveSecret = async ({ userId, secretRequest, whiteLabelSiteId }: SaveSecret) => {
+export const saveSecret = async ({
+	userId,
+	secretRequest,
+	secretType,
+	whiteLabelSiteId
+}: SaveSecret) => {
 	const { content, publicNote, password, secretIdHash, meta, expiresIn, publicKey } = secretRequest;
 
 	let passwordHash;
@@ -40,13 +64,17 @@ export const saveSecret = async ({ userId, secretRequest, whiteLabelSiteId }: Sa
 		})
 		.returning();
 
+	// Build type-specific stats increment
+	const typeColumn = getSecretTypeStatsColumn(secretType);
+	const typeIncrement = typeColumn ? { [typeColumn.name]: sql`${typeColumn} + 1` } : {};
+
 	// Global stats
 	await db
 		.insert(stats)
 		.values({ id: 1, scope: 'global' })
 		.onConflictDoUpdate({
 			target: stats.id,
-			set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
+			set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
 		});
 
 	// Individual user stats
@@ -59,7 +87,7 @@ export const saveSecret = async ({ userId, secretRequest, whiteLabelSiteId }: Sa
 			})
 			.onConflictDoUpdate({
 				target: stats.userId,
-				set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
+				set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
 			});
 	}
 
@@ -73,7 +101,7 @@ export const saveSecret = async ({ userId, secretRequest, whiteLabelSiteId }: Sa
 			})
 			.onConflictDoUpdate({
 				target: stats.whiteLabelSiteId,
-				set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
+				set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
 			});
 	}
 
