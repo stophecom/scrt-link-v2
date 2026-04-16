@@ -1,4 +1,4 @@
-import { generateRandomUrlSafeString } from '@scrt-link/core';
+import { generateRandomAlphanumericString } from '$lib/crypto';
 import { and, count, desc, eq, isNotNull, isNull } from 'drizzle-orm';
 
 import type { SecretRequestFormSchema } from '$lib/validators/formSchemas';
@@ -21,7 +21,7 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 		expiresIn
 	} = data;
 
-	const receiptId = generateRandomUrlSafeString(8);
+	const receiptId = generateRandomAlphanumericString(8);
 
 	const [result] = await db
 		.insert(secretRequest)

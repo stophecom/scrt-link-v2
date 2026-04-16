@@ -1,7 +1,7 @@
 import { and, desc, eq, isNull, sql } from 'drizzle-orm';
 
 import { isOriginalHostname } from '$lib/app-routing';
-import { generateRandomUrlSafeString, scryptHash } from '$lib/crypto';
+import { generateRandomAlphanumericString, scryptHash } from '$lib/crypto';
 import type { SecretFormSchema } from '$lib/validators/formSchemas';
 
 import { db } from './db';
@@ -22,7 +22,7 @@ export const saveSecret = async ({ userId, secretRequest, whiteLabelSiteId }: Sa
 	}
 
 	// Attach user to secret, if exists
-	const receiptId = generateRandomUrlSafeString(8);
+	const receiptId = generateRandomAlphanumericString(8);
 
 	const [result] = await db
 		.insert(secret)
