@@ -85,7 +85,7 @@
 			<p class="text-muted-foreground">{m.slow_calm_newt_spin()}</p>
 		</div>
 	{:else if decryptedResponse}
-		<div class="bg-muted rounded-lg p-4">
+		<div class="bg-muted rounded-lg p-4" data-testid="decrypted-response">
 			<pre class="font-mono text-sm break-words whitespace-pre-wrap">{decryptedResponse}</pre>
 		</div>
 		<div class="mt-4 flex justify-end gap-2">

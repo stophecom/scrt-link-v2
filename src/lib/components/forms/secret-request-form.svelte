@@ -162,6 +162,7 @@
 		<Form.Field form={sForm} name="encryptedNote">
 			<Textarea
 				bind:value={noteText}
+				data-testid="input-request-note"
 				label={m.soft_kind_swan_write()}
 				placeholder={m.pale_quick_finch_hint()}
 				rows={4}
@@ -193,8 +194,11 @@
 				>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 				<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
 			>
-			<Form.Button class="sm:ml-auto" delayed={$delayed} disabled={!keysReady}
-				>{m.keen_bold_falcon_send()}</Form.Button
+			<Form.Button
+				class="sm:ml-auto"
+				delayed={$delayed}
+				disabled={!keysReady}
+				data-testid="submit-request">{m.keen_bold_falcon_send()}</Form.Button
 			>
 		</div>
 	</form>
