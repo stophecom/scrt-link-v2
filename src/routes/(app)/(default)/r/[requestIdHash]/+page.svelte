@@ -54,6 +54,7 @@
 			<div
 				in:fade
 				class="border-primary bg-card relative mb-2 flex min-h-[200px] w-full flex-col items-center justify-center overflow-hidden rounded border px-4 py-6 shadow-lg md:p-8"
+				data-testid="response-success"
 			>
 				<Check class="text-primary mb-4 h-12 w-12" />
 				<h3 class="text-primary mb-2 text-2xl font-semibold">
@@ -78,7 +79,7 @@
 						{/if}
 					</p>
 					{#if decryptedNote}
-						<p>{decryptedNote}</p>
+						<p data-testid="decrypted-note">{decryptedNote}</p>
 					{/if}
 				</div>
 

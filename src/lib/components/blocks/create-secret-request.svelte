@@ -47,8 +47,10 @@
 				{m.proud_vivid_hawk_cheer()}
 			</h3>
 			<div class="min-w-0 shrink overflow-hidden pe-2">
-				<div class="mb-2 truncate text-lg font-normal">{requestLink}</div>
-				<div class="text-muted-foreground block text-sm">
+				<div class="mb-2 truncate text-lg font-normal" data-testid="request-link">
+					{requestLink}
+				</div>
+				<div class="text-muted-foreground block text-sm" data-testid="request-success-message">
 					<Markdown markdown={successMessage} />
 				</div>
 			</div>
