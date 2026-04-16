@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { Guard } from 'svelte-guard';
 
 import { isOriginalHostname } from '$lib/app-routing';
+import { redirectLocalized } from '$lib/i18n';
 import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 
 export const guard: Guard = async ({ params, locals, url }) => {
@@ -19,12 +20,8 @@ export const guard: Guard = async ({ params, locals, url }) => {
 
 	// We don't want to expose white-label pages via /white-label/example.com
 	if (isOriginalHostname(url.hostname) && locals.user?.id !== whiteLabel.userId) {
-		return false; // Access denied
+		redirectLocalized(307, '/login');
 	}
 
 	return true;
 };
-
-// Optional redirect for unauthorized users
-// this will be the default for nested sub-routes
-export const reroute = '/login';

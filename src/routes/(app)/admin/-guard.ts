@@ -1,12 +1,10 @@
 import type { Guard } from 'svelte-guard';
 
+import { redirectLocalized } from '$lib/i18n';
+
 export const guard: Guard = async ({ locals }) => {
 	if (locals.user?.role !== 'admin') {
-		return false; // Access denied
+		redirectLocalized(307, '/');
 	}
 	return true;
 };
-
-// Optional redirect for unauthorized users
-// this will be the default for nested sub-routes
-export const reroute = '/';
