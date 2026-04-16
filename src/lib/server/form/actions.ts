@@ -1630,10 +1630,11 @@ export const postSecretResponse: Action = async (event) => {
 		});
 
 		if (!result) {
+			// submitSecretResponse returns null when respondedAt is already set (race condition)
 			return message(
 				form,
-				{ status: 'error', title: m.sad_arable_canary_mop(), description: m.soft_warm_eel_fail() },
-				{ status: 500 }
+				{ status: 'error', title: m.sad_arable_canary_mop(), description: m.gray_dim_bat_halt() },
+				{ status: 409 }
 			);
 		}
 

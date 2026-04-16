@@ -23,37 +23,41 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 
 	const receiptId = generateRandomAlphanumericString(8);
 
-	const [result] = await db
-		.insert(secretRequest)
-		.values({
-			requestIdHash,
-			publicKey,
-			encryptedPrivateKey,
-			encryptedNote,
-			encryptedNoteForOwner,
-			receiptId,
-			expiresAt: new Date(Date.now() + expiresIn),
-			userId
-		})
-		.returning();
+	const result = await db.transaction(async (tx) => {
+		const [row] = await tx
+			.insert(secretRequest)
+			.values({
+				requestIdHash,
+				publicKey,
+				encryptedPrivateKey,
+				encryptedNote,
+				encryptedNoteForOwner,
+				receiptId,
+				expiresAt: new Date(Date.now() + expiresIn),
+				userId
+			})
+			.returning();
 
-	// Global stats
-	await db
-		.insert(stats)
-		.values({ id: 1, scope: 'global' })
-		.onConflictDoUpdate({
-			target: stats.id,
-			set: { totalSecretRequests: sql`${stats.totalSecretRequests} + 1` }
-		});
+		// Global stats
+		await tx
+			.insert(stats)
+			.values({ id: 1, scope: 'global' })
+			.onConflictDoUpdate({
+				target: stats.id,
+				set: { totalSecretRequests: sql`${stats.totalSecretRequests} + 1` }
+			});
 
-	// User stats
-	await db
-		.insert(stats)
-		.values({ userId, scope: 'user' })
-		.onConflictDoUpdate({
-			target: stats.userId,
-			set: { totalSecretRequests: sql`${stats.totalSecretRequests} + 1` }
-		});
+		// User stats
+		await tx
+			.insert(stats)
+			.values({ userId, scope: 'user' })
+			.onConflictDoUpdate({
+				target: stats.userId,
+				set: { totalSecretRequests: sql`${stats.totalSecretRequests} + 1` }
+			});
+
+		return row;
+	});
 
 	return { id: result.id, receiptId, expiresAt: result.expiresAt, expiresIn };
 };
@@ -108,6 +112,15 @@ export const submitSecretResponse = async (data: SubmitResponse) => {
 			)
 		)
 		.returning();
+
+	return result ?? null;
+};
+
+export const getRequestById = async (requestId: string, userId: string) => {
+	const [result] = await db
+		.select()
+		.from(secretRequest)
+		.where(and(eq(secretRequest.id, requestId), eq(secretRequest.userId, userId)));
 
 	return result ?? null;
 };

@@ -1,11 +1,12 @@
 import { type Actions, error, fail } from '@sveltejs/kit';
-import { and, eq } from 'drizzle-orm';
 
 import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages';
-import { db } from '$lib/server/db';
-import { secretRequest } from '$lib/server/db/schema';
-import { deleteSecretRequest, markRequestViewed } from '$lib/server/secret-requests';
+import {
+	deleteSecretRequest,
+	getRequestById,
+	markRequestViewed
+} from '$lib/server/secret-requests';
 
 import type { PageServerLoad } from './$types';
 
@@ -15,10 +16,7 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const [request] = await db
-		.select()
-		.from(secretRequest)
-		.where(and(eq(secretRequest.id, params.id), eq(secretRequest.userId, user.id)));
+	const request = await getRequestById(params.id, user.id);
 
 	if (!request) {
 		error(404, 'Request not found.');

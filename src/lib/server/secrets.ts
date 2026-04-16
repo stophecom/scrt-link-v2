@@ -40,7 +40,7 @@ export const saveSecret = async ({
 }: SaveSecret) => {
 	const { content, publicNote, password, secretIdHash, meta, expiresIn, publicKey } = secretRequest;
 
-	let passwordHash;
+	let passwordHash: string | undefined;
 	if (password) {
 		passwordHash = await scryptHash(password);
 	}
@@ -48,62 +48,66 @@ export const saveSecret = async ({
 	// Attach user to secret, if exists
 	const receiptId = generateRandomAlphanumericString(8);
 
-	const [result] = await db
-		.insert(secret)
-		.values({
-			secretIdHash,
-			meta,
-			content,
-			publicNote,
-			passwordHash,
-			expiresAt: new Date(Date.now() + expiresIn),
-			publicKey,
-			receiptId,
-			userId: userId,
-			whiteLabelSiteId: whiteLabelSiteId
-		})
-		.returning();
-
 	// Build type-specific stats increment
 	const typeColumn = getSecretTypeStatsColumn(secretType);
 	const typeIncrement = typeColumn ? { [typeColumn.name]: sql`${typeColumn} + 1` } : {};
 
-	// Global stats
-	await db
-		.insert(stats)
-		.values({ id: 1, scope: 'global' })
-		.onConflictDoUpdate({
-			target: stats.id,
-			set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
-		});
-
-	// Individual user stats
-	if (userId) {
-		await db
-			.insert(stats)
+	const result = await db.transaction(async (tx) => {
+		const [row] = await tx
+			.insert(secret)
 			.values({
+				secretIdHash,
+				meta,
+				content,
+				publicNote,
+				passwordHash,
+				expiresAt: new Date(Date.now() + expiresIn),
+				publicKey,
+				receiptId,
 				userId: userId,
-				scope: 'user'
+				whiteLabelSiteId: whiteLabelSiteId
 			})
-			.onConflictDoUpdate({
-				target: stats.userId,
-				set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
-			});
-	}
+			.returning();
 
-	// WhiteLabel stats
-	if (whiteLabelSiteId) {
-		await db
+		// Global stats
+		await tx
 			.insert(stats)
-			.values({
-				whiteLabelSiteId: whiteLabelSiteId,
-				scope: 'whiteLabel'
-			})
+			.values({ id: 1, scope: 'global' })
 			.onConflictDoUpdate({
-				target: stats.whiteLabelSiteId,
+				target: stats.id,
 				set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
 			});
-	}
+
+		// Individual user stats
+		if (userId) {
+			await tx
+				.insert(stats)
+				.values({
+					userId: userId,
+					scope: 'user'
+				})
+				.onConflictDoUpdate({
+					target: stats.userId,
+					set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
+				});
+		}
+
+		// WhiteLabel stats
+		if (whiteLabelSiteId) {
+			await tx
+				.insert(stats)
+				.values({
+					whiteLabelSiteId: whiteLabelSiteId,
+					scope: 'whiteLabel'
+				})
+				.onConflictDoUpdate({
+					target: stats.whiteLabelSiteId,
+					set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
+				});
+		}
+
+		return row;
+	});
 
 	return { receiptId, expiresIn, expiresAt: result.expiresAt };
 };
