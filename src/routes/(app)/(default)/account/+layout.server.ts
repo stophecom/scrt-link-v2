@@ -1,4 +1,3 @@
-import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import { getOrganizationsByUserId } from '$lib/server/organization';
 import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
@@ -6,10 +5,7 @@ import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ locals }) => {
-	const user = locals.user;
-	if (!user) {
-		return redirectLocalized(307, '/signup');
-	}
+	const user = locals.user!;
 
 	const whiteLabel = await getWhiteLabelSiteByUserId(user.id);
 	const userOrganizations = await getOrganizationsByUserId(user.id);

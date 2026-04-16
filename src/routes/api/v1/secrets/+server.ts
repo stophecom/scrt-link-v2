@@ -96,6 +96,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
 			userId: userId,
 			secretRequest: validation.data,
+			secretType: validation.data.secretType,
 			whiteLabelSiteId
 		});
 		return jsonWithCors({ receiptId, expiresIn, expiresAt });

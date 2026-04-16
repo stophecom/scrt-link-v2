@@ -1,81 +1,113 @@
+import { SecretType } from '@scrt-link/core';
 import { and, desc, eq, isNull, sql } from 'drizzle-orm';
 
 import { isOriginalHostname } from '$lib/app-routing';
-import { generateRandomUrlSafeString, scryptHash } from '$lib/crypto';
+import { generateRandomAlphanumericString, scryptHash } from '$lib/crypto';
 import type { SecretFormSchema } from '$lib/validators/formSchemas';
 
 import { db } from './db';
 import { type Secret, secret, stats } from './db/schema';
 import { getWhiteLabelSiteByHost } from './whiteLabelSite';
 
+const getSecretTypeStatsColumn = (secretType?: SecretType) => {
+	switch (secretType) {
+		case SecretType.TEXT:
+			return stats.textSecrets;
+		case SecretType.FILE:
+			return stats.fileSecrets;
+		case SecretType.REDIRECT:
+			return stats.redirectSecrets;
+		case SecretType.SNAP:
+			return stats.snapSecrets;
+		case SecretType.NEOGRAM:
+			return stats.neogramSecrets;
+		default:
+			return null;
+	}
+};
+
 type SaveSecret = {
 	userId?: string;
 	secretRequest: SecretFormSchema;
+	secretType?: SecretType;
 	whiteLabelSiteId?: string;
 };
-export const saveSecret = async ({ userId, secretRequest, whiteLabelSiteId }: SaveSecret) => {
+export const saveSecret = async ({
+	userId,
+	secretRequest,
+	secretType,
+	whiteLabelSiteId
+}: SaveSecret) => {
 	const { content, publicNote, password, secretIdHash, meta, expiresIn, publicKey } = secretRequest;
 
-	let passwordHash;
+	let passwordHash: string | undefined;
 	if (password) {
 		passwordHash = await scryptHash(password);
 	}
 
 	// Attach user to secret, if exists
-	const receiptId = generateRandomUrlSafeString(8);
+	const receiptId = generateRandomAlphanumericString(8);
 
-	const [result] = await db
-		.insert(secret)
-		.values({
-			secretIdHash,
-			meta,
-			content,
-			publicNote,
-			passwordHash,
-			expiresAt: new Date(Date.now() + expiresIn),
-			publicKey,
-			receiptId,
-			userId: userId,
-			whiteLabelSiteId: whiteLabelSiteId
-		})
-		.returning();
+	// Build type-specific stats increment
+	const typeColumn = getSecretTypeStatsColumn(secretType);
+	const typeIncrement = typeColumn ? { [typeColumn.name]: sql`${typeColumn} + 1` } : {};
 
-	// Global stats
-	await db
-		.insert(stats)
-		.values({ id: 1, scope: 'global' })
-		.onConflictDoUpdate({
-			target: stats.id,
-			set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
-		});
-
-	// Individual user stats
-	if (userId) {
-		await db
-			.insert(stats)
+	const result = await db.transaction(async (tx) => {
+		const [row] = await tx
+			.insert(secret)
 			.values({
+				secretIdHash,
+				meta,
+				content,
+				publicNote,
+				passwordHash,
+				expiresAt: new Date(Date.now() + expiresIn),
+				publicKey,
+				receiptId,
 				userId: userId,
-				scope: 'user'
+				whiteLabelSiteId: whiteLabelSiteId
 			})
-			.onConflictDoUpdate({
-				target: stats.userId,
-				set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
-			});
-	}
+			.returning();
 
-	// WhiteLabel stats
-	if (whiteLabelSiteId) {
-		await db
+		// Global stats
+		await tx
 			.insert(stats)
-			.values({
-				whiteLabelSiteId: whiteLabelSiteId,
-				scope: 'whiteLabel'
-			})
+			.values({ id: 1, scope: 'global' })
 			.onConflictDoUpdate({
-				target: stats.whiteLabelSiteId,
-				set: { totalSecrets: sql`${stats.totalSecrets} + 1` }
+				target: stats.id,
+				set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
 			});
-	}
+
+		// Individual user stats
+		if (userId) {
+			await tx
+				.insert(stats)
+				.values({
+					userId: userId,
+					scope: 'user'
+				})
+				.onConflictDoUpdate({
+					target: stats.userId,
+					set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
+				});
+		}
+
+		// WhiteLabel stats
+		if (whiteLabelSiteId) {
+			await tx
+				.insert(stats)
+				.values({
+					whiteLabelSiteId: whiteLabelSiteId,
+					scope: 'whiteLabel'
+				})
+				.onConflictDoUpdate({
+					target: stats.whiteLabelSiteId,
+					set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
+				});
+		}
+
+		return row;
+	});
 
 	return { receiptId, expiresIn, expiresAt: result.expiresAt };
 };

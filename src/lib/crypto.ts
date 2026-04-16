@@ -45,7 +45,7 @@ export const generateOtp = (size: number = 6) => {
 	return sixDigitCode.toString().padStart(size, '0');
 };
 
-export const generateRandomUrlSafeString = (length = 36) => {
+export const generateRandomAlphanumericString = (length = 36) => {
 	const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 	const numbers = '0123456789';
 	const charset = [...letters, ...numbers];

@@ -95,7 +95,8 @@
 				publicKey,
 				publicNote,
 				expiresIn,
-				password
+				password,
+				secretType
 			};
 
 			if (plausible) {

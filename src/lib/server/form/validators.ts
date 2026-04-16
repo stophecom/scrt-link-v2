@@ -12,6 +12,8 @@ import {
 	type EmailVerificationCodeFormSchema,
 	emailVerificationCodeFormSchema,
 	secretFormSchema,
+	secretRequestFormSchema,
+	secretResponseFormSchema,
 	settingsFormSchema,
 	type SignInFormSchema,
 	signInFormSchema,
@@ -85,3 +87,10 @@ export const apiKeyFormValidator = async () =>
 	await superValidate(zod4(apiKeyFormSchema()), {
 		id: 'api-token-form'
 	});
+
+// Secret Requests
+export const secretRequestFormValidator = async () =>
+	await superValidate(zod4(secretRequestFormSchema()));
+
+export const secretResponseFormValidator = async () =>
+	await superValidate(zod4(secretResponseFormSchema()));
