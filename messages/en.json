@@ -671,7 +671,7 @@
 	"tense_calm_seal_warn": "You need to enable encryption to use Secret Requests.",
 	"bold_safe_tiger_lock": "Enable encryption",
 	"dim_quiet_raven_lock": "Your encryption keys need to be unlocked.",
-	"keen_swift_heron_ask": "Request a Secret",
+	"keen_swift_heron_ask": "Request",
 	"calm_proud_ibis_list": "Secret Requests",
 	"neat_warm_crane_view": "My Secret Requests",
 	"mild_shy_parrot_rest": "You haven't created any secret requests yet.",
