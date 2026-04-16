@@ -1,7 +1,9 @@
 <script lang="ts">
+	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Table from '$lib/components/ui/table';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { PageData } from './$types';
 
@@ -13,21 +15,26 @@
 </script>
 
 <!-- KPI Cards -->
+<div>
+	<Button variant="outline" class="mb-6" href={localizeHref('/account/admin/email-previews')}
+		>Email Previews</Button
+	>
+</div>
 <div class="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
 	<Card>
-		<p class="text-muted-foreground text-sm font-medium">Total Users</p>
+		<p class="text-muted-foreground truncate text-sm font-medium">Total Users</p>
 		<p class="text-3xl font-bold">{data.totalUsers}</p>
 	</Card>
 	<Card>
-		<p class="text-muted-foreground text-sm font-medium">Paid Subscriptions</p>
+		<p class="text-muted-foreground truncate text-sm font-medium">Paid Subscriptions</p>
 		<p class="text-3xl font-bold">{data.activeSubscriptions}</p>
 	</Card>
 	<Card>
-		<p class="text-muted-foreground text-sm font-medium">Total Secrets</p>
+		<p class="text-muted-foreground truncate text-sm font-medium">Total Secrets</p>
 		<p class="text-3xl font-bold">{data.globalStats?.totalSecrets ?? 0}</p>
 	</Card>
 	<Card>
-		<p class="text-muted-foreground text-sm font-medium">Organizations</p>
+		<p class="text-muted-foreground truncate text-sm font-medium">Organizations</p>
 		<p class="text-3xl font-bold">{data.totalOrganizations}</p>
 	</Card>
 </div>
