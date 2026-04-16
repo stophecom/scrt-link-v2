@@ -1,5 +1,6 @@
 import {
 	boolean,
+	index,
 	integer,
 	jsonb,
 	pgEnum,
@@ -212,6 +213,40 @@ export const secret = pgTable('secret', {
 	})
 });
 
+export const secretRequest = pgTable(
+	'secret_request',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		// SHA-256 hash of the request ID (from URL) for lookup
+		requestIdHash: text('request_id_hash').notNull().unique(),
+		// RSA public key (JWK) — used by responder to encrypt
+		publicKey: text('public_key').notNull(),
+		// RSA private key wrapped with user's Master Key (AES-GCM)
+		encryptedPrivateKey: text('encrypted_private_key').notNull(),
+		// Request note encrypted with noteKey (key lives in URL hash)
+		encryptedNote: text('encrypted_note'),
+		// Same note encrypted with user's Master Key (for owner's dashboard)
+		encryptedNoteForOwner: text('encrypted_note_for_owner'),
+		// User-friendly tracking identifier
+		receiptId: text('receipt_id'),
+		// Response fields (nullable — filled when someone responds)
+		wrappedResponseKey: text('wrapped_response_key'),
+		encryptedResponseMeta: text('encrypted_response_meta'),
+		encryptedResponseContent: text('encrypted_response_content'),
+		// Lifecycle timestamps
+		expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
+		respondedAt: timestamp('responded_at', { withTimezone: true, mode: 'date' }),
+		viewedAt: timestamp('viewed_at', { withTimezone: true, mode: 'date' }),
+		// Relations
+		userId: uuid('user_id')
+			.notNull()
+			.references(() => user.id, { onDelete: 'cascade' }),
+		// Timestamps
+		createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull()
+	},
+	(table) => [index('secret_request_user_id_idx').on(table.userId)]
+);
+
 export const apiKey = pgTable('api_key', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	key: text('key').notNull(),
@@ -226,6 +261,12 @@ export const stats = pgTable('stats', {
 	id: serial('id').primaryKey(),
 	scope: scope(),
 	totalSecrets: integer('total_secrets').default(1),
+	textSecrets: integer('text_secrets').default(0),
+	fileSecrets: integer('file_secrets').default(0),
+	redirectSecrets: integer('redirect_secrets').default(0),
+	snapSecrets: integer('snap_secrets').default(0),
+	neogramSecrets: integer('neogram_secrets').default(0),
+	totalSecretRequests: integer('total_secret_requests').default(0),
 	whiteLabelSiteId: uuid('white_label_site_id')
 		.unique()
 		.references(() => whiteLabelSite.id),
@@ -244,4 +285,5 @@ export type Session = typeof session.$inferSelect;
 export type EmailVerificationRequest = typeof emailVerificationRequest.$inferSelect;
 export type Secret = typeof secret.$inferSelect;
 export type APIKey = typeof apiKey.$inferSelect;
+export type SecretRequest = typeof secretRequest.$inferSelect;
 export type Stats = typeof stats.$inferSelect;

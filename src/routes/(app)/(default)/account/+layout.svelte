@@ -1,22 +1,27 @@
 <script lang="ts">
-	import Key from '@lucide/svelte/icons/key';
-	import Lock from '@lucide/svelte/icons/lock';
+	import ChartNoAxesCombined from '@lucide/svelte/icons/chart-no-axes-combined';
+	import ConciergeBell from '@lucide/svelte/icons/concierge-bell';
+	import Factory from '@lucide/svelte/icons/factory';
+	import KeyRound from '@lucide/svelte/icons/key-round';
+	import Link from '@lucide/svelte/icons/link';
 	import LogOut from '@lucide/svelte/icons/log-out';
 	import Menu from '@lucide/svelte/icons/menu';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
-	import ShieldCheck from '@lucide/svelte/icons/shield-check';
 	import User from '@lucide/svelte/icons/user';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import type { Snippet } from 'svelte';
 
 	import { browser } from '$app/environment';
 	import { page } from '$app/state';
+	import { isKeyUnlocked, tryRestoreKey } from '$lib/client/key-manager';
 	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Card from '$lib/components/ui/card/card.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import { TierOptions } from '$lib/data/enums';
+	import { Spinner } from '$lib/components/ui/spinner';
+	import { Role, TierOptions } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -33,22 +38,60 @@
 
 	let pageTitle = $derived(page.data.pageTitle);
 
+	// Centralized encryption key restoration
+	let keyRestoreAttempted = $state(false);
+	let encryptionEnabled = $derived(!!page.data.user?.encryptionEnabled);
+	let encryptionUnlocked = $derived(keyRestoreAttempted && isKeyUnlocked());
+
+	const encryptionRequiredPaths = ['/account/requests'];
+	let routeRequiresEncryption = $derived(
+		encryptionRequiredPaths.some((p) => page.url.pathname.includes(p))
+	);
+	let showEncryptionGate = $derived(
+		routeRequiresEncryption && encryptionEnabled && !encryptionUnlocked
+	);
+	let showEncryptionSetup = $derived(routeRequiresEncryption && !encryptionEnabled);
+
+	$effect(() => {
+		if (browser) {
+			tryRestoreKey().then(() => {
+				keyRestoreAttempted = true;
+			});
+		}
+	});
+
 	// Navigation items
-	const navItems = [
+	const isAdmin = $derived(page.data.user?.role === Role.ADMIN);
+	const navItems = $derived([
+		...(isAdmin
+			? [
+					{
+						href: localizeHref('/account/admin'),
+						label: 'Admin',
+						icon: ChartNoAxesCombined
+					}
+				]
+			: []),
 		{
 			href: localizeHref('/account/secrets'),
 			label: m.free_nimble_whale_fry(),
-			icon: Lock
+			icon: Link
+		},
+		{
+			href: localizeHref('/account/requests'),
+			label: m.calm_proud_ibis_list(),
+			icon: ConciergeBell,
+			badge: 'Beta'
 		},
 		{
 			href: localizeHref('/account/api'),
 			label: m.super_funny_jackal_pause(),
-			icon: Key
+			icon: KeyRound
 		},
 		{
 			href: localizeHref('/account/secret-service'),
 			label: TierOptions.SECRET_SERVICE,
-			icon: ShieldCheck
+			icon: Factory
 		},
 		{
 			href: localizeHref('/account/profile'),
@@ -60,7 +103,7 @@
 			label: m.nimble_quick_bird_sew(),
 			icon: SettingsGroup
 		}
-	];
+	]);
 
 	let currentPath = $derived(page.url.pathname);
 	let currentItem = $derived(
@@ -97,6 +140,12 @@
 										<a href={item.href} class="flex w-full items-center">
 											<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
 											<span>{item.label}</span>
+											{#if item.badge}
+												<span
+													class="bg-foreground text-background ms-1 inline-flex rounded-full px-[5px] py-[1px] text-[9px] font-semibold uppercase"
+													>{item.badge}</span
+												>
+											{/if}
 										</a>
 									</DropdownMenu.Item>
 								{/each}
@@ -115,7 +164,7 @@
 				</div>
 
 				<!-- Desktop Navigation (Sidebar) -->
-				<aside class="hidden lg:block lg:w-1/4">
+				<aside class="hidden shrink-0 lg:block lg:w-1/4">
 					<nav class="flex flex-col space-y-1">
 						{#each navItems as item (item.href)}
 							<Button
@@ -127,6 +176,12 @@
 							>
 								<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
 								{item.label}
+								{#if item.badge}
+									<span
+										class="bg-foreground text-background ms-1 inline-flex rounded-full px-1.25 py-px text-[9px] font-semibold uppercase"
+										>{item.badge}</span
+									>
+								{/if}
 							</Button>
 						{/each}
 					</nav>
@@ -145,10 +200,30 @@
 				</aside>
 
 				<!-- Main Content Area -->
-				<div class="flex-1 lg:max-w-3xl">
+				<div class="min-w-0 flex-1 lg:max-w-3xl">
 					<PageTitle class="xs:text-2xl sr-only mb-4 text-2xl md:text-4xl" title={pageTitle} />
 
-					{@render children()}
+					{#if routeRequiresEncryption && !keyRestoreAttempted}
+						<div class="flex justify-center py-12">
+							<Spinner class="h-6 w-6" />
+						</div>
+					{:else if showEncryptionSetup}
+						<Card>
+							<div class="py-8 text-center">
+								<p class="text-muted-foreground mb-4">{m.tense_calm_seal_warn()}</p>
+								<Button href={localizeHref('/account/settings')}>{m.bold_safe_tiger_lock()}</Button>
+							</div>
+						</Card>
+					{:else if showEncryptionGate}
+						<Card>
+							<div class="py-8 text-center">
+								<p class="text-muted-foreground mb-4">{m.dim_quiet_raven_lock()}</p>
+								<Button href={localizeHref('/encryption')}>{m.maroon_heavy_lemur_emerge()}</Button>
+							</div>
+						</Card>
+					{:else}
+						{@render children()}
+					{/if}
 				</div>
 			</div>
 		</Container>
