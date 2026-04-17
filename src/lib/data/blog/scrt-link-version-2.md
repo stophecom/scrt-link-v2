@@ -11,8 +11,7 @@ published: true
 
 ## Summary
 
-After 4 years of scrt.link, the app has been completely rewritten from scratch. In addition to improvements in performance and security, new features have been introduced—such as more **granular privacy options, social login, and additional secret types**.  
-Existing secret links will continue to function, and the old app (V1) will remain accessible at [v1.scrt.link](https://v1.scrt.link) until at least 06/2025.
+After 4 years of scrt.link, the app has been completely rewritten from scratch. In addition to improvements in performance and security, new features have been introduced—such as more **granular privacy options, social login, and additional secret types**.
 
 ## Long version
 
