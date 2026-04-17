@@ -726,6 +726,7 @@ export const loginWithPassword: Action = async (event) => {
 			if (keyStore) {
 				return {
 					form,
+					userId: user.id,
 					keyStore,
 					redirect: '/account'
 				};
@@ -735,6 +736,7 @@ export const loginWithPassword: Action = async (event) => {
 		// Encryption not set up — redirect to encryption setup (client-side navigation to preserve password)
 		return {
 			form,
+			userId: user.id,
 			redirect: '/encryption'
 		};
 	} catch (e) {

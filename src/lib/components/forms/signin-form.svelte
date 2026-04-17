@@ -33,7 +33,7 @@
 						const { pdkSalt, pdkIterations, encryptedMasterKey } = result.data.keyStore;
 						const pdk = await derivePDK($formData.password, pdkSalt, pdkIterations);
 						const masterKey = await unwrapMasterKey(encryptedMasterKey, pdk);
-						setMasterKey(masterKey);
+						setMasterKey(result.data.userId as string, masterKey);
 					} catch (e) {
 						console.error('Failed to unlock encryption keys:', e);
 						$message = {

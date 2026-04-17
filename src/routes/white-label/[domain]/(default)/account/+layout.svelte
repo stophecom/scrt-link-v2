@@ -7,8 +7,9 @@
 	import type { Snippet } from 'svelte';
 
 	import { browser } from '$app/environment';
+	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
-	import { isKeyUnlocked, tryRestoreKey } from '$lib/client/key-manager';
+	import { clearMasterKey, isKeyUnlocked, tryRestoreKey } from '$lib/client/key-manager';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
@@ -36,11 +37,24 @@
 
 	$effect(() => {
 		if (browser) {
-			tryRestoreKey().then(() => {
+			const userId = page.data.user?.id;
+			if (!userId) {
+				clearMasterKey();
+				keyRestoreAttempted = true;
+				return;
+			}
+			tryRestoreKey(userId).then(() => {
 				keyRestoreAttempted = true;
 			});
 		}
 	});
+
+	const handleLogout = () => {
+		return async ({ update }: { update: () => Promise<void> }) => {
+			clearMasterKey();
+			await update();
+		};
+	};
 
 	// Navigation items
 	let enableSecretRequests = $derived(page.data.enableSecretRequests);
@@ -104,7 +118,12 @@
 						</DropdownMenu.Group>
 						<DropdownMenu.Separator />
 						<DropdownMenu.Item>
-							<form class="w-full" method="post" action="/account?/logout">
+							<form
+								class="w-full"
+								method="post"
+								action="/account?/logout"
+								use:enhance={handleLogout}
+							>
 								<button type="submit" class="flex w-full items-center text-left">
 									<LogOut class="mr-2 h-4 w-4" />
 									<span>{m.wacky_big_raven_honor()}</span>
@@ -132,7 +151,7 @@
 					{/each}
 				</nav>
 				<div class="mt-1">
-					<form method="post" action="/account?/logout">
+					<form method="post" action="/account?/logout" use:enhance={handleLogout}>
 						<Button
 							type="submit"
 							variant="ghost"
