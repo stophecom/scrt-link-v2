@@ -93,10 +93,7 @@ import {
 	verifyUserPassword,
 	welcomeNewUser
 } from '../user';
-import {
-	checkIsUserAllowedOnWhiteLabelSite,
-	getWhiteLabelSiteByUserId
-} from '../whiteLabelSite';
+import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
