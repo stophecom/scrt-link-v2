@@ -5,7 +5,6 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { isOriginalHostname } from '$lib/app-routing';
 import {
 	MAX_API_KEYS_PER_USER,
 	MAX_ORGANIZATION_TEAM_SIZE,
@@ -96,26 +95,18 @@ import {
 } from '../user';
 import {
 	checkIsUserAllowedOnWhiteLabelSite,
-	getWhiteLabelSiteByHost,
 	getWhiteLabelSiteByUserId
 } from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
-	const hostname = event.url.hostname;
 
 	if (!form.valid) {
 		return fail(400, { form });
 	}
 
 	const user = event.locals.user;
-
-	let whiteLabelSiteId;
-	if (hostname && !isOriginalHostname(hostname)) {
-		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(hostname);
-
-		whiteLabelSiteId = whiteLabelSiteResult.id;
-	}
+	const whiteLabelSiteId = event.locals.whiteLabelSite?.id;
 
 	try {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({

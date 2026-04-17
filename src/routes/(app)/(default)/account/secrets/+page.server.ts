@@ -7,13 +7,16 @@ import { fetchSecrets } from '$lib/server/secrets';
 import { actions as secretActions } from '../../+page.server';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals, url }) => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const user = locals.user;
 	if (!user) {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const secrets = await fetchSecrets({ userId: user.id, host: url.hostname });
+	const secrets = await fetchSecrets({
+		userId: user.id,
+		whiteLabelSiteId: locals.whiteLabelSite?.id
+	});
 	const secretForm = await secretFormValidator();
 
 	return {

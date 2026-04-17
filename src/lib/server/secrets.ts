@@ -1,13 +1,11 @@
 import { SecretType } from '@scrt-link/core';
 import { and, desc, eq, isNull, sql } from 'drizzle-orm';
 
-import { isOriginalHostname } from '$lib/app-routing';
 import { generateRandomAlphanumericString, scryptHash } from '$lib/crypto';
 import type { SecretFormSchema } from '$lib/validators/formSchemas';
 
 import { db } from './db';
 import { type Secret, secret, stats } from './db/schema';
-import { getWhiteLabelSiteByHost } from './whiteLabelSite';
 
 const getSecretTypeStatsColumn = (secretType?: SecretType) => {
 	switch (secretType) {
@@ -114,17 +112,9 @@ export const saveSecret = async ({
 
 type FetchSecrets = {
 	userId: string;
-	host?: string;
+	whiteLabelSiteId?: string;
 };
-export const fetchSecrets = async ({ userId, host }: FetchSecrets) => {
-	let whiteLabelSiteId;
-
-	if (host && !isOriginalHostname(host)) {
-		const whiteLabelResult = await getWhiteLabelSiteByHost(host);
-
-		whiteLabelSiteId = whiteLabelResult.id;
-	}
-
+export const fetchSecrets = async ({ userId, whiteLabelSiteId }: FetchSecrets) => {
 	// In case we are on a white-label site, we filter secrets accordingly
 	const conditions = [eq(secret.userId, userId)];
 

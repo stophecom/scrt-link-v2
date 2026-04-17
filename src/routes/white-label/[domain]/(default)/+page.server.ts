@@ -1,17 +1,20 @@
+import { error } from '@sveltejs/kit';
+
 import { redirectLocalized } from '$lib/i18n';
 import { getLocale } from '$lib/paraglide/runtime';
 import { postSecret } from '$lib/server/form/actions';
 import { secretFormValidator } from '$lib/server/form/validators';
-import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 import type { LocalizedWhiteLabelMessage } from '$lib/types';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals, params }) => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const locale = getLocale();
 
-	const hostNameFromUrl = params.domain;
-	const whiteLabel = await getWhiteLabelSiteByHost(hostNameFromUrl);
+	const whiteLabel = locals.whiteLabelSite;
+	if (!whiteLabel) {
+		throw error(404, 'Site not found.');
+	}
 
 	// If site is private, force login
 	if (whiteLabel.private && !locals.user) {
