@@ -18,19 +18,19 @@ describe('Key Manager', () => {
 	test('setMasterKey + isKeyUnlocked returns true', () => {
 		// Create a mock CryptoKey-like object for unit testing
 		const mockKey = { type: 'secret', algorithm: { name: 'AES-GCM' } } as CryptoKey;
-		setMasterKey(mockKey);
+		setMasterKey('user-1', mockKey);
 		expect(isKeyUnlocked()).toBe(true);
 	});
 
 	test('getMasterKey returns the key after setMasterKey', () => {
 		const mockKey = { type: 'secret', algorithm: { name: 'AES-GCM' } } as CryptoKey;
-		setMasterKey(mockKey);
+		setMasterKey('user-1', mockKey);
 		expect(getMasterKey()).toBe(mockKey);
 	});
 
 	test('clearMasterKey resets state', () => {
 		const mockKey = { type: 'secret', algorithm: { name: 'AES-GCM' } } as CryptoKey;
-		setMasterKey(mockKey);
+		setMasterKey('user-1', mockKey);
 		expect(isKeyUnlocked()).toBe(true);
 
 		clearMasterKey();

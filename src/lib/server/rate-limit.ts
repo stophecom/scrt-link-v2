@@ -7,12 +7,12 @@ import { m } from '$lib/paraglide/messages.js';
 
 export const limiter = new RateLimiter({
 	IP: [100, 'h'], // IP address limiter (relaxed for shared IPs)
-	IPUA: [5, 'm'], // IP + User Agent limiter
+	IPUA: [15, 'm'], // IP + User Agent limiter
 	cookie: {
 		// Cookie limiter
 		name: 'limiterid', // Unique cookie name for this limiter
 		secret: RATE_LIMIT_COOKIE_SECRET, // Use $env/static/private
-		rate: [5, 'm'],
+		rate: [15, 'm'],
 		preflight: true // Require preflight call (see load function)
 	}
 });

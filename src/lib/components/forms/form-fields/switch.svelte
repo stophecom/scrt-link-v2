@@ -13,7 +13,7 @@
 <Form.Control let:attrs>
 	<div class="flex items-center">
 		<Switch {...attrs} bind:checked {...rest} />
-		<Form.Label class="ms-2 cursor-pointer text-base">{label}</Form.Label>
+		<Form.Label class="ms-2 cursor-pointer text-sm leading-none font-medium">{label}</Form.Label>
 	</div>
 </Form.Control>
 <Form.FieldErrors />

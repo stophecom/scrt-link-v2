@@ -678,7 +678,6 @@
 	"fair_keen_bee_check": "Statut",
 	"warm_old_crab_fade": "Expire",
 	"still_calm_snail_wait": "En attente",
-	"glad_new_robin_sing": "Réponse reçue",
 	"soft_done_moth_rest": "Consulté",
 	"dull_cold_fish_stop": "Expiré",
 	"keen_bright_fox_peek": "Afficher la réponse",
@@ -695,7 +694,7 @@
 	"bold_true_ram_send": "Soumettre la réponse chiffrée",
 	"proud_glad_bear_cheer": "Réponse soumise !",
 	"calm_safe_seal_rest": "Votre réponse a été chiffrée et soumise en toute sécurité. Seul le demandeur peut la déchiffrer.",
-	"warm_clear_jay_speak": "Message du demandeur :",
+	"warm_clear_jay_speak": "Message de {name} <{email}>",
 	"green_round_duck_trust": "Adresse e-mail vérifiée. Ne répondez qu'aux personnes en qui vous avez confiance.",
 	"maroon_heavy_lemur_emerge": "Déverrouiller le chiffrement",
 	"ornate_fluffy_ox_explore": "Vous pouvez fermer l'onglet maintenant.",
@@ -707,7 +706,6 @@
 	"dark_cool_owl_miss": "Demande introuvable.",
 	"pale_old_fox_fade": "Cette demande a expiré.",
 	"gray_dim_bat_halt": "Cette demande a déjà été répondue.",
-	"soft_warm_eel_fail": "Échec de l'envoi de la réponse.",
 	"calm_safe_seal_sent": "Votre réponse a été soumise en toute sécurité.",
 	"bold_kind_ram_gone": "Demande supprimée.",
 	"trim_proud_coyote_glow": "Afficher les demandes expirées",
@@ -715,5 +713,7 @@
 	"warm_clear_fox_all": "Tout",
 	"keen_bold_lark_unread": "Non lu",
 	"shy_brave_owl_born": "Créé",
-	"calm_rich_puma_back": "Réponse reçue"
+	"calm_rich_puma_back": "Réponse reçue",
+	"bold_warm_fox_toggle": "Activer les demandes secrètes",
+	"mild_calm_deer_hint": "Permettre aux utilisateurs de créer des liens de demande secrète sur ce site en marque blanche."
 }

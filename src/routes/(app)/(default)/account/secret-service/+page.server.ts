@@ -42,7 +42,8 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 				organizationId: whiteLabel?.organizationId || '',
 				isPrivate: whiteLabel?.private || false,
 				locale: whiteLabel?.locale || DEFAULT_LOCALE,
-				enabledSecretTypes: whiteLabel?.enabledSecretTypes || [SecretType.TEXT, SecretType.FILE]
+				enabledSecretTypes: whiteLabel?.enabledSecretTypes || [SecretType.TEXT, SecretType.FILE],
+				enableSecretRequests: whiteLabel?.enableSecretRequests || false
 			},
 			zod4(whiteLabelMetaSchema())
 		);

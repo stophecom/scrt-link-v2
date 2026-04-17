@@ -5,6 +5,7 @@
 
 	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import { getMasterKey, setMasterKey } from '$lib/client/key-manager';
 	import { setPendingPassword } from '$lib/client/pending-password';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
@@ -83,7 +84,9 @@
 								pdkIterations
 							);
 							masterKey = await unwrapMasterKey(wrappedMk, oldPdk);
-							setMasterKey(masterKey);
+							const userId = page.data.user?.id;
+							if (!userId) throw new Error('User not loaded');
+							setMasterKey(userId, masterKey);
 						}
 
 						// Derive new PDK with fresh salt and re-wrap master key
