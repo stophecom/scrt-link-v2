@@ -678,7 +678,6 @@
 	"fair_keen_bee_check": "Статус",
 	"warm_old_crab_fade": "Истекает",
 	"still_calm_snail_wait": "Ожидает",
-	"glad_new_robin_sing": "Ответ получен",
 	"soft_done_moth_rest": "Просмотрено",
 	"dull_cold_fish_stop": "Истек",
 	"keen_bright_fox_peek": "Просмотреть ответ",
@@ -695,7 +694,7 @@
 	"bold_true_ram_send": "Отправить зашифрованный ответ",
 	"proud_glad_bear_cheer": "Ответ отправлен!",
 	"calm_safe_seal_rest": "Ваш ответ был безопасно зашифрован и отправлен. Только отправитель запроса может его расшифровать.",
-	"warm_clear_jay_speak": "Сообщение от отправителя запроса:",
+	"warm_clear_jay_speak": "Сообщение от {name} <{email}>",
 	"green_round_duck_trust": "Проверенный адрес электронной почты. Отвечайте только тем людям, которым доверяете.",
 	"maroon_heavy_lemur_emerge": "Разблокировать шифрование",
 	"ornate_fluffy_ox_explore": "Теперь вы можете закрыть вкладку.",
@@ -707,7 +706,6 @@
 	"dark_cool_owl_miss": "Запрос не найден.",
 	"pale_old_fox_fade": "Срок действия этого запроса истек.",
 	"gray_dim_bat_halt": "На этот запрос уже дан ответ.",
-	"soft_warm_eel_fail": "Не удалось отправить ответ.",
 	"calm_safe_seal_sent": "Ваш ответ был безопасно отправлен.",
 	"bold_kind_ram_gone": "Запрос удален.",
 	"trim_proud_coyote_glow": "Показывать просроченные запросы",
@@ -715,5 +713,7 @@
 	"warm_clear_fox_all": "Все",
 	"keen_bold_lark_unread": "Непрочитанные",
 	"shy_brave_owl_born": "Создано",
-	"calm_rich_puma_back": "Ответ получен"
+	"calm_rich_puma_back": "Ответ получен",
+	"bold_warm_fox_toggle": "Включить секретные запросы",
+	"mild_calm_deer_hint": "Разрешить пользователям создавать ссылки на секретные запросы на этом сайте с белой этикеткой."
 }

@@ -1124,7 +1124,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		);
 	}
 
-	const { locale, customDomain, isPrivate, name, enabledSecretTypes, organizationId } = form.data;
+	const { locale, customDomain, isPrivate, name, enabledSecretTypes, enableSecretRequests, organizationId } = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(
@@ -1178,6 +1178,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 				private: isPrivate,
 				organizationId: organizationId,
 				enabledSecretTypes,
+				enableSecretRequests,
 				userId: user.id
 			})
 			.onConflictDoUpdate({
@@ -1188,7 +1189,8 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 					name,
 					private: isPrivate,
 					organizationId: organizationId,
-					enabledSecretTypes
+					enabledSecretTypes,
+					enableSecretRequests
 				}
 			});
 	} catch (error) {

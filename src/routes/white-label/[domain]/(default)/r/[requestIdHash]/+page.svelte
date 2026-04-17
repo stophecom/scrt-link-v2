@@ -1,7 +1,6 @@
 <script lang="ts">
 	import SecretResponse from '$lib/components/blocks/secret-response.svelte';
-	import Page from '$lib/components/page/default-page.svelte';
-	import Container from '$lib/components/ui/container/container.svelte';
+	import { WhiteLabelPage } from '$lib/components/page';
 	import { m } from '$lib/paraglide/messages.js';
 
 	let { data } = $props();
@@ -9,12 +8,10 @@
 	let successMessage = $state('');
 </script>
 
-<Page
+<WhiteLabelPage
+	metaTitle={m.brave_kind_lamb_give()}
 	title={m.brave_kind_lamb_give()}
 	lead={m.warm_safe_dove_tell()}
-	metaDescription={m.warm_safe_dove_tell()}
 >
-	<Container>
-		<SecretResponse {data} bind:successMessage />
-	</Container>
-</Page>
+	<SecretResponse {data} bind:successMessage />
+</WhiteLabelPage>

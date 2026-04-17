@@ -678,7 +678,6 @@
 	"fair_keen_bee_check": "Status",
 	"warm_old_crab_fade": "Läuft ab",
 	"still_calm_snail_wait": "Ausstehend",
-	"glad_new_robin_sing": "Antwort erhalten",
 	"soft_done_moth_rest": "Angesehen",
 	"dull_cold_fish_stop": "Abgelaufen",
 	"keen_bright_fox_peek": "Antwort ansehen",
@@ -695,7 +694,7 @@
 	"bold_true_ram_send": "Verschlüsselte Antwort senden",
 	"proud_glad_bear_cheer": "Antwort übermittelt!",
 	"calm_safe_seal_rest": "Ihre Antwort wurde sicher verschlüsselt und übermittelt. Nur der Anfragende kann sie entschlüsseln.",
-	"warm_clear_jay_speak": "Nachricht vom Anfragenden:",
+	"warm_clear_jay_speak": "Nachricht von {name} <{email}>",
 	"green_round_duck_trust": "Verifizierte E-Mail-Adresse. Antworten Sie nur Personen, denen Sie vertrauen.",
 	"maroon_heavy_lemur_emerge": "Verschlüsselung entsperren",
 	"ornate_fluffy_ox_explore": "Sie können den Tab jetzt schließen.",
@@ -707,7 +706,6 @@
 	"dark_cool_owl_miss": "Anfrage nicht gefunden.",
 	"pale_old_fox_fade": "Diese Anfrage ist abgelaufen.",
 	"gray_dim_bat_halt": "Diese Anfrage wurde bereits beantwortet.",
-	"soft_warm_eel_fail": "Antwort konnte nicht übermittelt werden.",
 	"calm_safe_seal_sent": "Ihre Antwort wurde sicher übermittelt.",
 	"bold_kind_ram_gone": "Anfrage gelöscht.",
 	"trim_proud_coyote_glow": "Abgelaufene Anfragen anzeigen",
@@ -715,5 +713,7 @@
 	"warm_clear_fox_all": "Alle",
 	"keen_bold_lark_unread": "Ungelesen",
 	"shy_brave_owl_born": "Erstellt",
-	"calm_rich_puma_back": "Antwort erhalten"
+	"calm_rich_puma_back": "Antwort erhalten",
+	"bold_warm_fox_toggle": "Geheime Anfragen aktivieren",
+	"mild_calm_deer_hint": "Benutzern erlauben, geheime Anfragelinks auf dieser White-Label-Seite zu erstellen."
 }

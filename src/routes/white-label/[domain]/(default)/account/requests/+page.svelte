@@ -16,7 +16,7 @@
 <div class="mb-6">
 	<CreateSecretRequest
 		form={data.secretRequestForm}
-		subscriptionTier={data.user?.subscriptionTier}
+		subscriptionTier={data.ownerTier}
 	/>
 </div>
 

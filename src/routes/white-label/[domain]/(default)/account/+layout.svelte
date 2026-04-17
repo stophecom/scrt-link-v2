@@ -1,35 +1,72 @@
 <script lang="ts">
+	import ConciergeBell from '@lucide/svelte/icons/concierge-bell';
 	import Lock from '@lucide/svelte/icons/lock';
 	import LogOut from '@lucide/svelte/icons/log-out';
 	import Menu from '@lucide/svelte/icons/menu';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
 	import type { Snippet } from 'svelte';
 
-	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
+	import { page } from '$app/state';
+	import { isKeyUnlocked, tryRestoreKey } from '$lib/client/key-manager';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Card from '$lib/components/ui/card/card.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import { Spinner } from '$lib/components/ui/spinner';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	let { children }: { children: Snippet } = $props();
 
+	// Encryption gate for routes that require it
+	let keyRestoreAttempted = $state(false);
+	let encryptionEnabled = $derived(!!page.data.user?.encryptionEnabled);
+	let encryptionUnlocked = $derived(keyRestoreAttempted && isKeyUnlocked());
+
+	const encryptionRequiredPaths = ['/account/requests'];
+	let routeRequiresEncryption = $derived(
+		encryptionRequiredPaths.some((p) => page.url.pathname.includes(p))
+	);
+	let showEncryptionGate = $derived(
+		routeRequiresEncryption && encryptionEnabled && !encryptionUnlocked
+	);
+	let showEncryptionSetup = $derived(routeRequiresEncryption && !encryptionEnabled);
+
+	$effect(() => {
+		if (browser) {
+			tryRestoreKey().then(() => {
+				keyRestoreAttempted = true;
+			});
+		}
+	});
+
 	// Navigation items
-	const navItems = [
+	let enableSecretRequests = $derived(page.data.enableSecretRequests);
+	const navItems = $derived([
 		{
 			href: localizeHref('/account/secrets'),
 			label: m.free_nimble_whale_fry(),
 			icon: Lock
 		},
+		...(enableSecretRequests
+			? [
+					{
+						href: localizeHref('/account/requests'),
+						label: m.calm_proud_ibis_list(),
+						icon: ConciergeBell
+					}
+				]
+			: []),
 		{
 			href: localizeHref('/account/settings'),
 			label: m.nimble_quick_bird_sew(),
 			icon: SettingsGroup
 		}
-	];
+	]);
 
-	let currentPath = $derived($page.url.pathname);
+	let currentPath = $derived(page.url.pathname);
 	let currentItem = $derived(
 		navItems.find((item) => currentPath.startsWith(item.href)) || navItems[0]
 	);
@@ -37,7 +74,7 @@
 
 <PageWrapper metaTitle={currentItem.label}>
 	<Container variant="wide">
-		<div class="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
+		<div class="flex flex-col space-y-8 pb-12 lg:flex-row lg:space-y-0 lg:space-x-12">
 			<!-- Mobile Navigation (Dropdown) -->
 			<div class="mb-4 block lg:hidden">
 				<DropdownMenu.Root>
@@ -110,7 +147,27 @@
 
 			<!-- Main Content Area -->
 			<div class="flex-1 lg:max-w-3xl">
-				{@render children()}
+				{#if routeRequiresEncryption && !keyRestoreAttempted}
+					<div class="flex justify-center py-12">
+						<Spinner class="h-6 w-6" />
+					</div>
+				{:else if showEncryptionSetup}
+					<Card>
+						<div class="py-8 text-center">
+							<p class="text-muted-foreground mb-4">{m.tense_calm_seal_warn()}</p>
+							<Button href={localizeHref('/account/settings')}>{m.bold_safe_tiger_lock()}</Button>
+						</div>
+					</Card>
+				{:else if showEncryptionGate}
+					<Card>
+						<div class="py-8 text-center">
+							<p class="text-muted-foreground mb-4">{m.dim_quiet_raven_lock()}</p>
+							<Button href={localizeHref('/encryption')}>{m.maroon_heavy_lemur_emerge()}</Button>
+						</div>
+					</Card>
+				{:else}
+					{@render children()}
+				{/if}
 			</div>
 		</div></Container
 	>

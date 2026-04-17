@@ -678,7 +678,6 @@
 	"fair_keen_bee_check": "状态",
 	"warm_old_crab_fade": "到期",
 	"still_calm_snail_wait": "待处理",
-	"glad_new_robin_sing": "已收到回复",
 	"soft_done_moth_rest": "已查看",
 	"dull_cold_fish_stop": "已过期",
 	"keen_bright_fox_peek": "查看回复",
@@ -695,7 +694,7 @@
 	"bold_true_ram_send": "提交加密回复",
 	"proud_glad_bear_cheer": "回复已提交！",
 	"calm_safe_seal_rest": "您的回复已安全加密并提交。只有请求者才能解密。",
-	"warm_clear_jay_speak": "来自请求者的消息：",
+	"warm_clear_jay_speak": "来自 {name} <{email}> 的消息",
 	"green_round_duck_trust": "已验证的电子邮件地址。只回复您信任的人。",
 	"maroon_heavy_lemur_emerge": "解锁加密",
 	"ornate_fluffy_ox_explore": "您现在可以关闭此标签页了。",
@@ -707,7 +706,6 @@
 	"dark_cool_owl_miss": "请求未找到。",
 	"pale_old_fox_fade": "此请求已过期。",
 	"gray_dim_bat_halt": "此请求已回复。",
-	"soft_warm_eel_fail": "提交响应失败。",
 	"calm_safe_seal_sent": "您的响应已安全提交。",
 	"bold_kind_ram_gone": "请求已删除。",
 	"trim_proud_coyote_glow": "显示过期请求",
@@ -715,5 +713,7 @@
 	"warm_clear_fox_all": "全部",
 	"keen_bold_lark_unread": "未读",
 	"shy_brave_owl_born": "已创建",
-	"calm_rich_puma_back": "已收到回复"
+	"calm_rich_puma_back": "已收到回复",
+	"bold_warm_fox_toggle": "启用秘密请求",
+	"mild_calm_deer_hint": "允许用户在此白标网站上创建秘密请求链接。"
 }

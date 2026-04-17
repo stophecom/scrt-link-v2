@@ -30,7 +30,7 @@ export const load: LayoutServerLoad = async ({ locals, url, params }) => {
 		throw error(403, `Page is not published.`);
 	}
 
-	const { name, logo, logoDarkMode, appIcon, ogImage, theme } = whiteLabel;
+	const { name, logo, logoDarkMode, appIcon, ogImage, theme, enableSecretRequests } = whiteLabel;
 	const ownerTier = await getWhiteLabelSiteOwnerTier(whiteLabel.userId);
 
 	// Enforce mandatory encryption setup for authenticated white-label users
@@ -69,6 +69,7 @@ export const load: LayoutServerLoad = async ({ locals, url, params }) => {
 		ogImage: getImageUrl(ogImage),
 		logo: getLogo(logo),
 		logoDarkMode: getLogo(logoDarkMode),
-		theme: theme as Theme
+		theme: theme as Theme,
+		enableSecretRequests
 	};
 };
