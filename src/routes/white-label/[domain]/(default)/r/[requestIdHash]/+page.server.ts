@@ -1,7 +1,4 @@
-import {
-	loadSecretResponse,
-	secretResponseActions
-} from '$lib/server/secret-response-handlers';
+import { loadSecretResponse, secretResponseActions } from '$lib/server/secret-response-handlers';
 
 import type { Actions, PageServerLoad } from './$types';
 

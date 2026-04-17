@@ -1124,7 +1124,15 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		);
 	}
 
-	const { locale, customDomain, isPrivate, name, enabledSecretTypes, enableSecretRequests, organizationId } = form.data;
+	const {
+		locale,
+		customDomain,
+		isPrivate,
+		name,
+		enabledSecretTypes,
+		enableSecretRequests,
+		organizationId
+	} = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(

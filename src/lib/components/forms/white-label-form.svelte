@@ -106,10 +106,7 @@
 		</Form.Fieldset>
 
 		<Form.Field {form} name="enableSecretRequests" class="py-4">
-			<Switch
-				bind:checked={$formData.enableSecretRequests}
-				label={m.bold_warm_fox_toggle()}
-			/>
+			<Switch bind:checked={$formData.enableSecretRequests} label={m.bold_warm_fox_toggle()} />
 			<Form.Description>{m.mild_calm_deer_hint()}</Form.Description>
 		</Form.Field>
 
