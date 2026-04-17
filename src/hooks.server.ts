@@ -45,7 +45,9 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 const handleWhiteLabelSite: Handle = async ({ event, resolve }) => {
 	const domain = event.params.domain ?? event.url.hostname;
 	event.locals.whiteLabelSite =
-		domain && !isOriginalHostname(domain) ? (await getWhiteLabelSiteByHost(domain)) ?? null : null;
+		domain && !isOriginalHostname(domain)
+			? ((await getWhiteLabelSiteByHost(domain)) ?? null)
+			: null;
 	return resolve(event);
 };
 
