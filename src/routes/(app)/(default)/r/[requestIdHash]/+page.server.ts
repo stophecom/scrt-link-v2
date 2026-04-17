@@ -1,7 +1,14 @@
-import { loadSecretResponse, secretResponseActions } from '$lib/server/secret-response-handlers';
+import { postSecretResponse } from '$lib/server/form/actions';
+import { secretResponseFormValidator } from '$lib/server/form/validators';
+import { loadSecretResponsePageData } from '$lib/server/secret-requests';
 
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = ({ params }) => loadSecretResponse(params.requestIdHash);
+export const load: PageServerLoad = async ({ params }) => ({
+	form: await secretResponseFormValidator(),
+	...(await loadSecretResponsePageData(params.requestIdHash))
+});
 
-export const actions: Actions = secretResponseActions;
+export const actions: Actions = {
+	default: postSecretResponse
+};

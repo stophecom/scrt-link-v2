@@ -7,30 +7,24 @@ import {
 	getRequestById,
 	markRequestViewed
 } from '$lib/server/secret-requests';
-import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad, RequestEvent } from './$types';
 
-const assertFeatureEnabled = async (domain: string | undefined) => {
-	if (!domain) error(404, 'Not found.');
-	const whiteLabel = await getWhiteLabelSiteByHost(domain);
-	if (!whiteLabel?.enableSecretRequests) {
+const assertFeatureEnabled = (event: Pick<RequestEvent, 'locals'>) => {
+	if (!event.locals.whiteLabelSite?.enableSecretRequests) {
 		error(404, 'Not found.');
 	}
 };
 
-export const load: PageServerLoad = async ({ locals, params, parent }) => {
-	const { enableSecretRequests } = await parent();
-	if (!enableSecretRequests) {
-		error(404, 'Not found.');
-	}
+export const load: PageServerLoad = async (event) => {
+	assertFeatureEnabled(event);
 
-	const user = locals.user;
+	const user = event.locals.user;
 	if (!user) {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const request = await getRequestById(params.id, user.id);
+	const request = await getRequestById(event.params.id, user.id);
 
 	if (!request) {
 		error(404, 'Request not found.');
@@ -59,19 +53,19 @@ export const load: PageServerLoad = async ({ locals, params, parent }) => {
 };
 
 export const actions: Actions = {
-	deleteRequest: async ({ locals, params }) => {
-		await assertFeatureEnabled(params.domain);
+	deleteRequest: async (event) => {
+		assertFeatureEnabled(event);
 
-		const user = locals.user;
+		const user = event.locals.user;
 		if (!user) {
 			return fail(401, { error: 'Unauthorized' });
 		}
 
-		if (!params.id) {
+		if (!event.params.id) {
 			return fail(400, { error: 'Missing request ID' });
 		}
 
-		const result = await deleteSecretRequest(params.id, user.id);
+		const result = await deleteSecretRequest(event.params.id, user.id);
 		if (!result) {
 			return fail(404, { error: 'Request not found' });
 		}

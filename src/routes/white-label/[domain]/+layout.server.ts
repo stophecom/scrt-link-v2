@@ -2,7 +2,7 @@ import { error, redirect } from '@sveltejs/kit';
 
 import { PUBLIC_IMGIX_CDN_URL } from '$env/static/public';
 import { isOriginalHostname } from '$lib/app-routing';
-import { getWhiteLabelSiteByHost, getWhiteLabelSiteOwnerTier } from '$lib/server/whiteLabelSite';
+import { getWhiteLabelSiteOwnerTier } from '$lib/server/whiteLabelSite';
 import type { Theme } from '$lib/types';
 
 import type { LayoutServerLoad } from './$types';
@@ -19,11 +19,12 @@ const ENCRYPTION_GUARD_EXCLUDED = [
 ];
 
 export const load: LayoutServerLoad = async ({ locals, url, params }) => {
-	// const hostNameFromUrl = new URL(url).hostname || '';
-	// const hostNameFromUrl = params.domain;
 	const hostNameFromUrl = params.domain || new URL(url).hostname;
 
-	const whiteLabel = await getWhiteLabelSiteByHost(hostNameFromUrl);
+	const whiteLabel = locals.whiteLabelSite;
+	if (!whiteLabel) {
+		throw error(404, 'Site not found.');
+	}
 
 	// If site is not published
 	if (!isOriginalHostname(url.hostname) && !whiteLabel.published) {

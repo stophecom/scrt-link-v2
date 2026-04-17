@@ -2,8 +2,10 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { createGuardHook } from 'svelte-guard';
 
+import { isOriginalHostname } from '$lib/app-routing';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import * as auth from '$lib/server/auth.js';
+import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 
 const guards = import.meta.glob('./routes/**/-guard.*');
 export const handleGuards = createGuardHook(guards);
@@ -40,6 +42,13 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 		});
 	});
 
+const handleWhiteLabelSite: Handle = async ({ event, resolve }) => {
+	const domain = event.params.domain ?? event.url.hostname;
+	event.locals.whiteLabelSite =
+		domain && !isOriginalHostname(domain) ? (await getWhiteLabelSiteByHost(domain)) ?? null : null;
+	return resolve(event);
+};
+
 const handleTheme: Handle = async ({ event, resolve }) => {
 	const user = event.locals.user;
 
@@ -52,4 +61,10 @@ const handleTheme: Handle = async ({ event, resolve }) => {
 	});
 };
 
-export const handle: Handle = sequence(handleAuth, handleGuards, paraglideHandle, handleTheme);
+export const handle: Handle = sequence(
+	handleAuth,
+	handleWhiteLabelSite,
+	handleGuards,
+	paraglideHandle,
+	handleTheme
+);
