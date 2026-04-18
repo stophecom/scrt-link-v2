@@ -66,7 +66,7 @@
 		"svelte-check": "^4.1.1",
 		"svelte-email-tailwind": "^4.0.0",
 		"svelte-sonner": "^0.3.28",
-		"sveltekit-rate-limiter": "^0.6.1",
+		"sveltekit-rate-limiter": "^0.7.0",
 		"sveltekit-superforms": "^2.30.1",
 		"tailwind-merge": "^2.6.0",
 		"tailwind-variants": "^0.3.0",

@@ -193,8 +193,8 @@ importers:
         specifier: ^0.3.28
         version: 0.3.28(svelte@5.49.1)
       sveltekit-rate-limiter:
-        specifier: ^0.6.1
-        version: 0.6.2(@sveltejs/kit@2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))(svelte@5.49.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))
+        specifier: ^0.7.0
+        version: 0.7.0(@sveltejs/kit@2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))(svelte@5.49.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))
       sveltekit-superforms:
         specifier: ^2.30.1
         version: 2.30.1(@sveltejs/kit@2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))(svelte@5.49.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))(@types/json-schema@7.0.15)(svelte@5.49.1)(typescript@5.9.3)
@@ -3947,9 +3947,8 @@ packages:
     resolution: {integrity: sha512-jj95WnbKbXsXXngYj28a4zx8jeZx50CN/J4r0CEeax2pbfdsETv/J1K8V9Hbu3DCXnpHz5qAikICuxEooi7eNQ==}
     engines: {node: '>=18'}
 
-  sveltekit-rate-limiter@0.6.2:
-    resolution: {integrity: sha512-RILpSVmW6YX8g5j1XOvypF8kA2t7vLIV+GSkP2mxvnpB+jwo/Hk2K786ZEiFC5Y/tAaK8qJ02rDLs/ZkBCzg/w==}
-    deprecated: Merged with 0.7.0
+  sveltekit-rate-limiter@0.7.0:
+    resolution: {integrity: sha512-aQI8Y1dTWKsB4YiZMBYORMDwy2SaFA2J5t848dEPVNkXWzhqrHqHUBb7QiNiLWqAeWvOJBwD+MZnsbmvbhGQdg==}
     peerDependencies:
       '@sveltejs/kit': 1.x || 2.x
 
@@ -8451,7 +8450,7 @@ snapshots:
       magic-string: 0.30.21
       zimmerframe: 1.1.4
 
-  sveltekit-rate-limiter@0.6.2(@sveltejs/kit@2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))(svelte@5.49.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))):
+  sveltekit-rate-limiter@0.7.0(@sveltejs/kit@2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))(svelte@5.49.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))):
     dependencies:
       '@isaacs/ttlcache': 1.4.1
       '@sveltejs/kit': 2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))(svelte@5.49.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
