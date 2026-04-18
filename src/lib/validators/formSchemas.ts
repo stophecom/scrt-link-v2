@@ -128,7 +128,8 @@ export const whiteLabelMetaSchema = () =>
 			.min(1, {
 				message: m.slow_mushy_rook_shine()
 			})
-			.default([]) // Explicitly tell Superforms this is an array
+			.default([]), // Explicitly tell Superforms this is an array
+		enableSecretRequests: z.boolean().default(false)
 	});
 
 export const whiteLabelSiteSchema = () =>

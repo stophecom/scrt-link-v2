@@ -7,6 +7,7 @@
 	import { dev } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import { setMasterKey, tryRestoreKey } from '$lib/client/key-manager';
 	import { getPendingPassword } from '$lib/client/pending-password';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
@@ -37,15 +38,20 @@
 
 	// Resolve initial step after attempting IndexedDB key restore
 	if (encryptionEnabled) {
-		tryRestoreKey().then((restored) => {
-			if (step === 'loading') {
-				if (restored) {
-					goto(localizeHref('/account'));
-				} else {
-					step = 'unlock';
+		const userId = page.data.user?.id;
+		if (userId) {
+			tryRestoreKey(userId).then((restored) => {
+				if (step === 'loading') {
+					if (restored) {
+						goto(localizeHref('/account'));
+					} else {
+						step = 'unlock';
+					}
 				}
-			}
-		});
+			});
+		} else {
+			step = 'unlock';
+		}
 	}
 	let recoveryCode = $state('');
 	let saved = $state(false);
@@ -129,10 +135,12 @@
 		unlockError = '';
 
 		try {
+			const userId = page.data.user?.id;
+			if (!userId) throw new Error('User not loaded');
 			const { pdkSalt, pdkIterations, encryptedMasterKey } = keyStore;
 			const pdk = await derivePDK($pwFormData.password, pdkSalt, pdkIterations);
 			const masterKey = await unwrapMasterKey(encryptedMasterKey, pdk);
-			setMasterKey(masterKey);
+			setMasterKey(userId, masterKey);
 			goto(localizeHref('/account'));
 		} catch {
 			unlockError = m.keen_calm_puma_glow();
@@ -245,7 +253,8 @@
 
 						if (result.type === 'success') {
 							if (pendingMasterKey) {
-								setMasterKey(pendingMasterKey);
+								const userId = page.data.user?.id;
+								if (userId) setMasterKey(userId, pendingMasterKey);
 								pendingMasterKey = null;
 							}
 							goto(localizeHref('/account'));

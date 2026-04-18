@@ -1,3 +1,4 @@
+import { error } from '@sveltejs/kit';
 import { and, count, desc, eq, isNotNull, isNull, sql } from 'drizzle-orm';
 
 import { generateRandomAlphanumericString } from '$lib/crypto';
@@ -5,6 +6,12 @@ import type { SecretRequestFormSchema } from '$lib/validators/formSchemas';
 
 import { db } from './db';
 import { type SecretRequest, secretRequest, stats, user } from './db/schema';
+
+const maskEmail = (email: string) => {
+	const [local, domain] = email.split('@');
+	if (!local || !domain) return '***';
+	return `${local[0]}***@${domain}`;
+};
 
 type SaveSecretRequest = {
 	userId: string;
@@ -60,6 +67,28 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 	});
 
 	return { id: result.id, receiptId, expiresAt: result.expiresAt, expiresIn };
+};
+
+export const loadSecretResponsePageData = async (requestIdHash: string) => {
+	const request = await getSecretRequestByHash(requestIdHash);
+
+	if (!request) {
+		error(404, 'Request not found.');
+	}
+
+	if (request.expiresAt < new Date()) {
+		error(410, 'This request has expired.');
+	}
+
+	return {
+		publicKey: request.publicKey,
+		encryptedNote: request.encryptedNote,
+		requestIdHash,
+		alreadyResponded: !!request.respondedAt,
+		requesterName: request.requesterName,
+		requesterEmail: maskEmail(request.requesterEmail),
+		requesterEmailVerified: request.requesterEmailVerified
+	};
 };
 
 export const getSecretRequestByHash = async (requestIdHash: string) => {

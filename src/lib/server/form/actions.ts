@@ -5,7 +5,6 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { isOriginalHostname } from '$lib/app-routing';
 import {
 	MAX_API_KEYS_PER_USER,
 	MAX_ORGANIZATION_TEAM_SIZE,
@@ -94,28 +93,17 @@ import {
 	verifyUserPassword,
 	welcomeNewUser
 } from '../user';
-import {
-	checkIsUserAllowedOnWhiteLabelSite,
-	getWhiteLabelSiteByHost,
-	getWhiteLabelSiteByUserId
-} from '../whiteLabelSite';
+import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
-	const hostname = event.url.hostname;
 
 	if (!form.valid) {
 		return fail(400, { form });
 	}
 
 	const user = event.locals.user;
-
-	let whiteLabelSiteId;
-	if (hostname && !isOriginalHostname(hostname)) {
-		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(hostname);
-
-		whiteLabelSiteId = whiteLabelSiteResult.id;
-	}
+	const whiteLabelSiteId = event.locals.whiteLabelSite?.id;
 
 	try {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
@@ -726,6 +714,7 @@ export const loginWithPassword: Action = async (event) => {
 			if (keyStore) {
 				return {
 					form,
+					userId: user.id,
 					keyStore,
 					redirect: '/account'
 				};
@@ -735,6 +724,7 @@ export const loginWithPassword: Action = async (event) => {
 		// Encryption not set up — redirect to encryption setup (client-side navigation to preserve password)
 		return {
 			form,
+			userId: user.id,
 			redirect: '/encryption'
 		};
 	} catch (e) {
@@ -1124,7 +1114,15 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		);
 	}
 
-	const { locale, customDomain, isPrivate, name, enabledSecretTypes, organizationId } = form.data;
+	const {
+		locale,
+		customDomain,
+		isPrivate,
+		name,
+		enabledSecretTypes,
+		enableSecretRequests,
+		organizationId
+	} = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(
@@ -1178,6 +1176,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 				private: isPrivate,
 				organizationId: organizationId,
 				enabledSecretTypes,
+				enableSecretRequests,
 				userId: user.id
 			})
 			.onConflictDoUpdate({
@@ -1188,7 +1187,8 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 					name,
 					private: isPrivate,
 					organizationId: organizationId,
-					enabledSecretTypes
+					enabledSecretTypes,
+					enableSecretRequests
 				}
 			});
 	} catch (error) {

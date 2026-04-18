@@ -3,7 +3,6 @@ import type { Guard } from 'svelte-guard';
 
 import { isOriginalHostname } from '$lib/app-routing';
 import { redirectLocalized } from '$lib/i18n';
-import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 
 export const guard: Guard = async ({ params, locals, url }) => {
 	const hostNameFromParams = params.domain;
@@ -12,7 +11,7 @@ export const guard: Guard = async ({ params, locals, url }) => {
 		throw error(500, `No white-label domain parameter found`);
 	}
 
-	const whiteLabel = await getWhiteLabelSiteByHost(hostNameFromParams);
+	const whiteLabel = locals.whiteLabelSite;
 
 	if (!whiteLabel) {
 		throw error(500, `No data for ${hostNameFromParams} found.`);

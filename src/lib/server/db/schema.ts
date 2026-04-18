@@ -165,6 +165,7 @@ export const whiteLabelSite = pgTable('white_label_site', {
 	theme: jsonb('theme'),
 	messages: jsonb('messages'),
 	enabledSecretTypes: secretTypeEnum().array().notNull().default([SecretType.TEXT]),
+	enableSecretRequests: boolean('enable_secret_requests').default(false).notNull(),
 	logo: text('logo'),
 	logoDarkMode: text('logo_dark_mode'),
 	appIcon: text('app_icon'),

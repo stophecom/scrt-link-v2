@@ -105,6 +105,11 @@
 			/>
 		</Form.Fieldset>
 
+		<Form.Field {form} name="enableSecretRequests" class="py-4">
+			<Switch bind:checked={$formData.enableSecretRequests} label={m.bold_warm_fox_toggle()} />
+			<Form.Description>{m.mild_calm_deer_hint()}</Form.Description>
+		</Form.Field>
+
 		<Form.Field {form} name="customDomain">
 			<Text
 				label={m.spicy_jolly_gibbon_glow()}

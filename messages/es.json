@@ -678,7 +678,6 @@
 	"fair_keen_bee_check": "Estado",
 	"warm_old_crab_fade": "Expira",
 	"still_calm_snail_wait": "Pendiente",
-	"glad_new_robin_sing": "Respuesta recibida",
 	"soft_done_moth_rest": "Visto",
 	"dull_cold_fish_stop": "Expirado",
 	"keen_bright_fox_peek": "Ver respuesta",
@@ -695,7 +694,7 @@
 	"bold_true_ram_send": "Enviar respuesta cifrada",
 	"proud_glad_bear_cheer": "¡Respuesta enviada!",
 	"calm_safe_seal_rest": "Su respuesta ha sido cifrada y enviada de forma segura. Solo el solicitante puede descifrarla.",
-	"warm_clear_jay_speak": "Mensaje del solicitante:",
+	"warm_clear_jay_speak": "Mensaje de {name} <{email}>",
 	"green_round_duck_trust": "Dirección de correo electrónico verificada. Responda solo a personas en las que confíe.",
 	"maroon_heavy_lemur_emerge": "Desbloquear cifrado",
 	"ornate_fluffy_ox_explore": "Ya puedes cerrar la pestaña.",
@@ -707,7 +706,6 @@
 	"dark_cool_owl_miss": "Solicitud no encontrada.",
 	"pale_old_fox_fade": "Esta solicitud ha caducado.",
 	"gray_dim_bat_halt": "Esta solicitud ya ha sido respondida.",
-	"soft_warm_eel_fail": "Error al enviar la respuesta.",
 	"calm_safe_seal_sent": "Su respuesta ha sido enviada de forma segura.",
 	"bold_kind_ram_gone": "Solicitud eliminada.",
 	"trim_proud_coyote_glow": "Mostrar solicitudes caducadas",
@@ -715,5 +713,7 @@
 	"warm_clear_fox_all": "Todos",
 	"keen_bold_lark_unread": "No leído",
 	"shy_brave_owl_born": "Creado",
-	"calm_rich_puma_back": "Respuesta recibida"
+	"calm_rich_puma_back": "Respuesta recibida",
+	"bold_warm_fox_toggle": "Habilitar Solicitudes Secretas",
+	"mild_calm_deer_hint": "Permitir a los usuarios crear enlaces de solicitud secreta en este sitio de marca blanca."
 }

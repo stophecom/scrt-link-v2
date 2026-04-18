@@ -6,6 +6,7 @@
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import { enhance } from '$app/forms';
+	import { page } from '$app/state';
 	import { setMasterKey } from '$lib/client/key-manager';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import FormWrapper from '$lib/components/forms/form-wrapper.svelte';
@@ -65,9 +66,11 @@
 				}
 
 				try {
+					const userId = page.data.user?.id;
+					if (!userId) throw new Error('User not loaded');
 					const pdk = await derivePDK(capturedPassword, keyStore.pdkSalt, keyStore.pdkIterations);
 					const masterKey = await unwrapMasterKey(keyStore.encryptedMasterKey, pdk);
-					setMasterKey(masterKey);
+					setMasterKey(userId, masterKey);
 
 					const recovery = await generateNewRecoveryKey(masterKey);
 					generatedRecoveryEncryptedMasterKey = recovery.recoveryEncryptedMasterKey;

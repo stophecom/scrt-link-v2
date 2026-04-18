@@ -115,12 +115,15 @@
 		<Form.Field form={sForm} name="encryptedResponseContent">
 			<Textarea
 				bind:value={responseText}
+				data-testid="input-response-content"
 				label={m.neat_shy_mole_type()}
 				placeholder={m.pale_soft_wren_hint()}
 				rows={6}
 			/>
 		</Form.Field>
 
-		<Form.Button delayed={$delayed}>{m.bold_true_ram_send()}</Form.Button>
+		<Form.Button delayed={$delayed} data-testid="submit-response"
+			>{m.bold_true_ram_send()}</Form.Button
+		>
 	</form>
 </FormWrapper>

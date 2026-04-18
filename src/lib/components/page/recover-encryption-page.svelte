@@ -9,6 +9,7 @@
 
 	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import { setMasterKey } from '$lib/client/key-manager';
 	import FormWrapper from '$lib/components/forms/form-wrapper.svelte';
 	import { SingleFormPage } from '$lib/components/page';
@@ -51,7 +52,9 @@
 						result.data.recoveryEncryptedMasterKey,
 						recoveryBytes
 					);
-					setMasterKey(masterKey);
+					const userId = page.data.user?.id;
+					if (!userId) throw new Error('User not loaded');
+					setMasterKey(userId, masterKey);
 
 					// Navigate to set-password where the user can set a new password
 					return goto(localizeHref('/set-password'));

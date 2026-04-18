@@ -425,7 +425,7 @@
 	"lime_alert_gibbon_ascend": "Yes. Business customers can create their own version of scrt.link in just minutes: Customize branding, domain and content. This ensures added trust and a seamless experience for your clients and teams.",
 	"due_super_halibut_snap": "Destruction timer (seconds)",
 	"arable_upper_parrot_lift": "Enabled secret types",
-	"pink_bright_coyote_heart": "Select all the secret types you want to allow on your site. (Public)",
+	"pink_bright_coyote_heart": "Select all the secret types you want to allow on your site.",
 	"dark_each_pug_value": "There is already an entry with {customDomain} in the database.",
 	"ago_equal_nuthatch_expand": "Refresh",
 	"quaint_flaky_swan_cry": "App or brand name",
@@ -678,7 +678,6 @@
 	"fair_keen_bee_check": "Status",
 	"warm_old_crab_fade": "Expires",
 	"still_calm_snail_wait": "Pending",
-	"glad_new_robin_sing": "Response received",
 	"soft_done_moth_rest": "Viewed",
 	"dull_cold_fish_stop": "Expired",
 	"keen_bright_fox_peek": "View Response",
@@ -707,7 +706,6 @@
 	"dark_cool_owl_miss": "Request not found.",
 	"pale_old_fox_fade": "This request has expired.",
 	"gray_dim_bat_halt": "This request has already been answered.",
-	"soft_warm_eel_fail": "Failed to submit response.",
 	"calm_safe_seal_sent": "Your response has been securely submitted.",
 	"bold_kind_ram_gone": "Request deleted.",
 	"trim_proud_coyote_glow": "Show expired requests",
@@ -715,5 +713,7 @@
 	"warm_clear_fox_all": "All",
 	"keen_bold_lark_unread": "Unread",
 	"shy_brave_owl_born": "Created",
-	"calm_rich_puma_back": "Response received"
+	"calm_rich_puma_back": "Response received",
+	"bold_warm_fox_toggle": "Enable Secret Requests",
+	"mild_calm_deer_hint": "Allow users to create secret request links on this white-label site. (Login required)"
 }

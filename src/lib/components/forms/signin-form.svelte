@@ -30,10 +30,14 @@
 				if (result.data.keyStore) {
 					// Encryption enabled: derive PDK, unwrap MK, then navigate
 					try {
+						const userId = result.data.userId;
+						if (typeof userId !== 'string') {
+							throw new Error('Login response missing userId');
+						}
 						const { pdkSalt, pdkIterations, encryptedMasterKey } = result.data.keyStore;
 						const pdk = await derivePDK($formData.password, pdkSalt, pdkIterations);
 						const masterKey = await unwrapMasterKey(encryptedMasterKey, pdk);
-						setMasterKey(masterKey);
+						setMasterKey(userId, masterKey);
 					} catch (e) {
 						console.error('Failed to unlock encryption keys:', e);
 						$message = {

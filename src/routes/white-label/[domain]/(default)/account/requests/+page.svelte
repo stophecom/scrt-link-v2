@@ -14,10 +14,7 @@
 </Alert>
 
 <div class="mb-6">
-	<CreateSecretRequest
-		form={data.secretRequestForm}
-		subscriptionTier={data.user?.subscriptionTier}
-	/>
+	<CreateSecretRequest form={data.secretRequestForm} subscriptionTier={data.ownerTier} />
 </div>
 
 <RequestsCard requests={data.requests} unreadCount={data.unreadCount} />

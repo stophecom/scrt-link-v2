@@ -122,7 +122,9 @@
 					{@const config = statusConfig[request.status]}
 					<Table.Row>
 						<Table.Cell class="font-medium">
-							<span class="inline-block p-1 font-mono">{request.receiptId ?? '—'}</span>
+							<span class="inline-block p-1 font-mono" data-testid="request-receipt-id"
+								>{request.receiptId ?? '—'}</span
+							>
 						</Table.Cell>
 						<Table.Cell>
 							{#if decryptedNotes[request.id]}
@@ -143,9 +145,12 @@
 						<Table.Cell>
 							<Tooltip.Root>
 								<Tooltip.Trigger>
-									<div class="inline-flex items-center gap-1.5 whitespace-nowrap {config.class}">
+									<div
+										class="inline-flex items-center gap-1.5 whitespace-nowrap {config.class}"
+										data-testid="request-status"
+									>
 										<config.icon class="h-4 w-4 shrink-0" />
-										<span>{config.label}</span>
+										<span data-testid="request-status-label">{config.label}</span>
 									</div>
 								</Tooltip.Trigger>
 								<Tooltip.Content class="text-left">
@@ -168,6 +173,7 @@
 										size="sm"
 										variant="outline"
 										href={localizeHref(`/account/requests/${request.id}`)}
+										data-testid="view-response"
 									>
 										<Eye class="mr-1.5 h-3.5 w-3.5" />
 										{m.keen_bright_fox_peek()}
