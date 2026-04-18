@@ -14,16 +14,17 @@ import { rateLimit } from './db/schema';
  */
 export class PostgresRateLimiterStore implements RateLimiterStore {
 	async add(hash: string, ttl: number): Promise<number> {
-		const expiresAt = new Date(Date.now() + ttl);
-
+		// Compute the window end in SQL (NOW() + ttl ms) rather than passing a JS Date
+		// through raw sql`` — Drizzle serializes Date via toString() inside a raw template
+		// and Postgres rejects the resulting format.
 		const [row] = await db
 			.insert(rateLimit)
-			.values({ hash, count: 1, expiresAt })
+			.values({ hash, count: 1, expiresAt: new Date(Date.now() + ttl) })
 			.onConflictDoUpdate({
 				target: rateLimit.hash,
 				set: {
 					count: sql`CASE WHEN ${rateLimit.expiresAt} <= NOW() THEN 1 ELSE ${rateLimit.count} + 1 END`,
-					expiresAt: sql`CASE WHEN ${rateLimit.expiresAt} <= NOW() THEN ${expiresAt} ELSE ${rateLimit.expiresAt} END`
+					expiresAt: sql`CASE WHEN ${rateLimit.expiresAt} <= NOW() THEN NOW() + ${ttl} * INTERVAL '1 millisecond' ELSE ${rateLimit.expiresAt} END`
 				}
 			})
 			.returning({ count: rateLimit.count });
