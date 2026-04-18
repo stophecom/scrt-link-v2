@@ -4,8 +4,6 @@ import { getBlogPosts } from '$lib/server/blog';
 
 import type { RequestHandler } from './$types';
 
-export const prerender = true;
-
 // Public, crawlable marketing and info pages. Excludes auth flows,
 // account pages, secret retrieval links (/s, /r, /l), the API, and
 // white-label routes (those live on their own custom domains).
