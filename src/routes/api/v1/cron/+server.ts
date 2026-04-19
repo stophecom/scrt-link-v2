@@ -9,7 +9,12 @@ import { PUBLIC_S3_BUCKET } from '$env/static/public';
 import { FILE_RETENTION_PERIOD_IN_DAYS } from '$lib/constants';
 import { s3Client } from '$lib/s3';
 import { db } from '$lib/server/db';
-import { apiKey, emailVerificationRequest, secret as secretSchema } from '$lib/server/db/schema';
+import {
+	apiKey,
+	emailVerificationRequest,
+	rateLimit,
+	secret as secretSchema
+} from '$lib/server/db/schema';
 
 const BucketName = PUBLIC_S3_BUCKET;
 const client = s3Client;
@@ -103,6 +108,16 @@ export const GET: RequestHandler = async ({ request }) => {
 			.returning();
 
 		console.log(`Cron: Deleted ${deleteRevokedAPIkeys.length} entries from the api keys database.`);
+
+		// Delete expired rate-limit entries
+		const deletedRateLimitEntries = await db
+			.delete(rateLimit)
+			.where(lte(rateLimit.expiresAt, new Date()))
+			.returning();
+
+		console.log(
+			`Cron: Deleted ${deletedRateLimitEntries.length} expired entries from the rate limit database.`
+		);
 
 		return json({ success: true });
 	} else {
