@@ -248,6 +248,16 @@ export const secretRequest = pgTable(
 	(table) => [index('secret_request_user_id_idx').on(table.userId)]
 );
 
+export const rateLimit = pgTable(
+	'rate_limit',
+	{
+		hash: text('hash').primaryKey(),
+		count: integer('count').notNull().default(1),
+		expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull()
+	},
+	(table) => [index('rate_limit_expires_at_idx').on(table.expiresAt)]
+);
+
 export const apiKey = pgTable('api_key', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	key: text('key').notNull(),

@@ -5,8 +5,13 @@ import { dev } from '$app/environment';
 import { RATE_LIMIT_COOKIE_SECRET } from '$env/static/private';
 import { m } from '$lib/paraglide/messages.js';
 
+import { PostgresRateLimiterStore } from './rate-limit-store';
+
 export const limiter = new RateLimiter({
-	IP: [100, 'h'], // IP address limiter (relaxed for shared IPs)
+	// Shared store across all serverless instances. The default in-memory store
+	// is per-lambda, so requests can bypass limits by hitting different instances.
+	store: new PostgresRateLimiterStore(),
+	IP: [500, 'h'], // IP address limiter (relaxed for shared IPs — CGNAT/corporate NATs can host 50+ users)
 	IPUA: [15, 'm'], // IP + User Agent limiter
 	cookie: {
 		// Cookie limiter
