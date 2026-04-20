@@ -5,6 +5,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { m } from '$lib/paraglide/messages.js';
+	import { stripPattern } from '$lib/utils';
 	import { type EmailFormSchema, emailFormSchema } from '$lib/validators/formSchemas';
 
 	import FormWrapper from './form-wrapper.svelte';
@@ -42,7 +43,7 @@
 				<Input
 					{...attrs}
 					bind:value={$formData.email}
-					{...$constraints.email}
+					{...stripPattern($constraints.email)}
 					type="email"
 					data-testid="input-email"
 				/>

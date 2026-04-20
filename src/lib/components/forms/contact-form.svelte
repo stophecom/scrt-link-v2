@@ -7,6 +7,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { m } from '$lib/paraglide/messages.js';
+	import { stripPattern } from '$lib/utils';
 	import { type ContactFormSchema, contactFormSchema } from '$lib/validators/formSchemas';
 
 	import FormWrapper from './form-wrapper.svelte';
@@ -60,7 +61,12 @@
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
-				<Input {...attrs} bind:value={$formData.email} {...$constraints.email} type="email" />
+				<Input
+					{...attrs}
+					bind:value={$formData.email}
+					{...stripPattern($constraints.email)}
+					type="email"
+				/>
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>

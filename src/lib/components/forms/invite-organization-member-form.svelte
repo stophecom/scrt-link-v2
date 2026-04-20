@@ -7,6 +7,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { MembershipRole } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
+	import { stripPattern } from '$lib/utils';
 	import {
 		type InviteOrganizationMemberFormSchema,
 		inviteOrganizationMemberFormSchema
@@ -59,7 +60,12 @@
 		<Form.Field {form} name="email" class="py-4">
 			<Form.Control let:attrs>
 				<Form.Label>{m.clear_lost_goose_beam()}</Form.Label>
-				<Input {...attrs} bind:value={$formData.email} {...$constraints.email} type="email" />
+				<Input
+					{...attrs}
+					bind:value={$formData.email}
+					{...stripPattern($constraints.email)}
+					type="email"
+				/>
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>

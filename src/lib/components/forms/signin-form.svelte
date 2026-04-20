@@ -13,6 +13,7 @@
 	import Link from '$lib/components/ui/link';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
+	import { stripPattern } from '$lib/utils';
 	import { type SignInFormSchema, signInFormSchema } from '$lib/validators/formSchemas';
 
 	import FormWrapper from './form-wrapper.svelte';
@@ -76,7 +77,7 @@
 				<Input
 					{...attrs}
 					bind:value={$formData.email}
-					{...$constraints.email}
+					{...stripPattern($constraints.email)}
 					autocomplete="username"
 					type="email"
 					data-testid="input-email"
