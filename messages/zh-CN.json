@@ -1,5 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"bright_warm_otter_share": "秘密请求处于公开测试阶段",
+	"fresh_calm_heron_note": "新增：",
+	"tidy_swift_fox_close": "关闭",
 	"front_fun_husky_pray": "设置新密码",
 	"clear_lost_goose_beam": "电子邮件",
 	"candid_red_lynx_offer": "Scrt.link 让您可以在线共享敏感信息：端到端加密，仅可访问一次。请勿在电子邮件、Slack、Teams、WhatsApp 或其他通信渠道中分享机密信息。一键式链接可确保您的秘密仅可访问一次，然后永久删除。",

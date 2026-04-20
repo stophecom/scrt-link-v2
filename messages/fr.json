@@ -1,5 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"bright_warm_otter_share": "Les demandes secrètes sont en version bêta publique",
+	"fresh_calm_heron_note": "Nouveau :",
+	"tidy_swift_fox_close": "Ignorer",
 	"front_fun_husky_pray": "Définir un nouveau mot de passe",
 	"clear_lost_goose_beam": "Email",
 	"candid_red_lynx_offer": "Scrt.link vous permet de partager des informations sensibles en ligne : Chiffrement de bout en bout. Une seule fois. Gardez les informations confidentielles hors des emails, Slack, Teams, Whatsapp ou tout autre canal de communication. Un lien jetable garantit que vos secrets ne peuvent être consultés qu'une seule fois - avant d'être détruits à jamais.",
