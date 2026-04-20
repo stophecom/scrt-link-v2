@@ -1,5 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"bright_warm_otter_share": "Secret Requests are in public beta",
+	"fresh_calm_heron_note": "New:",
+	"tidy_swift_fox_close": "Dismiss",
 	"front_fun_husky_pray": "Set new password",
 	"clear_lost_goose_beam": "Email",
 	"candid_red_lynx_offer": "Scrt.link lets you share sensitive information online: End-to-end encrypted. One time. Keep confidential information out of email, Slack, Teams, Whatsapp or any other communication channel. A one-time disposable link guarantees your secrets can only ever be accessed once - before being destroyed forever.",

@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { Factory, Plus, Sparkles, User } from '@lucide/svelte';
+	import { Factory, Plus, Sparkles, User, X } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
+	import { PersistedState } from 'runed';
 
 	import { page } from '$app/state';
 	import Logo from '$lib/assets/images/logo.svg?component';
@@ -28,17 +29,45 @@
 	let { user, isMinimal, isPersistent: isPersistent, tag, breadcrumb }: Props = $props();
 
 	let persistHeader = $derived(isPersistent || !!tag);
+
+	const showAnnouncement = new PersistedState<boolean>(
+		'showAnnouncement:secret-requests-beta',
+		true
+	);
+	const announcementVisible = $derived(showAnnouncement.current && !isMinimal);
 </script>
 
 <IntersectionObserver bottom={persistHeader ? 0 : 100}>
 	{#snippet children(intersecting)}
-		<header class="relative z-10 h-[var(--header-height)] transition-all">
+		<header
+			class="relative z-10 h-[var(--header-height)] transition-all"
+			style={announcementVisible ? '--header-height: 104px' : undefined}
+		>
 			<div
 				class="fixed top-0 left-0 h-[var(--header-height)] w-full transition-all duration-300 ease-in-out {intersecting &&
 				!persistHeader
 					? 'bg-transparent'
 					: 'bg-background shadow-sm'}"
 			>
+				{#if announcementVisible}
+					<div class="bg-primary text-primary-foreground">
+						<Container variant="wide" class="flex h-10 items-center gap-2 text-sm">
+							<span>{m.fresh_calm_heron_note()}</span>
+							<a
+								class="after:bg-primary-foreground before:bg-primary-foreground relative inline-block before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:opacity-50 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
+								href={localizeHref('/blog/secret-requests-beta')}>{m.bright_warm_otter_share()}</a
+							>
+							<button
+								type="button"
+								class="ml-auto block p-2"
+								onclick={() => (showAnnouncement.current = false)}
+							>
+								<X class="h-5 w-5" />
+								<span class="sr-only">{m.tidy_swift_fox_close()}</span>
+							</button>
+						</Container>
+					</div>
+				{/if}
 				<Container variant="wide" class="flex h-16 items-center">
 					<a
 						class="flex items-center py-2 transition duration-150 ease-in-out {intersecting &&
