@@ -7,6 +7,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
+	import { stripPattern } from '$lib/utils';
 	import { type SettingsFormSchema, settingsFormSchema } from '$lib/validators/formSchemas';
 
 	import { getReadReceiptOptions } from '../../data/secretSettings';
@@ -61,7 +62,7 @@
 				<Text
 					label={m.clear_lost_goose_beam()}
 					bind:value={$formData.email}
-					{...$constraints.email}
+					{...stripPattern($constraints.email)}
 					type="email"
 					disabled={!planLimits.readReceiptsAllowed}
 				/>

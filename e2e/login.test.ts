@@ -23,12 +23,16 @@ test('Login page loads', async () => {
 });
 
 test('Email step submits and navigates to password page', async () => {
+	await page.waitForLoadState('networkidle');
 	await page.getByTestId('input-email').fill(email);
+
+	const submitEmailBtn = page.getByTestId('submit-email');
+	await expect(submitEmailBtn).toBeEnabled();
 
 	const responsePromise = page.waitForResponse((response) =>
 		response.url().includes('?/loginWithEmail')
 	);
-	await page.getByTestId('submit-email').click();
+	await submitEmailBtn.click();
 	await responsePromise;
 
 	await page.waitForURL('**/login/password', { timeout: 10000 });
