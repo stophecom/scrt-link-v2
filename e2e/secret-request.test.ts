@@ -24,10 +24,14 @@ test.afterAll(async () => {
 test('Login and navigate to requests', async () => {
 	// Login
 	await page.goto('/login');
+	await page.waitForLoadState('networkidle');
 	await page.getByTestId('input-email').fill(email);
 
+	const submitEmailBtn = page.getByTestId('submit-email');
+	await expect(submitEmailBtn).toBeEnabled();
+
 	const emailResponse = page.waitForResponse((r) => r.url().includes('?/loginWithEmail'));
-	await page.getByTestId('submit-email').click();
+	await submitEmailBtn.click();
 	await emailResponse;
 
 	await page.waitForURL('**/login/password', { timeout: 10000 });
