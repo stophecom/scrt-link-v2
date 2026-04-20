@@ -110,7 +110,7 @@ Schema changes: edit `schema.ts` then `pnpm run db:push`
 ## Rules
 
 - **Never modify translation files** (`messages/*.json`) unless explicitly adding new keys to `messages/en.json`. Prettier converts Unicode escapes (`\u00e9`) to UTF-8 characters which creates noisy diffs. Only touch `en.json` for new keys.
-- **Always translate new keys**: After adding keys to `messages/en.json`, run `pnpm machine-translate` to generate translations for all locales, then `pnpm cleanup-translation-keys` to remove unused keys.
+- **Always translate new keys**: After adding keys to `messages/en.json`, invoke `/translate-keys` to translate them into the other locales. Run `pnpm cleanup-translation-keys` to remove keys no longer referenced in `src/`.
 
 ## Environment
 
