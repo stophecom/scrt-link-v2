@@ -139,6 +139,50 @@ const gdpr = () => ({
 	label: 'GDPR'
 });
 
+export const useCasesMenu = () => [
+	{
+		href: '/use-cases/it',
+		label: m.warm_calm_hawk_defend(),
+		disabled: true
+	},
+	{
+		href: '/use-cases/legal',
+		label: m.clear_pure_owl_advise(),
+		disabled: true
+	},
+	{
+		href: '/use-cases/journalists',
+		label: m.brave_sharp_fox_report(),
+		disabled: true
+	},
+	{
+		href: '/use-cases/support',
+		label: m.kind_warm_bear_assist(),
+		disabled: true
+	}
+];
+
+export const mainNav = () => [
+	{
+		title: m.quick_proud_lion_guide(),
+		items: useCasesMenu()
+	},
+	{
+		title: m.tiny_suave_nils_accept(),
+		items: productMenu().filter((item) =>
+			['/business', '/pricing', '/api-documentation'].includes(item.href)
+		)
+	},
+	{
+		title: m.chunky_raw_osprey_dial(),
+		items: companyMenu().filter((item) => ['/about', '/blog', '/security'].includes(item.href))
+	},
+	{
+		title: m.equal_away_frog_aim(),
+		items: helpMenu().filter((item) => ['/faq', '/contact'].includes(item.href))
+	}
+];
+
 // Menus
 export const legalMenu = () => [
 	tos(),
