@@ -141,9 +141,8 @@ const gdpr = () => ({
 
 export const useCasesMenu = () => [
 	{
-		href: '/use-cases/it',
-		label: m.warm_calm_hawk_defend(),
-		disabled: true
+		href: '/use-cases/it-security',
+		label: m.warm_calm_hawk_defend()
 	},
 	{
 		href: '/use-cases/legal',
