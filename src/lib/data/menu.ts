@@ -145,19 +145,16 @@ export const useCasesMenu = () => [
 		label: m.warm_calm_hawk_defend()
 	},
 	{
-		href: '/use-cases/legal',
-		label: m.clear_pure_owl_advise(),
-		disabled: true
+		href: '/use-cases/legal-compliance',
+		label: m.clear_pure_owl_advise()
 	},
 	{
 		href: '/use-cases/journalists',
-		label: m.brave_sharp_fox_report(),
-		disabled: true
+		label: m.brave_sharp_fox_report()
 	},
 	{
-		href: '/use-cases/support',
-		label: m.kind_warm_bear_assist(),
-		disabled: true
+		href: '/use-cases/customer-support',
+		label: m.kind_warm_bear_assist()
 	}
 ];
 
