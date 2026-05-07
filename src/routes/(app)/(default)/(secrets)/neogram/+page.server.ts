@@ -2,10 +2,12 @@ import type { Actions } from '@sveltejs/kit';
 
 import { postSecret } from '$lib/server/form/actions';
 import { secretFormValidator } from '$lib/server/form/validators';
+import { rateLimiterPreflight } from '$lib/server/rate-limit';
 
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async (event) => {
+	await rateLimiterPreflight(event);
 	return {
 		secretForm: await secretFormValidator()
 	};

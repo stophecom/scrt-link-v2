@@ -1,12 +1,15 @@
 import { redirectLocalized } from '$lib/i18n';
 import { postSecret } from '$lib/server/form/actions';
 import { secretFormValidator } from '$lib/server/form/validators';
+import { rateLimiterPreflight } from '$lib/server/rate-limit';
 import { fetchSecrets } from '$lib/server/secrets';
 
 import { actions as secretActions } from '../../../../../(app)/(default)/account/secrets/+page.server';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async (event) => {
+	await rateLimiterPreflight(event);
+	const { locals } = event;
 	const user = locals.user;
 
 	if (!user) {
