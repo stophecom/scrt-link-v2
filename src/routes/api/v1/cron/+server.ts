@@ -1,4 +1,4 @@
-import { DeleteObjectsCommand, paginateListObjectsV2 } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, paginateListObjectsV2 } from '@aws-sdk/client-s3';
 import type { RequestHandler } from '@sveltejs/kit';
 import { error, json } from '@sveltejs/kit';
 import { eq, or } from 'drizzle-orm';
@@ -50,24 +50,18 @@ export const GET: RequestHandler = async ({ request }) => {
 				}
 			}).filter(Boolean) as ObjectList;
 
-			// @todo
-			// We currently get an error for no obvious reason
-			// InvalidDigest: The Content-MD5 you specified was an invalid
-			// We catch the error for now
-			try {
-				if (s3ObjectsToDelete.length) {
-					console.log(`Cron: Start deleting files...`);
-					const bucketParams = {
-						Bucket: BucketName,
-						Delete: { Objects: s3ObjectsToDelete, Quiet: false }
-					};
-					await client.send(new DeleteObjectsCommand(bucketParams));
-					console.log(`Cron: Deleted ${s3ObjectsToDelete.length} files from S3.`);
-				} else {
-					console.log(`Cron: No files to delete from S3.`);
-				}
-			} catch (e) {
-				console.error(e);
+			if (s3ObjectsToDelete.length) {
+				console.log(`Cron: Start deleting files...`);
+				// Using per-object DeleteObjectCommand instead of batch DeleteObjectsCommand:
+				// flow.swiss rejects the checksum header that AWS SDK v3 attaches to the batch op.
+				await Promise.all(
+					s3ObjectsToDelete.map(({ Key }) =>
+						client.send(new DeleteObjectCommand({ Bucket: BucketName, Key }))
+					)
+				);
+				console.log(`Cron: Deleted ${s3ObjectsToDelete.length} files from S3.`);
+			} else {
+				console.log(`Cron: No files to delete from S3.`);
 			}
 		}
 
