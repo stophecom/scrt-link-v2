@@ -5,6 +5,7 @@ import {
 	emailVerificationFormValidator,
 	resendEmailVerificationFormValidator
 } from '$lib/server/form/validators';
+
 import type { Actions, RequestEvent } from './$types';
 
 export async function load(event: RequestEvent) {

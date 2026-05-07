@@ -2,6 +2,7 @@ import { redirectLocalized } from '$lib/i18n';
 import { getEmailVerificationCookie } from '$lib/server/cookies';
 import { loginWithPassword } from '$lib/server/form/actions';
 import { loginPasswordFormValidator } from '$lib/server/form/validators';
+
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
