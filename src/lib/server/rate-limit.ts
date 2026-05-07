@@ -24,19 +24,12 @@ export const limiter = new RateLimiter({
 		// this fires constantly: cold-start lambdas, edge-cached pages, and cookie-blocking
 		// browsers all arrive without the cookie. With preflight: false the library sets the
 		// cookie on the first action call itself (graceful fallback) and counts normally.
-		// rateLimiterPreflight() in page loads is still useful as an early-set optimization.
 		preflight: false
 	},
 	onLimited: async (_event, reason) => {
 		console.warn(`[rate-limit] blocked: reason=${reason}`);
 	}
 });
-
-/** Set up rate limiter cookie. No-op in development. Call in load functions. */
-export async function rateLimiterPreflight(event: RequestEvent): Promise<void> {
-	if (dev) return;
-	await limiter.cookieLimiter?.preflight(event);
-}
 
 /** Returns true when the request should be blocked. Always false in development. */
 export async function isRateLimited(event: RequestEvent): Promise<boolean> {

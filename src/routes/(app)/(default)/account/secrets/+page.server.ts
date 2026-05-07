@@ -2,15 +2,12 @@ import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages';
 import { postSecret } from '$lib/server/form/actions';
 import { secretFormValidator } from '$lib/server/form/validators';
-import { rateLimiterPreflight } from '$lib/server/rate-limit';
 import { fetchSecrets } from '$lib/server/secrets';
 
 import { actions as secretActions } from '../../+page.server';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async (event) => {
-	await rateLimiterPreflight(event);
-	const { locals } = event;
+export const load: PageServerLoad = async ({ locals }) => {
 	const user = locals.user;
 	if (!user) {
 		return redirectLocalized(307, '/signup');
