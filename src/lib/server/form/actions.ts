@@ -98,6 +98,8 @@ import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '.
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
 
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
 	if (!form.valid) {
 		return fail(400, { form });
 	}
@@ -744,6 +746,8 @@ export const loginWithPassword: Action = async (event) => {
 
 export const signupWithEmail: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(emailFormSchema()));
+
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
 
 	const { email } = form.data;
 

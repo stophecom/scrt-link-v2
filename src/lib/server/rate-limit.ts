@@ -18,15 +18,18 @@ export const limiter = new RateLimiter({
 		name: 'limiterid', // Unique cookie name for this limiter
 		secret: RATE_LIMIT_COOKIE_SECRET, // Use $env/static/private
 		rate: [15, 'm'],
-		preflight: true // Require preflight call (see load function)
+		// preflight: true causes the library to return hash() = false (not null) when the
+		// cookie is missing, which triggers an IMMEDIATE block regardless of IP/IPUA counts.
+		// A user with no cookie gets a 429 on their very first request. On Vercel serverless
+		// this fires constantly: cold-start lambdas, edge-cached pages, and cookie-blocking
+		// browsers all arrive without the cookie. With preflight: false the library sets the
+		// cookie on the first action call itself (graceful fallback) and counts normally.
+		preflight: false
+	},
+	onLimited: async (_event, reason) => {
+		console.warn(`[rate-limit] blocked: reason=${reason}`);
 	}
 });
-
-/** Set up rate limiter cookie. No-op in development. Call in load functions. */
-export async function rateLimiterPreflight(event: RequestEvent): Promise<void> {
-	if (dev) return;
-	await limiter.cookieLimiter?.preflight(event);
-}
 
 /** Returns true when the request should be blocked. Always false in development. */
 export async function isRateLimited(event: RequestEvent): Promise<boolean> {
