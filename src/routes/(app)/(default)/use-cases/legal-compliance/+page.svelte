@@ -16,7 +16,9 @@
 
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import Page from '$lib/components/page/default-page.svelte';
+	import FaqSection from '$lib/components/blocks/faq-section.svelte';
+	import IntegrationSection from '$lib/components/blocks/integration-section.svelte';
+	import Page from '$lib/components/page/use-case-page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Section } from '$lib/components/ui/section';
 	import { m } from '$lib/paraglide/messages.js';
@@ -123,7 +125,7 @@
 		</IntersectionObserver>
 	</Section>
 
-	<Section title={m.clear_bold_hare_pass()} lead={m.trim_ready_swift_deliver()}>
+	<Section wide title={m.clear_bold_hare_pass()} lead={m.trim_ready_swift_deliver()}>
 		<div class="grid gap-4 md:grid-cols-3">
 			{#each workflow as step, i (step.title)}
 				<div class="bg-muted/30 rounded-lg p-6">
@@ -148,13 +150,10 @@
 		</div>
 	</Section>
 
-	<Section
-		wide
-		Icon={ShieldCheck}
-		variant="contrast"
-		title={m.bold_keen_heron_stop()}
-		lead={m.brisk_firm_finch_start()}
-	>
+	<IntegrationSection />
+	<FaqSection />
+
+	<Section wide Icon={ShieldCheck} variant="contrast" title={m.bold_keen_heron_stop()}>
 		<div class="flex flex-wrap gap-2">
 			<Button size="lg" href={localizeHref('/signup')}>{m.large_smart_badger_beam()}</Button>
 			<Button variant="secondary" size="lg" href={localizeHref('/pricing')}>

@@ -205,25 +205,11 @@
 											<DropdownMenu.Group>
 												<DropdownMenu.Label>{group.title}</DropdownMenu.Label>
 												{#each group.items as item (item.href)}
-													{#if 'disabled' in item && item.disabled}
-														<DropdownMenu.Item
-															disabled
-															class="flex items-center justify-between opacity-60"
-														>
-															<span>{item.label}</span>
-															<span
-																class="bg-muted text-muted-foreground ms-2 shrink-0 rounded px-1.5 py-0.5 text-[0.65rem] font-medium tracking-wide whitespace-nowrap uppercase"
-															>
-																{m.soft_quiet_deer_wait()}
-															</span>
-														</DropdownMenu.Item>
-													{:else}
-														<DropdownMenu.Item>
-															{#snippet child({ props })}
-																<a href={localizeHref(item.href)} {...props}>{item.label}</a>
-															{/snippet}
-														</DropdownMenu.Item>
-													{/if}
+													<DropdownMenu.Item>
+														{#snippet child({ props })}
+															<a href={localizeHref(item.href)} {...props}>{item.label}</a>
+														{/snippet}
+													</DropdownMenu.Item>
 												{/each}
 											</DropdownMenu.Group>
 										{/each}

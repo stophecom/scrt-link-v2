@@ -17,7 +17,9 @@
 
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import Page from '$lib/components/page/default-page.svelte';
+	import FaqSection from '$lib/components/blocks/faq-section.svelte';
+	import IntegrationSection from '$lib/components/blocks/integration-section.svelte';
+	import Page from '$lib/components/page/use-case-page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Section } from '$lib/components/ui/section';
 	import { m } from '$lib/paraglide/messages.js';
@@ -124,7 +126,7 @@
 		</IntersectionObserver>
 	</Section>
 
-	<Section title={m.clear_tidy_hare_deliver()} lead={m.trim_keen_swift_ship()}>
+	<Section wide title={m.clear_tidy_hare_deliver()} lead={m.trim_keen_swift_ship()}>
 		<div class="grid gap-4 md:grid-cols-3">
 			{#each workflow as step, i (step.title)}
 				<div class="bg-muted/30 rounded-lg p-6">
@@ -148,6 +150,9 @@
 			{/each}
 		</div>
 	</Section>
+
+	<IntegrationSection />
+	<FaqSection />
 
 	<Section
 		wide

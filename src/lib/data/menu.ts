@@ -141,6 +141,10 @@ const gdpr = () => ({
 
 export const useCasesMenu = () => [
 	{
+		href: '/business',
+		label: m.great_funny_beaver_gleam()
+	},
+	{
 		href: '/use-cases/it-security',
 		label: m.warm_calm_hawk_defend()
 	},
@@ -166,7 +170,7 @@ export const mainNav = () => [
 	{
 		title: m.tiny_suave_nils_accept(),
 		items: productMenu().filter((item) =>
-			['/business', '/pricing', '/api-documentation'].includes(item.href)
+			['/pricing', '/api-documentation'].includes(item.href)
 		)
 	},
 	{
