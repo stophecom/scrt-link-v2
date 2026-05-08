@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Factory, Plus, Sparkles, User, X } from '@lucide/svelte';
+	import { Factory, Plus, Sparkles, X } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
 	import { PersistedState } from 'runed';
@@ -168,16 +168,57 @@
 								{/if}
 							</a>
 						{:else}
-							<Button
-								variant="outline"
-								href={localizeHref('/login')}
-								class="max-sm:h-12 max-sm:w-12"
-							>
-								<span class="max-sm:sr-only">{m.simple_dry_boar_dazzle()}</span>
-								<User class="h-5 w-5 sm:hidden" />
+							<Button variant="ghost" size="sm" href={localizeHref('/login')}>
+								{m.simple_dry_boar_dazzle()}
 							</Button>
-							<Button href={localizeHref('/signup')}>{m.large_smart_badger_beam()}</Button>
+							<Button variant="outline" size="sm" href={localizeHref('/signup')}>
+								{m.large_smart_badger_beam()}
+							</Button>
 						{/if}
+
+						<!-- Hamburger menu (temporarily disabled)
+						{#if !isMinimal}
+							<DropdownMenu.Root>
+								<DropdownMenu.Trigger>
+									{#snippet child({ props })}
+										<Button {...props} variant="ghost" size="icon">
+											{#if props['data-state'] === 'open'}
+												<X class="h-5 w-5" />
+											{:else}
+												<Menu class="h-5 w-5" />
+											{/if}
+											<span class="sr-only">{m.plain_wise_crane_navigate()}</span>
+										</Button>
+									{/snippet}
+								</DropdownMenu.Trigger>
+								<DropdownMenu.Content
+									class="max-h-[calc(100vh-5rem)] w-72 overflow-y-auto sm:w-lg sm:p-6"
+									align="end"
+									sideOffset={-3}
+								>
+									<DropdownMenu.Arrow class="text-border" width={8} height={6} />
+
+									<div class="sm:grid sm:grid-cols-2 sm:gap-x-2">
+										{#each mainNav() as group, groupIndex (group.title)}
+											{#if groupIndex > 0}
+												<DropdownMenu.Separator class="sm:hidden" />
+											{/if}
+											<DropdownMenu.Group>
+												<DropdownMenu.Label>{group.title}</DropdownMenu.Label>
+												{#each group.items as item (item.href)}
+													<DropdownMenu.Item>
+														{#snippet child({ props })}
+															<a href={localizeHref(item.href)} {...props}>{item.label}</a>
+														{/snippet}
+													</DropdownMenu.Item>
+												{/each}
+											</DropdownMenu.Group>
+										{/each}
+									</div>
+								</DropdownMenu.Content>
+							</DropdownMenu.Root>
+						{/if}
+						-->
 					</div>
 				</Container>
 			</div>

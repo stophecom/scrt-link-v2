@@ -48,6 +48,7 @@ static/test.html
 .claude/settings.local.json
 .claude/plans/
 .claude/worktrees/
+tasks
 
 # Config / Certificates
 *.pem
