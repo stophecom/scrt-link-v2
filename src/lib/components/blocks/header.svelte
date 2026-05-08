@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Factory, Menu, Plus, Sparkles, X } from '@lucide/svelte';
+	import { Factory, Plus, Sparkles, X } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
 	import { PersistedState } from 'runed';
@@ -12,7 +12,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { appName } from '$lib/data/app';
 	import { TierOptions } from '$lib/data/enums';
-	import { mainNav, secretMenu } from '$lib/data/menu';
+	import { secretMenu } from '$lib/data/menu';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -176,6 +176,7 @@
 							</Button>
 						{/if}
 
+						<!-- Hamburger menu (temporarily disabled)
 						{#if !isMinimal}
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger>
@@ -217,6 +218,7 @@
 								</DropdownMenu.Content>
 							</DropdownMenu.Root>
 						{/if}
+						-->
 					</div>
 				</Container>
 			</div>
