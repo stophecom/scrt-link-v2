@@ -8,7 +8,12 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 </script>
 
-<Section wide variant="card" title={m.aloof_minor_flamingo_nourish()} lead={m.mellow_lost_dragonfly_dance()}>
+<Section
+	wide
+	variant="card"
+	title={m.aloof_minor_flamingo_nourish()}
+	lead={m.mellow_lost_dragonfly_dance()}
+>
 	<ApiPreview />
 	<Button variant="outline" href={localizeHref('/api-documentation')}>
 		<Code class="me-2 h-4 w-4" />

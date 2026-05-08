@@ -14,10 +14,10 @@
 		UserPlus
 	} from '@lucide/svelte';
 
-	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
-	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import FaqSection from '$lib/components/blocks/faq-section.svelte';
+	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import IntegrationSection from '$lib/components/blocks/integration-section.svelte';
+	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import Page from '$lib/components/page/use-case-page.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Section } from '$lib/components/ui/section';
