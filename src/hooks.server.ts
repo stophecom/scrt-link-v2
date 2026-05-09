@@ -61,7 +61,7 @@ const THEME_MAP: Record<ThemeOptions, Theme> = {
 		dark: { primary: '#3a5a92', primaryFg: '#ffffff', accent: '#e85555' }
 	},
 	[ThemeOptions.PINK]: {
-		light: { primary: '#e60077', primaryFg: '#ffffff', accent: '#655a7f' },
+		light: { primary: '#e60077', primaryFg: '#ffffff', accent: '#2c1b55' },
 		dark: { primary: '#ff3d96', primaryFg: '#ffffff', accent: '#f0e1ff' }
 	},
 	[ThemeOptions.PURPLE]: {
