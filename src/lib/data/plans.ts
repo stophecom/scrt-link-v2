@@ -76,7 +76,7 @@ export const plans = () => [
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptions,
 			whiteLabel: false,
-			maxViewLimit: 10
+			maxViewLimit: 1000
 		}
 	},
 	{
@@ -101,7 +101,7 @@ export const plans = () => [
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
 			whiteLabel: false,
-			maxViewLimit: 10
+			maxViewLimit: 1000
 		}
 	},
 	{
@@ -127,7 +127,7 @@ export const plans = () => [
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
 			whiteLabel: true,
-			maxViewLimit: 10
+			maxViewLimit: 1000
 		}
 	}
 ];
