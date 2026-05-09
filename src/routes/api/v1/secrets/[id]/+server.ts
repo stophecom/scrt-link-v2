@@ -39,7 +39,10 @@ export const POST: RequestHandler = async ({ params, url }) => {
 			}
 		}
 
-		return json({ isPasswordProtected: !!result.passwordHash });
+		return json({
+			isPasswordProtected: !!result.passwordHash,
+			remainingViews: result.viewLimit - result.viewCount
+		});
 	} catch (e) {
 		console.error(e);
 

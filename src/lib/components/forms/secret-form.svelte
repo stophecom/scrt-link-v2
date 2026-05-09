@@ -275,6 +275,7 @@
 			<Form.Field {form} name="viewLimit">
 				<Number
 					label={m.loud_clean_crow_count()}
+					description={m.bright_tidy_crow_describe()}
 					class="w-44"
 					min="1"
 					max={planLimits.maxViewLimit}
