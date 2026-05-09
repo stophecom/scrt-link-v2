@@ -46,9 +46,9 @@
 		--_space: ;
 
 		--_color-1-from: var(--color-foreground);
-		--_color-1-to: var(--color-primary);
+		--_color-1-to: var(--color-accent);
 		--_color-2-from: var(--color-foreground);
-		--_color-2-to: var(--color-primary);
+		--_color-2-to: var(--color-accent);
 
 		--color-1: var(--_color-1-from);
 		--color-2: var(--_color-2-from);

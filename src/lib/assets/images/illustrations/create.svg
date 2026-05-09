@@ -23,7 +23,7 @@
 				stroke-width: 3.92px;
 			}
 			.cls-5 {
-				fill: currentColor;
+				fill: var(--color-accent);
 			}
 			.cls-6 {
 				fill: var(--color-background);

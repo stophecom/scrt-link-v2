@@ -9,7 +9,7 @@
 				opacity: 0.2;
 			}
 			.cls-2 {
-				fill: currentColor;
+				fill: var(--color-accent);
 			}
 			.cls-4 {
 				fill: var(--color-background);

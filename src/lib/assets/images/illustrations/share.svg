@@ -7,7 +7,7 @@
 				fill: var(--color-primary);
 			}
 			.cls-2 {
-				fill: currentColor;
+				fill: var(--color-accent);
 			}
 			.cls-3 {
 				opacity: 0.7;
