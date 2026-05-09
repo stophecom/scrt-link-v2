@@ -153,11 +153,10 @@
 	<IntegrationSection />
 	<FaqSection />
 
-	<Section wide Icon={ShieldCheck} variant="contrast" title={m.bold_keen_heron_stop()}>
+	<Section wide Icon={ShieldCheck} variant="card" title={m.bold_keen_heron_stop()}>
 		<div class="flex flex-wrap gap-2">
-			<Button size="lg" href={localizeHref('/signup')}>{m.large_smart_badger_beam()}</Button>
-			<Button variant="secondary" size="lg" href={localizeHref('/pricing')}>
-				{m.moving_quaint_buzzard_trip()}
+			<Button size="lg" href={localizeHref('/pricing')}>
+				{m.early_keen_eagle_trial()}
 			</Button>
 		</div>
 	</Section>

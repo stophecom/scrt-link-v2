@@ -9,10 +9,10 @@ const buttonVariants = tv({
 		variant: {
 			default: 'bg-primary text-primary-foreground hover:bg-primary/90',
 			destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-			outline: 'bg-background hover:bg-muted border border-border',
+			outline: 'hover:bg-current/10 border border-current/30',
 			secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-			ghost: 'hover:bg-muted',
-			link: 'text-primary underline-offset-4 underline !px-0 !h-auto ',
+			ghost: 'hover:bg-current/10',
+			link: 'text-current underline-offset-4 underline !px-0 !h-auto ',
 			rainbow: 'rainbow-button rounded-full'
 		},
 		size: {

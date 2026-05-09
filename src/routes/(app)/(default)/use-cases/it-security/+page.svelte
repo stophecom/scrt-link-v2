@@ -156,14 +156,13 @@
 	<Section
 		wide
 		Icon={ShieldCheck}
-		variant="contrast"
+		variant="card"
 		title={m.bold_crisp_heron_stop()}
 		lead={m.brisk_terse_finch_link()}
 	>
 		<div class="flex flex-wrap gap-2">
-			<Button size="lg" href={localizeHref('/signup')}>{m.large_smart_badger_beam()}</Button>
-			<Button variant="secondary" size="lg" href={localizeHref('/pricing')}>
-				{m.moving_quaint_buzzard_trip()}
+			<Button size="lg" href={localizeHref('/pricing')}>
+				{m.early_keen_eagle_trial()}
 			</Button>
 		</div>
 	</Section>

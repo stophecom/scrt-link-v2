@@ -60,13 +60,13 @@
 		--background: 218 43% 8%; /* deep dark navy */
 		--foreground: 38 25% 90%; /* warm cream */
 
-		--muted: 218 30% 38%;
+		--muted: 218 30% 15%;
 		--muted-foreground: 218 12% 62%;
 
 		--popover: 218 43% 6%;
 		--popover-foreground: 38 25% 93%;
 
-		--card: 218 35% 13%;
+		--card: 218 35% 5%;
 		--card-foreground: 38 25% 95%;
 
 		--border: 218 22% 22%;
