@@ -112,13 +112,13 @@
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger>
 									{#snippet child({ props })}
-										<Button {...props} variant="ghost" size="icon">
+										<Button {...props} variant="outline" size="sm" class="mr-2 gap-1.5">
 											<Plus
-												class="transition-all {props['data-state'] === 'open'
+												class="h-4 w-4 transition-all {props['data-state'] === 'open'
 													? 'rotate-45'
 													: 'rotate-0'}"
 											/>
-											<span class="sr-only">{m.ideal_brave_eagle_trust()}</span>
+											{m.calm_tidy_finch_label()}
 										</Button>
 									{/snippet}
 								</DropdownMenu.Trigger>
