@@ -118,6 +118,10 @@ export const actions: Actions = {
 			}
 		}
 
+		// Increment view count. Set retrievedAt when all views are exhausted so the cron cleanup picks it up.
+		const newViewCount = viewCount + 1;
+		const isLastView = newViewCount >= viewLimit;
+
 		// Read receipts
 		if (userId) {
 			try {
@@ -138,7 +142,7 @@ export const actions: Actions = {
 						throw Error('No email for read receipt.');
 					}
 
-					await sendReidReceiptEmail(email, receiptId);
+					await sendReidReceiptEmail(email, receiptId, newViewCount, viewLimit, isLastView);
 				}
 
 				// Send receipt via ntfy
@@ -146,15 +150,17 @@ export const actions: Actions = {
 					if (!ntfyEndpoint) {
 						throw Error('No ntfyEndpoint for read receipt.');
 					}
-					const body = m.vexed_early_lemming_engage();
+					const body = isLastView
+						? m.vexed_early_lemming_engage()
+						: m.aware_neat_moth_count({ viewCount: newViewCount, viewLimit });
 
 					await fetch(`https://ntfy.sh/${ntfyEndpoint}`, {
 						method: 'POST', // PUT works too
 						body: `${body} ${receiptId}`,
 						headers: {
 							Title: m.spry_bald_guppy_cry(),
-							Priority: 'urgent',
-							Tags: 'fire'
+							Priority: isLastView ? 'urgent' : 'default',
+							Tags: isLastView ? 'fire' : 'eyes'
 						}
 					});
 
@@ -165,9 +171,6 @@ export const actions: Actions = {
 				console.error(e);
 			}
 		}
-
-		// Increment view count. Set retrievedAt when all views are exhausted so the cron cleanup picks it up.
-		const newViewCount = viewCount + 1;
 		await db
 			.update(secretSchema)
 			.set({
