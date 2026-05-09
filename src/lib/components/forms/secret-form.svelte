@@ -18,6 +18,7 @@
 	import { page } from '$app/state';
 	import { isOriginalHostname } from '$lib/app-routing';
 	import { plausible } from '$lib/client/plausible';
+	import Number from '$lib/components/forms/form-fields/number.svelte';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/secret-file-upload.svelte';
@@ -271,21 +272,16 @@
 				/>
 			</Form.Fieldset>
 
-			<Label for="viewLimit">{m.loud_clean_crow_count()}</Label>
-			<Input
-				id="viewLimit"
-				class="w-44"
-				type="number"
-				min="1"
-				max={planLimits.maxViewLimit}
-				disabled={planLimits.maxViewLimit <= 1}
-				bind:value={$formData.viewLimit}
-			/>
-			{#if planLimits.maxViewLimit <= 1}
-				<div class="pt-1">
-					<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
-				</div>
-			{/if}
+			<Form.Field {form} name="viewLimit">
+				<Number
+					label={m.loud_clean_crow_count()}
+					class="w-44"
+					min="1"
+					max={planLimits.maxViewLimit}
+					disabled={planLimits.maxViewLimit <= 1}
+					bind:value={$formData.viewLimit}
+				/>
+			</Form.Field>
 
 			{#if isLoggedIn}
 				<Form.Field {form} name="publicNote">
@@ -310,7 +306,7 @@
 				/>
 			{/if}
 
-			{#if (!planLimits.expirationOptions.length || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}
+			{#if (planLimits.maxViewLimit <= 1 || !planLimits.expirationOptions.length || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}
 				<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
 			{/if}
 		</div>
