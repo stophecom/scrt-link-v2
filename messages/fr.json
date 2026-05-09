@@ -124,7 +124,7 @@
 	"novel_cool_moth_dazzle": "Accusé de lecture",
 	"soft_frail_wolf_fear": "Le secret suivant a été livré :",
 	"ideal_aloof_mayfly_thrive": "Le secret a maintenant été supprimé et n'est plus disponible.",
-	"aware_neat_moth_count": "Le secret a été consulté {viewCount} fois sur {viewLimit}. Il s'autodétruira après la dernière consultation.",
+	"aware_neat_moth_count": "Le secret a été consulté {viewCount} fois sur {viewLimit}. Il s'autodétruira après la dernière consultation :",
 	"spry_bald_guppy_cry": "Accusé de lecture",
 	"deft_lucky_quail_pause": "Votre code de réception est : **{receiptId}**",
 	"vexed_early_lemming_engage": "Le secret suivant a été consulté et détruit :",

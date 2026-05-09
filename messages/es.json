@@ -124,7 +124,7 @@
 	"novel_cool_moth_dazzle": "Confirmación de lectura",
 	"soft_frail_wolf_fear": "El siguiente secreto ha sido entregado:",
 	"ideal_aloof_mayfly_thrive": "El secreto ha sido eliminado y ya no está disponible.",
-	"aware_neat_moth_count": "El secreto ha sido visto {viewCount} de {viewLimit} vez/veces. Se autodestruirá tras la última vista.",
+	"aware_neat_moth_count": "El secreto ha sido visto {viewCount} de {viewLimit} vez/veces. Se autodestruirá tras la última vista:",
 	"spry_bald_guppy_cry": "Confirmación de lectura",
 	"deft_lucky_quail_pause": "Tu código de recibo es: **{receiptId}**",
 	"vexed_early_lemming_engage": "El siguiente secreto ha sido visto y destruido:",
