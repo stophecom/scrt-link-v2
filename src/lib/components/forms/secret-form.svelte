@@ -96,7 +96,8 @@
 				publicNote,
 				expiresIn,
 				password,
-				secretType
+				secretType,
+				viewLimit: $formData.viewLimit
 			};
 
 			if (plausible) {
@@ -291,6 +292,22 @@
 					max="1000"
 					bind:value={neogramDestructionTimer}
 				/>
+			{/if}
+
+			<Label for="viewLimit">{m.loud_clean_crow_count()}</Label>
+			<Input
+				id="viewLimit"
+				class="w-44"
+				type="number"
+				min="1"
+				max={planLimits.maxViewLimit}
+				disabled={planLimits.maxViewLimit <= 1}
+				bind:value={$formData.viewLimit}
+			/>
+			{#if planLimits.maxViewLimit <= 1}
+				<div class="pt-1">
+					<UpgradeNotice tier={effectiveTier} {isWhiteLabel} />
+				</div>
 			{/if}
 
 			{#if (!planLimits.expirationOptions.length || !planLimits.passwordAllowed) && !((secretType === SecretType.SNAP && !planLimits.snap) || (secretType === SecretType.NEOGRAM && !planLimits.neogram) || (secretType === SecretType.REDIRECT && !planLimits.redirect))}

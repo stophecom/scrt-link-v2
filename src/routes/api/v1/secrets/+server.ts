@@ -99,7 +99,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			secretType: validation.data.secretType,
 			whiteLabelSiteId
 		});
-		return jsonWithCors({ receiptId, expiresIn, expiresAt });
+		return jsonWithCors({ receiptId, expiresIn, expiresAt, viewLimit: validation.data.viewLimit });
 	} catch (error) {
 		console.error(error);
 		return jsonWithCors({ error: `Couldn't save secret.` }, { status: 400 });

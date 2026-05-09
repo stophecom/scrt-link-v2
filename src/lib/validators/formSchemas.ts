@@ -74,7 +74,8 @@ export const secretFormSchema = () =>
 				}
 			)
 			.default(defaultExpiresInValue),
-		secretType: z.nativeEnum(SecretType).optional()
+		secretType: z.nativeEnum(SecretType).optional(),
+		viewLimit: z.number().int().min(1).max(10).default(1)
 	});
 
 export const themeFormSchema = () => z.object({ themeOption: z.nativeEnum(ThemeOptions) });

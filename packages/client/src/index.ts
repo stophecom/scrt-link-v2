@@ -27,6 +27,7 @@ export const scrtLink = (apiKey: string) => {
 			password,
 			publicNote,
 			expiresIn = 7 * DAY,
+			viewLimit = 1,
 			host = DEFAULT_HOST
 		} = options;
 
@@ -57,6 +58,7 @@ export const scrtLink = (apiKey: string) => {
 			publicKey,
 			publicNote,
 			expiresIn,
+			viewLimit,
 			password
 		});
 

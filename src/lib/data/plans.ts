@@ -18,7 +18,8 @@ const defaultLimits = {
 	passwordAllowed: false,
 	readReceiptsAllowed: false,
 	expirationOptions: [] as number[],
-	whiteLabel: false
+	whiteLabel: false,
+	maxViewLimit: 1
 };
 
 export const plans = () => [
@@ -45,7 +46,8 @@ export const plans = () => [
 			passwordAllowed: false,
 			readReceiptsAllowed: false,
 			expirationOptions: [],
-			whiteLabel: false
+			whiteLabel: false,
+			maxViewLimit: 1
 		}
 	},
 	{
@@ -73,7 +75,8 @@ export const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptions,
-			whiteLabel: false
+			whiteLabel: false,
+			maxViewLimit: 10
 		}
 	},
 	{
@@ -97,7 +100,8 @@ export const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
-			whiteLabel: false
+			whiteLabel: false,
+			maxViewLimit: 10
 		}
 	},
 	{
@@ -122,7 +126,8 @@ export const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
-			whiteLabel: true
+			whiteLabel: true,
+			maxViewLimit: 10
 		}
 	}
 ];

@@ -50,11 +50,13 @@ export const actions: Actions = {
 			expiresAt,
 			userId,
 			receiptId,
-			retrievedAt
+			retrievedAt,
+			viewLimit,
+			viewCount
 		} = result.secret;
 
-		// Secret has been accessed.
-		if (retrievedAt !== null) {
+		// Secret has been accessed the maximum number of times.
+		if (retrievedAt !== null || viewCount >= viewLimit) {
 			error(400, `Secret expired: ${secretIdHash}.`);
 		}
 
@@ -164,11 +166,14 @@ export const actions: Actions = {
 			}
 		}
 
-		// We set the retrievedAt date instead of instantly deleting the entry since we rely on some of the data for file downloads.
-		// A cron job is cleaning up the DB and files
+		// Increment view count. Set retrievedAt when all views are exhausted so the cron cleanup picks it up.
+		const newViewCount = viewCount + 1;
 		await db
 			.update(secretSchema)
-			.set({ retrievedAt: new Date() })
+			.set({
+				viewCount: newViewCount,
+				...(newViewCount >= viewLimit ? { retrievedAt: new Date() } : {})
+			})
 			.where(eq(secretSchema.secretIdHash, secretIdHash));
 
 		return { form, meta, content };
