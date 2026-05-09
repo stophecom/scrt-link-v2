@@ -58,22 +58,22 @@ type Theme = { light: ThemeVars; dark: ThemeVars };
 const THEME_MAP: Record<ThemeOptions, Theme> = {
 	[ThemeOptions.NAVY]: {
 		light: { primary: '#1a2942', primaryFg: '#ffffff', accent: '#d92f2f' },
-		dark: { primary: '#4a7cbf', primaryFg: '#ffffff', accent: '#e85555' }
+		dark: { primary: '#3a5a92', primaryFg: '#ffffff', accent: '#e85555' }
 	},
 	[ThemeOptions.PINK]: {
 		light: { primary: '#e60077', primaryFg: '#ffffff', accent: '#655a7f' },
-		dark: { primary: '#f72585', primaryFg: '#ffffff', accent: '#f0e1ff' }
+		dark: { primary: '#ff3d96', primaryFg: '#ffffff', accent: '#f0e1ff' }
 	},
 	[ThemeOptions.PURPLE]: {
-		light: { primary: '#8645b5', primaryFg: '#ffffff', accent: '#f59e0b' },
-		dark: { primary: '#bf5af2', primaryFg: '#1a0030', accent: '#fbbf24' }
+		light: { primary: '#70379d', primaryFg: '#ffffff', accent: '#f59e0b' },
+		dark: { primary: '#a04be2', primaryFg: '#ffffff', accent: '#fbbf24' }
 	},
 	[ThemeOptions.BLUE]: {
 		light: { primary: '#2071c9', primaryFg: '#ffffff', accent: '#f97316' },
 		dark: { primary: '#60a5fa', primaryFg: '#000000', accent: '#fb923c' }
 	},
 	[ThemeOptions.TEAL]: {
-		light: { primary: '#068484', primaryFg: '#ffffff', accent: '#f97316' },
+		light: { primary: '#076969', primaryFg: '#ffffff', accent: '#f97316' },
 		dark: { primary: '#2dd4bf', primaryFg: '#003838', accent: '#fb923c' }
 	}
 };
