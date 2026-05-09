@@ -1,6 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"bright_warm_otter_share": "Geheime Anfragen befinden sich in der öffentlichen Beta-Phase",
+	"bright_warm_otter_share": "Produktupdates im Mai",
 	"fresh_calm_heron_note": "Neu:",
 	"calm_tidy_finch_label": "Neu",
 	"loud_clean_crow_count": "Anzahl Aufrufe",
@@ -176,7 +176,7 @@
 	"raw_stout_felix_empower": "{amount} Stunden",
 	"curly_few_parrot_savor": "{amount} Tage",
 	"lucky_warm_mayfly_engage": "Vertraulich teilen.",
-	"aloof_quaint_snail_pave": "Sende Passwörter, private Dateien und alle Geheimnisse, die nicht in deinem Posteingang landen sollten. <span class=\"gradient-text\">Ende-zu-Ende verschlüsselt.</span> Ephemer. Open-Source.",
+	"aloof_quaint_snail_pave": "Sende Passwörter, private Dateien und alle Geheimnisse, die nicht in deinem Posteingang bleiben sollten. <span class=\"gradient-text\">Ende-zu-Ende verschlüsselt.</span> Kurzlebig. Open-Source.",
 	"sea_giant_flamingo_forgive": "Ende-zu-Ende-verschlüsselt",
 	"gross_empty_lion_dash": "Schweizer Datenschutz",
 	"mean_smug_loris_cherish": "Ohne Spuren",

@@ -6,10 +6,10 @@
 	<defs>
 		<style>
 			.url-explained-cls-1 {
-				fill: var(--color-primary);
+				fill: var(--color-accent);
 			}
 			.url-explained-cls-2 {
-				stroke: var(--color-primary);
+				stroke: var(--color-accent);
 			}
 			.url-explained-cls-2,
 			.url-explained-cls-3 {
