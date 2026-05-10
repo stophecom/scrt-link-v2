@@ -17,6 +17,7 @@
 	let masterKey = $state('');
 	let secretIdHash = $state('');
 	let showPasswordInput = $state(false);
+	let remainingViews = $state(1);
 
 	onMount(async () => {
 		try {
@@ -27,11 +28,13 @@
 			}
 			const secretIdSubstring = masterKey.substring(SECRET_ID_LENGTH);
 			secretIdHash = await sha256Hash(secretIdSubstring);
-			const { isPasswordProtected } = await api<{ isPasswordProtected: boolean }>(
-				`/secrets/${secretIdHash}`
-			);
+			const { isPasswordProtected, remainingViews: rv } = await api<{
+				isPasswordProtected: boolean;
+				remainingViews: number;
+			}>(`/secrets/${secretIdHash}`);
 
 			showPasswordInput = isPasswordProtected;
+			remainingViews = rv;
 		} catch (e) {
 			if (e instanceof Error) {
 				error = e?.message;
@@ -51,6 +54,6 @@
 		<Alert data-testid="alert-error" class="my-6" title="Error" variant="destructive">{error}</Alert
 		>
 	{:else}
-		<RevealSecretForm {form} {masterKey} {secretIdHash} {showPasswordInput} />
+		<RevealSecretForm {form} {masterKey} {secretIdHash} {showPasswordInput} {remainingViews} />
 	{/if}
 </div>

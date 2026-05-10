@@ -33,6 +33,7 @@ export enum TierOptions {
 }
 
 export enum ThemeOptions {
+	NAVY = 'navy',
 	PINK = 'pink',
 	PURPLE = 'purple',
 	BLUE = 'blue',

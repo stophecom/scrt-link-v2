@@ -16,12 +16,15 @@ const Root = DropdownMenuPrimitive.Root;
 const Trigger = DropdownMenuPrimitive.Trigger;
 const Group = DropdownMenuPrimitive.Group;
 const Portal = DropdownMenuPrimitive.Portal;
+const Arrow = DropdownMenuPrimitive.Arrow;
 
 export {
+	Arrow,
 	CheckboxItem,
 	Content,
 	//
 	Root as DropdownMenu,
+	Arrow as DropdownMenuArrow,
 	CheckboxItem as DropdownMenuCheckboxItem,
 	Content as DropdownMenuContent,
 	Group as DropdownMenuGroup,

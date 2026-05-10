@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Factory, Plus, Sparkles, User, X } from '@lucide/svelte';
+	import { Factory, Plus, Sparkles, X } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
 	import { PersistedState } from 'runed';
@@ -55,7 +55,8 @@
 							<span>{m.fresh_calm_heron_note()}</span>
 							<a
 								class="after:bg-primary-foreground before:bg-primary-foreground relative inline-block before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:opacity-50 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
-								href={localizeHref('/blog/secret-requests-beta')}>{m.bright_warm_otter_share()}</a
+								href={localizeHref('/blog/product-updates-may-2026')}
+								>{m.bright_warm_otter_share()}</a
 							>
 							<button
 								type="button"
@@ -112,13 +113,13 @@
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger>
 									{#snippet child({ props })}
-										<Button {...props} variant="ghost" size="icon">
+										<Button {...props} variant="outline" size="sm" class="mr-2 gap-1.5">
 											<Plus
-												class="transition-all {props['data-state'] === 'open'
+												class="h-4 w-4 transition-all {props['data-state'] === 'open'
 													? 'rotate-45'
 													: 'rotate-0'}"
 											/>
-											<span class="sr-only">{m.ideal_brave_eagle_trust()}</span>
+											{m.calm_tidy_finch_label()}
 										</Button>
 									{/snippet}
 								</DropdownMenu.Trigger>
@@ -168,16 +169,57 @@
 								{/if}
 							</a>
 						{:else}
-							<Button
-								variant="outline"
-								href={localizeHref('/login')}
-								class="max-sm:h-12 max-sm:w-12"
-							>
-								<span class="max-sm:sr-only">{m.simple_dry_boar_dazzle()}</span>
-								<User class="h-5 w-5 sm:hidden" />
+							<Button variant="ghost" size="sm" href={localizeHref('/login')}>
+								{m.simple_dry_boar_dazzle()}
 							</Button>
-							<Button href={localizeHref('/signup')}>{m.large_smart_badger_beam()}</Button>
+							<Button variant="outline" size="sm" href={localizeHref('/signup')}>
+								{m.large_smart_badger_beam()}
+							</Button>
 						{/if}
+
+						<!-- Hamburger menu (temporarily disabled)
+						{#if !isMinimal}
+							<DropdownMenu.Root>
+								<DropdownMenu.Trigger>
+									{#snippet child({ props })}
+										<Button {...props} variant="ghost" size="icon">
+											{#if props['data-state'] === 'open'}
+												<X class="h-5 w-5" />
+											{:else}
+												<Menu class="h-5 w-5" />
+											{/if}
+											<span class="sr-only">{m.plain_wise_crane_navigate()}</span>
+										</Button>
+									{/snippet}
+								</DropdownMenu.Trigger>
+								<DropdownMenu.Content
+									class="max-h-[calc(100vh-5rem)] w-72 overflow-y-auto sm:w-lg sm:p-6"
+									align="end"
+									sideOffset={-3}
+								>
+									<DropdownMenu.Arrow class="text-border" width={8} height={6} />
+
+									<div class="sm:grid sm:grid-cols-2 sm:gap-x-2">
+										{#each mainNav() as group, groupIndex (group.title)}
+											{#if groupIndex > 0}
+												<DropdownMenu.Separator class="sm:hidden" />
+											{/if}
+											<DropdownMenu.Group>
+												<DropdownMenu.Label>{group.title}</DropdownMenu.Label>
+												{#each group.items as item (item.href)}
+													<DropdownMenu.Item>
+														{#snippet child({ props })}
+															<a href={localizeHref(item.href)} {...props}>{item.label}</a>
+														{/snippet}
+													</DropdownMenu.Item>
+												{/each}
+											</DropdownMenu.Group>
+										{/each}
+									</div>
+								</DropdownMenu.Content>
+							</DropdownMenu.Root>
+						{/if}
+						-->
 					</div>
 				</Container>
 			</div>

@@ -11,8 +11,8 @@
 
 <WhiteLabelPage
 	metaTitle={m.active_polite_manatee_support()}
-	title={data?.title || m.lucky_warm_mayfly_engage()}
-	lead={data?.lead || m.bland_spicy_penguin_fade()}
+	title={data?.title || m.odd_swift_spider_tear()}
+	lead={data?.lead || m.jumpy_alert_pig_expand()}
 >
 	<div class="mb-12">
 		<CreateSecret

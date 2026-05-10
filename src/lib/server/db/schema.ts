@@ -206,6 +206,8 @@ export const secret = pgTable('secret', {
 	publicNote: text('public_note'),
 	passwordHash: text('password_hash'),
 	passwordAttempts: smallint('password_attempts').notNull().default(0),
+	viewLimit: smallint('view_limit').notNull().default(1),
+	viewCount: smallint('view_count').notNull().default(0),
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
 	retrievedAt: timestamp('retrieved_at', { withTimezone: true, mode: 'date' }),
 	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }),

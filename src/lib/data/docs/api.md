@@ -55,7 +55,8 @@ const response = await client.createSecret('Your secret text...', {
 	"secretLink": "https://scrt.link/s#gOOei~kEkcYAAX-YJQnGooSXdSJg8MXkzk~2",
 	"receiptId": "D0waygL3",
 	"expiresIn": 86400000,
-	"expiresAt": "2025-04-24T16:15:52.172Z"
+	"expiresAt": "2025-04-24T16:15:52.172Z",
+	"viewLimit": 1
 }
 ```
 
@@ -74,6 +75,7 @@ const response = await client.createSecret('Your secret text...', {
 			secretType: 'redirect', // text | redirect | neogram
 			password: 'foobar123',
 			expiresIn: 86400000,
+			viewLimit: 3, // How many times the secret can be viewed before it self-destructs (default: 1)
 			publicNote: 'Bitcoin wallet address',
 			host: 'br3f.com' // White-label
 		})

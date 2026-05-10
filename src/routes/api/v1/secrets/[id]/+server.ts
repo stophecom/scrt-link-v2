@@ -27,7 +27,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 			throw Error(`This secret has expired.`);
 		}
 
-		if (result?.retrievedAt) {
+		if (result?.retrievedAt || result.viewCount >= result.viewLimit) {
 			throw Error(`This secret has already been accessed and therefore no longer exists.`);
 		}
 
@@ -39,7 +39,10 @@ export const POST: RequestHandler = async ({ params, url }) => {
 			}
 		}
 
-		return json({ isPasswordProtected: !!result.passwordHash });
+		return json({
+			isPasswordProtected: !!result.passwordHash,
+			remainingViews: result.viewLimit - result.viewCount
+		});
 	} catch (e) {
 		console.error(e);
 

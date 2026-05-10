@@ -28,8 +28,9 @@
 		secretIdHash: string;
 		masterKey: string;
 		showPasswordInput: boolean;
+		remainingViews: number;
 	};
-	const { form, masterKey, secretIdHash, showPasswordInput }: Props = $props();
+	const { form, masterKey, secretIdHash, showPasswordInput, remainingViews }: Props = $props();
 
 	let meta: string = $state('');
 	let metaParsed: Meta | undefined = $state();
@@ -228,11 +229,15 @@
 			{#if showPasswordInput}
 				<h2 class="mb-4 text-3xl font-bold">{m.low_tame_lark_amaze()}</h2>
 				<p class="mb-4 text-xl leading-normal">
-					{m.alive_new_blackbird_stop()}
+					{remainingViews > 1
+						? m.spare_tangy_lark_view({ number: remainingViews })
+						: m.alive_new_blackbird_stop()}
 				</p>
 			{:else}
 				<p class="mb-4 text-xl leading-normal">
-					{m.short_known_mule_play()}
+					{remainingViews > 1
+						? m.spare_tangy_crow_view({ number: remainingViews })
+						: m.short_known_mule_play()}
 				</p>
 			{/if}
 			<FormWrapper message={$message}>
