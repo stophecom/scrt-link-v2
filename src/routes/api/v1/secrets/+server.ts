@@ -3,6 +3,7 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 import { isOriginalHostname } from '$lib/app-routing';
+import { getUserPlanLimits } from '$lib/data/plans';
 import { db } from '$lib/server/db';
 import { apiKey } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/schema';
@@ -53,6 +54,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	}
 
 	const userId = userWithApiKey.user?.id;
+	const userTier = userWithApiKey.user?.subscriptionTier ?? undefined;
 
 	const body = await request.json();
 	const validation = secretFormSchema().safeParse(body);
@@ -61,6 +63,14 @@ export const POST: RequestHandler = async ({ request }) => {
 		return jsonWithCors(
 			{ error: 'Invalid request', issues: validation.error.flatten() },
 			{ status: 400 }
+		);
+	}
+
+	const planLimits = getUserPlanLimits(userTier);
+	if (validation.data.viewLimit > planLimits.maxViewLimit) {
+		return jsonWithCors(
+			{ error: `View limit exceeds your plan maximum of ${planLimits.maxViewLimit}.` },
+			{ status: 403 }
 		);
 	}
 

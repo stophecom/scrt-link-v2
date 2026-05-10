@@ -39,7 +39,7 @@ export const sendContactEmail = async (email: string, content: string) => {
 	});
 };
 
-export const sendReidReceiptEmail = async (
+export const sendReadReceiptEmail = async (
 	email: string,
 	receiptId: string,
 	viewCount: number,
