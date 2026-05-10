@@ -16,9 +16,9 @@ const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
 const preferencesSchema = z
 	.object({
-		themeColor: z.nativeEnum(ThemeOptions).default(ThemeOptions.PINK)
+		themeColor: z.nativeEnum(ThemeOptions).default(ThemeOptions.NAVY)
 	})
-	.default({ themeColor: ThemeOptions.PINK });
+	.default({ themeColor: ThemeOptions.NAVY });
 
 export const sessionCookieName = 'auth-session';
 

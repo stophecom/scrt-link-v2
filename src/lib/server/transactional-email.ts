@@ -39,8 +39,16 @@ export const sendContactEmail = async (email: string, content: string) => {
 	});
 };
 
-export const sendReidReceiptEmail = async (email: string, receiptId: string) => {
-	const { html } = render(EmailReadReceipt, { props: { receiptId } });
+export const sendReadReceiptEmail = async (
+	email: string,
+	receiptId: string,
+	viewCount: number,
+	viewLimit: number,
+	isLastView: boolean
+) => {
+	const { html } = render(EmailReadReceipt, {
+		props: { receiptId, viewCount, viewLimit, isLastView }
+	});
 	await sendTransactionalEmail({
 		subject: m.spry_bald_guppy_cry(),
 		to: email,

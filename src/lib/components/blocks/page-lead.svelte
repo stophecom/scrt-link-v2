@@ -9,7 +9,7 @@
 	let { lead, renderAsHtml }: Props = $props();
 </script>
 
-<p class="mb-10 text-2xl leading-snug text-pretty md:text-3xl">
+<p class="mb-10 text-xl leading-snug text-pretty md:text-2xl">
 	{#if renderAsHtml}
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{@html lead}

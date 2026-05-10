@@ -52,6 +52,10 @@ export const getReadReceiptOptions = () => [
 
 export const getThemeOptions = () => [
 	{
+		value: ThemeOptions.NAVY,
+		label: 'Default'
+	},
+	{
 		value: ThemeOptions.PINK,
 		label: 'Pink'
 	},

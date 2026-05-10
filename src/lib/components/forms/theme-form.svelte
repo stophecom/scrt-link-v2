@@ -18,16 +18,15 @@
 
 	const form = superForm(formProp, {
 		validators: zod4Client(themeFormSchema()),
-
-		// We prioritize data returned from the load function
-		// https://superforms.rocks/concepts/enhance#optimistic-updates
-		invalidateAll: 'force',
 		dataType: 'json',
+		invalidateAll: false,
 		onChange: () => {
-			const documentStyle = document.body.style;
-			documentStyle.setProperty('--color-primary', `var(--theme-color-${$formData.themeOption})`);
-
 			form.submit();
+		},
+		onUpdated({ form: f }) {
+			if (f.valid) {
+				window.location.reload();
+			}
 		},
 		onError({ result }) {
 			// We use message for unexpected errors

@@ -50,7 +50,7 @@ export const emailVerificationFormValidator = async (
 export const themeFormValidator = async (user: App.Locals['user']) =>
 	await superValidate(
 		{
-			themeOption: user?.preferences?.themeColor || ThemeOptions.PINK
+			themeOption: user?.preferences?.themeColor || ThemeOptions.NAVY
 		},
 		zod4(themeFormSchema())
 	);

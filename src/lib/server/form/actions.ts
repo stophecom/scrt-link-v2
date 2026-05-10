@@ -107,6 +107,11 @@ export const postSecret: Action = async (event) => {
 	const user = event.locals.user;
 	const whiteLabelSiteId = event.locals.whiteLabelSite?.id;
 
+	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	if (form.data.viewLimit > planLimits.maxViewLimit) {
+		return fail(403, { form });
+	}
+
 	try {
 		const { receiptId, expiresIn, expiresAt } = await saveSecret({
 			userId: user?.id,

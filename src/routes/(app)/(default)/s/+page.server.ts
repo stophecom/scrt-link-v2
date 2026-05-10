@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, isNull, lt, sql } from 'drizzle-orm';
 import { fail, message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
@@ -7,7 +7,7 @@ import { verifyPassword } from '$lib/crypto';
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { secret as secretSchema, user as userSchema, userSettings } from '$lib/server/db/schema';
-import { sendReidReceiptEmail } from '$lib/server/transactional-email';
+import { sendReadReceiptEmail } from '$lib/server/transactional-email';
 import { revealSecretFormSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -53,9 +53,17 @@ export const actions: Actions = {
 			retrievedAt
 		} = result.secret;
 
-		// Secret has been accessed.
+		// Secret already definitively exhausted (retrievedAt is immutable once set).
 		if (retrievedAt !== null) {
-			error(400, `Secret expired: ${secretIdHash}.`);
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.sad_arable_canary_mop(),
+					description: m.stale_slow_halibut_spur()
+				},
+				{ status: 401 }
+			);
 		}
 
 		// Secret has expired.
@@ -67,13 +75,11 @@ export const actions: Actions = {
 					title: m.sad_arable_canary_mop(),
 					description: m.stale_slow_halibut_spur()
 				},
-				{
-					status: 401
-				}
+				{ status: 401 }
 			);
 		}
 
-		// Too many password attepmts
+		// Too many password attempts
 		if (passwordAttempts + 1 >= MAX_PASSWORD_ATTEMPTS) {
 			return message(
 				form,
@@ -82,9 +88,7 @@ export const actions: Actions = {
 					title: m.teary_main_bee_praise(),
 					description: m.vivid_vivid_peacock_slurp()
 				},
-				{
-					status: 401
-				}
+				{ status: 401 }
 			);
 		}
 
@@ -109,14 +113,46 @@ export const actions: Actions = {
 							amount: MAX_PASSWORD_ATTEMPTS - result.passwordAttempts
 						})
 					},
-					{
-						status: 401
-					}
+					{ status: 401 }
 				);
 			}
 		}
 
-		// Read receipts
+		// Atomic conditional increment — only succeeds if a view slot is still available.
+		// Postgres row-level locking serializes concurrent requests, preventing two simultaneous
+		// requests from both claiming the last view slot.
+		const [updated] = await db
+			.update(secretSchema)
+			.set({
+				viewCount: sql`${secretSchema.viewCount} + 1`,
+				retrievedAt: sql`CASE WHEN ${secretSchema.viewCount} + 1 >= ${secretSchema.viewLimit} THEN NOW() ELSE NULL END`
+			})
+			.where(
+				and(
+					eq(secretSchema.secretIdHash, secretIdHash),
+					isNull(secretSchema.retrievedAt),
+					lt(secretSchema.viewCount, secretSchema.viewLimit)
+				)
+			)
+			.returning();
+
+		if (!updated) {
+			// A concurrent request claimed the last slot between our SELECT and this UPDATE.
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.sad_arable_canary_mop(),
+					description: m.stale_slow_halibut_spur()
+				},
+				{ status: 401 }
+			);
+		}
+
+		const newViewCount = updated.viewCount;
+		const isLastView = updated.viewCount >= updated.viewLimit;
+
+		// Read receipts — sent after the successful DB update.
 		if (userId) {
 			try {
 				const [userWithSettings] = await db
@@ -136,7 +172,7 @@ export const actions: Actions = {
 						throw Error('No email for read receipt.');
 					}
 
-					await sendReidReceiptEmail(email, receiptId);
+					await sendReadReceiptEmail(email, receiptId, newViewCount, updated.viewLimit, isLastView);
 				}
 
 				// Send receipt via ntfy
@@ -144,15 +180,17 @@ export const actions: Actions = {
 					if (!ntfyEndpoint) {
 						throw Error('No ntfyEndpoint for read receipt.');
 					}
-					const body = m.vexed_early_lemming_engage();
+					const body = isLastView
+						? m.vexed_early_lemming_engage()
+						: m.aware_neat_moth_count({ viewCount: newViewCount, viewLimit: updated.viewLimit });
 
 					await fetch(`https://ntfy.sh/${ntfyEndpoint}`, {
-						method: 'POST', // PUT works too
+						method: 'POST',
 						body: `${body} ${receiptId}`,
 						headers: {
 							Title: m.spry_bald_guppy_cry(),
-							Priority: 'urgent',
-							Tags: 'fire'
+							Priority: isLastView ? 'urgent' : 'default',
+							Tags: isLastView ? 'fire' : 'eyes'
 						}
 					});
 
@@ -163,13 +201,6 @@ export const actions: Actions = {
 				console.error(e);
 			}
 		}
-
-		// We set the retrievedAt date instead of instantly deleting the entry since we rely on some of the data for file downloads.
-		// A cron job is cleaning up the DB and files
-		await db
-			.update(secretSchema)
-			.set({ retrievedAt: new Date() })
-			.where(eq(secretSchema.secretIdHash, secretIdHash));
 
 		return { form, meta, content };
 	}

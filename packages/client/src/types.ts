@@ -6,5 +6,6 @@ export type Options = {
 	password?: string;
 	publicNote?: string;
 	expiresIn?: number;
+	viewLimit?: number;
 	host?: string;
 };

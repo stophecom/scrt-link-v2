@@ -36,7 +36,8 @@ export const saveSecret = async ({
 	secretType,
 	whiteLabelSiteId
 }: SaveSecret) => {
-	const { content, publicNote, password, secretIdHash, meta, expiresIn, publicKey } = secretRequest;
+	const { content, publicNote, password, secretIdHash, meta, expiresIn, publicKey, viewLimit } =
+		secretRequest;
 
 	let passwordHash: string | undefined;
 	if (password) {
@@ -61,6 +62,7 @@ export const saveSecret = async ({
 				passwordHash,
 				expiresAt: new Date(Date.now() + expiresIn),
 				publicKey,
+				viewLimit,
 				receiptId,
 				userId: userId,
 				whiteLabelSiteId: whiteLabelSiteId

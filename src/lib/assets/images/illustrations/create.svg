@@ -6,7 +6,7 @@
 				fill: var(--color-primary);
 			}
 			.cls-2 {
-				opacity: 0.7;
+				opacity: 0.5;
 			}
 			.cls-3,
 			.cls-4 {
@@ -15,15 +15,15 @@
 				stroke-miterlimit: 10;
 			}
 			.cls-3 {
-				stroke: #1b242e;
+				stroke: var(--color-background);
 				stroke-width: 6.29px;
 			}
 			.cls-4 {
-				stroke: currentColor;
+				stroke: var(--color-background);
 				stroke-width: 3.92px;
 			}
 			.cls-5 {
-				fill: currentColor;
+				fill: var(--color-accent);
 			}
 			.cls-6 {
 				fill: var(--color-background);
