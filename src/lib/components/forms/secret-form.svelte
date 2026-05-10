@@ -314,6 +314,7 @@
 
 		<div class="flex flex-col items-stretch sm:flex-row">
 			<Toggle
+				data-testid="secret-form-more-options"
 				class="mb-1"
 				bind:pressed={isOptionsVisible}
 				aria-label={m.topical_zany_grebe_exhale()}
