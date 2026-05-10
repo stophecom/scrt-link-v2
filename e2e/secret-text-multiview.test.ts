@@ -79,6 +79,9 @@ test('First reveal succeeds and secret content is shown', async () => {
 });
 
 test('Second visit shows the secret again (not yet destroyed)', async () => {
+	// Navigate away first — the secret URL is a hash URL (/s#key), and browsers
+	// won't reload the page when navigating to the same hash, leaving stale state.
+	await page.goto('/');
 	await page.goto(secretUrl);
 	await expect(page.getByTestId('revelation-form-submit')).toBeVisible({ timeout: 10000 });
 	await page.getByTestId('revelation-form-submit').click();
@@ -88,6 +91,7 @@ test('Second visit shows the secret again (not yet destroyed)', async () => {
 });
 
 test('Third (final) reveal succeeds', async () => {
+	await page.goto('/');
 	await page.goto(secretUrl);
 	await expect(page.getByTestId('revelation-form-submit')).toBeVisible({ timeout: 10000 });
 	await page.getByTestId('revelation-form-submit').click();
@@ -97,6 +101,7 @@ test('Third (final) reveal succeeds', async () => {
 });
 
 test('Secret is permanently destroyed after the final view', async () => {
+	await page.goto('/');
 	await page.goto(secretUrl);
 	await expect(page.getByTestId('alert-error')).toBeVisible({ timeout: 10000 });
 	await expect(page.getByTestId('revelation-form-submit')).not.toBeVisible();
