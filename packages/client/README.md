@@ -32,7 +32,7 @@ const client = scrtLink('your-api-key-here');
 const result = await client.createSecret('This is a secret message!', {
 	secretType: SecretType.TEXT,
 	publicNote: 'Optional public note',
-	expiresIn: 3600 // 1 hour in seconds
+	expiresIn: 3600000 // 1 hour in ms
 });
 
 console.log('Secret Link:', result.secretLink);
@@ -59,8 +59,9 @@ Creates a new secret.
   - `secretType`: `SecretType.TEXT` or `SecretType.REDIRECT` or `SecretType.NEOGRAM`.
   - `password`: Optional password to further protect the secret.
   - `publicNote`: Optional note visible to anyone with the link.
-  - `expiresIn`: Expiration time in ms (default is 7 days).
-  - `host`: Custom host (needs to configured on scrt.link).
+  - `expiresIn`: Expiration time in ms (default: 7 days).
+  - `viewLimit`: Number of times the secret can be viewed before it self-destructs (default: `1`). Requires a paid plan for values greater than `1`.
+  - `host`: Custom host (needs to be configured on scrt.link).
 
 ## Security
 
