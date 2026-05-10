@@ -51,6 +51,8 @@ test('Create a secret with viewLimit > 1', async ({ baseURL }) => {
 
 	await page.getByTestId('input-secret-content').fill(secret);
 
+	await page.getByTestId('secret-form-more-options').click();
+
 	const viewLimitInput = page.locator('input[name="viewLimit"]');
 	await viewLimitInput.fill(String(VIEW_LIMIT));
 
