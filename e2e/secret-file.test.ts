@@ -30,6 +30,16 @@ test('File upload', async ({ baseURL }) => {
 		}
 	});
 
+	page.on('requestfailed', (request) => {
+		console.log(`[REQUEST FAILED] ${request.method()} ${request.url()} — ${request.failure()?.errorText}`);
+	});
+
+	page.on('console', (msg) => {
+		if (msg.type() === 'error') {
+			console.log(`[BROWSER ERROR] ${msg.text()}`);
+		}
+	});
+
 	// Upload a file via the hidden file input inside the drop zone
 	await page.locator("input[type='file']").setInputFiles('src/app.html');
 
