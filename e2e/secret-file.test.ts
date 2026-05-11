@@ -40,9 +40,8 @@ test('File upload', async ({ baseURL }) => {
 	await page.getByTestId('secret-form-submit').click();
 	await responsePromise;
 
-	await expect(page.getByTestId('copy-link')).toBeVisible({ timeout: 15000 });
-	await page.getByTestId('copy-link').click();
-	secretUrl = await page.evaluate(() => navigator.clipboard.readText());
+	await expect(page.getByTestId('secret-link')).toBeVisible({ timeout: 15000 });
+	secretUrl = (await page.getByTestId('secret-link').textContent())?.trim() ?? '';
 
 	expect(secretUrl).toContain(`${baseURL}/s#`);
 });
