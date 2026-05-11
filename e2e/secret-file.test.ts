@@ -31,7 +31,9 @@ test('File upload', async ({ baseURL }) => {
 	});
 
 	page.on('requestfailed', (request) => {
-		console.log(`[REQUEST FAILED] ${request.method()} ${request.url()} — ${request.failure()?.errorText}`);
+		console.log(
+			`[REQUEST FAILED] ${request.method()} ${request.url()} — ${request.failure()?.errorText}`
+		);
 	});
 
 	page.on('console', (msg) => {

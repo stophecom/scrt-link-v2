@@ -70,7 +70,9 @@
 					{m.fluffy_vivid_mare_flow()}
 				</h3>
 				<div class="shrink overflow-hidden pe-2">
-					<div data-testid="secret-link" class="mb-2 truncate text-xl font-normal whitespace-pre">{link}</div>
+					<div data-testid="secret-link" class="mb-2 truncate text-xl font-normal whitespace-pre">
+						{link}
+					</div>
 					<div class="text-muted-foreground block text-sm">
 						<Markdown markdown={successMessage} />
 					</div>
