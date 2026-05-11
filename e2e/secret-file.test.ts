@@ -9,6 +9,14 @@ let download: Download;
 
 test.beforeAll(async ({ browser }) => {
 	page = await browser.newPage();
+
+	// Strip the Vercel bypass header from S3 requests — S3 CORS rejects unknown headers
+	// in preflight, causing the upload to fail with a network error.
+	await page.route(/flow\.swiss/, async (route) => {
+		const headers = { ...route.request().headers() };
+		delete headers['x-vercel-protection-bypass'];
+		await route.continue({ headers });
+	});
 });
 
 test.afterAll(async () => {
