@@ -2,11 +2,12 @@ import { sha256Hash } from '@scrt-link/core';
 import { and, eq } from 'drizzle-orm';
 
 import { generateBase64Token } from '$lib/crypto';
-import { InviteStatus, type MembershipRole } from '$lib/data/enums';
+import { InviteStatus, type MembershipRole, TierOptions } from '$lib/data/enums';
 import { DAY } from '$lib/data/units';
 
 import { db } from './db';
 import { invite, membership, type Organization, organization, type User, user } from './db/schema';
+import stripeInstance, { getActiveSubscription } from './stripe';
 import { sendOrganisationInvitationEmail } from './transactional-email';
 
 type GetOrganizationById = {
@@ -19,6 +20,30 @@ export const getOrganizationById = async ({ organizationId }: GetOrganizationByI
 		.where(eq(organization.id, organizationId))
 		.limit(1);
 	return result;
+};
+
+export const syncOrgSeatCount = async (organizationId: string) => {
+	const [org] = await db
+		.select()
+		.from(organization)
+		.where(eq(organization.id, organizationId))
+		.limit(1);
+
+	if (!org?.stripeCustomerId) return;
+
+	const subscription = await getActiveSubscription(org.stripeCustomerId);
+	if (!subscription) return;
+
+	const members = await getMembersByOrganizationId(organizationId);
+	const quantity = Math.max(members.length, 1);
+
+	try {
+		await stripeInstance.subscriptions.update(subscription.id, {
+			items: [{ id: subscription.items.data[0].id, quantity }]
+		});
+	} catch (e) {
+		console.error('[syncOrgSeatCount] Failed to update Stripe quantity:', e);
+	}
 };
 
 export const getOrganizationsByUserId = async (userId: User['id']) =>
@@ -112,6 +137,42 @@ export type MembersAndInvitesByOrganization = {
 	picture: string | null;
 	role: MembershipRole | null;
 	status: InviteStatus | null;
+};
+
+const TIER_RANK: Record<TierOptions, number> = {
+	[TierOptions.CONFIDENTIAL]: 0,
+	[TierOptions.SECRET]: 1,
+	[TierOptions.TOP_SECRET]: 2,
+	[TierOptions.SECRET_SERVICE]: 3,
+	[TierOptions.TOP_SECRET_SERVICE]: 4
+};
+
+const ORG_PLAN_TO_MEMBER_TIER: Partial<Record<TierOptions, TierOptions>> = {
+	[TierOptions.SECRET_SERVICE]: TierOptions.SECRET,
+	[TierOptions.TOP_SECRET_SERVICE]: TierOptions.TOP_SECRET
+};
+
+export const getEffectiveTierForUser = async (
+	userId: string,
+	userTier: TierOptions
+): Promise<TierOptions> => {
+	const orgs = await db
+		.select({ subscriptionTier: organization.subscriptionTier })
+		.from(membership)
+		.innerJoin(organization, eq(membership.organizationId, organization.id))
+		.where(eq(membership.userId, userId));
+
+	let effective = userTier;
+
+	for (const org of orgs) {
+		if (!org.subscriptionTier) continue;
+		const conferred = ORG_PLAN_TO_MEMBER_TIER[org.subscriptionTier];
+		if (conferred && TIER_RANK[conferred] > TIER_RANK[effective]) {
+			effective = conferred;
+		}
+	}
+
+	return effective;
 };
 
 export const getMembersAndInvitesByOrganization = async (organizationId: Organization['id']) => {

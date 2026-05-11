@@ -1,6 +1,8 @@
 import { getBaseUrl } from '$lib/constants';
+import { TierOptions } from '$lib/data/enums';
 import { redirectLocalized } from '$lib/i18n';
 import { hasNeedsRecoveryCookie } from '$lib/server/cookies';
+import { getEffectiveTierForUser } from '$lib/server/organization';
 
 import type { LayoutServerLoad } from './$types';
 
@@ -61,8 +63,14 @@ export const load: LayoutServerLoad = async (event) => {
 		}
 	}
 
+	const effectiveTier = await getEffectiveTierForUser(
+		user.id,
+		user.subscriptionTier ?? TierOptions.CONFIDENTIAL
+	);
+
 	return {
 		user,
+		effectiveTier,
 		baseUrl: getBaseUrl()
 	};
 };

@@ -6,7 +6,7 @@
 
 	import { cn } from '$lib/client/utils';
 	import * as Tooltip from '$lib/components/ui/tooltip';
-	import { type SupportedCurrency, TierOptions } from '$lib/data/enums';
+	import { type SupportedCurrency } from '$lib/data/enums';
 	import { getPlanContents } from '$lib/data/plans';
 	import { formatCurrency } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
@@ -20,6 +20,7 @@
 		showYearlyPrice?: boolean;
 		isActiveProduct?: boolean;
 		hidePromotion?: boolean;
+		isOrgPlan?: boolean;
 		children?: Snippet;
 	};
 
@@ -32,6 +33,7 @@
 		showYearlyPrice,
 		isActiveProduct,
 		hidePromotion,
+		isOrgPlan = false,
 		children,
 		...rest
 	}: Props & SvelteHTMLElements['div'] = $props();
@@ -64,9 +66,9 @@
 	<div class="pe-8 pb-1">
 		<h4 class="mb-0.5 text-sm font-medium">
 			<span class="me-2">{name}</span>
-			{#if name === TierOptions.SECRET_SERVICE}
+			{#if isOrgPlan}
 				<span class="bg-foreground text-background inline-flex rounded-md px-2 py-1 text-xs"
-					>business</span
+					>{m.great_funny_beaver_gleam()}</span
 				>
 			{/if}
 		</h4>
@@ -85,7 +87,7 @@
 					</span>
 				{/if}
 			</div>
-			<div class="text-sm">{m.sunny_such_cod_shine()}</div>
+			<div class="text-sm">{isOrgPlan ? m.short_plain_mole_rush() : m.sunny_such_cod_shine()}</div>
 		{:else}
 			<div class="text-3xl font-bold">{m.inner_pretty_raven_dine()}</div>
 			<div class="text-sm">{m.weak_witty_alligator_foster()}</div>

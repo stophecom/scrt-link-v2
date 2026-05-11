@@ -12,15 +12,17 @@
 	import getStripe from '$lib/client/stripe';
 	import { type Variant } from '$lib/components/ui/alert';
 	import Alert from '$lib/components/ui/alert/alert.svelte';
+	import BigSwitch from '$lib/components/ui/big-switch/big-switch.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Switch from '$lib/components/ui/switch/switch.svelte';
-	import { SupportedCurrency } from '$lib/data/enums';
+	import { SupportedCurrency, TierOptions } from '$lib/data/enums';
 	import { formatCurrency, formatDate } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { getLocale, localizeHref } from '$lib/paraglide/runtime';
 
 	import type { Plan } from '../../../api/v1/plans/+server';
 	import type { LayoutServerData } from '../../$types';
+	import BusinessPlanSelection from './business-plan-selection.svelte';
 	import CurrencySwitcher from './currency-switcher.svelte';
 	import PlanView from './plan.svelte';
 
@@ -28,8 +30,12 @@
 		plans: Plan[];
 		user: LayoutServerData['user'];
 		subscription: Stripe.Subscription | null;
+		orgSubscription: Stripe.Subscription | null;
+		orgId: string | null;
 	};
-	let { plans, user, subscription }: Props = $props();
+	let { plans, user, subscription, orgSubscription, orgId }: Props = $props();
+
+	let showBusiness = $state(false);
 
 	let showYearlyPrice = $state(true);
 
@@ -54,18 +60,22 @@
 		Math.floor(
 			(1 - premiumPlanPrices.yearly.unit_amount / 12 / premiumPlanPrices.monthly.unit_amount) * 100
 		);
-	// Sort plans based on price
+	const orgPlanNames: string[] = [TierOptions.SECRET_SERVICE, TierOptions.TOP_SECRET_SERVICE];
+
+	// Sort personal plans only (exclude org plans)
 	let plansSorted = $derived(
-		plans.sort((a, b) => {
-			if (a.prices.monthly.unit_amount && b.prices.monthly.unit_amount) {
-				if (a?.prices.monthly.unit_amount < b.prices.monthly.unit_amount) {
-					return -1;
-				} else {
-					return 1;
+		plans
+			.filter((p) => !orgPlanNames.includes(p.name))
+			.sort((a, b) => {
+				if (a.prices.monthly.unit_amount && b.prices.monthly.unit_amount) {
+					if (a?.prices.monthly.unit_amount < b.prices.monthly.unit_amount) {
+						return -1;
+					} else {
+						return 1;
+					}
 				}
-			}
-			return 1;
-		})
+				return 1;
+			})
 	);
 
 	const handleSubmit = async (priceId: string) => {
@@ -140,67 +150,86 @@
 {/if}
 
 <div>
-	<div class="grid gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-4 md:gap-3 lg:-mx-4 xl:-mx-24">
-		<PlanView name="Confidential">
-			{#if !user}
-				<Button class="w-full" href={localizeHref('/signup')}>{m.lofty_tasty_ray_fond()}</Button>
-			{:else if user && !subscription}
-				{@render renderIsActivePlan()}
-			{/if}
-		</PlanView>
-
-		{#each plansSorted as plan (plan.id)}
-			{@const prices = plan.prices}
-			{@const isActiveProduct = plan.id === activeProduct}
-			{@const price = showYearlyPrice ? prices?.yearly : prices?.monthly}
-			{@const priceUnitAmount = price?.currency_options[currency.current]?.unit_amount || 0}
-			{@const monthlyPriceUnitAmount =
-				prices?.monthly?.currency_options[currency.current]?.unit_amount || 0}
-			{@const priceId = price.id}
-
-			<PlanView
-				name={plan.name}
-				{showYearlyPrice}
-				{priceUnitAmount}
-				{monthlyPriceUnitAmount}
-				currency={currency.current}
-				hidePromotion={!!subscription}
-				{isActiveProduct}
-				billingInfo={price.recurring?.interval === 'year'
-					? m.alert_heroic_haddock_dare({
-							amount: formatCurrency(priceUnitAmount / 100, currency.current)
-						})
-					: m.slow_frail_hare_empower({
-							amount: formatCurrency(priceUnitAmount / 100, currency.current)
-						})}
-			>
-				{#if !subscription}
-					<Button class="w-full" onclick={() => handleSubmit(priceId)}
-						>{m.noisy_safe_moth_mop()}</Button
-					>
-					<div class="py-1 text-center text-xs">
-						{m.early_vexed_slug_mend({ amount: TRIAL_PERIOD_DAYS })}
-					</div>
-				{:else if isActiveProduct}
-					{@render renderIsActivePlan()}
-					{#if subscription?.cancel_at}
-						<p class="text-destructive text-sm">
-							{m.fair_true_moth_commend({
-								date: formatDate(new Date(subscription.cancel_at * 1000))
-							})}
-						</p>
-					{/if}
-				{:else}
-					<Button class="w-full" onclick={() => handleSubmit(priceId)}>Select plan</Button>
-					<div class="py-1 text-center text-xs">
-						{m.civil_formal_firefox_surge({ planName: plan.name })}
-					</div>
-				{/if}
-			</PlanView>
-		{/each}
+	<div class="mb-8 flex justify-center">
+		<BigSwitch
+			bind:checked={showBusiness}
+			left={m.lean_bold_worm_grow()}
+			right={m.great_funny_beaver_gleam()}
+		/>
 	</div>
 
-	<div class="flex flex-col flex-wrap items-center sm:flex-row">
+	{#if showBusiness}
+		<BusinessPlanSelection
+			{plans}
+			{user}
+			{orgId}
+			{orgSubscription}
+			currency={currency.current}
+			{showYearlyPrice}
+		/>
+	{:else}
+		<div class="grid gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-4 md:gap-3 lg:-mx-4 xl:-mx-24">
+			<PlanView name="Confidential">
+				{#if !user}
+					<Button class="w-full" href={localizeHref('/signup')}>{m.lofty_tasty_ray_fond()}</Button>
+				{:else if user && !subscription}
+					{@render renderIsActivePlan()}
+				{/if}
+			</PlanView>
+
+			{#each plansSorted as plan (plan.id)}
+				{@const prices = plan.prices}
+				{@const isActiveProduct = plan.id === activeProduct}
+				{@const price = showYearlyPrice ? prices?.yearly : prices?.monthly}
+				{@const priceUnitAmount = price?.currency_options[currency.current]?.unit_amount || 0}
+				{@const monthlyPriceUnitAmount =
+					prices?.monthly?.currency_options[currency.current]?.unit_amount || 0}
+				{@const priceId = price.id}
+
+				<PlanView
+					name={plan.name}
+					{showYearlyPrice}
+					{priceUnitAmount}
+					{monthlyPriceUnitAmount}
+					currency={currency.current}
+					hidePromotion={!!subscription}
+					{isActiveProduct}
+					billingInfo={price.recurring?.interval === 'year'
+						? m.alert_heroic_haddock_dare({
+								amount: formatCurrency(priceUnitAmount / 100, currency.current)
+							})
+						: m.slow_frail_hare_empower({
+								amount: formatCurrency(priceUnitAmount / 100, currency.current)
+							})}
+				>
+					{#if !subscription}
+						<Button class="w-full" onclick={() => handleSubmit(priceId)}
+							>{m.noisy_safe_moth_mop()}</Button
+						>
+						<div class="py-1 text-center text-xs">
+							{m.early_vexed_slug_mend({ amount: TRIAL_PERIOD_DAYS })}
+						</div>
+					{:else if isActiveProduct}
+						{@render renderIsActivePlan()}
+						{#if subscription?.cancel_at}
+							<p class="text-destructive text-sm">
+								{m.fair_true_moth_commend({
+									date: formatDate(new Date(subscription.cancel_at * 1000))
+								})}
+							</p>
+						{/if}
+					{:else}
+						<Button class="w-full" onclick={() => handleSubmit(priceId)}>Select plan</Button>
+						<div class="py-1 text-center text-xs">
+							{m.civil_formal_firefox_surge({ planName: plan.name })}
+						</div>
+					{/if}
+				</PlanView>
+			{/each}
+		</div>
+	{/if}
+
+	<div class="mt-4 flex flex-col flex-wrap items-center sm:flex-row">
 		<div class="xs:flex mr-4 items-center py-4">
 			<CurrencySwitcher bind:activeCurrency={currency.current} />
 		</div>

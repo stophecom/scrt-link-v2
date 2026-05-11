@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Palette } from '@lucide/svelte';
+	import { ExternalLink, Palette, Receipt } from '@lucide/svelte';
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
 	import UpgradeNotice from '$lib/components/blocks/upgrade-notice.svelte';
@@ -8,6 +8,7 @@
 	import Card from '$lib/components/ui/card';
 	import Stepper from '$lib/components/ui/stepper';
 	import { getUserPlanLimits } from '$lib/data/plans';
+	import { formatCurrency, formatDate } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -57,6 +58,77 @@
 			<UpgradeNotice tier={data.user?.subscriptionTier} class="mb-6" />
 
 			<Button variant="outline" href={localizeHref('/business')}>{m.fit_ok_worm_lead()}</Button>
+		{/if}
+	</Card>
+{/if}
+
+{#if data.userOrganization?.role === 'Owner'}
+	<Card class="mb-6" title={m.misty_teal_hawk_glow()}>
+		{#if data.orgSubscription}
+			{@const sub = data.orgSubscription}
+			{@const item = sub.items.data[0]}
+			{@const interval = item.price.recurring?.interval}
+			{@const amount = item.price.unit_amount ?? 0}
+			{@const currency = item.price.currency}
+			<div class="mb-4 flex flex-wrap gap-6">
+				<div>
+					<p class="text-muted-foreground text-xs uppercase">{m.novel_proud_anaconda_zoom()}</p>
+					<p class="font-medium">
+						{sub.items.data[0].price.nickname ?? data.userOrganization.name}
+					</p>
+					<span class="text-xs capitalize">{sub.status}</span>
+				</div>
+				<div>
+					<p class="text-muted-foreground text-xs uppercase">{m.busy_teal_elk_nod()}</p>
+					<p class="font-medium">
+						{formatDate(new Date(sub.current_period_end * 1000))}
+					</p>
+				</div>
+				<div>
+					<p class="text-muted-foreground text-xs uppercase">{m.short_plain_mole_rush()}</p>
+					<p class="font-medium">
+						{formatCurrency(amount / 100, currency)} / {interval} / seat
+					</p>
+				</div>
+			</div>
+
+			{#if data.orgInvoices.length}
+				<h4 class="text-muted-foreground mb-2 text-xs font-semibold uppercase">
+					{m.pale_flat_ox_zoom()}
+				</h4>
+				<ul class="mb-4 divide-y text-sm">
+					{#each data.orgInvoices as invoice (invoice.id)}
+						<li class="flex items-center justify-between py-2">
+							<span>{formatDate(new Date(invoice.created * 1000))}</span>
+							<span>{formatCurrency((invoice.amount_paid ?? 0) / 100, invoice.currency)}</span>
+							<span class="capitalize">{invoice.status}</span>
+							{#if invoice.invoice_pdf}
+								<a
+									href={invoice.invoice_pdf}
+									target="_blank"
+									rel="noopener noreferrer"
+									class="text-primary flex items-center gap-1 text-xs"
+								>
+									PDF <ExternalLink class="h-3 w-3" />
+								</a>
+							{/if}
+						</li>
+					{/each}
+				</ul>
+			{:else}
+				<p class="text-muted-foreground mb-4 text-sm">{m.zeal_fair_elk_drop()}</p>
+			{/if}
+
+			{#if data.stripePortalUrl}
+				<Button variant="outline" href={data.stripePortalUrl}>
+					<Receipt class="me-2 h-4 w-4" />
+					{m.dull_tame_crow_hike()}
+				</Button>
+			{/if}
+		{:else}
+			<p class="text-muted-foreground mb-4 text-sm">{m.gold_calm_fox_sing()}</p>
+			<Button variant="outline" href={localizeHref('/pricing')}>{m.cute_witty_puffin_grow()}</Button
+			>
 		{/if}
 	</Card>
 {/if}

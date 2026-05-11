@@ -27,7 +27,8 @@ export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,
 	TierOptions.SECRET,
 	TierOptions.TOP_SECRET,
-	TierOptions.SECRET_SERVICE
+	TierOptions.SECRET_SERVICE,
+	TierOptions.TOP_SECRET_SERVICE
 ]);
 
 export const role = pgEnum('role', [Role.USER, Role.ADMIN]);
@@ -104,7 +105,9 @@ export const secretTypeEnum = pgEnum('secret_type_enum', [
 export const organization = pgTable('organization', {
 	id: uuid('id').primaryKey().defaultRandom(),
 	name: text('name').notNull(),
-	createdBy: uuid('created_by').references(() => user.id, { onDelete: 'set null' })
+	createdBy: uuid('created_by').references(() => user.id, { onDelete: 'set null' }),
+	stripeCustomerId: text('stripe_customer_id'),
+	subscriptionTier: subscriptionTier('subscription_tier').default(TierOptions.CONFIDENTIAL)
 });
 
 export const membershipRole = pgEnum('membership_role', [

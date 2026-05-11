@@ -12,7 +12,7 @@
 	class="mb-6"
 	cardTitle={m.witty_mealy_seal_kick()}
 	form={data.secretForm}
-	effectiveTier={data.user?.subscriptionTier}
+	effectiveTier={data.effectiveTier}
 	hidePrimaryFeatureList
 />
 

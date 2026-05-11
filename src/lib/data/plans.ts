@@ -105,13 +105,41 @@ export const plans = () => [
 		}
 	},
 	{
-		name: TierOptions.SECRET_SERVICE, // Limits apply to owner and org members on white-label sites.
+		name: TierOptions.SECRET_SERVICE,
 		icon: Factory,
+		isOrgPlan: true,
 		subtitle: m.brave_cool_bear_roam(),
 		title: m.bold_warm_falcon_soar(),
 		contents: [
 			{ label: m.aloof_zany_cheetah_greet() },
-			{ label: m.proud_cool_lemur_commend({ amount: 30 }) },
+			{ label: m.short_plain_mole_rush() },
+			{ label: m.lucky_plain_deer_race() },
+			{ label: m.calm_bright_otter_rest() },
+			{ label: m.inner_fun_mink_push() }
+		],
+		limits: {
+			[SecretType.TEXT]: 100_000,
+			[SecretType.FILE]: 1 * GB,
+			[SecretType.REDIRECT]: true,
+			[SecretType.SNAP]: true,
+			[SecretType.NEOGRAM]: true,
+			apiAccess: true,
+			passwordAllowed: true,
+			readReceiptsAllowed: true,
+			expirationOptions: expiresInOptions,
+			whiteLabel: true,
+			maxViewLimit: 1000
+		}
+	},
+	{
+		name: TierOptions.TOP_SECRET_SERVICE,
+		icon: Factory,
+		isOrgPlan: true,
+		subtitle: m.brave_cool_bear_roam(),
+		title: m.bold_warm_falcon_soar(),
+		contents: [
+			{ label: m.aloof_zany_cheetah_greet() },
+			{ label: m.short_plain_mole_rush() },
 			{ label: m.muddy_any_tapir_roar() },
 			{ label: m.calm_bright_otter_rest() },
 			{ label: m.inner_fun_mink_push() }

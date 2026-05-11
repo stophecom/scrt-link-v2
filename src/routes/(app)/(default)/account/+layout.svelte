@@ -22,7 +22,7 @@
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { Spinner } from '$lib/components/ui/spinner';
-	import { Role, TierOptions } from '$lib/data/enums';
+	import { Role } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -103,8 +103,8 @@
 			icon: KeyRound
 		},
 		{
-			href: localizeHref('/account/secret-service'),
-			label: TierOptions.SECRET_SERVICE,
+			href: localizeHref('/account/organization'),
+			label: m.wild_inner_fox_honor(),
 			icon: Factory
 		},
 		{

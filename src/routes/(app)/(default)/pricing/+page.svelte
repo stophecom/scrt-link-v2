@@ -30,7 +30,13 @@
 >
 	<Container variant="wide" class="mb-6 sm:py-10">
 		{#if data.plans}
-			<PlanSelection plans={data.plans} user={data.user} subscription={data.subscription} />
+			<PlanSelection
+				plans={data.plans}
+				user={data.user}
+				subscription={data.subscription}
+				orgSubscription={data.orgSubscription}
+				orgId={data.orgId}
+			/>
 		{/if}
 		<div class="flex justify-center">
 			<Button size="sm" variant="outline" href="#compare-plans"

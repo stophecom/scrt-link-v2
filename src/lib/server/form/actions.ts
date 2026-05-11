@@ -5,11 +5,7 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import {
-	MAX_API_KEYS_PER_USER,
-	MAX_ORGANIZATION_TEAM_SIZE,
-	MAX_ORGANIZATIONS_PER_USER
-} from '$lib/constants';
+import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
@@ -72,9 +68,9 @@ import {
 	deleteEmailVerificationRequests
 } from '../email-verification';
 import {
-	getMembersAndInvitesByOrganization,
 	getOrganizationsByUserId,
-	inviteUserToOrganization
+	inviteUserToOrganization,
+	syncOrgSeatCount
 } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
 import {
@@ -359,23 +355,6 @@ export const addMemberToOrganization: Action = async (event) => {
 		);
 	}
 
-	// Limit amount of team members. @todo Think about metered pricing for organizations.
-	const membersByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
-
-	if (membersByOrganization.length >= MAX_ORGANIZATION_TEAM_SIZE) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.early_honest_grizzly_clasp(),
-				description: m.salty_active_toucan_kiss()
-			},
-			{
-				status: 401
-			}
-		);
-	}
-
 	// Handle existing member
 	const existingUser = await getUserByEmail(email);
 	if (existingUser) {
@@ -621,6 +600,9 @@ export const removeOrganizationMember: Action = async (event) => {
 				}
 			);
 		}
+
+		// Sync Stripe subscription quantity (fire-and-forget)
+		syncOrgSeatCount(organizationId).catch(console.error);
 
 		return message(form, {
 			status: 'success',

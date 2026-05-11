@@ -25,7 +25,8 @@ export const getActiveProducts = async () => {
 		(item) =>
 			item.name === TierOptions.SECRET ||
 			item.name === TierOptions.TOP_SECRET ||
-			item.name === TierOptions.SECRET_SERVICE
+			item.name === TierOptions.SECRET_SERVICE ||
+			item.name === TierOptions.TOP_SECRET_SERVICE
 	);
 };
 
@@ -75,6 +76,14 @@ export const getStripePortalUrl = async (stripeCustomerId: string, returnUrl: st
 		return_url: returnUrl,
 		locale: 'auto'
 	});
+
+export const getOrgInvoices = async (stripeCustomerId: string) => {
+	const { data } = await stripeInstance.invoices.list({
+		customer: stripeCustomerId,
+		limit: 12
+	});
+	return data;
+};
 
 export const cancelSubscription = async (subscriptionId: string) =>
 	await stripeInstance.subscriptions.update(subscriptionId, {
