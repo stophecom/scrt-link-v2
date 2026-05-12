@@ -18,14 +18,15 @@
 
 	let planLimits = $derived(getUserPlanLimits(data.user?.subscriptionTier));
 	let hasDomain = $derived(!!data.whiteLabelDomain);
+	let hasAccessControl = $derived(!!data.whiteLabel?.updatedAt);
 	let isPublished = $derived(!!data.whiteLabel?.published);
-	let currentStep = $derived(!hasDomain ? 0 : !isPublished ? 1 : 2);
+	let currentStep = $derived(!hasDomain ? 0 : !hasAccessControl ? 1 : 2);
 </script>
 
 <Stepper
 	steps={[
 		{ label: m.flat_warm_fox_setup(), completed: hasDomain },
-		{ label: m.warm_swift_eagle_build(), completed: hasDomain },
+		{ label: m.warm_swift_eagle_build(), completed: hasAccessControl },
 		{ label: m.flat_warm_fox_design(), completed: isPublished }
 	]}
 	{currentStep}
@@ -33,7 +34,7 @@
 />
 
 {#if planLimits.whiteLabel}
-	<Card class="mb-6" title={m.flat_warm_fox_setup()}>
+	<Card class="mb-6" title={'1. ' + m.flat_warm_fox_setup()}>
 		<WhiteLabelDomainForm
 			form={data.whiteLabelDomainForm}
 			whiteLabelDomain={data.whiteLabelDomain}
@@ -41,7 +42,7 @@
 	</Card>
 
 	{#if hasDomain}
-		<Card class="mb-6" title={m.warm_swift_eagle_build()}>
+		<Card class="mb-6" title={'2. ' + m.warm_swift_eagle_build()}>
 			<WhiteLabelForm
 				organizationIdOptions={data.organizationIdOptions}
 				form={data.whiteLabelForm}
@@ -54,7 +55,7 @@
 			>
 				<div class="flex flex-col justify-center px-4 py-8 md:p-10">
 					<h2 class="mt-2 mr-8 mb-2 text-2xl font-bold text-pretty md:text-3xl">
-						{m.clear_warm_panda_glow()}
+						3. {m.clear_warm_panda_glow()}
 					</h2>
 					<p class="text-muted-foreground mb-6 text-pretty">
 						{m.bright_calm_tiger_leap()}

@@ -695,7 +695,7 @@
 	"clear_warm_panda_glow": "Настроить веб-сайт",
 	"bright_calm_tiger_leap": "Персонализируйте внешний вид вашего веб-сайта — загрузите свой логотип, установите фирменные цвета и многое другое.",
 	"bold_neat_panda_learn": "Создать организацию",
-	"warm_swift_eagle_build": "Настроить веб-сайт",
+	"warm_swift_eagle_build": "Контроль доступа",
 	"bright_keen_fox_paint": "Настроить",
 	"bold_quick_hawk_soar": "Для профессионалов",
 	"sharp_keen_wolf_dash": "Для разработчиков и опытных пользователей",
@@ -909,6 +909,6 @@
 	"flat_warm_fox_renew": "Продление {date}",
 	"flat_warm_fox_cancel": "Отмена {date}",
 	"flat_warm_bear_none": "Нет активной подписки.",
-	"flat_warm_fox_setup": "Настроить домен",
-	"flat_warm_fox_design": "Оформить и опубликовать"
+	"flat_warm_fox_setup": "Настроить веб-сайт",
+	"flat_warm_fox_design": "Настроить и опубликовать"
 }

@@ -695,7 +695,7 @@
 	"clear_warm_panda_glow": "Personnaliser le site web",
 	"bright_calm_tiger_leap": "Personnalisez l'apparence de votre site web — téléchargez votre logo, définissez les couleurs de votre marque, et bien plus encore.",
 	"bold_neat_panda_learn": "Créer une organisation",
-	"warm_swift_eagle_build": "Configurer le site web",
+	"warm_swift_eagle_build": "Contrôle d'accès",
 	"bright_keen_fox_paint": "Personnaliser",
 	"bold_quick_hawk_soar": "Pour les professionnels",
 	"sharp_keen_wolf_dash": "Pour les développeurs et les utilisateurs avancés",
@@ -909,6 +909,6 @@
 	"flat_warm_fox_renew": "Renouvellement le {date}",
 	"flat_warm_fox_cancel": "Annulation le {date}",
 	"flat_warm_bear_none": "Aucun abonnement actif.",
-	"flat_warm_fox_setup": "Configurer le domaine",
+	"flat_warm_fox_setup": "Configurer le site web",
 	"flat_warm_fox_design": "Personnaliser & publier"
 }

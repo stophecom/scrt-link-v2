@@ -1209,7 +1209,8 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 					private: isPrivate,
 					organizationId,
 					enabledSecretTypes,
-					enableSecretRequests
+					enableSecretRequests,
+					updatedAt: new Date()
 				}
 			});
 	} catch (error) {
