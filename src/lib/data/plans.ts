@@ -100,7 +100,7 @@ export const plans = () => [
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
 			expirationOptions: expiresInOptionsExtended,
-			whiteLabel: true,
+			whiteLabel: false,
 			maxViewLimit: 1000
 		}
 	},
