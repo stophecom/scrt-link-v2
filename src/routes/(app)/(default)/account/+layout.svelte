@@ -3,6 +3,7 @@
 	import ConciergeBell from '@lucide/svelte/icons/concierge-bell';
 	import CreditCard from '@lucide/svelte/icons/credit-card';
 	import Factory from '@lucide/svelte/icons/factory';
+	import Globe from '@lucide/svelte/icons/globe';
 	import KeyRound from '@lucide/svelte/icons/key-round';
 	import Link from '@lucide/svelte/icons/link';
 	import LogOut from '@lucide/svelte/icons/log-out';
@@ -107,6 +108,11 @@
 			href: localizeHref('/account/organization'),
 			label: m.wild_inner_fox_honor(),
 			icon: Factory
+		},
+		{
+			href: localizeHref('/account/white-label'),
+			label: m.bold_slim_ram_roam(),
+			icon: Globe
 		},
 		{
 			href: localizeHref('/account/billing'),
