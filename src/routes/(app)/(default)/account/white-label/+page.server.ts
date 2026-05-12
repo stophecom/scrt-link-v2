@@ -35,7 +35,6 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 
 	return {
 		user,
-		userOrganization,
 		whiteLabelDomain,
 		whiteLabel,
 		organizationIdOptions,

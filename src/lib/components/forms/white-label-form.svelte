@@ -10,6 +10,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { getSecretTypes } from '$lib/data/secretSettings';
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type WhiteLabelMetaSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
 	import type { DomainStatusResponse } from '../../../routes/api/v1/domain-status/[name]/+server';
@@ -77,11 +78,22 @@
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/saveWhiteLabelMeta">
 		<Form.Field {form} name="organizationId">
-			<Select
-				label={m.wild_inner_fox_honor()}
-				options={organizationIdOptions}
-				bind:value={$organizationIdProxy}
-			/>
+			<div class="flex items-center gap-2">
+				<div class="pr-2">
+					<Select
+						label={m.wild_inner_fox_honor()}
+						options={organizationIdOptions}
+						bind:value={$organizationIdProxy}
+					/>
+				</div>
+				{#if organizationIdOptions.length <= 1}
+					<a
+						href={localizeHref('/account/organization')}
+						class="text-muted-foreground hover:text-foreground mt-5 shrink-0 text-xs underline"
+						>{m.bold_neat_panda_learn()}</a
+					>
+				{/if}
+			</div>
 			<Form.Description>{m.blue_wild_snake_approve()}</Form.Description>
 		</Form.Field>
 		<!-- @todo Unclear why the hidden input is necessary. -->
