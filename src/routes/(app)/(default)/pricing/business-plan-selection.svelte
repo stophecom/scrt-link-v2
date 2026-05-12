@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Check from '@lucide/svelte/icons/check-circle';
-	import MessageCircle from '@lucide/svelte/icons/message-circle';
 	import { Stripe } from 'stripe';
 	import { toast } from 'svelte-sonner';
 
@@ -83,30 +82,36 @@
 	</p>
 {/snippet}
 
-<div class="grid gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-3 lg:-mx-4 xl:-mx-24">
+<div class="grid gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-3">
 	{#each businessPlans as plan (plan.id)}
 		{@const prices = plan.prices}
 		{@const isActiveProduct = plan.id === activeOrgProduct}
-		{@const price = showYearlyPrice ? prices?.yearly : prices?.monthly}
-		{@const priceUnitAmount = price?.currency_options[currency]?.unit_amount || 0}
-		{@const monthlyPriceUnitAmount = prices?.monthly?.currency_options[currency]?.unit_amount || 0}
+		{@const price = showYearlyPrice && prices?.yearly ? prices.yearly : prices?.monthly}
+		{@const monthlyPrice = prices?.monthly}
+		{@const hasSelectedCurrency = !!price?.currency_options?.[currency]?.unit_amount}
+		{@const priceUnitAmount = hasSelectedCurrency
+			? (price.currency_options[currency].unit_amount ?? 0)
+			: (price?.unit_amount ?? 0)}
+		{@const monthlyPriceUnitAmount =
+			monthlyPrice?.currency_options?.[currency]?.unit_amount ?? monthlyPrice?.unit_amount ?? 0}
+		{@const displayCurrency = hasSelectedCurrency
+			? currency
+			: ((price?.currency ?? currency) as SupportedCurrency)}
 		{@const priceId = price.id}
 
 		<PlanView
 			name={plan.name}
-			{showYearlyPrice}
-			{priceUnitAmount}
+			priceUnitAmount={priceUnitAmount || undefined}
 			{monthlyPriceUnitAmount}
-			{currency}
+			{showYearlyPrice}
+			currency={displayCurrency}
 			isOrgPlan={true}
 			{isActiveProduct}
-			billingInfo={price.recurring?.interval === 'year'
+			billingInfo={showYearlyPrice && prices?.yearly
 				? m.alert_heroic_haddock_dare({
-						amount: formatCurrency(priceUnitAmount / 100, currency)
+						amount: formatCurrency(priceUnitAmount / 100, displayCurrency)
 					})
-				: m.slow_frail_hare_empower({
-						amount: formatCurrency(priceUnitAmount / 100, currency)
-					})}
+				: undefined}
 		>
 			{#if !orgSubscription || isOrgSubscriptionCanceled}
 				<Button class="w-full" onclick={() => handleSubmit(priceId)}>
@@ -131,24 +136,14 @@
 		</PlanView>
 	{/each}
 
-	<!-- Talk to us card -->
-	<div class="bg-card border-border row-span-4 grid grid-rows-subgrid gap-4 border p-4 shadow-sm">
-		<div class="pb-1">
-			<h4 class="mb-0.5 text-sm font-medium">{m.soft_tame_moth_ping()}</h4>
-			<p class="text-muted-foreground text-xs">{m.brave_cool_bear_roam()}</p>
-		</div>
-		<MessageCircle class="text-muted-foreground h-6 w-6" />
-		<div>
-			<div class="text-3xl font-bold">{m.inner_pretty_raven_dine()}</div>
-			<div class="text-sm">{m.weak_witty_alligator_foster()}</div>
-		</div>
-		<div class="py-4">
-			<Button class="w-full" variant="outline" href={localizeHref('/contact')}>
-				{m.acidic_extra_vulture_enchant()}
-			</Button>
-		</div>
-		<div>
-			<p class="text-muted-foreground text-sm">{m.keen_flat_dove_step()}</p>
-		</div>
-	</div>
+	<PlanView
+		name="Enterprise"
+		isOrgPlan={true}
+		priceLabel={m.soft_tame_moth_ping()}
+		priceSublabel={m.wise_bold_fox_deal()}
+	>
+		<Button class="w-full" variant="outline" href={localizeHref('/contact')}>
+			{m.acidic_extra_vulture_enchant()}
+		</Button>
+	</PlanView>
 </div>

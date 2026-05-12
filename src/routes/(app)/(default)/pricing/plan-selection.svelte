@@ -32,10 +32,16 @@
 		subscription: Stripe.Subscription | null;
 		orgSubscription: Stripe.Subscription | null;
 		orgId: string | null;
+		showBusiness?: boolean;
 	};
-	let { plans, user, subscription, orgSubscription, orgId }: Props = $props();
-
-	let showBusiness = $state(false);
+	let {
+		plans,
+		user,
+		subscription,
+		orgSubscription,
+		orgId,
+		showBusiness = $bindable(false)
+	}: Props = $props();
 
 	let showYearlyPrice = $state(true);
 
@@ -168,7 +174,7 @@
 			{showYearlyPrice}
 		/>
 	{:else}
-		<div class="grid gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-4 md:gap-3 lg:-mx-4 xl:-mx-24">
+		<div class="grid gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-3">
 			<PlanView name="Confidential">
 				{#if !user}
 					<Button class="w-full" href={localizeHref('/signup')}>{m.lofty_tasty_ray_fond()}</Button>

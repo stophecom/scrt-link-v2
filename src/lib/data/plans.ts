@@ -1,4 +1,4 @@
-import { Factory, Plane, Rocket, Send } from '@lucide/svelte';
+import { Building, Building2, Factory, Plane, Rocket, Send } from '@lucide/svelte';
 
 import { SecretType, TierOptions } from '$lib/data/enums';
 import { GB, MB } from '$lib/data/units';
@@ -108,7 +108,7 @@ export const plans = () => [
 		name: TierOptions.SECRET_SERVICE,
 		icon: Factory,
 		isOrgPlan: true,
-		subtitle: m.brave_cool_bear_roam(),
+		subtitle: m.lean_slim_crow_lead(),
 		title: m.bold_warm_falcon_soar(),
 		contents: [
 			{ label: m.aloof_zany_cheetah_greet() },
@@ -133,9 +133,9 @@ export const plans = () => [
 	},
 	{
 		name: TierOptions.TOP_SECRET_SERVICE,
-		icon: Factory,
+		icon: Building,
 		isOrgPlan: true,
-		subtitle: m.brave_cool_bear_roam(),
+		subtitle: m.bold_warm_hawk_step(),
 		title: m.bold_warm_falcon_soar(),
 		contents: [
 			{ label: m.aloof_zany_cheetah_greet() },
@@ -157,6 +157,18 @@ export const plans = () => [
 			whiteLabel: true,
 			maxViewLimit: 1000
 		}
+	},
+	{
+		name: 'Enterprise',
+		icon: Building2,
+		isOrgPlan: true,
+		subtitle: m.pure_keen_fox_soar(),
+		title: m.fine_warm_elk_trust(),
+		contents: [
+			{ label: m.lean_keen_wolf_talk() },
+			{ label: m.bold_calm_ram_help() },
+			{ label: m.inner_fun_mink_push() }
+		]
 	}
 ];
 

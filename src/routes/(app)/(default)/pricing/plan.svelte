@@ -21,6 +21,8 @@
 		isActiveProduct?: boolean;
 		hidePromotion?: boolean;
 		isOrgPlan?: boolean;
+		priceLabel?: string;
+		priceSublabel?: string;
 		children?: Snippet;
 	};
 
@@ -34,6 +36,8 @@
 		isActiveProduct,
 		hidePromotion,
 		isOrgPlan = false,
+		priceLabel,
+		priceSublabel,
 		children,
 		...rest
 	}: Props & SvelteHTMLElements['div'] = $props();
@@ -64,14 +68,7 @@
 	{/if}
 
 	<div class="pe-8 pb-1">
-		<h4 class="mb-0.5 text-sm font-medium">
-			<span class="me-2">{name}</span>
-			{#if isOrgPlan}
-				<span class="bg-foreground text-background inline-flex rounded-md px-2 py-1 text-xs"
-					>{m.great_funny_beaver_gleam()}</span
-				>
-			{/if}
-		</h4>
+		<h4 class="mb-0.5 text-sm font-medium">{name}</h4>
 		{#if planContent.subtitle}
 			<p class="text-muted-foreground text-xs">{planContent.subtitle}</p>
 		{/if}
@@ -87,10 +84,10 @@
 					</span>
 				{/if}
 			</div>
-			<div class="text-sm">{isOrgPlan ? m.short_plain_mole_rush() : m.sunny_such_cod_shine()}</div>
+			<div class="text-sm">{isOrgPlan ? m.slim_keen_ant_bill() : m.sunny_such_cod_shine()}</div>
 		{:else}
-			<div class="text-3xl font-bold">{m.inner_pretty_raven_dine()}</div>
-			<div class="text-sm">{m.weak_witty_alligator_foster()}</div>
+			<div class="text-3xl font-bold">{priceLabel ?? m.inner_pretty_raven_dine()}</div>
+			<div class="text-sm">{priceSublabel ?? m.weak_witty_alligator_foster()}</div>
 		{/if}
 		<div class="text-sm">
 			{billingInfo}

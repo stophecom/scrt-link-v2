@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { ListCheck, MessageCircleQuestionMark } from '@lucide/svelte';
 
+	import { replaceState } from '$app/navigation';
+	import { page } from '$app/state';
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Quote from '$lib/components/blocks/quote.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
@@ -18,6 +20,17 @@
 	import PlanSelection from './plan-selection.svelte';
 
 	let { data } = $props();
+	let showBusiness = $state(page.url.searchParams.get('tab') === 'business');
+
+	$effect(() => {
+		const url = new URL(window.location.href);
+		if (showBusiness) {
+			url.searchParams.set('tab', 'business');
+		} else {
+			url.searchParams.delete('tab');
+		}
+		replaceState(url, {});
+	});
 </script>
 
 <Page
@@ -36,6 +49,7 @@
 				subscription={data.subscription}
 				orgSubscription={data.orgSubscription}
 				orgId={data.orgId}
+				bind:showBusiness
 			/>
 		{/if}
 		<div class="flex justify-center">
@@ -65,7 +79,7 @@
 	</Section>
 
 	<Section id="compare-plans" wide title={m.calm_thin_moth_view()}>
-		<ComparisonTable />
+		<ComparisonTable {showBusiness} />
 	</Section>
 
 	<Section wide variant="muted">
