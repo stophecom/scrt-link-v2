@@ -36,8 +36,11 @@ export const getActivePrices = async (productId: string) => {
 		active: true
 	});
 
+	// Only licensed (quantity-based) prices; metered prices break checkout quantity
+	const licensed = data.filter((p) => p.recurring?.usage_type === 'licensed');
+
 	const prices = await Promise.all(
-		data.map((item) =>
+		licensed.map((item) =>
 			stripeInstance.prices.retrieve(item.id, {
 				expand: ['currency_options']
 			})
