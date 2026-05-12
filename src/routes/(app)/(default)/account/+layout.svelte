@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ChartNoAxesCombined from '@lucide/svelte/icons/chart-no-axes-combined';
 	import ConciergeBell from '@lucide/svelte/icons/concierge-bell';
+	import CreditCard from '@lucide/svelte/icons/credit-card';
 	import Factory from '@lucide/svelte/icons/factory';
 	import KeyRound from '@lucide/svelte/icons/key-round';
 	import Link from '@lucide/svelte/icons/link';
@@ -106,6 +107,11 @@
 			href: localizeHref('/account/organization'),
 			label: m.wild_inner_fox_honor(),
 			icon: Factory
+		},
+		{
+			href: localizeHref('/account/billing'),
+			label: m.misty_teal_hawk_glow(),
+			icon: CreditCard
 		},
 		{
 			href: localizeHref('/account/profile'),

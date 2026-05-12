@@ -904,5 +904,9 @@
 	"lean_keen_wolf_talk": "Custom SLA & volume pricing",
 	"bold_calm_ram_help": "Dedicated onboarding & support",
 	"wise_bold_fox_deal": "We make you an offer you can't refuse",
-	"slim_keen_ant_bill": "per seat / month"
+	"slim_keen_ant_bill": "per seat / month",
+	"warm_flat_bear_view": "Overview",
+	"flat_warm_fox_renew": "Renews {date}",
+	"flat_warm_fox_cancel": "Cancels on {date}",
+	"flat_warm_bear_none": "No active subscription."
 }

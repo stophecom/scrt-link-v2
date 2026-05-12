@@ -1,0 +1,175 @@
+<script lang="ts">
+	import ExternalLink from '@lucide/svelte/icons/external-link';
+
+	import Button from '$lib/components/ui/button/button.svelte';
+	import * as Tabs from '$lib/components/ui/tabs';
+	import { formatCurrency, formatDate } from '$lib/i18n';
+	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
+
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
+
+	let activeTab = $state('overview');
+
+	const statusLabel: Record<string, string> = {
+		active: 'Active',
+		trialing: 'Trialing',
+		canceled: 'Canceled',
+		past_due: 'Past due',
+		unpaid: 'Unpaid',
+		incomplete: 'Incomplete'
+	};
+
+	const statusClass: Record<string, string> = {
+		active: 'bg-success/15 text-success',
+		trialing: 'bg-blue-100 text-blue-700',
+		canceled: 'bg-destructive/15 text-destructive',
+		past_due: 'bg-destructive/15 text-destructive',
+		unpaid: 'bg-destructive/15 text-destructive',
+		incomplete: 'bg-yellow-100 text-yellow-700'
+	};
+
+	const invoiceStatusLabel: Record<string, string> = {
+		paid: 'Paid',
+		open: 'Open',
+		draft: 'Draft',
+		void: 'Void',
+		uncollectible: 'Uncollectible'
+	};
+
+	const invoiceStatusClass: Record<string, string> = {
+		paid: 'bg-success/15 text-success',
+		open: 'bg-yellow-100 text-yellow-700',
+		draft: 'text-muted-foreground bg-muted',
+		void: 'text-muted-foreground bg-muted',
+		uncollectible: 'bg-destructive/15 text-destructive'
+	};
+
+	const allInvoices = $derived(
+		[...data.invoices, ...data.orgInvoices]
+			.filter((inv, i, arr) => arr.findIndex((x) => x.id === inv.id) === i)
+			.sort((a, b) => b.created - a.created)
+	);
+
+	const hasAnySubscription = $derived(!!(data.subscription || data.orgSubscription));
+</script>
+
+{#snippet subscriptionCard(
+	planName: string | null,
+	sub: import('stripe').Stripe.Subscription,
+	portalUrl: string | null
+)}
+	<div class="border-border rounded-lg border p-5">
+		<div class="flex flex-wrap items-start justify-between gap-4">
+			<div>
+				<div class="mb-1 flex items-center gap-2">
+					<h3 class="font-semibold">{planName ?? sub.items.data[0]?.plan?.nickname ?? 'Plan'}</h3>
+					<span
+						class="rounded-full px-2 py-0.5 text-xs font-medium {statusClass[sub.status] ??
+							'bg-muted text-muted-foreground'}"
+					>
+						{statusLabel[sub.status] ?? sub.status}
+					</span>
+				</div>
+				<p class="text-muted-foreground text-sm">
+					{#if sub.cancel_at}
+						{m.flat_warm_fox_cancel({ date: formatDate(new Date(sub.cancel_at * 1000)) })}
+					{:else}
+						{m.flat_warm_fox_renew({ date: formatDate(new Date(sub.current_period_end * 1000)) })}
+					{/if}
+				</p>
+			</div>
+			{#if portalUrl}
+				<Button href={portalUrl} target="_blank" variant="outline" size="sm">
+					<ExternalLink class="mr-1.5 h-3.5 w-3.5" />
+					{m.dull_tame_crow_hike()}
+				</Button>
+			{/if}
+		</div>
+	</div>
+{/snippet}
+
+<Tabs.Tabs bind:value={activeTab}>
+	<Tabs.TabsList class="mb-4">
+		<Tabs.TabsTrigger value="overview">{m.warm_flat_bear_view()}</Tabs.TabsTrigger>
+		<Tabs.TabsTrigger value="invoices">{m.pale_flat_ox_zoom()}</Tabs.TabsTrigger>
+	</Tabs.TabsList>
+
+	<Tabs.TabsContent value="overview">
+		{#if !hasAnySubscription}
+			<p class="text-muted-foreground mb-4 text-sm">{m.flat_warm_bear_none()}</p>
+			<Button href={localizeHref('/pricing')} variant="outline" size="sm">View plans</Button>
+		{/if}
+
+		{#if data.subscription}
+			<div class="mb-4">
+				{@render subscriptionCard(data.planName, data.subscription, data.stripePortalUrl)}
+			</div>
+		{/if}
+
+		{#if data.orgSubscription}
+			{@render subscriptionCard(data.orgPlanName, data.orgSubscription, data.orgStripePortalUrl)}
+		{/if}
+	</Tabs.TabsContent>
+
+	<Tabs.TabsContent value="invoices">
+		{#if allInvoices.length === 0}
+			<p class="text-muted-foreground text-sm">No invoices yet.</p>
+		{:else}
+			<div class="overflow-x-auto">
+				<table class="w-full text-sm">
+					<thead>
+						<tr class="border-border border-b">
+							<th class="text-muted-foreground pb-2 text-left font-medium">Date</th>
+							<th class="text-muted-foreground pb-2 text-left font-medium">Description</th>
+							<th class="text-muted-foreground pb-2 text-left font-medium"
+								>{m.real_proud_dolphin_attend()}</th
+							>
+							<th class="text-muted-foreground pb-2 text-right font-medium">Total</th>
+							<th class="pb-2"></th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each allInvoices as invoice (invoice.id)}
+							{@const status = invoice.status ?? 'draft'}
+							<tr class="border-border border-b last:border-0">
+								<td class="py-3 pr-4">{formatDate(new Date(invoice.created * 1000))}</td>
+								<td class="py-3 pr-4 capitalize"
+									>{invoice.billing_reason?.replace(/_/g, ' ') ?? 'Invoice'}</td
+								>
+								<td class="py-3 pr-4">
+									<span
+										class="rounded-full px-2 py-0.5 text-xs font-medium {invoiceStatusClass[
+											status
+										] ?? 'bg-muted text-muted-foreground'}"
+									>
+										{invoiceStatusLabel[status] ?? status}
+									</span>
+								</td>
+								<td class="py-3 pr-4 text-right font-medium">
+									{invoice.total != null
+										? formatCurrency(invoice.total / 100, invoice.currency)
+										: '—'}
+								</td>
+								<td class="py-3 text-right">
+									{#if invoice.hosted_invoice_url}
+										<a
+											href={invoice.hosted_invoice_url}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="text-muted-foreground hover:text-foreground"
+										>
+											<ExternalLink class="h-3.5 w-3.5" />
+										</a>
+									{/if}
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		{/if}
+	</Tabs.TabsContent>
+</Tabs.Tabs>

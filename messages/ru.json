@@ -902,5 +902,11 @@
 	"pure_keen_fox_soar": "Для крупных организаций",
 	"fine_warm_elk_trust": "Всё из Top Secret Service, плюс:",
 	"lean_keen_wolf_talk": "Индивидуальный SLA и объёмные цены",
-	"bold_calm_ram_help": "Индивидуальное обучение и поддержка"
+	"bold_calm_ram_help": "Индивидуальное обучение и поддержка",
+	"wise_bold_fox_deal": "Мы сделаем вам предложение, от которого вы не сможете отказаться",
+	"slim_keen_ant_bill": "за место / месяц",
+	"warm_flat_bear_view": "Обзор",
+	"flat_warm_fox_renew": "Продление {date}",
+	"flat_warm_fox_cancel": "Отмена {date}",
+	"flat_warm_bear_none": "Нет активной подписки."
 }
