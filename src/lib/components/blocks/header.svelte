@@ -154,7 +154,7 @@
 
 								{#if user.subscriptionTier && [TierOptions.SECRET, TierOptions.TOP_SECRET, TierOptions.SECRET_SERVICE].includes(user.subscriptionTier)}
 									<div
-										class="border-background bg-primary text-primary-foreground absolute -right-[2px] -bottom-[2px] rounded-full border p-[3px]"
+										class="border-background bg-accent text-primary-foreground absolute -right-[2px] -bottom-[2px] rounded-full border p-[3px]"
 									>
 										{#if user.subscriptionTier === TierOptions.SECRET}
 											<Plane class="h-3 w-3" />
