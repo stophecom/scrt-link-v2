@@ -908,5 +908,7 @@
 	"warm_flat_bear_view": "Resumen",
 	"flat_warm_fox_renew": "Se renueva el {date}",
 	"flat_warm_fox_cancel": "Cancela el {date}",
-	"flat_warm_bear_none": "Sin suscripción activa."
+	"flat_warm_bear_none": "Sin suscripción activa.",
+	"flat_warm_fox_setup": "Configurar dominio",
+	"flat_warm_fox_design": "Diseñar y publicar"
 }

@@ -4,8 +4,8 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 import { SecretType } from '$lib/data/enums';
 import { DEFAULT_LOCALE, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
-import { saveWhiteLabelMeta } from '$lib/server/form/actions';
-import { whiteLabelMetaSchema } from '$lib/validators/formSchemas';
+import { saveWhiteLabelDomain, saveWhiteLabelMeta } from '$lib/server/form/actions';
+import { whiteLabelDomainSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -20,10 +20,16 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		...(userOrganization ? [{ value: userOrganization.id, label: userOrganization.name }] : [])
 	];
 
-	const whiteLabelForm = await superValidate(
+	const whiteLabelDomainForm = await superValidate(
 		{
 			name: whiteLabel?.name || '',
-			customDomain: whiteLabel?.customDomain || '',
+			customDomain: whiteLabel?.customDomain || ''
+		},
+		zod4(whiteLabelDomainSchema())
+	);
+
+	const whiteLabelForm = await superValidate(
+		{
 			organizationId: whiteLabel?.organizationId || '',
 			isPrivate: whiteLabel?.private || false,
 			locale: whiteLabel?.locale || DEFAULT_LOCALE,
@@ -38,11 +44,13 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		whiteLabelDomain,
 		whiteLabel,
 		organizationIdOptions,
+		whiteLabelDomainForm,
 		whiteLabelForm,
 		pageTitle: m.bold_slim_ram_roam()
 	};
 };
 
 export const actions: Actions = {
+	saveWhiteLabelDomain,
 	saveWhiteLabelMeta
 };

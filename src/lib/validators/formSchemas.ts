@@ -117,10 +117,14 @@ export const manageOrganizationMemberFormSchema = () =>
 		role: z.nativeEnum(MembershipRole).optional()
 	});
 
+export const whiteLabelDomainSchema = () =>
+	z.object({
+		name: z.string().max(30),
+		customDomain: z.string().max(30)
+	});
+
 export const whiteLabelMetaSchema = () =>
 	z.object({
-		customDomain: z.string().max(30),
-		name: z.string().max(30),
 		organizationId: z.string().nullable(),
 		isPrivate: z.boolean(),
 		locale: z.enum(getSupportedLocales() as [string, ...string[]]),
@@ -289,6 +293,7 @@ export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;
 export type RevealSecretFormSchema = z.infer<ReturnType<typeof revealSecretFormSchema>>;
 export type ContactFormSchema = ReturnType<typeof contactFormSchema>;
 export type ApiTokenFormSchema = ReturnType<typeof apiKeyFormSchema>;
+export type WhiteLabelDomainSchema = z.infer<ReturnType<typeof whiteLabelDomainSchema>>;
 export type WhiteLabelMetaSchema = z.infer<ReturnType<typeof whiteLabelMetaSchema>>;
 export type WhiteLabelSiteSchema = z.infer<ReturnType<typeof whiteLabelSiteSchema>>;
 export type EncryptionSetupFormSchema = z.infer<ReturnType<typeof encryptionSetupFormSchema>>;

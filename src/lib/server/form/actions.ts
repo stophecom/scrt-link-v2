@@ -48,6 +48,7 @@ import {
 	signInFormSchema,
 	themeFormSchema,
 	userFormSchema,
+	whiteLabelDomainSchema,
 	whiteLabelMetaSchema,
 	whiteLabelSiteSchema
 } from '$lib/validators/formSchemas';
@@ -1079,8 +1080,8 @@ export const revokeAPIToken: Action = async (event) => {
 	});
 };
 
-export const saveWhiteLabelMeta: Action = async (event) => {
-	const form = await superValidate(event.request, zod4(whiteLabelMetaSchema()));
+export const saveWhiteLabelDomain: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(whiteLabelDomainSchema()));
 
 	if (!form.valid) {
 		return fail(400, { form });
@@ -1095,25 +1096,10 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 	const planLimits = getUserPlanLimits(user?.subscriptionTier);
 
 	if (!planLimits.whiteLabel) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.busy_even_hawk_inspire()
-			},
-			{ status: 405 }
-		);
+		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
 	}
 
-	const {
-		locale,
-		customDomain,
-		isPrivate,
-		name,
-		enabledSecretTypes,
-		enableSecretRequests,
-		organizationId
-	} = form.data;
+	const { customDomain, name } = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(
@@ -1130,27 +1116,20 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 	try {
 		const existing = await getWhiteLabelSiteByUserId(user.id);
 
-		// If the domain changed, we remove the existing one from vercel
 		if (existing.customDomain && existing.customDomain !== customDomain) {
 			await removeDomainFromVercelProject(existing.customDomain);
 		}
 
-		// Adding domain to vercel
 		const response = await addDomainToVercel(customDomain);
 
 		if (response?.error) {
-			// The error code  "domain_already_in_use" is expected, We therefore exclude it from handling.
 			if (response.error?.code !== 'domain_already_in_use') {
 				return message(
 					form,
-					{
-						status: 'error',
-						title: m.dizzy_sour_liger_treasure()
-					},
+					{ status: 'error', title: m.dizzy_sour_liger_treasure() },
 					{ status: 404 }
 				);
 			}
-
 			throw Error(JSON.stringify(response));
 		}
 	} catch (e) {
@@ -1160,12 +1139,65 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 	try {
 		await db
 			.insert(whiteLabelSite)
+			.values({ customDomain, name, userId: user.id })
+			.onConflictDoUpdate({
+				target: whiteLabelSite.userId,
+				set: { customDomain, name }
+			});
+	} catch (error) {
+		console.error(error);
+
+		if ((error as PostgresError)?.code === '23505') {
+			setError(form, 'customDomain', m.dark_each_pug_value({ customDomain }));
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.dizzy_sour_liger_treasure(),
+					description: m.dark_each_pug_value({ customDomain })
+				},
+				{ status: 404 }
+			);
+		}
+
+		return message(
+			form,
+			{ status: 'error', title: m.dizzy_sour_liger_treasure(), description: 'DB error' },
+			{ status: 404 }
+		);
+	}
+
+	return message(form, { status: 'success', title: m.lime_curly_capybara_bend() });
+};
+
+export const saveWhiteLabelMeta: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(whiteLabelMetaSchema()));
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+
+	if (!planLimits.whiteLabel) {
+		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
+	}
+
+	const { locale, isPrivate, enabledSecretTypes, enableSecretRequests, organizationId } = form.data;
+
+	try {
+		await db
+			.insert(whiteLabelSite)
 			.values({
-				locale: locale,
-				customDomain,
-				name,
+				locale,
 				private: isPrivate,
-				organizationId: organizationId,
+				organizationId,
 				enabledSecretTypes,
 				enableSecretRequests,
 				userId: user.id
@@ -1174,45 +1206,22 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 				target: whiteLabelSite.userId,
 				set: {
 					locale,
-					customDomain,
-					name,
 					private: isPrivate,
-					organizationId: organizationId,
+					organizationId,
 					enabledSecretTypes,
 					enableSecretRequests
 				}
 			});
 	} catch (error) {
 		console.error(error);
-
-		if ((error as PostgresError)?.code === '23505') {
-			setError(form, 'customDomain', m.dark_each_pug_value({ customDomain: customDomain }));
-			return message(
-				form,
-				{
-					status: 'error',
-					title: m.dizzy_sour_liger_treasure(),
-					description: m.dark_each_pug_value({ customDomain: customDomain })
-				},
-				{ status: 404 }
-			);
-		}
-
 		return message(
 			form,
-			{
-				status: 'error',
-				title: m.dizzy_sour_liger_treasure(),
-				description: 'DB error'
-			},
+			{ status: 'error', title: m.dizzy_sour_liger_treasure(), description: 'DB error' },
 			{ status: 404 }
 		);
 	}
 
-	return message(form, {
-		status: 'success',
-		title: m.lime_curly_capybara_bend()
-	});
+	return message(form, { status: 'success', title: m.lime_curly_capybara_bend() });
 };
 
 export const saveWhiteLabelSite: Action = async (event) => {
