@@ -910,5 +910,7 @@
 	"flat_warm_fox_cancel": "Endet am {date}",
 	"flat_warm_bear_none": "Kein aktives Abonnement.",
 	"flat_warm_fox_setup": "Website einrichten",
-	"flat_warm_fox_design": "Anpassen & Veröffentlichen"
+	"flat_warm_fox_design": "Anpassen & Veröffentlichen",
+	"glad_teal_fox_bill": "Du hast derzeit {count} abgerechneten Platz/Plätze – einer pro aktivem Mitglied. Passt sich automatisch an, wenn Mitglieder beitreten oder austreten.",
+	"tame_glad_fox_info": "Abrechnungsinfo:"
 }

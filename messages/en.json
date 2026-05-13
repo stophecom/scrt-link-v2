@@ -910,5 +910,7 @@
 	"flat_warm_fox_cancel": "Cancels on {date}",
 	"flat_warm_bear_none": "No active subscription.",
 	"flat_warm_fox_setup": "Setup Website",
-	"flat_warm_fox_design": "Customize & Publish"
+	"flat_warm_fox_design": "Customize & Publish",
+	"glad_teal_fox_bill": "You currently have {count} billed seat(s) — one per active member. Adjusts as members join or leave.",
+	"tame_glad_fox_info": "Billing info:"
 }

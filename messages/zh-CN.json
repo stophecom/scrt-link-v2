@@ -910,5 +910,7 @@
 	"flat_warm_fox_cancel": "取消日期：{date}",
 	"flat_warm_bear_none": "暂无有效订阅。",
 	"flat_warm_fox_setup": "设置网站",
-	"flat_warm_fox_design": "自定义与发布"
+	"flat_warm_fox_design": "自定义与发布",
+	"glad_teal_fox_bill": "您当前有 {count} 个计费席位——每位活跃成员一个。成员加入或离开时自动调整。",
+	"tame_glad_fox_info": "账单信息："
 }

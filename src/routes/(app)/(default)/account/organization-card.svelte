@@ -15,6 +15,7 @@
 	import * as Table from '$lib/components/ui/table';
 	import { InviteStatus, MembershipRole } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 	import type { MembersAndInvitesByOrganization } from '$lib/server/organization';
 	import type {
 		InviteOrganizationMemberFormSchema,
@@ -132,6 +133,17 @@
 					</Table.Row>
 				{/each}
 			</Table.Body>
+			{#if organization.role === MembershipRole.OWNER}
+				{@const activeCount = Math.max(
+					organization.members.filter((m: MembersAndInvitesByOrganization) => m.userId).length,
+					1
+				)}
+				<Table.Caption class="mt-6 px-4"
+					><strong>{m.tame_glad_fox_info()}</strong>
+					{m.glad_teal_fox_bill({ count: activeCount })} See
+					<a href={localizeHref('/account/billing')} class="underline">Billing</a> for more info.</Table.Caption
+				>
+			{/if}
 		</Table.Root>
 
 		{#if organization.role === MembershipRole.OWNER}

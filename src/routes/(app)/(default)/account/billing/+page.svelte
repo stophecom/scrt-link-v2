@@ -2,6 +2,7 @@
 	import ExternalLink from '@lucide/svelte/icons/external-link';
 
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatCurrency, formatDate } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
@@ -61,7 +62,7 @@
 	sub: import('stripe').Stripe.Subscription,
 	portalUrl: string | null
 )}
-	<div class="border-border rounded-lg border p-5">
+	<Card>
 		<div class="flex flex-wrap items-start justify-between gap-4">
 			<div>
 				<div class="mb-1 flex items-center gap-2">
@@ -88,11 +89,11 @@
 				</Button>
 			{/if}
 		</div>
-	</div>
+	</Card>
 {/snippet}
 
 <Tabs.Tabs bind:value={activeTab}>
-	<Tabs.TabsList class="mb-4">
+	<Tabs.TabsList class="mb-2">
 		<Tabs.TabsTrigger value="overview">{m.warm_flat_bear_view()}</Tabs.TabsTrigger>
 		<Tabs.TabsTrigger value="invoices">{m.pale_flat_ox_zoom()}</Tabs.TabsTrigger>
 	</Tabs.TabsList>
@@ -115,61 +116,63 @@
 	</Tabs.TabsContent>
 
 	<Tabs.TabsContent value="invoices">
-		{#if allInvoices.length === 0}
-			<p class="text-muted-foreground text-sm">No invoices yet.</p>
-		{:else}
-			<div class="overflow-x-auto">
-				<table class="w-full text-sm">
-					<thead>
-						<tr class="border-border border-b">
-							<th class="text-muted-foreground pb-2 text-left font-medium">Date</th>
-							<th class="text-muted-foreground pb-2 text-left font-medium">Description</th>
-							<th class="text-muted-foreground pb-2 text-left font-medium"
-								>{m.real_proud_dolphin_attend()}</th
-							>
-							<th class="text-muted-foreground pb-2 text-right font-medium">Total</th>
-							<th class="pb-2"></th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each allInvoices as invoice (invoice.id)}
-							{@const status = invoice.status ?? 'draft'}
-							<tr class="border-border border-b last:border-0">
-								<td class="py-3 pr-4">{formatDate(new Date(invoice.created * 1000))}</td>
-								<td class="py-3 pr-4 capitalize"
-									>{invoice.billing_reason?.replace(/_/g, ' ') ?? 'Invoice'}</td
+		<Card>
+			{#if allInvoices.length === 0}
+				<p class="text-muted-foreground text-sm">No invoices yet.</p>
+			{:else}
+				<div class="overflow-x-auto">
+					<table class="w-full text-sm">
+						<thead>
+							<tr class="border-border border-b">
+								<th class="text-muted-foreground pb-2 text-left font-medium">Date</th>
+								<th class="text-muted-foreground pb-2 text-left font-medium">Description</th>
+								<th class="text-muted-foreground pb-2 text-left font-medium"
+									>{m.real_proud_dolphin_attend()}</th
 								>
-								<td class="py-3 pr-4">
-									<span
-										class="rounded-full px-2 py-0.5 text-xs font-medium {invoiceStatusClass[
-											status
-										] ?? 'bg-muted text-muted-foreground'}"
-									>
-										{invoiceStatusLabel[status] ?? status}
-									</span>
-								</td>
-								<td class="py-3 pr-4 text-right font-medium">
-									{invoice.total != null
-										? formatCurrency(invoice.total / 100, invoice.currency)
-										: '—'}
-								</td>
-								<td class="py-3 text-right">
-									{#if invoice.hosted_invoice_url}
-										<a
-											href={invoice.hosted_invoice_url}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="text-muted-foreground hover:text-foreground"
-										>
-											<ExternalLink class="h-3.5 w-3.5" />
-										</a>
-									{/if}
-								</td>
+								<th class="text-muted-foreground pb-2 text-right font-medium">Total</th>
+								<th class="pb-2"></th>
 							</tr>
-						{/each}
-					</tbody>
-				</table>
-			</div>
-		{/if}
+						</thead>
+						<tbody>
+							{#each allInvoices as invoice (invoice.id)}
+								{@const status = invoice.status ?? 'draft'}
+								<tr class="border-border border-b last:border-0">
+									<td class="py-3 pr-4">{formatDate(new Date(invoice.created * 1000))}</td>
+									<td class="py-3 pr-4 capitalize"
+										>{invoice.billing_reason?.replace(/_/g, ' ') ?? 'Invoice'}</td
+									>
+									<td class="py-3 pr-4">
+										<span
+											class="rounded-full px-2 py-0.5 text-xs font-medium {invoiceStatusClass[
+												status
+											] ?? 'bg-muted text-muted-foreground'}"
+										>
+											{invoiceStatusLabel[status] ?? status}
+										</span>
+									</td>
+									<td class="py-3 pr-4 text-right font-medium">
+										{invoice.total != null
+											? formatCurrency(invoice.total / 100, invoice.currency)
+											: '—'}
+									</td>
+									<td class="py-3 text-right">
+										{#if invoice.hosted_invoice_url}
+											<a
+												href={invoice.hosted_invoice_url}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="text-muted-foreground hover:text-foreground"
+											>
+												<ExternalLink class="h-3.5 w-3.5" />
+											</a>
+										{/if}
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			{/if}
+		</Card>
 	</Tabs.TabsContent>
 </Tabs.Tabs>

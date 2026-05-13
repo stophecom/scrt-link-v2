@@ -910,5 +910,7 @@
 	"flat_warm_fox_cancel": "Cancela el {date}",
 	"flat_warm_bear_none": "Sin suscripción activa.",
 	"flat_warm_fox_setup": "Configurar Sitio Web",
-	"flat_warm_fox_design": "Personalizar y Publicar"
+	"flat_warm_fox_design": "Personalizar y Publicar",
+	"glad_teal_fox_bill": "Actualmente tienes {count} puesto(s) facturado(s) — uno por miembro activo. Se ajusta cuando los miembros se unen o abandonan.",
+	"tame_glad_fox_info": "Info de facturación:"
 }
