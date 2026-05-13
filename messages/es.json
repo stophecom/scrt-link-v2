@@ -712,7 +712,7 @@
 	"calm_thin_moth_view": "Comparar planes",
 	"warm_keen_crow_rest": "Característica",
 	"bold_fast_bee_hum": "Mensajes de texto",
-	"slim_dark_ant_work": "Cargas de archivos",
+	"slim_dark_ant_work": "Secret Files",
 	"mild_cool_jay_fly": "Redirecciones seguras",
 	"soft_warm_ape_jump": "Snaps Secretos",
 	"keen_fast_ram_look": "Neograms Secretos",
@@ -924,5 +924,6 @@
 	"keen_beta_first_feat": "Acceso anticipado a funciones beta",
 	"bold_custom_sla_dpa": "SLA, DPA y precios personalizados",
 	"firm_dedicated_hosting": "…o hosting individual y región",
-	"bold_bring_infra_feat": "Trae tu propia infraestructura"
+	"bold_bring_infra_feat": "Trae tu propia infraestructura",
+	"slim_bold_plan_pick": "Seleccionar plan"
 }

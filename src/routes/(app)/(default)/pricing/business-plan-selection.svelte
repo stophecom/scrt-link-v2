@@ -10,6 +10,7 @@
 	import getStripe from '$lib/client/stripe';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { SupportedCurrency, TierOptions } from '$lib/data/enums';
+	import { formatDate } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -117,12 +118,14 @@
 				{@render renderIsActivePlan()}
 				{#if orgSubscription?.cancel_at}
 					<p class="text-destructive text-sm">
-						Cancels {new Date(orgSubscription.cancel_at * 1000).toLocaleDateString()}
+						{m.flat_warm_fox_cancel({
+							date: formatDate(new Date(orgSubscription.cancel_at * 1000))
+						})}
 					</p>
 				{/if}
 			{:else}
 				<Button class="w-full" onclick={() => handleSubmit(priceId, basePriceId)}
-					>Select plan</Button
+					>{m.slim_bold_plan_pick()}</Button
 				>
 				<div class="py-1 text-center text-xs">
 					{m.civil_formal_firefox_surge({ planName: plan.name })}

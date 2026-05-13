@@ -100,9 +100,8 @@
 						subscriptionId: subscription.id
 					}
 				);
-				await invalidateAll();
-
 				toast.success(response.message);
+				await invalidateAll();
 			} else {
 				// Create a Checkout Session.
 				const response = await api<Stripe.Subscription>(

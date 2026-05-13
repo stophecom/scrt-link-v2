@@ -712,7 +712,7 @@
 	"calm_thin_moth_view": "Сравнить планы",
 	"warm_keen_crow_rest": "Функция",
 	"bold_fast_bee_hum": "Текстовые сообщения",
-	"slim_dark_ant_work": "Загрузка файлов",
+	"slim_dark_ant_work": "Secret Files",
 	"mild_cool_jay_fly": "Безопасные перенаправления",
 	"soft_warm_ape_jump": "Секретные снимки",
 	"keen_fast_ram_look": "Секретные неограммы",
@@ -924,5 +924,6 @@
 	"keen_beta_first_feat": "Ранний доступ к бета-функциям",
 	"bold_custom_sla_dpa": "Индивидуальные SLA, DPA и цены",
 	"firm_dedicated_hosting": "…или индивидуальный хостинг и регион",
-	"bold_bring_infra_feat": "Используйте собственную инфраструктуру"
+	"bold_bring_infra_feat": "Используйте собственную инфраструктуру",
+	"slim_bold_plan_pick": "Выбрать план"
 }

@@ -23,17 +23,17 @@
 	let currentStep = $derived(!hasDomain ? 0 : !hasAccessControl ? 1 : 2);
 </script>
 
-<Stepper
-	steps={[
-		{ label: m.flat_warm_fox_setup(), completed: hasDomain },
-		{ label: m.warm_swift_eagle_build(), completed: hasAccessControl },
-		{ label: m.flat_warm_fox_design(), completed: isPublished }
-	]}
-	{currentStep}
-	class="mb-8"
-/>
-
 {#if planLimits.whiteLabel}
+	<Stepper
+		steps={[
+			{ label: m.flat_warm_fox_setup(), completed: hasDomain },
+			{ label: m.warm_swift_eagle_build(), completed: hasAccessControl },
+			{ label: m.flat_warm_fox_design(), completed: isPublished }
+		]}
+		{currentStep}
+		class="mb-8"
+	/>
+
 	<Card class="mb-6" title={'1. ' + m.flat_warm_fox_setup()}>
 		<WhiteLabelDomainForm
 			form={data.whiteLabelDomainForm}
@@ -49,7 +49,7 @@
 			/>
 		</Card>
 
-		<div class="customize-card relative mb-6 rounded-lg p-0.5">
+		<div class="customize-card rainbow-border relative mb-6 rounded-lg p-0.5">
 			<div
 				class="bg-background relative grid grid-cols-[minmax(60%,1fr)_auto] overflow-hidden rounded-lg"
 			>
@@ -89,25 +89,7 @@
 {/if}
 
 <style>
-	.customize-card {
-		background: conic-gradient(
-			from 0deg,
-			#f97316,
-			#ef4444,
-			#ec4899,
-			#8b5cf6,
-			#3b82f6,
-			#06b6d4,
-			#10b981,
-			#f97316
-		);
-		box-shadow:
-			0 4px 20px rgba(139, 92, 246, 0.15),
-			0 8px 40px rgba(236, 72, 153, 0.1),
-			0 2px 8px rgba(59, 130, 246, 0.12);
-	}
-
-	.customize-card :global(.caseBorder) {
+	app .customize-card :global(.caseBorder) {
 		box-shadow:
 			0 0 4px rgba(59, 130, 246, 0.2),
 			0 0 8px rgba(139, 92, 246, 0.15),

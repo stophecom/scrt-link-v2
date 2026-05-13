@@ -30,6 +30,7 @@
 		{ label: m.mild_cool_jay_fly(), values: [true, true, true] },
 		{ label: m.soft_warm_ape_jump(), values: [false, true, true] },
 		{ label: m.keen_fast_ram_look(), values: [false, true, true] },
+		{ label: m.next_bold_request_feat(), values: [false, false, true] },
 		{ label: m.bold_warm_elk_dash(), values: [false, true, true] },
 		{ label: m.slim_cool_fox_rest(), values: [false, true, true] },
 		{ label: m.warm_dark_owl_gaze(), values: ['24 hours', '7 days', '30 days'] },
@@ -41,23 +42,23 @@
 	];
 
 	const businessRows: FeatureRow[] = [
-		{
-			label: m.slim_dark_ant_work(),
-			values: [formatBytes(1 * GB), formatBytes(100 * GB)]
-		},
+		{ label: m.slim_dark_ant_work(), values: [formatBytes(1 * GB), formatBytes(100 * GB)] },
 		{ label: m.mild_cool_jay_fly(), values: [true, true] },
 		{ label: m.soft_warm_ape_jump(), values: [true, true] },
 		{ label: m.keen_fast_ram_look(), values: [true, true] },
+		{ label: m.next_bold_request_feat(), values: [false, true] },
 		{ label: m.bold_warm_elk_dash(), values: [true, true] },
 		{ label: m.slim_cool_fox_rest(), values: [true, true] },
 		{ label: m.warm_dark_owl_gaze(), values: ['7 days', '30 days'] },
 		{ label: m.cool_keen_cat_leap(), values: [true, true] },
 		{ label: m.bold_slim_ram_roam(), values: [true, true] },
 		{ label: m.bright_calm_seal_rest(), values: [true, true] },
+		{ label: m.bold_stat_log_feat(), values: [false, true] },
+		{ label: m.keen_beta_first_feat(), values: [false, true] },
 		{ label: m.swift_bold_hawk_soar(), values: [true, true] },
 		{
 			label: m.keen_warm_eel_swim(),
-			values: [m.still_busy_starfish_dare(), m.still_busy_starfish_dare()]
+			values: [m.tired_new_mantis_buy(), m.still_busy_starfish_dare()]
 		}
 	];
 

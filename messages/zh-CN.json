@@ -712,7 +712,7 @@
 	"calm_thin_moth_view": "比较计划",
 	"warm_keen_crow_rest": "功能",
 	"bold_fast_bee_hum": "短信",
-	"slim_dark_ant_work": "文件上传",
+	"slim_dark_ant_work": "Secret Files",
 	"mild_cool_jay_fly": "安全重定向",
 	"soft_warm_ape_jump": "秘密快照",
 	"keen_fast_ram_look": "秘密电报",
@@ -924,5 +924,6 @@
 	"keen_beta_first_feat": "优先体验测试版功能",
 	"bold_custom_sla_dpa": "定制 SLA、DPA 与定价",
 	"firm_dedicated_hosting": "…或独立托管与区域",
-	"bold_bring_infra_feat": "使用您自己的基础设施"
+	"bold_bring_infra_feat": "使用您自己的基础设施",
+	"slim_bold_plan_pick": "选择方案"
 }

@@ -32,7 +32,10 @@ export const GET = async () => {
 	const getPlans = async () =>
 		Promise.all(
 			products.map(async (item) => {
-				const { seatPrices, basePrices } = (await getActivePrices(item.id)) as {
+				const { seatPrices, basePrices } = (await getActivePrices(
+					item.id,
+					item.baseFeeProductId
+				)) as {
 					seatPrices: PriceWithCurrencyOptions[];
 					basePrices: PriceWithCurrencyOptions[];
 				};

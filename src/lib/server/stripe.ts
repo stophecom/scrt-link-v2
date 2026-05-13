@@ -16,28 +16,42 @@ export type StripeCustomerWithSubscription = StripeCustomer & {
 
 export default stripeInstance;
 
-export const getActiveProducts = async () => {
-	const { data } = await stripeInstance.products.list({ active: true });
+const PLAN_NAMES = [
+	TierOptions.SECRET,
+	TierOptions.TOP_SECRET,
+	TierOptions.SECRET_SERVICE,
+	TierOptions.TOP_SECRET_SERVICE
+] as string[];
 
-	// We filter by predefined products (TierOptions).
+export const getActiveProducts = async () => {
+	const { data } = await stripeInstance.products.list({ active: true, limit: 100 });
+
 	// TierOptions.Confidential is the free option not covered on Stripe
-	return data.filter(
-		(item) =>
-			item.name === TierOptions.SECRET ||
-			item.name === TierOptions.TOP_SECRET ||
-			item.name === TierOptions.SECRET_SERVICE ||
-			item.name === TierOptions.TOP_SECRET_SERVICE
-	);
+	const mainProducts = data.filter((item) => PLAN_NAMES.includes(item.name));
+
+	// Pair each main product with a companion base-fee product whose name starts with
+	// "<mainProduct.name> " (e.g. "Secret Service — Base fee")
+	return mainProducts.map((product) => ({
+		...product,
+		baseFeeProductId: data.find(
+			(p) =>
+				p.id !== product.id && !PLAN_NAMES.includes(p.name) && p.name.startsWith(product.name + ' ')
+		)?.id
+	}));
 };
 
-export const getActivePrices = async (productId: string) => {
-	const { data } = await stripeInstance.prices.list({
-		product: productId,
-		active: true
-	});
+export const getActivePrices = async (productId: string, baseFeeProductId?: string) => {
+	const priceLists = await Promise.all([
+		stripeInstance.prices.list({ product: productId, active: true }),
+		...(baseFeeProductId
+			? [stripeInstance.prices.list({ product: baseFeeProductId, active: true })]
+			: [])
+	]);
 
 	// Only licensed (quantity-based) prices; metered prices break checkout quantity
-	const licensed = data.filter((p) => p.recurring?.usage_type === 'licensed');
+	const licensed = priceLists
+		.flatMap((l) => l.data)
+		.filter((p) => p.recurring?.usage_type === 'licensed');
 
 	const prices = await Promise.all(
 		licensed.map((item) =>

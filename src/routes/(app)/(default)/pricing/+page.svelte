@@ -29,7 +29,11 @@
 		} else {
 			url.searchParams.delete('tab');
 		}
-		replaceState(url, {});
+		try {
+			replaceState(url, {});
+		} catch {
+			// Router not yet initialized during hydration
+		}
 	});
 </script>
 
