@@ -20,7 +20,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 	}
 
 	const body = await request.json();
-	const { priceId, currency, orgId } = body;
+	const { priceId, currency, orgId, basePriceId } = body;
 
 	// Org plan checkout
 	if (orgId) {
@@ -53,7 +53,10 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 				allow_promotion_codes: true,
 				customer: stripeCustomerId,
 				currency,
-				line_items: [{ price: priceId, quantity }],
+				line_items: [
+					...(basePriceId ? [{ price: basePriceId, quantity: 1 }] : []),
+					{ price: priceId, quantity }
+				],
 				subscription_data: {
 					trial_period_days: TRIAL_PERIOD_DAYS,
 					metadata: { organizationId: orgId }
@@ -111,7 +114,7 @@ export const PUT = async ({ locals, request }: RequestEvent) => {
 	}
 
 	const body = await request.json();
-	const { subscriptionId, priceId, orgId } = body;
+	const { subscriptionId, priceId, orgId, basePriceId } = body;
 
 	if (orgId) {
 		const userOrgs = await getOrganizationsByUserId(locals.user.id);
@@ -124,15 +127,18 @@ export const PUT = async ({ locals, request }: RequestEvent) => {
 	}
 
 	const subscription = await stripeInstance.subscriptions.retrieve(subscriptionId);
-	const updatedSubscription: Stripe.Subscription = await stripeInstance.subscriptions.update(
-		subscriptionId,
-		{
-			cancel_at_period_end: false,
-			proration_behavior: 'create_prorations',
-			items: [{ id: subscription.items.data[0].id, price: priceId }]
-		}
-	);
-	console.log(updatedSubscription);
+	const items = subscription.items.data;
+	const seatItem = items.find((i) => !i.price.lookup_key?.includes('_base_')) ?? items[0];
+	const baseItem = items.find((i) => i.price.lookup_key?.includes('_base_'));
+
+	await stripeInstance.subscriptions.update(subscriptionId, {
+		cancel_at_period_end: false,
+		proration_behavior: 'create_prorations',
+		items: [
+			{ id: seatItem.id, price: priceId },
+			...(baseItem && basePriceId ? [{ id: baseItem.id, price: basePriceId }] : [])
+		]
+	});
 
 	return json({ message: m.stout_zesty_gibbon_race() });
 };

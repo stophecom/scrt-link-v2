@@ -15,12 +15,12 @@
 		name: string;
 		priceUnitAmount?: number;
 		monthlyPriceUnitAmount?: number;
+		seatPriceUnitAmount?: number;
 		currency?: SupportedCurrency;
 		billingInfo?: string;
 		showYearlyPrice?: boolean;
 		isActiveProduct?: boolean;
 		hidePromotion?: boolean;
-		isOrgPlan?: boolean;
 		priceLabel?: string;
 		priceSublabel?: string;
 		children?: Snippet;
@@ -30,12 +30,12 @@
 		name,
 		priceUnitAmount,
 		monthlyPriceUnitAmount,
+		seatPriceUnitAmount,
 		currency,
 		billingInfo,
 		showYearlyPrice,
 		isActiveProduct,
 		hidePromotion,
-		isOrgPlan = false,
 		priceLabel,
 		priceSublabel,
 		children,
@@ -84,7 +84,15 @@
 					</span>
 				{/if}
 			</div>
-			<div class="text-sm">{isOrgPlan ? m.slim_keen_ant_bill() : m.sunny_such_cod_shine()}</div>
+			<div class="text-sm">
+				{m.sunny_such_cod_shine()}
+			</div>
+			{#if seatPriceUnitAmount && currency}
+				<div class="text-sm">
+					+ {formatCurrency(seatPriceUnitAmount / 100 / (showYearlyPrice ? 12 : 1), currency)}
+					{m.slim_keen_ant_bill()}
+				</div>
+			{/if}
 		{:else}
 			<div class="text-3xl font-bold">{priceLabel ?? m.inner_pretty_raven_dine()}</div>
 			<div class="text-sm">{priceSublabel ?? m.weak_witty_alligator_foster()}</div>

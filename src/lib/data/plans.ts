@@ -85,6 +85,7 @@ export const plans = () => [
 		subtitle: m.sharp_keen_wolf_dash(),
 		title: m.crisp_fluffy_toucan_vent(),
 		contents: [
+			{ label: m.next_bold_request_feat() },
 			{ label: m.new_still_dingo_create({ limit: formatBytes(100 * GB) }) },
 			{ label: m.active_mellow_swan_list({ amount: 30 }) },
 			{ label: m.blue_jumpy_shell_climb(), tooltip: m.keen_rose_ant_zoom() },
@@ -111,11 +112,13 @@ export const plans = () => [
 		subtitle: m.lean_slim_crow_lead(),
 		title: m.bold_warm_falcon_soar(),
 		contents: [
+			{ label: m.firm_bold_label_site(), tooltip: m.firm_bold_label_site_info() },
 			{ label: m.aloof_zany_cheetah_greet() },
-			{ label: m.short_plain_mole_rush() },
-			{ label: m.lucky_plain_deer_race() },
-			{ label: m.calm_bright_otter_rest() },
-			{ label: m.inner_fun_mink_push() }
+			{ label: m.lucky_plain_deer_race(), tooltip: m.lean_secret_team_note() },
+			{ label: m.open_bold_access_pair() },
+			{ label: m.active_mellow_swan_list({ amount: 7 }) },
+			{ label: m.inner_fun_mink_push() },
+			{ label: m.tired_new_mantis_buy() }
 		],
 		limits: {
 			[SecretType.TEXT]: 100_000,
@@ -136,13 +139,13 @@ export const plans = () => [
 		icon: Building,
 		isOrgPlan: true,
 		subtitle: m.bold_warm_hawk_step(),
-		title: m.bold_warm_falcon_soar(),
+		title: m.keen_bold_service_plus(),
 		contents: [
-			{ label: m.aloof_zany_cheetah_greet() },
-			{ label: m.short_plain_mole_rush() },
-			{ label: m.muddy_any_tapir_roar() },
-			{ label: m.calm_bright_otter_rest() },
-			{ label: m.inner_fun_mink_push() }
+			{ label: m.muddy_any_tapir_roar(), tooltip: m.keen_top_team_note() },
+			{ label: m.active_mellow_swan_list({ amount: 30 }) },
+			{ label: m.bold_stat_log_feat() },
+			{ label: m.keen_beta_first_feat() },
+			{ label: m.still_busy_starfish_dare() }
 		],
 		limits: {
 			[SecretType.TEXT]: 100_000,
@@ -159,15 +162,16 @@ export const plans = () => [
 		}
 	},
 	{
-		name: 'Enterprise',
+		name: 'Secret Enterprise',
 		icon: Building2,
 		isOrgPlan: true,
 		subtitle: m.pure_keen_fox_soar(),
 		title: m.fine_warm_elk_trust(),
 		contents: [
-			{ label: m.lean_keen_wolf_talk() },
+			{ label: m.bold_bring_infra_feat() },
+			{ label: m.firm_dedicated_hosting() },
 			{ label: m.bold_calm_ram_help() },
-			{ label: m.inner_fun_mink_push() }
+			{ label: m.bold_custom_sla_dpa() }
 		]
 	}
 ];

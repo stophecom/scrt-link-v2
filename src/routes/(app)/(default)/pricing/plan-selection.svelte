@@ -165,14 +165,7 @@
 	</div>
 
 	{#if showBusiness}
-		<BusinessPlanSelection
-			{plans}
-			{user}
-			{orgId}
-			{orgSubscription}
-			currency={currency.current}
-			{showYearlyPrice}
-		/>
+		<BusinessPlanSelection {plans} {user} {orgId} {orgSubscription} currency={currency.current} />
 	{:else}
 		<div class="grid gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-3">
 			<PlanView name="Confidential">
@@ -239,13 +232,15 @@
 		<div class="xs:flex mr-4 items-center py-4">
 			<CurrencySwitcher bind:activeCurrency={currency.current} />
 		</div>
-		<div class="xs:flex items-center py-4">
-			<div class="flex items-center text-sm">
-				{m.noisy_late_mouse_amaze()}
-				<Switch bind:checked={showYearlyPrice} class="mx-2" />
-				{m.day_even_beaver_cry({ percentage: yearlyPlanSavings || 0 })}
+		{#if !showBusiness}
+			<div class="xs:flex items-center py-4">
+				<div class="flex items-center text-sm">
+					{m.noisy_late_mouse_amaze()}
+					<Switch bind:checked={showYearlyPrice} class="mx-2" />
+					{m.day_even_beaver_cry({ percentage: yearlyPlanSavings || 0 })}
+				</div>
 			</div>
-		</div>
+		{/if}
 		<div class="flex items-center py-4 sm:ms-auto"><PoweredByStripe class="w-40" /></div>
 	</div>
 </div>

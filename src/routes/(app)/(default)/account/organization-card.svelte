@@ -139,9 +139,8 @@
 					1
 				)}
 				<Table.Caption class="mt-6 px-4"
-					><strong>{m.tame_glad_fox_info()}</strong>
-					{m.glad_teal_fox_bill({ count: activeCount })} See
-					<a href={localizeHref('/account/billing')} class="underline">Billing</a> for more info.</Table.Caption
+					>{m.glad_teal_fox_bill({ count: activeCount })}
+					<a href={localizeHref('/account/billing')} class="underline">See billing</a> for more info.</Table.Caption
 				>
 			{/if}
 		</Table.Root>

@@ -10,7 +10,6 @@
 	import getStripe from '$lib/client/stripe';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { SupportedCurrency, TierOptions } from '$lib/data/enums';
-	import { formatCurrency } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -24,9 +23,8 @@
 		orgId: string | null;
 		orgSubscription: Stripe.Subscription | null;
 		currency: SupportedCurrency;
-		showYearlyPrice: boolean;
 	};
-	let { plans, user, orgId, orgSubscription, currency, showYearlyPrice }: Props = $props();
+	let { plans, user, orgId, orgSubscription, currency }: Props = $props();
 
 	const isOrgSubscriptionCanceled = orgSubscription && !!orgSubscription?.cancel_at;
 	const activeOrgProduct = $derived(orgSubscription?.items.data[0].plan.product);
@@ -36,13 +34,13 @@
 		plans
 			.filter((p) => orgPlanNames.includes(p.name as TierOptions))
 			.sort((a, b) => {
-				const aAmount = a.prices.monthly?.unit_amount ?? 0;
-				const bAmount = b.prices.monthly?.unit_amount ?? 0;
+				const aAmount = a.basePrices?.monthly?.unit_amount ?? a.prices.monthly?.unit_amount ?? 0;
+				const bAmount = b.basePrices?.monthly?.unit_amount ?? b.prices.monthly?.unit_amount ?? 0;
 				return aAmount - bAmount;
 			})
 	);
 
-	const handleSubmit = async (priceId: string) => {
+	const handleSubmit = async (priceId: string, basePriceId?: string) => {
 		if (!user) {
 			await goto(resolve('/signup'));
 			return;
@@ -56,7 +54,7 @@
 				const response = await api<{ message: string }>(
 					`/plans/checkout`,
 					{ method: 'PUT' },
-					{ priceId, subscriptionId: orgSubscription.id, orgId }
+					{ priceId, subscriptionId: orgSubscription.id, orgId, basePriceId }
 				);
 				await invalidateAll();
 				toast.success(response.message);
@@ -64,7 +62,7 @@
 				const response = await api<Stripe.Checkout.Session>(
 					`/plans/checkout`,
 					{ method: 'POST' },
-					{ priceId, currency, orgId }
+					{ priceId, currency, orgId, basePriceId }
 				);
 				const stripe = await getStripe();
 				const { error } = await stripe!.redirectToCheckout({ sessionId: response.id });
@@ -86,35 +84,30 @@
 	{#each businessPlans as plan (plan.id)}
 		{@const prices = plan.prices}
 		{@const isActiveProduct = plan.id === activeOrgProduct}
-		{@const price = showYearlyPrice && prices?.yearly ? prices.yearly : prices?.monthly}
-		{@const monthlyPrice = prices?.monthly}
+		{@const price = prices?.monthly}
 		{@const hasSelectedCurrency = !!price?.currency_options?.[currency]?.unit_amount}
 		{@const priceUnitAmount = hasSelectedCurrency
 			? (price.currency_options[currency].unit_amount ?? 0)
 			: (price?.unit_amount ?? 0)}
-		{@const monthlyPriceUnitAmount =
-			monthlyPrice?.currency_options?.[currency]?.unit_amount ?? monthlyPrice?.unit_amount ?? 0}
 		{@const displayCurrency = hasSelectedCurrency
 			? currency
 			: ((price?.currency ?? currency) as SupportedCurrency)}
 		{@const priceId = price.id}
+		{@const basePrice = plan.basePrices?.monthly}
+		{@const basePriceUnitAmount =
+			basePrice?.currency_options?.[currency]?.unit_amount ?? basePrice?.unit_amount ?? 0}
+		{@const basePriceId = basePrice?.id}
+		{@const displayPriceUnitAmount = basePriceUnitAmount || priceUnitAmount}
 
 		<PlanView
 			name={plan.name}
-			priceUnitAmount={priceUnitAmount || undefined}
-			{monthlyPriceUnitAmount}
-			{showYearlyPrice}
+			priceUnitAmount={displayPriceUnitAmount || undefined}
+			seatPriceUnitAmount={basePriceUnitAmount ? priceUnitAmount || undefined : undefined}
 			currency={displayCurrency}
-			isOrgPlan={true}
 			{isActiveProduct}
-			billingInfo={showYearlyPrice && prices?.yearly
-				? m.alert_heroic_haddock_dare({
-						amount: formatCurrency(priceUnitAmount / 100, displayCurrency)
-					})
-				: undefined}
 		>
 			{#if !orgSubscription || isOrgSubscriptionCanceled}
-				<Button class="w-full" onclick={() => handleSubmit(priceId)}>
+				<Button class="w-full" onclick={() => handleSubmit(priceId, basePriceId)}>
 					{m.noisy_safe_moth_mop()}
 				</Button>
 				<div class="py-1 text-center text-xs">
@@ -128,7 +121,9 @@
 					</p>
 				{/if}
 			{:else}
-				<Button class="w-full" onclick={() => handleSubmit(priceId)}>Select plan</Button>
+				<Button class="w-full" onclick={() => handleSubmit(priceId, basePriceId)}
+					>Select plan</Button
+				>
 				<div class="py-1 text-center text-xs">
 					{m.civil_formal_firefox_surge({ planName: plan.name })}
 				</div>
@@ -137,8 +132,7 @@
 	{/each}
 
 	<PlanView
-		name="Enterprise"
-		isOrgPlan={true}
+		name="Secret Enterprise"
 		priceLabel={m.soft_tame_moth_ping()}
 		priceSublabel={m.wise_bold_fox_deal()}
 	>

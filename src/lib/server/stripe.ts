@@ -47,7 +47,12 @@ export const getActivePrices = async (productId: string) => {
 		)
 	);
 
-	return prices;
+	// Prices with a lookup_key containing '_base_' are flat base fees;
+	// all others are per-seat prices
+	return {
+		seatPrices: prices.filter((p) => !p.lookup_key?.includes('_base_')),
+		basePrices: prices.filter((p) => p.lookup_key?.includes('_base_'))
+	};
 };
 
 const getCustomerWithSubscription = async (stripeCustomerId: string) =>

@@ -37,9 +37,12 @@ export const syncOrgSeatCount = async (organizationId: string) => {
 	const members = await getMembersByOrganizationId(organizationId);
 	const quantity = Math.max(members.length, 1);
 
+	const seatItem = subscription.items.data.find((i) => !i.price.lookup_key?.includes('_base_'));
+	if (!seatItem) return;
+
 	try {
 		await stripeInstance.subscriptions.update(subscription.id, {
-			items: [{ id: subscription.items.data[0].id, quantity }]
+			items: [{ id: seatItem.id, quantity }]
 		});
 	} catch (e) {
 		console.error('[syncOrgSeatCount] Failed to update Stripe quantity:', e);
