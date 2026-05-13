@@ -122,7 +122,7 @@
 					</Dialog.Header>
 					<CreateSecret
 						form={data.secretForm}
-						effectiveTier={data.user?.subscriptionTier}
+						effectiveTier={data.effectiveTier}
 						hidePrimaryFeatureList
 					/>
 				</Dialog.Content>

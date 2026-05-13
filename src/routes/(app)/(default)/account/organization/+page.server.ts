@@ -8,7 +8,6 @@ import { redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { organization } from '$lib/server/db/schema';
-import { getActiveSubscription } from '$lib/server/stripe';
 import {
 	addMemberToOrganization,
 	createOrganization,
@@ -17,6 +16,7 @@ import {
 	removeOrganizationMember
 } from '$lib/server/form/actions';
 import { getMembersAndInvitesByOrganization } from '$lib/server/organization';
+import { getActiveSubscription } from '$lib/server/stripe';
 import {
 	inviteOrganizationMemberFormSchema,
 	manageOrganizationMemberFormSchema,

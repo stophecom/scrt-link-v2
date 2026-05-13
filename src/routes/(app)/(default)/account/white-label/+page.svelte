@@ -16,7 +16,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let planLimits = $derived(getUserPlanLimits(data.user?.subscriptionTier));
+	let planLimits = $derived(getUserPlanLimits(data.effectiveTier));
 	let hasDomain = $derived(!!data.whiteLabelDomain);
 	let hasAccessControl = $derived(!!data.whiteLabel?.updatedAt);
 	let isPublished = $derived(!!data.whiteLabel?.published);
@@ -84,7 +84,7 @@
 		</div>
 	{/if}
 {:else}
-	<UpgradeNotice tier={data.user?.subscriptionTier} class="mb-6" />
+	<UpgradeNotice tier={data.effectiveTier} class="mb-6" />
 	<Button variant="outline" href={localizeHref('/business')}>{m.fit_ok_worm_lead()}</Button>
 {/if}
 

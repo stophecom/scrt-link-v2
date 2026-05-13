@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Factory, Plus, Sparkles, X } from '@lucide/svelte';
+	import { Building2, Factory, Plus, Sparkles, X } from '@lucide/svelte';
 	import Plane from '@lucide/svelte/icons/plane';
 	import Rocket from '@lucide/svelte/icons/rocket';
 	import { PersistedState } from 'runed';
@@ -20,13 +20,23 @@
 
 	type Props = {
 		user: App.Locals['user'];
+		effectiveTier?: TierOptions;
 		isMinimal?: boolean;
 		isPersistent?: boolean;
 		tag?: string;
 		breadcrumb?: string;
 	};
 
-	let { user, isMinimal, isPersistent: isPersistent, tag, breadcrumb }: Props = $props();
+	let {
+		user,
+		effectiveTier,
+		isMinimal,
+		isPersistent: isPersistent,
+		tag,
+		breadcrumb
+	}: Props = $props();
+
+	const tier = $derived(effectiveTier ?? user?.subscriptionTier ?? TierOptions.CONFIDENTIAL);
 
 	let persistHeader = $derived(isPersistent || !!tag);
 
@@ -99,7 +109,7 @@
 
 					<div class="ml-auto grid grid-flow-col items-center gap-2">
 						{#if !isMinimal && user}
-							{#if user.subscriptionTier === TierOptions.CONFIDENTIAL && !page.url.pathname.endsWith('/pricing')}
+							{#if tier === TierOptions.CONFIDENTIAL && !page.url.pathname.endsWith('/pricing')}
 								<Button
 									variant="rainbow"
 									href={localizeHref('/pricing')}
@@ -152,18 +162,21 @@
 									>
 								</Avatar.Root>
 
-								{#if user.subscriptionTier && [TierOptions.SECRET, TierOptions.TOP_SECRET, TierOptions.SECRET_SERVICE].includes(user.subscriptionTier)}
+								{#if [TierOptions.SECRET, TierOptions.TOP_SECRET, TierOptions.SECRET_SERVICE, TierOptions.TOP_SECRET_SERVICE].includes(tier)}
 									<div
 										class="border-background bg-accent text-primary-foreground absolute -right-[2px] -bottom-[2px] rounded-full border p-[3px]"
 									>
-										{#if user.subscriptionTier === TierOptions.SECRET}
+										{#if tier === TierOptions.SECRET}
 											<Plane class="h-3 w-3" />
 										{/if}
-										{#if user.subscriptionTier === TierOptions.TOP_SECRET}
+										{#if tier === TierOptions.TOP_SECRET}
 											<Rocket class="h-3 w-3" />
 										{/if}
-										{#if user.subscriptionTier === TierOptions.SECRET_SERVICE}
+										{#if tier === TierOptions.SECRET_SERVICE}
 											<Factory class="h-3 w-3" />
+										{/if}
+										{#if tier === TierOptions.TOP_SECRET_SERVICE}
+											<Building2 class="h-3 w-3" />
 										{/if}
 									</div>
 								{/if}

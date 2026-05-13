@@ -2,7 +2,7 @@ import { sha256Hash } from '@scrt-link/core';
 import { and, eq } from 'drizzle-orm';
 
 import { generateBase64Token } from '$lib/crypto';
-import { InviteStatus, type MembershipRole, TierOptions } from '$lib/data/enums';
+import { InviteStatus, MembershipRole, TierOptions } from '$lib/data/enums';
 import { DAY } from '$lib/data/units';
 
 import { db } from './db';
@@ -160,7 +160,7 @@ export const getEffectiveTierForUser = async (
 	userTier: TierOptions
 ): Promise<TierOptions> => {
 	const orgs = await db
-		.select({ subscriptionTier: organization.subscriptionTier })
+		.select({ subscriptionTier: organization.subscriptionTier, role: membership.role })
 		.from(membership)
 		.innerJoin(organization, eq(membership.organizationId, organization.id))
 		.where(eq(membership.userId, userId));
@@ -169,9 +169,17 @@ export const getEffectiveTierForUser = async (
 
 	for (const org of orgs) {
 		if (!org.subscriptionTier) continue;
-		const conferred = ORG_PLAN_TO_MEMBER_TIER[org.subscriptionTier];
-		if (conferred && TIER_RANK[conferred] > TIER_RANK[effective]) {
-			effective = conferred;
+
+		// Owners get the org tier directly (SECRET_SERVICE includes whiteLabel: true).
+		// Members get the conferred personal equivalent — enough for secret creation
+		// but without org management features like white-label setup.
+		const candidate =
+			org.role === MembershipRole.OWNER
+				? org.subscriptionTier
+				: ORG_PLAN_TO_MEMBER_TIER[org.subscriptionTier];
+
+		if (candidate && TIER_RANK[candidate] > TIER_RANK[effective]) {
+			effective = candidate;
 		}
 	}
 

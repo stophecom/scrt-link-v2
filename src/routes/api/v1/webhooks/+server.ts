@@ -53,13 +53,21 @@ export const POST: RequestHandler = async ({ request }) => {
 				// Org subscription event
 				if (['trialing', 'active'].includes(subscription.status)) {
 					try {
-						const product = subscription.items.data[0].plan.product;
 						let purchasedTier = TierOptions.CONFIDENTIAL;
 
-						if (typeof product === 'string') {
-							const plan = await stripeInstance.products.retrieve(product);
+						// With base-fee + seat line items, find the item whose product name
+						// maps to a known TierOptions (skip companion "...Base fee" products)
+						for (const item of subscription.items.data) {
+							const productId = item.plan.product;
+							console.log('Purchased product: ', productId);
+							console.log('Customer: ', customerId);
+							if (typeof productId !== 'string') continue;
+							const plan = await stripeInstance.products.retrieve(productId);
 							const mappedTierOption = getEnumFromString(TierOptions, plan.name);
-							if (mappedTierOption) purchasedTier = mappedTierOption;
+							if (mappedTierOption) {
+								purchasedTier = mappedTierOption;
+								break;
+							}
 						}
 
 						await db

@@ -104,7 +104,7 @@ export const postSecret: Action = async (event) => {
 	const user = event.locals.user;
 	const whiteLabelSiteId = event.locals.whiteLabelSite?.id;
 
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
 	if (form.data.viewLimit > planLimits.maxViewLimit) {
 		return fail(403, { form });
 	}
@@ -586,7 +586,10 @@ export const removeOrganizationMember: Action = async (event) => {
 			}
 		}
 
-		const result = await db.delete(membership).where(eq(membership.userId, userId)).returning();
+		const result = await db
+			.delete(membership)
+			.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId)))
+			.returning();
 
 		if (!result.length) {
 			return message(
@@ -1093,7 +1096,7 @@ export const saveWhiteLabelDomain: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
 
 	if (!planLimits.whiteLabel) {
 		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
@@ -1183,7 +1186,7 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
 
 	if (!planLimits.whiteLabel) {
 		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
@@ -1241,7 +1244,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
 
 	if (!planLimits.whiteLabel) {
 		return message(
