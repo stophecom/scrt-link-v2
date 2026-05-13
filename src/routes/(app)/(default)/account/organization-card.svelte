@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Pen, User } from '@lucide/svelte';
+	import type { Stripe } from 'stripe';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { wait } from '$lib/client/utils';
@@ -28,11 +29,13 @@
 		organizationForm,
 		inviteOrganizationMemberForm,
 		manageOrganizationMemberForm,
-		organization
+		organization,
+		orgSubscription = null
 	}: {
 		user: App.Locals['user'];
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		organization: any;
+		orgSubscription?: Stripe.Subscription | null;
 		organizationForm: SuperValidated<OrganizationFormSchema>;
 		inviteOrganizationMemberForm: SuperValidated<InviteOrganizationMemberFormSchema>;
 		manageOrganizationMemberForm: SuperValidated<ManageOrganizationMemberFormSchema>;
@@ -133,7 +136,7 @@
 					</Table.Row>
 				{/each}
 			</Table.Body>
-			{#if organization.role === MembershipRole.OWNER}
+			{#if organization.role === MembershipRole.OWNER && orgSubscription && ['active', 'trialing'].includes(orgSubscription.status)}
 				{@const activeCount = Math.max(
 					organization.members.filter((m: MembersAndInvitesByOrganization) => m.userId).length,
 					1

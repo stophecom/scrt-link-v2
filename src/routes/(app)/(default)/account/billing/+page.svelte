@@ -100,8 +100,10 @@
 
 	<Tabs.TabsContent value="overview">
 		{#if !hasAnySubscription}
-			<p class="text-muted-foreground mb-4 text-sm">{m.flat_warm_bear_none()}</p>
-			<Button href={localizeHref('/pricing')} variant="outline" size="sm">View plans</Button>
+			<Card>
+				<p class="text-muted-foreground mb-4">{m.flat_warm_bear_none()}</p>
+				<Button href={localizeHref('/pricing')} variant="outline" size="sm">View plans</Button>
+			</Card>
 		{/if}
 
 		{#if data.subscription}
@@ -118,7 +120,7 @@
 	<Tabs.TabsContent value="invoices">
 		<Card>
 			{#if allInvoices.length === 0}
-				<p class="text-muted-foreground text-sm">No invoices yet.</p>
+				<p class="text-muted-foreground">No invoices yet.</p>
 			{:else}
 				<div class="overflow-x-auto">
 					<table class="w-full text-sm">

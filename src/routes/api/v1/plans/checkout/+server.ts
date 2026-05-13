@@ -37,6 +37,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 		if (!stripeCustomerId) {
 			const customer = await stripeInstance.customers.create({
 				name: org.name,
+				email: locals.user.email,
 				metadata: { organizationId: org.id }
 			});
 			stripeCustomerId = customer.id;
@@ -50,6 +51,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 			const params: Stripe.Checkout.SessionCreateParams = {
 				locale: 'auto',
 				mode: 'subscription',
+
 				allow_promotion_codes: true,
 				customer: stripeCustomerId,
 				currency,

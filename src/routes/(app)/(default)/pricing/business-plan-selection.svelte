@@ -57,8 +57,8 @@
 					{ method: 'PUT' },
 					{ priceId, subscriptionId: orgSubscription.id, orgId, basePriceId }
 				);
-				await invalidateAll();
 				toast.success(response.message);
+				await invalidateAll();
 			} else {
 				const response = await api<Stripe.Checkout.Session>(
 					`/plans/checkout`,

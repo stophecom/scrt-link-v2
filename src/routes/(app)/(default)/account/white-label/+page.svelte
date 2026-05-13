@@ -49,7 +49,7 @@
 			/>
 		</Card>
 
-		<div class="customize-card rainbow-border relative mb-6 rounded-lg p-0.5">
+		<div class="customize-card border-rainbow relative mb-6 rounded-lg p-0.5">
 			<div
 				class="bg-background relative grid grid-cols-[minmax(60%,1fr)_auto] overflow-hidden rounded-lg"
 			>

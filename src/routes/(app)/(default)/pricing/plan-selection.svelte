@@ -155,7 +155,7 @@
 {/if}
 
 <div>
-	<div class="mb-8 flex justify-center">
+	<div class="mb-12 flex justify-center">
 		<BigSwitch
 			bind:checked={showBusiness}
 			left={m.lean_bold_worm_grow()}
