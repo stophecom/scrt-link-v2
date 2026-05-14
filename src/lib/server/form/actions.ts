@@ -32,6 +32,7 @@ import { dropUndefinedValuesFromObject } from '$lib/utils';
 import {
 	apiKeyFormSchema,
 	deleteOrganizationSchema,
+	updateBillingOwnerSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
 	encryptionSetupFormSchema,
@@ -728,16 +729,13 @@ export const deleteOrganization: Action = async (event) => {
 };
 
 export const updateOrganizationBillingOwner: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(updateBillingOwnerSchema()));
 	const user = event.locals.user;
+
+	if (!form.valid) return fail(400, { form });
 	if (!user) return redirectLocalized(307, '/signup');
 
-	const data = await event.request.formData();
-	const organizationId = data.get('organizationId') as string | null;
-	const newBillingOwnerId = data.get('billingOwnerId') as string | null;
-
-	if (!organizationId || !newBillingOwnerId) {
-		return fail(400, { billingOwnerError: 'Missing required fields.' });
-	}
+	const { organizationId, billingOwnerId: newBillingOwnerId } = form.data;
 
 	// Only org owners may change the billing contact.
 	const [memberRow] = await db
@@ -746,7 +744,7 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 		.where(and(eq(membership.userId, user.id), eq(membership.organizationId, organizationId)));
 
 	if (memberRow?.role !== MembershipRole.OWNER) {
-		return fail(403, { billingOwnerError: 'Only org owners can change the billing contact.' });
+		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
 	}
 
 	// The new billing owner must be a member of the org.
@@ -765,7 +763,11 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 	]);
 
 	if (!targetRow) {
-		return fail(400, { billingOwnerError: 'Selected user is not a member of this organization.' });
+		return message(
+			form,
+			{ status: 'error', title: m.this_home_stingray_yell() },
+			{ status: 400 }
+		);
 	}
 
 	await db
@@ -778,7 +780,7 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 		await stripeInstance.customers.update(org.stripeCustomerId, { email: targetRow.email });
 	}
 
-	return { billingOwnerSuccess: true };
+	return message(form, { status: 'success', title: m.wild_born_blackbird_peel() });
 };
 
 export const loginWithEmail: Action = async (event) => {

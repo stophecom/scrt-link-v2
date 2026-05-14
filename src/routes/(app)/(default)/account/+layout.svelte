@@ -270,7 +270,7 @@
 							{/each}
 						{:else}
 							<Button
-								href={localizeHref('/account/organization')}
+								href={localizeHref('/account/org/create')}
 								variant="ghost"
 								class="justify-start hover:bg-transparent hover:underline"
 							>

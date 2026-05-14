@@ -1,12 +1,10 @@
 <script lang="ts">
 	import ExternalLink from '@lucide/svelte/icons/external-link';
 
-	import { enhance } from '$app/forms';
-	import { page } from '$app/state';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
-	import * as Select from '$lib/components/ui/select';
 	import * as Tabs from '$lib/components/ui/tabs';
+	import UpdateBillingOwnerForm from '$lib/components/forms/update-billing-owner-form.svelte';
 	import { formatCurrency, formatDate } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -16,12 +14,6 @@
 	let { data }: { data: PageData } = $props();
 
 	let activeTab = $state('overview');
-	let selectedBillingOwnerId = $state(data.billingOwnerId ?? data.members[0]?.userId ?? '');
-	const orgId = $derived(page.params.orgId);
-
-	let billingOwnerSaved = $state(false);
-	let billingOwnerError = $state('');
-
 	const statusLabel: Record<string, () => string> = {
 		active: m.teal_keen_sub_active,
 		trialing: m.teal_keen_sub_trial,
@@ -56,25 +48,6 @@
 		uncollectible: 'bg-destructive/15 text-destructive'
 	};
 
-	const handleBillingOwnerSubmit = () => {
-		return async ({
-			result,
-			update
-		}: {
-			result: { type: string; data?: { billingOwnerError?: string } };
-			update: () => Promise<void>;
-		}) => {
-			billingOwnerSaved = false;
-			billingOwnerError = '';
-			if (result.type === 'success') {
-				billingOwnerSaved = true;
-				setTimeout(() => (billingOwnerSaved = false), 3000);
-			} else if (result.type === 'failure') {
-				billingOwnerError = result.data?.billingOwnerError ?? 'An error occurred.';
-			}
-			await update();
-		};
-	};
 </script>
 
 <Tabs.Tabs bind:value={activeTab}>
@@ -137,38 +110,7 @@
 				<p class="text-muted-foreground mb-4 text-sm">
 					{m.flat_warm_bill_hint()}
 				</p>
-				<form
-					method="POST"
-					action="?/updateOrganizationBillingOwner"
-					use:enhance={handleBillingOwnerSubmit}
-				>
-					<input type="hidden" name="organizationId" value={orgId} />
-					<div class="flex flex-wrap items-center gap-3">
-						<Select.Root type="single" bind:value={selectedBillingOwnerId}>
-							<Select.Trigger class="w-64">
-								{data.members.find((m) => m.userId === selectedBillingOwnerId)?.email ??
-									m.flat_warm_mem_select()}
-							</Select.Trigger>
-							<Select.Content>
-								{#each data.members as member (member.userId)}
-									<Select.Item value={member.userId}>
-										{member.name ?? member.email}
-										<span class="text-muted-foreground ml-1 text-xs">({member.email})</span>
-									</Select.Item>
-								{/each}
-							</Select.Content>
-						</Select.Root>
-						<input type="hidden" name="billingOwnerId" value={selectedBillingOwnerId} />
-						<Button type="submit" size="sm" variant="outline">{m.caring_light_tiger_taste()}</Button
-						>
-						{#if billingOwnerSaved}
-							<span class="text-success text-sm">{m.wild_born_blackbird_peel()}</span>
-						{/if}
-						{#if billingOwnerError}
-							<span class="text-destructive text-sm">{billingOwnerError}</span>
-						{/if}
-					</div>
-				</form>
+				<UpdateBillingOwnerForm form={data.updateBillingOwnerForm} members={data.members} />
 			</Card>
 		{/if}
 	</Tabs.TabsContent>

@@ -74,7 +74,7 @@
 		<Separator class="my-6" />
 		<div class="flex flex-wrap">
 			<Dialog.Root bind:open={openDialogDelete}>
-				<Dialog.Trigger class={buttonVariants({ variant: 'ghost', class: 'text-destructive' })}>
+				<Dialog.Trigger class={buttonVariants({ variant: 'outline', class: 'text-destructive' })}>
 					{m.flat_warm_org_delete_btn()}
 				</Dialog.Trigger>
 				<Dialog.Content class="sm:max-w-[425px]">

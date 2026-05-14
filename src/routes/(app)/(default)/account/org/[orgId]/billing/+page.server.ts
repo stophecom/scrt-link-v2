@@ -1,5 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+import { superValidate } from 'sveltekit-superforms';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { getBaseUrl } from '$lib/constants';
 import { getAbsoluteLocalizedUrl, redirectLocalized } from '$lib/i18n';
@@ -8,6 +10,7 @@ import { db } from '$lib/server/db';
 import { membership, user } from '$lib/server/db/schema';
 import { updateOrganizationBillingOwner } from '$lib/server/form/actions';
 import stripeInstance, { getOrgInvoices, getStripePortalUrl } from '$lib/server/stripe';
+import { updateBillingOwnerSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -53,14 +56,20 @@ export const load: PageServerLoad = async ({ locals, parent, url }) => {
 				.where(eq(membership.organizationId, org.id))
 		: [];
 
+	const updateBillingOwnerForm = await superValidate(
+		{ organizationId: org.id, billingOwnerId: org.billingOwnerId ?? '' },
+		zod4(updateBillingOwnerSchema()),
+		{ errors: false }
+	);
+
 	return {
 		orgSubscription,
 		invoices,
 		stripePortalUrl,
 		planName,
-		billingOwnerId: org.billingOwnerId,
 		members,
 		isOrgOwner,
+		updateBillingOwnerForm,
 		pageTitle: m.misty_teal_hawk_glow()
 	};
 };
