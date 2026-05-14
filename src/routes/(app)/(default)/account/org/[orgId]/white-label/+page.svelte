@@ -51,7 +51,7 @@
 					{m.bright_calm_tiger_leap()}
 				</p>
 				<div>
-					<Button href={localizeHref(`/account/secret-service/edit/${data.whiteLabelDomain}`)}>
+					<Button href={localizeHref(`/account/white-label/edit/${data.whiteLabelDomain}`)}>
 						<Palette class="me-2 h-5 w-5" />
 						{m.home_witty_piranha_peek()}
 					</Button>
