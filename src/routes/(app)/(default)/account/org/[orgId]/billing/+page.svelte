@@ -6,7 +6,6 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as Select from '$lib/components/ui/select';
-	import { Separator } from '$lib/components/ui/separator';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatCurrency, formatDate } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
@@ -20,13 +19,16 @@
 	let selectedBillingOwnerId = $state(data.billingOwnerId ?? data.members[0]?.userId ?? '');
 	const orgId = $derived(page.params.orgId);
 
-	const statusLabel: Record<string, string> = {
-		active: 'Active',
-		trialing: 'Trialing',
-		canceled: 'Canceled',
-		past_due: 'Past due',
-		unpaid: 'Unpaid',
-		incomplete: 'Incomplete'
+	let billingOwnerSaved = $state(false);
+	let billingOwnerError = $state('');
+
+	const statusLabel: Record<string, () => string> = {
+		active: m.teal_keen_sub_active,
+		trialing: m.teal_keen_sub_trial,
+		canceled: m.teal_keen_sub_cancel,
+		past_due: m.teal_keen_sub_due,
+		unpaid: m.teal_keen_sub_unpaid,
+		incomplete: m.teal_keen_sub_incomplete
 	};
 
 	const statusClass: Record<string, string> = {
@@ -38,12 +40,12 @@
 		incomplete: 'bg-yellow-100 text-yellow-700'
 	};
 
-	const invoiceStatusLabel: Record<string, string> = {
-		paid: 'Paid',
-		open: 'Open',
-		draft: 'Draft',
-		void: 'Void',
-		uncollectible: 'Uncollectible'
+	const invoiceStatusLabel: Record<string, () => string> = {
+		paid: m.teal_keen_inv_paid,
+		open: m.teal_keen_inv_open,
+		draft: m.teal_keen_inv_draft,
+		void: m.teal_keen_inv_void,
+		uncollectible: m.teal_keen_inv_uncollectible
 	};
 
 	const invoiceStatusClass: Record<string, string> = {
@@ -52,6 +54,26 @@
 		draft: 'text-muted-foreground bg-muted',
 		void: 'text-muted-foreground bg-muted',
 		uncollectible: 'bg-destructive/15 text-destructive'
+	};
+
+	const handleBillingOwnerSubmit = () => {
+		return async ({
+			result,
+			update
+		}: {
+			result: { type: string; data?: { billingOwnerError?: string } };
+			update: () => Promise<void>;
+		}) => {
+			billingOwnerSaved = false;
+			billingOwnerError = '';
+			if (result.type === 'success') {
+				billingOwnerSaved = true;
+				setTimeout(() => (billingOwnerSaved = false), 3000);
+			} else if (result.type === 'failure') {
+				billingOwnerError = result.data?.billingOwnerError ?? 'An error occurred.';
+			}
+			await update();
+		};
 	};
 </script>
 
@@ -68,14 +90,16 @@
 					<div>
 						<div class="mb-1 flex items-center gap-2">
 							<h3 class="font-semibold">
-								{data.planName ?? data.orgSubscription.items.data[0]?.plan?.nickname ?? 'Plan'}
+								{data.planName ??
+									data.orgSubscription.items.data[0]?.plan?.nickname ??
+									m.flat_warm_plan_label()}
 							</h3>
 							<span
 								class="rounded-full px-2 py-0.5 text-xs font-medium {statusClass[
 									data.orgSubscription.status
 								] ?? 'bg-muted text-muted-foreground'}"
 							>
-								{statusLabel[data.orgSubscription.status] ?? data.orgSubscription.status}
+								{statusLabel[data.orgSubscription.status]?.() ?? data.orgSubscription.status}
 							</span>
 						</div>
 						<p class="text-muted-foreground text-sm">
@@ -101,23 +125,29 @@
 		{:else}
 			<Card>
 				<p class="text-muted-foreground mb-4">{m.flat_warm_bear_none()}</p>
-				<Button href={localizeHref('/pricing')} variant="outline" size="sm">View plans</Button>
+				<Button href={localizeHref('/pricing')} variant="outline" size="sm"
+					>{m.flat_warm_plan_view()}</Button
+				>
 			</Card>
 		{/if}
 
 		{#if data.isOrgOwner && data.members.length > 0}
 			<Card class="mt-4">
-				<h3 class="mb-1 font-semibold">Billing contact</h3>
+				<h3 class="mb-1 font-semibold">{m.flat_warm_bill_contact()}</h3>
 				<p class="text-muted-foreground mb-4 text-sm">
-					The billing contact receives the Stripe portal link. Defaults to any org owner.
+					{m.flat_warm_bill_hint()}
 				</p>
-				<form method="POST" action="?/updateOrganizationBillingOwner" use:enhance>
+				<form
+					method="POST"
+					action="?/updateOrganizationBillingOwner"
+					use:enhance={handleBillingOwnerSubmit}
+				>
 					<input type="hidden" name="organizationId" value={orgId} />
-					<div class="flex items-center gap-3">
+					<div class="flex flex-wrap items-center gap-3">
 						<Select.Root type="single" bind:value={selectedBillingOwnerId}>
 							<Select.Trigger class="w-64">
 								{data.members.find((m) => m.userId === selectedBillingOwnerId)?.email ??
-									'Select member'}
+									m.flat_warm_mem_select()}
 							</Select.Trigger>
 							<Select.Content>
 								{#each data.members as member (member.userId)}
@@ -129,7 +159,14 @@
 							</Select.Content>
 						</Select.Root>
 						<input type="hidden" name="billingOwnerId" value={selectedBillingOwnerId} />
-						<Button type="submit" size="sm" variant="outline">Save</Button>
+						<Button type="submit" size="sm" variant="outline">{m.caring_light_tiger_taste()}</Button
+						>
+						{#if billingOwnerSaved}
+							<span class="text-success text-sm">{m.wild_born_blackbird_peel()}</span>
+						{/if}
+						{#if billingOwnerError}
+							<span class="text-destructive text-sm">{billingOwnerError}</span>
+						{/if}
 					</div>
 				</form>
 			</Card>
@@ -139,18 +176,24 @@
 	<Tabs.TabsContent value="invoices">
 		<Card>
 			{#if data.invoices.length === 0}
-				<p class="text-muted-foreground">No invoices yet.</p>
+				<p class="text-muted-foreground">{m.zeal_fair_elk_drop()}</p>
 			{:else}
 				<div class="overflow-x-auto">
 					<table class="w-full text-sm">
 						<thead>
 							<tr class="border-border border-b">
-								<th class="text-muted-foreground pb-2 text-left font-medium">Date</th>
-								<th class="text-muted-foreground pb-2 text-left font-medium">Description</th>
+								<th class="text-muted-foreground pb-2 text-left font-medium"
+									>{m.flat_warm_inv_date()}</th
+								>
+								<th class="text-muted-foreground pb-2 text-left font-medium"
+									>{m.caring_topical_ray_commend()}</th
+								>
 								<th class="text-muted-foreground pb-2 text-left font-medium"
 									>{m.real_proud_dolphin_attend()}</th
 								>
-								<th class="text-muted-foreground pb-2 text-right font-medium">Total</th>
+								<th class="text-muted-foreground pb-2 text-right font-medium"
+									>{m.flat_warm_inv_total()}</th
+								>
 								<th class="pb-2"></th>
 							</tr>
 						</thead>
@@ -160,7 +203,7 @@
 								<tr class="border-border border-b last:border-0">
 									<td class="py-3 pr-4">{formatDate(new Date(invoice.created * 1000))}</td>
 									<td class="py-3 pr-4 capitalize"
-										>{invoice.billing_reason?.replace(/_/g, ' ') ?? 'Invoice'}</td
+										>{invoice.billing_reason?.replace(/_/g, ' ') ?? m.flat_warm_inv_label()}</td
 									>
 									<td class="py-3 pr-4">
 										<span
@@ -168,7 +211,7 @@
 												status
 											] ?? 'bg-muted text-muted-foreground'}"
 										>
-											{invoiceStatusLabel[status] ?? status}
+											{invoiceStatusLabel[status]?.() ?? status}
 										</span>
 									</td>
 									<td class="py-3 pr-4 text-right font-medium">

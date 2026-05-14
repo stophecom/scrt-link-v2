@@ -22,6 +22,7 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import { Separator } from '$lib/components/ui/separator';
 	import { Spinner } from '$lib/components/ui/spinner';
 	import { Role } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
@@ -191,9 +192,9 @@
 										<DropdownMenu.Item
 											class={currentPath.startsWith(item.href) ? 'bg-muted font-medium' : ''}
 										>
-											<a href={item.href} class="flex w-full items-center">
-												<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
-												<span>{item.label}</span>
+											<a href={item.href} class="flex w-full min-w-0 items-center">
+												<svelte:component this={item.icon} class="mr-2 h-4 w-4 shrink-0" />
+												<span class="truncate">{item.label}</span>
 											</a>
 										</DropdownMenu.Item>
 									{/each}
@@ -252,12 +253,13 @@
 										? 'bg-muted hover:bg-muted'
 										: 'hover:bg-transparent hover:underline'}"
 								>
-									<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
-									{item.label}
+									<svelte:component this={item.icon} class="mr-2 h-4 w-4 shrink-0" />
+									<span class="truncate">{item.label}</span>
 								</Button>
 							{/each}
 						{/if}
 					</nav>
+					<Separator class="my-2" />
 					<div class="mt-1">
 						<form method="post" action="/account?/logout" use:enhance={handleLogout}>
 							<Button

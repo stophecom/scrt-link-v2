@@ -450,6 +450,11 @@ export const manageOrganizationMember: Action = async (event) => {
 		return message(form, { status: 'error', title: 'Not allowed.' }, { status: 401 });
 	}
 
+	// Admins cannot escalate anyone (including themselves) to Owner.
+	if (userOrganization.role === MembershipRole.ADMIN && role === MembershipRole.OWNER) {
+		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
+	}
+
 	if (userId) {
 		if (role !== MembershipRole.OWNER) {
 			const owners = await db.query.membership.findMany({
@@ -635,7 +640,7 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 	const newBillingOwnerId = data.get('billingOwnerId') as string | null;
 
 	if (!organizationId || !newBillingOwnerId) {
-		return error(400, 'Missing required fields.');
+		return fail(400, { billingOwnerError: 'Missing required fields.' });
 	}
 
 	// Only org owners may change the billing contact.
@@ -645,7 +650,7 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 		.where(and(eq(membership.userId, user.id), eq(membership.organizationId, organizationId)));
 
 	if (memberRow?.role !== MembershipRole.OWNER) {
-		return error(403, 'Only org owners can change the billing contact.');
+		return fail(403, { billingOwnerError: 'Only org owners can change the billing contact.' });
 	}
 
 	// The new billing owner must be a member of the org.
@@ -657,7 +662,7 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 		);
 
 	if (!targetRow) {
-		return error(400, 'Selected user is not a member of this organization.');
+		return fail(400, { billingOwnerError: 'Selected user is not a member of this organization.' });
 	}
 
 	await db
@@ -665,7 +670,7 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 		.set({ billingOwnerId: newBillingOwnerId })
 		.where(eq(organization.id, organizationId));
 
-	return { success: true };
+	return { billingOwnerSuccess: true };
 };
 
 export const loginWithEmail: Action = async (event) => {

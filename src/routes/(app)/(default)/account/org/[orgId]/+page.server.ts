@@ -3,7 +3,6 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { MembershipRole } from '$lib/data/enums';
 import { redirectLocalized } from '$lib/i18n';
-import { m } from '$lib/paraglide/messages.js';
 import {
 	addMemberToOrganization,
 	editOrganization,
