@@ -121,7 +121,7 @@
 						<Table.Cell>{member.role}</Table.Cell>
 						<Table.Cell>{@render renderStatus(member.status)}</Table.Cell>
 						<Table.Cell class="text-right">
-							{#if organization.role === MembershipRole.OWNER || member.userId === user?.id}
+							{#if organization.role === MembershipRole.OWNER || organization.role === MembershipRole.ADMIN || member.userId === user?.id}
 								<Button
 									size="sm"
 									variant="outline"
@@ -136,7 +136,7 @@
 					</Table.Row>
 				{/each}
 			</Table.Body>
-			{#if organization.role === MembershipRole.OWNER && orgSubscription && ['active', 'trialing'].includes(orgSubscription.status)}
+			{#if (organization.role === MembershipRole.OWNER || organization.role === MembershipRole.ADMIN) && orgSubscription && ['active', 'trialing'].includes(orgSubscription.status)}
 				{@const activeCount = Math.max(
 					organization.members.filter((m: MembersAndInvitesByOrganization) => m.userId).length,
 					1
@@ -148,7 +148,7 @@
 			{/if}
 		</Table.Root>
 
-		{#if organization.role === MembershipRole.OWNER}
+		{#if organization.role === MembershipRole.OWNER || organization.role === MembershipRole.ADMIN}
 			<Separator class="my-6" />
 			<div class="xs:grid-rows-1 xs:grid-cols-2 grid grid-rows-2 gap-2">
 				<div>
@@ -226,7 +226,8 @@
 							userId={selectedItem.userId}
 							inviteId={selectedItem.inviteId}
 							isCurrentUser={selectedItem.userId === user?.id}
-							isOwner={organization.role === MembershipRole.OWNER}
+							isOwner={organization.role === MembershipRole.OWNER ||
+								organization.role === MembershipRole.ADMIN}
 							initialRole={selectedItem.role}
 							form={manageOrganizationMemberForm!}
 							onSuccess={() => {

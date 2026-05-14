@@ -293,7 +293,9 @@ export const editOrganization: Action = async (event) => {
 	const userOrganizations = await getOrganizationsByUserId(user.id);
 
 	const isOwner = userOrganizations.some(
-		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+		(item) =>
+			item.id === organizationId &&
+			(item.role === MembershipRole.OWNER || item.role === MembershipRole.ADMIN)
 	);
 
 	if (!organizationId || !isOwner) {
@@ -337,10 +339,12 @@ export const addMemberToOrganization: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	// Make sure user is owner of the organization
+	// Make sure user is owner or admin of the organization
 	const userOrganizations = await getOrganizationsByUserId(user.id);
 	const userOrganization = userOrganizations.find(
-		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+		(item) =>
+			item.id === organizationId &&
+			(item.role === MembershipRole.OWNER || item.role === MembershipRole.ADMIN)
 	);
 
 	if (!organizationId || !userOrganization) {
@@ -435,10 +439,12 @@ export const manageOrganizationMember: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	// Make sure user is owner of the organization
+	// Make sure user is owner or admin of the organization
 	const userOrganizations = await getOrganizationsByUserId(user.id);
 	const userOrganization = userOrganizations.find((item) => item.id === organizationId);
-	const isOwner = userOrganization?.role === MembershipRole.OWNER;
+	const isOwner =
+		userOrganization?.role === MembershipRole.OWNER ||
+		userOrganization?.role === MembershipRole.ADMIN;
 
 	if (!organizationId || !userOrganization || !isOwner || !role) {
 		return message(form, { status: 'error', title: 'Not allowed.' }, { status: 401 });
@@ -520,11 +526,13 @@ export const removeOrganizationMember: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	// Make sure user is owner of the organization, OR they are removing themselves
+	// Make sure user is owner/admin of the organization, OR they are removing themselves
 	const userOrganizations = await getOrganizationsByUserId(user.id);
 	const userOrganization = userOrganizations.find((item) => item.id === organizationId);
 
-	const isOwner = userOrganization?.role === MembershipRole.OWNER;
+	const isOwner =
+		userOrganization?.role === MembershipRole.OWNER ||
+		userOrganization?.role === MembershipRole.ADMIN;
 	const isSelf = userId === user.id;
 
 	if (!organizationId || !userOrganization || (!isOwner && !isSelf)) {
@@ -565,7 +573,7 @@ export const removeOrganizationMember: Action = async (event) => {
 	}
 
 	if (userId) {
-		if (isSelf && isOwner) {
+		if (isSelf && userOrganization?.role === MembershipRole.OWNER) {
 			const owners = await db.query.membership.findMany({
 				where: (fields, { eq, and }) =>
 					and(eq(fields.organizationId, organizationId), eq(fields.role, MembershipRole.OWNER))

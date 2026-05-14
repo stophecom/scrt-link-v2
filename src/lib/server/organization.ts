@@ -170,11 +170,11 @@ export const getEffectiveTierForUser = async (
 	for (const org of orgs) {
 		if (!org.subscriptionTier) continue;
 
-		// Owners get the org tier directly (SECRET_SERVICE includes whiteLabel: true).
+		// Owners and admins get the org tier directly (SECRET_SERVICE includes whiteLabel: true).
 		// Members get the conferred personal equivalent — enough for secret creation
 		// but without org management features like white-label setup.
 		const candidate =
-			org.role === MembershipRole.OWNER
+			org.role === MembershipRole.OWNER || org.role === MembershipRole.ADMIN
 				? org.subscriptionTier
 				: ORG_PLAN_TO_MEMBER_TIER[org.subscriptionTier];
 

@@ -15,8 +15,9 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 	const user = locals.user;
 	if (!user) return redirectLocalized(307, '/signup');
 
-	const { org, isOrgOwner } = await parent();
-	if (!isOrgOwner) return error(403, 'Only org owners can manage the white-label site.');
+	const { org, isOrgOwner, isOrgAdmin } = await parent();
+	if (!isOrgOwner && !isOrgAdmin)
+		return error(403, 'Only org owners and admins can manage the white-label site.');
 
 	// Prefer the site linked to this org; fall back to the creator's personal site
 	// (for orgs whose site was created before the organizationId FK was in use).

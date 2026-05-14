@@ -11,7 +11,7 @@
 	let { children }: { children: Snippet } = $props();
 
 	const orgId = $derived(page.params.orgId);
-	const isOwner = $derived(page.data.isOrgOwner);
+	const isOwner = $derived(page.data.isOrgOwner || page.data.isOrgAdmin);
 	const currentPath = $derived(page.url.pathname);
 
 	const subNavItems = $derived([

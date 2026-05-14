@@ -71,6 +71,7 @@
 				<RadioGroup
 					options={[
 						{ value: MembershipRole.MEMBER, label: m.cuddly_flat_salmon_express() },
+						{ value: MembershipRole.ADMIN, label: 'Admin' },
 						{ value: MembershipRole.OWNER, label: m.lower_few_turtle_propel() }
 					]}
 					label={m.bad_close_anaconda_forgive()}

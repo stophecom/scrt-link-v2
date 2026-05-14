@@ -115,6 +115,7 @@ export const organization = pgTable('organization', {
 
 export const membershipRole = pgEnum('membership_role', [
 	MembershipRole.MEMBER,
+	MembershipRole.ADMIN,
 	MembershipRole.OWNER
 ]);
 

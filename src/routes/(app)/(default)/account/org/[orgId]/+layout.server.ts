@@ -35,6 +35,7 @@ export const load: LayoutServerLoad = async ({ locals, params }) => {
 	return {
 		org: { ...org, role: memberRow.role },
 		orgSubscription,
-		isOrgOwner: memberRow.role === MembershipRole.OWNER
+		isOrgOwner: memberRow.role === MembershipRole.OWNER,
+		isOrgAdmin: memberRow.role === MembershipRole.ADMIN
 	};
 };
