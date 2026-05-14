@@ -43,7 +43,7 @@
 		exact ? currentPath === href : currentPath.startsWith(href);
 </script>
 
-<div class="mb-6 flex gap-1 border-b pb-1">
+<div class="mb-4 flex gap-1">
 	{#each subNavItems as item (item.href)}
 		<a
 			href={item.href}

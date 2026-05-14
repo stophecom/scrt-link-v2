@@ -1,12 +1,16 @@
 <script lang="ts">
+	import { toast } from 'svelte-sonner';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
-	import { toast } from 'svelte-sonner';
 
-	import { Button } from '$lib/components/ui/button';
-	import * as Select from '$lib/components/ui/select';
+	import Select from '$lib/components/forms/form-fields/select.svelte';
+	import FormWrapper from '$lib/components/forms/form-wrapper.svelte';
+	import * as Form from '$lib/components/ui/form';
 	import { m } from '$lib/paraglide/messages.js';
-	import { type UpdateBillingOwnerSchema, updateBillingOwnerSchema } from '$lib/validators/formSchemas';
+	import {
+		type UpdateBillingOwnerSchema,
+		updateBillingOwnerSchema
+	} from '$lib/validators/formSchemas';
 
 	type Member = { userId: string; name: string | null; email: string };
 
@@ -29,29 +33,31 @@
 		}
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, message, delayed, enhance } = form;
 
-	const selectedLabel = $derived(
-		members.find((m) => m.userId === $formData.billingOwnerId)?.email ??
-			m.flat_warm_mem_select()
+	const memberOptions = $derived(
+		members.map((member) => ({
+			value: member.userId,
+			label: member.name ? `${member.name} (${member.email})` : member.email
+		}))
 	);
 </script>
 
-<form method="POST" action="?/updateOrganizationBillingOwner" use:enhance>
-	<div class="flex flex-wrap items-center gap-3">
-		<Select.Root type="single" bind:value={$formData.billingOwnerId}>
-			<Select.Trigger class="w-64">{selectedLabel}</Select.Trigger>
-			<Select.Content>
-				{#each members as member (member.userId)}
-					<Select.Item value={member.userId}>
-						{member.name ?? member.email}
-						<span class="text-muted-foreground ml-1 text-xs">({member.email})</span>
-					</Select.Item>
-				{/each}
-			</Select.Content>
-		</Select.Root>
-		<input type="hidden" name="billingOwnerId" bind:value={$formData.billingOwnerId} />
-		<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
-		<Button type="submit" size="sm" variant="outline">{m.caring_light_tiger_taste()}</Button>
-	</div>
-</form>
+<FormWrapper message={$message}>
+	<form method="POST" action="?/updateOrganizationBillingOwner" use:enhance>
+		<div class="flex flex-wrap items-end gap-3">
+			<Form.Field {form} name="billingOwnerId" class="pb-0">
+				<Select
+					label={m.flat_warm_bill_contact()}
+					options={memberOptions}
+					bind:value={$formData.billingOwnerId}
+				/>
+			</Form.Field>
+			<input type="hidden" name="billingOwnerId" bind:value={$formData.billingOwnerId} />
+			<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
+			<Form.Button delayed={$delayed} class="mt-6" variant="outline"
+				>{m.caring_light_tiger_taste()}</Form.Button
+			>
+		</div>
+	</form>
+</FormWrapper>

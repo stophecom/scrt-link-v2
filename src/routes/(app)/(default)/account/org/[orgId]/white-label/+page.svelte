@@ -64,7 +64,7 @@
 				class="bg-background relative grid grid-cols-[minmax(60%,1fr)_auto] overflow-hidden rounded-lg"
 			>
 				<div class="flex flex-col justify-center px-4 py-8 md:p-10">
-					<h2 class="mt-2 mr-8 mb-2 text-2xl font-bold text-pretty md:text-3xl">
+					<h2 class="mt-2 mr-8 mb-2 text-2xl font-bold text-pretty">
 						3. {m.clear_warm_panda_glow()}
 					</h2>
 					<p class="text-muted-foreground mb-6 text-pretty">

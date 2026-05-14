@@ -32,7 +32,6 @@ import { dropUndefinedValuesFromObject } from '$lib/utils';
 import {
 	apiKeyFormSchema,
 	deleteOrganizationSchema,
-	updateBillingOwnerSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
 	encryptionSetupFormSchema,
@@ -49,6 +48,7 @@ import {
 	settingsFormSchema,
 	signInFormSchema,
 	themeFormSchema,
+	updateBillingOwnerSchema,
 	userFormSchema,
 	whiteLabelDomainSchema,
 	whiteLabelMetaSchema,
@@ -763,11 +763,7 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 	]);
 
 	if (!targetRow) {
-		return message(
-			form,
-			{ status: 'error', title: m.this_home_stingray_yell() },
-			{ status: 400 }
-		);
+		return message(form, { status: 'error', title: m.this_home_stingray_yell() }, { status: 400 });
 	}
 
 	await db
