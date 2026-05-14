@@ -964,5 +964,7 @@
 	"flat_warm_checkout_owner_only": "Nur Organisations-Inhaber können Abrechnungspläne verwalten",
 	"lean_bright_billing_owner_warn": "Der Abrechnungskontakt muss ein Inhaber sein",
 	"flat_warm_stat_seats": "Lizenzen gesamt",
-	"flat_warm_stat_monthly": "Gesamt / Monat"
+	"flat_warm_stat_monthly": "Gesamt / Monat",
+	"flat_warm_org_plan_label": "Aktueller Plan",
+	"flat_warm_org_plan_none": "Kein"
 }

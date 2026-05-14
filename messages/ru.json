@@ -964,5 +964,7 @@
 	"flat_warm_checkout_owner_only": "Только владельцы организации могут управлять тарифными планами",
 	"lean_bright_billing_owner_warn": "Контакт для выставления счетов должен быть владельцем",
 	"flat_warm_stat_seats": "Всего мест",
-	"flat_warm_stat_monthly": "Итого / мес."
+	"flat_warm_stat_monthly": "Итого / мес.",
+	"flat_warm_org_plan_label": "Текущий тариф",
+	"flat_warm_org_plan_none": "Нет"
 }

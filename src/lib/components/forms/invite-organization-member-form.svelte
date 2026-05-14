@@ -2,10 +2,10 @@
 	import { type FormOptions, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
+	import RoleSelector from '$lib/components/forms/form-fields/role-selector.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
-	import { MembershipRole } from '$lib/data/enums';
+	import { MembershipRole } from '$lib/data/enums'; // needed for cast below
 	import { m } from '$lib/paraglide/messages.js';
 	import { stripPattern } from '$lib/utils';
 	import {
@@ -71,16 +71,7 @@
 		</Form.Field>
 
 		<Form.Fieldset {form} name="role" class="pb-4">
-			<RadioGroup
-				options={[
-					{ value: MembershipRole.MEMBER, label: m.cuddly_flat_salmon_express() },
-					{ value: MembershipRole.ADMIN, label: m.flat_warm_role_admin() },
-					{ value: MembershipRole.OWNER, label: m.lower_few_turtle_propel() }
-				]}
-				label={m.bad_close_anaconda_forgive()}
-				bind:value={$formData.role}
-			/>
-			<input type="hidden" name="role" bind:value={$formData.role} />
+			<RoleSelector bind:value={$formData.role as MembershipRole | undefined} />
 		</Form.Fieldset>
 		<input type="hidden" name="organizationId" bind:value={organizationId} />
 

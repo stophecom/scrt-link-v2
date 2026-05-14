@@ -964,5 +964,7 @@
 	"flat_warm_checkout_owner_only": "只有组织所有者可以管理账单方案",
 	"lean_bright_billing_owner_warn": "账单联系人必须是所有者",
 	"flat_warm_stat_seats": "总席位",
-	"flat_warm_stat_monthly": "总计 / 月"
+	"flat_warm_stat_monthly": "总计 / 月",
+	"flat_warm_org_plan_label": "当前方案",
+	"flat_warm_org_plan_none": "无"
 }

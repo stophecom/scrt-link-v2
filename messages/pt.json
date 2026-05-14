@@ -964,5 +964,7 @@
 	"flat_warm_checkout_owner_only": "Apenas os proprietários da organização podem gerir os planos de faturação",
 	"lean_bright_billing_owner_warn": "O contacto de faturação deve ser um proprietário",
 	"flat_warm_stat_seats": "Licenças totais",
-	"flat_warm_stat_monthly": "Total / mês"
+	"flat_warm_stat_monthly": "Total / mês",
+	"flat_warm_org_plan_label": "Plano atual",
+	"flat_warm_org_plan_none": "Nenhum"
 }

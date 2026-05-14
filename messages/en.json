@@ -964,5 +964,7 @@
 	"flat_warm_checkout_owner_only": "Only org owners can manage billing plans",
 	"lean_bright_billing_owner_warn": "Billing contact must be an Owner",
 	"flat_warm_stat_seats": "Total seats",
-	"flat_warm_stat_monthly": "Total / mo"
+	"flat_warm_stat_monthly": "Total / mo",
+	"flat_warm_org_plan_label": "Current plan",
+	"flat_warm_org_plan_none": "None"
 }

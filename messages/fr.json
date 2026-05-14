@@ -964,5 +964,7 @@
 	"flat_warm_checkout_owner_only": "Seuls les propriétaires de l'organisation peuvent gérer les offres de facturation",
 	"lean_bright_billing_owner_warn": "Le contact de facturation doit être un propriétaire",
 	"flat_warm_stat_seats": "Sièges au total",
-	"flat_warm_stat_monthly": "Total / mois"
+	"flat_warm_stat_monthly": "Total / mois",
+	"flat_warm_org_plan_label": "Plan actuel",
+	"flat_warm_org_plan_none": "Aucun"
 }

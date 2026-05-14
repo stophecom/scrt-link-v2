@@ -21,6 +21,7 @@
 			id: string;
 			name: string;
 			role: MembershipRole | null;
+			subscriptionTier?: string | null;
 			members: MembersAndInvitesByOrganization[];
 		};
 		organizationForm: SuperValidated<OrganizationFormSchema>;
@@ -71,6 +72,13 @@
 	<div class="flex py-1">
 		{@render renderLabel(m.flat_warm_org_members_count() + ':')}
 		<span class="inline-block p-1">{memberCount}</span>
+	</div>
+
+	<div class="flex py-1">
+		{@render renderLabel(m.flat_warm_org_plan_label() + ':')}
+		<span class="inline-block p-1"
+			>{organization.subscriptionTier ?? m.flat_warm_org_plan_none()}</span
+		>
 	</div>
 
 	{#if isOwner}
