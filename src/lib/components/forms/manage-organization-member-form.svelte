@@ -24,6 +24,7 @@
 		organizationId: string;
 		isCurrentUser?: boolean;
 		isOwner?: boolean;
+		isBillingContact?: boolean;
 		initialRole?: MembershipRole | null;
 	};
 
@@ -34,6 +35,7 @@
 		form: formProp,
 		isCurrentUser,
 		isOwner = false,
+		isBillingContact = false,
 		initialRole,
 		onSuccess = () => {}
 	}: Props = $props();
@@ -70,7 +72,11 @@
 			<Form.Fieldset {form} name="role" class="pb-4">
 				<RadioGroup
 					options={[
-						{ value: MembershipRole.MEMBER, label: m.cuddly_flat_salmon_express() },
+						{
+							value: MembershipRole.MEMBER,
+							label: m.cuddly_flat_salmon_express(),
+							disabled: isBillingContact
+						},
 						{ value: MembershipRole.ADMIN, label: m.flat_warm_role_admin() },
 						{ value: MembershipRole.OWNER, label: m.lower_few_turtle_propel() }
 					]}
@@ -78,6 +84,25 @@
 					bind:value={$formData.role}
 				/>
 				<input type="hidden" name="role" bind:value={$formData.role} />
+				<ul class="text-muted-foreground mt-2 space-y-0.5 text-xs">
+					<li>
+						<span class="font-medium">{m.cuddly_flat_salmon_express()}</span>
+						— {m.flat_warm_role_member_desc()}
+					</li>
+					<li>
+						<span class="font-medium">{m.flat_warm_role_admin()}</span>
+						— {m.flat_warm_role_admin_desc()}
+					</li>
+					<li>
+						<span class="font-medium">{m.lower_few_turtle_propel()}</span>
+						— {m.flat_warm_role_owner_desc()}
+					</li>
+				</ul>
+				{#if isBillingContact}
+					<p class="text-muted-foreground mt-2 text-xs">
+						⚠ {m.flat_warm_billing_role_warn()}
+					</p>
+				{/if}
 			</Form.Fieldset>
 			{#if userId || inviteId}
 				<Button type="submit" formaction="?/manageOrganizationMember" class="mb-2 w-full"

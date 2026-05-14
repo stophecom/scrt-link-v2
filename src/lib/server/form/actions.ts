@@ -463,11 +463,17 @@ export const manageOrganizationMember: Action = async (event) => {
 	}
 
 	if (userId) {
-		// Fetch the target's current role before allowing any change.
-		const [targetMembership] = await db
-			.select({ role: membership.role })
-			.from(membership)
-			.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId)));
+		// Fetch the target's current role and org billing owner in parallel.
+		const [[targetMembership], orgRow] = await Promise.all([
+			db
+				.select({ role: membership.role })
+				.from(membership)
+				.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId))),
+			db.query.organization.findFirst({
+				columns: { billingOwnerId: true },
+				where: (fields, { eq }) => eq(fields.id, organizationId)
+			})
+		]);
 
 		// Admins cannot change the role of an existing Owner (no demotion either).
 		if (
@@ -478,6 +484,15 @@ export const manageOrganizationMember: Action = async (event) => {
 				form,
 				{ status: 'error', title: m.east_ago_hedgehog_pause() },
 				{ status: 403 }
+			);
+		}
+
+		// Billing contact must stay Admin or Owner.
+		if (orgRow?.billingOwnerId === userId && role === MembershipRole.MEMBER) {
+			return message(
+				form,
+				{ status: 'error', title: m.flat_warm_billing_role_warn() },
+				{ status: 400 }
 			);
 		}
 
