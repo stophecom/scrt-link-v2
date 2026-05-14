@@ -209,7 +209,6 @@
 							isOwner={organization.role === MembershipRole.OWNER ||
 								(organization.role === MembershipRole.ADMIN &&
 									selectedItem?.role !== MembershipRole.OWNER)}
-							isBillingContact={selectedItem.userId === organization.billingOwnerId}
 							initialRole={selectedItem.role}
 							form={manageOrganizationMemberForm!}
 							onSuccess={() => {

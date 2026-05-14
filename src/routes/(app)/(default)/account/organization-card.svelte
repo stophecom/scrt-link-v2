@@ -46,23 +46,26 @@
 	<div class="flex items-center py-1">
 		{@render renderLabel('Name:')}
 		{organization.name}
-		<Dialog.Root bind:open={openDialogEdit}>
-			(<Dialog.Trigger class="inline-block underline">{m.aloof_such_mare_dance()}</Dialog.Trigger>)
-			<Dialog.Content class="sm:max-w-[425px]">
-				<Dialog.Header>
-					<Dialog.Title>{m.patchy_polite_wombat_bump()}</Dialog.Title>
-				</Dialog.Header>
-				<OrganizationForm
-					formAction="?/editOrganization"
-					form={organizationForm}
-					onSuccess={() => {
-						wait(200).then(() => {
-							openDialogEdit = false;
-						});
-					}}
-				/>
-			</Dialog.Content>
-		</Dialog.Root>
+		{#if isOwner}
+			<Dialog.Root bind:open={openDialogEdit}>
+				(<Dialog.Trigger class="inline-block underline">{m.aloof_such_mare_dance()}</Dialog.Trigger
+				>)
+				<Dialog.Content class="sm:max-w-[425px]">
+					<Dialog.Header>
+						<Dialog.Title>{m.patchy_polite_wombat_bump()}</Dialog.Title>
+					</Dialog.Header>
+					<OrganizationForm
+						formAction="?/editOrganization"
+						form={organizationForm}
+						onSuccess={() => {
+							wait(200).then(() => {
+								openDialogEdit = false;
+							});
+						}}
+					/>
+				</Dialog.Content>
+			</Dialog.Root>
+		{/if}
 	</div>
 
 	<div class="flex py-1">

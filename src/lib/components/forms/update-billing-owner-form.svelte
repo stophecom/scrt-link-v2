@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { toast } from 'svelte-sonner';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
@@ -23,14 +22,7 @@
 
 	const form = superForm(formProp, {
 		validators: zod4Client(updateBillingOwnerSchema()),
-		invalidateAll: 'force',
-		onUpdated({ form }) {
-			if (form.message?.status === 'success') {
-				toast.success(form.message.title ?? '');
-			} else if (form.message?.status === 'error') {
-				toast.error(form.message.title ?? '');
-			}
-		}
+		invalidateAll: 'force'
 	});
 
 	const { form: formData, message, delayed, enhance } = form;

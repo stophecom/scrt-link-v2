@@ -21,9 +21,10 @@
 	type Props = {
 		form: SuperValidated<WhiteLabelDomainSchema>;
 		whiteLabelDomain: string | null;
+		organizationId?: string | null;
 	};
 
-	let { form: formProp, whiteLabelDomain }: Props = $props();
+	let { form: formProp, whiteLabelDomain, organizationId = null }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zod4Client(whiteLabelDomainSchema()),
@@ -44,6 +45,10 @@
 
 	const { form: formData, message, delayed, constraints, enhance, errors } = form;
 
+	$effect(() => {
+		$formData.organizationId = organizationId;
+	});
+
 	const queryClient = useQueryClient();
 
 	const queryResult = createQuery(
@@ -63,6 +68,10 @@
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/saveWhiteLabelDomain">
+		{#if organizationId}
+			<input type="hidden" name="organizationId" value={organizationId} />
+		{/if}
+
 		<Form.Field {form} name="name">
 			<Text
 				label={m.quaint_flaky_swan_cry()}

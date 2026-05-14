@@ -51,6 +51,7 @@
 		<WhiteLabelDomainForm
 			form={data.whiteLabelDomainForm}
 			whiteLabelDomain={data.whiteLabelDomain}
+			organizationId={data.org.id}
 		/>
 	</Card>
 
