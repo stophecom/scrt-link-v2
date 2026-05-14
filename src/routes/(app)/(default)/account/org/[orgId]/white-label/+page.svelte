@@ -36,7 +36,7 @@
 
 {#if hasDomain}
 	<Card class="mb-6" title={'2. ' + m.warm_swift_eagle_build()}>
-		<WhiteLabelForm organizationIdOptions={data.organizationIdOptions} form={data.whiteLabelForm} />
+		<WhiteLabelForm form={data.whiteLabelForm} />
 	</Card>
 
 	<div class="customize-card border-rainbow relative mb-6 rounded-lg p-0.5">

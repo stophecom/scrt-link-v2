@@ -24,13 +24,8 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 	const whiteLabel =
 		(await getWhiteLabelSiteByOrgId(org.id)) ?? (await getWhiteLabelSiteByUserId(user.id));
 
-	const organizationIdOptions = [
-		{ value: '', label: m.misty_real_florian_startle() },
-		{ value: org.id, label: org.name }
-	];
-
 	const whiteLabelDomainForm = await superValidate(
-		{ name: whiteLabel?.name || '', customDomain: whiteLabel?.customDomain || '', organizationId: org.id },
+		{ name: whiteLabel?.name || org.name, customDomain: whiteLabel?.customDomain || '', organizationId: org.id },
 		zod4(whiteLabelDomainSchema())
 	);
 
@@ -49,7 +44,6 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		user,
 		whiteLabelDomain: whiteLabel?.customDomain,
 		whiteLabel,
-		organizationIdOptions,
 		whiteLabelDomainForm,
 		whiteLabelForm,
 		pageTitle: m.bold_slim_ram_roam()

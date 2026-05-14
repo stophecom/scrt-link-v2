@@ -1,25 +1,22 @@
 <script lang="ts">
 	import { Save } from '@lucide/svelte';
-	import { stringProxy, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import * as Form from '$lib/components/ui/form';
 	import { getSecretTypes } from '$lib/data/secretSettings';
 	import { m } from '$lib/paraglide/messages.js';
-	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type WhiteLabelMetaSchema, whiteLabelMetaSchema } from '$lib/validators/formSchemas';
 
 	import Checkboxes from './form-fields/checkboxes.svelte';
-	import Select from './form-fields/select.svelte';
 	import Switch from './form-fields/switch.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
 		form: SuperValidated<WhiteLabelMetaSchema>;
-		organizationIdOptions: { value: string; label: string }[];
 	};
 
-	let { form: formProp, organizationIdOptions }: Props = $props();
+	let { form: formProp }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zod4Client(whiteLabelMetaSchema()),
@@ -35,32 +32,10 @@
 	});
 
 	const { form: formData, message, delayed, enhance } = form;
-
-	const organizationIdProxy = stringProxy(form, 'organizationId', { empty: 'null' });
 </script>
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance action="?/saveWhiteLabelMeta">
-		<Form.Field {form} name="organizationId">
-			<div class="flex items-center gap-2">
-				<div class="pr-2">
-					<Select
-						label={m.wild_inner_fox_honor()}
-						options={organizationIdOptions}
-						bind:value={$organizationIdProxy}
-					/>
-				</div>
-				{#if organizationIdOptions.length <= 1}
-					<a
-						href={localizeHref('/account/organization')}
-						class="text-muted-foreground hover:text-foreground mt-5 shrink-0 text-xs underline"
-						>{m.bold_neat_panda_learn()}</a
-					>
-				{/if}
-			</div>
-			<Form.Description>{m.blue_wild_snake_approve()}</Form.Description>
-		</Form.Field>
-		<!-- @todo Unclear why the hidden input is necessary. -->
 		<input type="hidden" name="organizationId" bind:value={$formData.organizationId} />
 
 		<Form.Fieldset {form} name="enabledSecretTypes">
