@@ -1,11 +1,9 @@
+import { error } from '@sveltejs/kit';
+
 import { getBaseUrl } from '$lib/constants';
 import { getAbsoluteLocalizedUrl, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
-import stripeInstance, {
-	getActiveSubscription,
-	getOrgInvoices,
-	getStripePortalUrl
-} from '$lib/server/stripe';
+import stripeInstance, { getOrgInvoices, getStripePortalUrl } from '$lib/server/stripe';
 
 import type { PageServerLoad } from './$types';
 
@@ -16,34 +14,29 @@ async function getProductName(subscription: import('stripe').Stripe.Subscription
 	return product.name;
 }
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, parent, url }) => {
 	const user = locals.user;
 	if (!user) return redirectLocalized(307, '/signup');
 
-	let subscription: import('stripe').Stripe.Subscription | null = null;
+	const { org, orgSubscription, isOrgOwner } = await parent();
+	if (!isOrgOwner) return error(403, 'Only org owners can view billing.');
+
 	let invoices: import('stripe').Stripe.Invoice[] = [];
 	let stripePortalUrl: string | null = null;
 	let planName: string | null = null;
 
-	const billingReturnUrl = getAbsoluteLocalizedUrl(getBaseUrl(), '/account/billing');
+	const billingReturnUrl = getAbsoluteLocalizedUrl(getBaseUrl(), url.pathname);
 
-	try {
-		if (user.stripeCustomerId) {
-			subscription = await getActiveSubscription(user.stripeCustomerId);
-			if (subscription) {
-				[invoices, { url: stripePortalUrl }, planName] = await Promise.all([
-					getOrgInvoices(user.stripeCustomerId),
-					getStripePortalUrl(user.stripeCustomerId, billingReturnUrl),
-					getProductName(subscription)
-				]);
-			}
-		}
-	} catch (e) {
-		console.error(e);
+	if (org.stripeCustomerId && orgSubscription) {
+		[invoices, { url: stripePortalUrl }, planName] = await Promise.all([
+			getOrgInvoices(org.stripeCustomerId),
+			getStripePortalUrl(org.stripeCustomerId, billingReturnUrl),
+			getProductName(orgSubscription)
+		]);
 	}
 
 	return {
-		subscription,
+		orgSubscription,
 		invoices,
 		stripePortalUrl,
 		planName,

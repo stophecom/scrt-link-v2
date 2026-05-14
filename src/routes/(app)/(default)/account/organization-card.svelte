@@ -37,8 +37,8 @@
 		organization: any;
 		orgSubscription?: Stripe.Subscription | null;
 		organizationForm: SuperValidated<OrganizationFormSchema>;
-		inviteOrganizationMemberForm: SuperValidated<InviteOrganizationMemberFormSchema>;
-		manageOrganizationMemberForm: SuperValidated<ManageOrganizationMemberFormSchema>;
+		inviteOrganizationMemberForm?: SuperValidated<InviteOrganizationMemberFormSchema>;
+		manageOrganizationMemberForm?: SuperValidated<ManageOrganizationMemberFormSchema>;
 	} = $props();
 
 	let openDialogName = $state(false);
@@ -184,7 +184,7 @@
 							</Dialog.Header>
 							<InviteOrganizationMemberForm
 								formAction="?/addMemberToOrganization"
-								form={inviteOrganizationMemberForm}
+								form={inviteOrganizationMemberForm!}
 								organizationId={organization.id}
 							/>
 						</Dialog.Content>
@@ -228,7 +228,7 @@
 							isCurrentUser={selectedItem.userId === user?.id}
 							isOwner={organization.role === MembershipRole.OWNER}
 							initialRole={selectedItem.role}
-							form={manageOrganizationMemberForm}
+							form={manageOrganizationMemberForm!}
 							onSuccess={() => {
 								selectedItem = null;
 							}}

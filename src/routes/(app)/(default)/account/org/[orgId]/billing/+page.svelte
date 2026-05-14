@@ -56,30 +56,30 @@
 	</Tabs.TabsList>
 
 	<Tabs.TabsContent value="overview">
-		{#if data.subscription}
+		{#if data.orgSubscription}
 			<Card>
 				<div class="flex flex-wrap items-start justify-between gap-4">
 					<div>
 						<div class="mb-1 flex items-center gap-2">
 							<h3 class="font-semibold">
-								{data.planName ?? data.subscription.items.data[0]?.plan?.nickname ?? 'Plan'}
+								{data.planName ?? data.orgSubscription.items.data[0]?.plan?.nickname ?? 'Plan'}
 							</h3>
 							<span
 								class="rounded-full px-2 py-0.5 text-xs font-medium {statusClass[
-									data.subscription.status
+									data.orgSubscription.status
 								] ?? 'bg-muted text-muted-foreground'}"
 							>
-								{statusLabel[data.subscription.status] ?? data.subscription.status}
+								{statusLabel[data.orgSubscription.status] ?? data.orgSubscription.status}
 							</span>
 						</div>
 						<p class="text-muted-foreground text-sm">
-							{#if data.subscription.cancel_at}
+							{#if data.orgSubscription.cancel_at}
 								{m.flat_warm_fox_cancel({
-									date: formatDate(new Date(data.subscription.cancel_at * 1000))
+									date: formatDate(new Date(data.orgSubscription.cancel_at * 1000))
 								})}
 							{:else}
 								{m.flat_warm_fox_renew({
-									date: formatDate(new Date(data.subscription.current_period_end * 1000))
+									date: formatDate(new Date(data.orgSubscription.current_period_end * 1000))
 								})}
 							{/if}
 						</p>

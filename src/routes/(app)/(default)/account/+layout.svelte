@@ -3,7 +3,6 @@
 	import ConciergeBell from '@lucide/svelte/icons/concierge-bell';
 	import CreditCard from '@lucide/svelte/icons/credit-card';
 	import Factory from '@lucide/svelte/icons/factory';
-	import Globe from '@lucide/svelte/icons/globe';
 	import KeyRound from '@lucide/svelte/icons/key-round';
 	import Link from '@lucide/svelte/icons/link';
 	import LogOut from '@lucide/svelte/icons/log-out';
@@ -78,7 +77,11 @@
 
 	// Navigation items
 	const isAdmin = $derived(page.data.user?.role === Role.ADMIN);
-	const navItems = $derived([
+	const userOrganizations = $derived(
+		(page.data.userOrganizations ?? []) as { id: string; name: string }[]
+	);
+
+	const personalNavItems = $derived([
 		...(isAdmin
 			? [
 					{
@@ -105,16 +108,6 @@
 			icon: KeyRound
 		},
 		{
-			href: localizeHref('/account/organization'),
-			label: m.wild_inner_fox_honor(),
-			icon: Factory
-		},
-		{
-			href: localizeHref('/account/white-label'),
-			label: m.bold_slim_ram_roam(),
-			icon: Globe
-		},
-		{
 			href: localizeHref('/account/billing'),
 			label: m.misty_teal_hawk_glow(),
 			icon: CreditCard
@@ -130,6 +123,17 @@
 			icon: SettingsGroup
 		}
 	]);
+
+	const orgNavItems = $derived(
+		userOrganizations.map((org) => ({
+			href: localizeHref(`/account/org/${org.id}`),
+			label: org.name,
+			icon: Factory,
+			badge: undefined as string | undefined
+		}))
+	);
+
+	const navItems = $derived([...personalNavItems, ...orgNavItems]);
 
 	let currentPath = $derived(page.url.pathname);
 	let currentItem = $derived(
@@ -159,9 +163,9 @@
 						</DropdownMenu.Trigger>
 						<DropdownMenu.Content class="w-[var(--bits-dropdown-menu-anchor-width)]">
 							<DropdownMenu.Group>
-								{#each navItems as item (item.href)}
+								{#each personalNavItems as item (item.href)}
 									<DropdownMenu.Item
-										class={currentPath === item.href ? 'bg-muted font-medium' : ''}
+										class={currentPath.startsWith(item.href) ? 'bg-muted font-medium' : ''}
 									>
 										<a href={item.href} class="flex w-full items-center">
 											<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
@@ -176,6 +180,25 @@
 									</DropdownMenu.Item>
 								{/each}
 							</DropdownMenu.Group>
+							{#if orgNavItems.length > 0}
+								<DropdownMenu.Separator />
+								<DropdownMenu.Label
+									class="text-muted-foreground px-2 py-1 text-xs font-medium tracking-wide uppercase"
+									>{m.wild_inner_fox_honor()}</DropdownMenu.Label
+								>
+								<DropdownMenu.Group>
+									{#each orgNavItems as item (item.href)}
+										<DropdownMenu.Item
+											class={currentPath.startsWith(item.href) ? 'bg-muted font-medium' : ''}
+										>
+											<a href={item.href} class="flex w-full items-center">
+												<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
+												<span>{item.label}</span>
+											</a>
+										</DropdownMenu.Item>
+									{/each}
+								</DropdownMenu.Group>
+							{/if}
 							<DropdownMenu.Separator />
 							<DropdownMenu.Item>
 								<form
@@ -197,11 +220,11 @@
 				<!-- Desktop Navigation (Sidebar) -->
 				<aside class="hidden shrink-0 lg:block lg:w-1/4">
 					<nav class="flex flex-col space-y-1">
-						{#each navItems as item (item.href)}
+						{#each personalNavItems as item (item.href)}
 							<Button
 								href={item.href}
-								variant={currentPath === item.href ? 'secondary' : 'ghost'}
-								class="justify-start {currentPath === item.href
+								variant={currentPath.startsWith(item.href) ? 'secondary' : 'ghost'}
+								class="justify-start {currentPath.startsWith(item.href)
 									? 'bg-muted hover:bg-muted'
 									: 'hover:bg-transparent hover:underline'}"
 							>
@@ -215,6 +238,25 @@
 								{/if}
 							</Button>
 						{/each}
+						{#if orgNavItems.length > 0}
+							<div
+								class="text-muted-foreground px-2 pt-4 pb-1 text-xs font-medium tracking-wide uppercase"
+							>
+								{m.wild_inner_fox_honor()}
+							</div>
+							{#each orgNavItems as item (item.href)}
+								<Button
+									href={item.href}
+									variant={currentPath.startsWith(item.href) ? 'secondary' : 'ghost'}
+									class="justify-start {currentPath.startsWith(item.href)
+										? 'bg-muted hover:bg-muted'
+										: 'hover:bg-transparent hover:underline'}"
+								>
+									<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
+									{item.label}
+								</Button>
+							{/each}
+						{/if}
 					</nav>
 					<div class="mt-1">
 						<form method="post" action="/account?/logout" use:enhance={handleLogout}>
