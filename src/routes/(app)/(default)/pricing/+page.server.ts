@@ -2,6 +2,7 @@ import { type Actions, error, fail, redirect } from '@sveltejs/kit';
 import { type Stripe } from 'stripe';
 
 import { getBaseUrl } from '$lib/constants';
+import { MembershipRole } from '$lib/data/enums';
 import { getAbsoluteLocalizedUrl } from '$lib/i18n';
 import { getOrganizationsByUserId } from '$lib/server/organization';
 import { getActiveSubscription, getStripePortalUrl } from '$lib/server/stripe';
@@ -17,6 +18,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 	let plans: Plan[] | null = null;
 	let orgId: string | null = null;
 	let orgName: string | null = null;
+	let isOrgOwner = false;
 
 	try {
 		const response = await fetch(`/api/v1/plans`);
@@ -36,6 +38,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 			if (org) {
 				orgId = org.id;
 				orgName = org.name;
+				isOrgOwner = org.role === MembershipRole.OWNER;
 				if (org.stripeCustomerId) {
 					orgSubscription = await getActiveSubscription(org.stripeCustomerId);
 				}
@@ -46,7 +49,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		error(404, `Pricing page currently not available.`);
 	}
 
-	return { plans, subscription, orgSubscription, orgId, orgName };
+	return { plans, subscription, orgSubscription, orgId, orgName, isOrgOwner };
 };
 
 export const actions: Actions = {

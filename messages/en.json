@@ -960,5 +960,7 @@
 	"teaser_white_label_title": "Your Own Branded Secret-Sharing Experience",
 	"teaser_white_label_description": "Upgrade to Secret Service or Top Secret Service to deploy a fully white-labeled secret-sharing site under your own domain — custom design, your branding, your rules.",
 	"teaser_white_label_cta": "View Business Plans",
-	"flat_warm_bill_badge": "Billing"
+	"flat_warm_bill_badge": "Billing",
+	"flat_warm_checkout_owner_only": "Only org owners can manage billing plans",
+	"lean_bright_billing_owner_warn": "Billing contact must be an Owner"
 }

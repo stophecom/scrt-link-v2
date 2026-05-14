@@ -960,5 +960,7 @@
 	"teaser_white_label_title": "Votre propre expérience de partage de secrets à votre image",
 	"teaser_white_label_description": "Passez à Secret Service ou Top Secret Service pour déployer un site de partage de secrets entièrement white-label sous votre propre domaine — design personnalisé, votre marque, vos règles.",
 	"teaser_white_label_cta": "Voir les offres Business",
-	"flat_warm_bill_badge": "Facturation"
+	"flat_warm_bill_badge": "Facturation",
+	"flat_warm_checkout_owner_only": "Seuls les propriétaires de l'organisation peuvent gérer les offres de facturation",
+	"lean_bright_billing_owner_warn": "Le contact de facturation doit être un propriétaire"
 }

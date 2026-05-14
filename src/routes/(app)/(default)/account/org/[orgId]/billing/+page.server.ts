@@ -1,9 +1,10 @@
 import { error } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { getBaseUrl } from '$lib/constants';
+import { MembershipRole } from '$lib/data/enums';
 import { getAbsoluteLocalizedUrl, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
@@ -40,17 +41,25 @@ export const load: PageServerLoad = async ({ locals, parent, url }) => {
 		]);
 	}
 
-	// Load members so owners can designate a billing contact.
+	// Load owners only so the billing contact dropdown is restricted to owners.
 	const members = isOrgOwner
 		? await db
 				.select({ userId: user.id, name: user.name, email: user.email })
 				.from(membership)
 				.innerJoin(user, eq(membership.userId, user.id))
-				.where(eq(membership.organizationId, org.id))
+				.where(
+					and(eq(membership.organizationId, org.id), eq(membership.role, MembershipRole.OWNER))
+				)
 		: [];
 
+	// If the stored billingOwnerId is no longer an owner (legacy), default to ''.
+	const validBillingOwnerId =
+		org.billingOwnerId && members.some((m) => m.userId === org.billingOwnerId)
+			? org.billingOwnerId
+			: '';
+
 	const updateBillingOwnerForm = await superValidate(
-		{ organizationId: org.id, billingOwnerId: org.billingOwnerId ?? '' },
+		{ organizationId: org.id, billingOwnerId: validBillingOwnerId },
 		zod4(updateBillingOwnerSchema()),
 		{ errors: false }
 	);

@@ -33,6 +33,7 @@
 		orgSubscription: Stripe.Subscription | null;
 		orgId: string | null;
 		orgName: string | null;
+		isOrgOwner: boolean;
 		showBusiness?: boolean;
 	};
 	let {
@@ -42,6 +43,7 @@
 		orgSubscription,
 		orgId,
 		orgName,
+		isOrgOwner,
 		showBusiness = $bindable(false)
 	}: Props = $props();
 
@@ -154,14 +156,6 @@
 	</p>
 {/snippet}
 
-{#if subscription && !isSubscriptionCanceled}
-	{@render subscriptionInfo('info', m.honest_witty_whale_pout(), m.blue_livid_lobster_fulfill())}
-{/if}
-
-{#if isSubscriptionCanceled}
-	{@render subscriptionInfo('destructive', m.aware_tangy_giraffe_dial(), m.last_jolly_stork_gasp())}
-{/if}
-
 <div>
 	<div class="mb-12 flex justify-center">
 		<BigSwitch
@@ -173,8 +167,30 @@
 	</div>
 
 	{#if showBusiness}
-		<BusinessPlanSelection {plans} {user} {orgId} {orgSubscription} currency={currency.current} />
+		<BusinessPlanSelection
+			{plans}
+			{user}
+			{orgId}
+			{orgSubscription}
+			{isOrgOwner}
+			currency={currency.current}
+		/>
 	{:else}
+		{#if subscription && !isSubscriptionCanceled}
+			{@render subscriptionInfo(
+				'info',
+				m.honest_witty_whale_pout(),
+				m.blue_livid_lobster_fulfill()
+			)}
+		{/if}
+
+		{#if isSubscriptionCanceled}
+			{@render subscriptionInfo(
+				'destructive',
+				m.aware_tangy_giraffe_dial(),
+				m.last_jolly_stork_gasp()
+			)}
+		{/if}
 		<div class="grid gap-6 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-3">
 			<PlanView name="Confidential">
 				{#if !user}

@@ -473,7 +473,7 @@ export const manageOrganizationMember: Action = async (event) => {
 				.from(membership)
 				.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId))),
 			db.query.organization.findFirst({
-				columns: { billingOwnerId: true },
+				columns: { billingOwnerId: true, stripeCustomerId: true },
 				where: (fields, { eq }) => eq(fields.id, organizationId)
 			})
 		]);
@@ -490,14 +490,9 @@ export const manageOrganizationMember: Action = async (event) => {
 			);
 		}
 
-		// Billing contact must stay Admin or Owner.
-		if (orgRow?.billingOwnerId === userId && role === MembershipRole.MEMBER) {
-			return message(
-				form,
-				{ status: 'error', title: m.flat_warm_billing_role_warn() },
-				{ status: 400 }
-			);
-		}
+		const isBillingOwner = orgRow?.billingOwnerId === userId;
+		const isDemotedFromOwner =
+			targetMembership?.role === MembershipRole.OWNER && role !== MembershipRole.OWNER;
 
 		if (role !== MembershipRole.OWNER) {
 			const owners = await db.query.membership.findMany({
@@ -526,6 +521,41 @@ export const manageOrganizationMember: Action = async (event) => {
 
 		if (!result.length) {
 			return message(form, { status: 'error', title: `Member doesn't exist.` }, { status: 401 });
+		}
+
+		// Auto-reassign billing contact when the billing owner is demoted from OWNER.
+		if (isBillingOwner && isDemotedFromOwner) {
+			// Self-demotion: pick first other available owner; otherwise fall back to acting user.
+			let newBillingOwnerId: string;
+			if (user.id === userId) {
+				const otherOwner = await db.query.membership.findFirst({
+					where: (fields, { eq, and, ne }) =>
+						and(
+							eq(fields.organizationId, organizationId),
+							eq(fields.role, MembershipRole.OWNER),
+							ne(fields.userId, userId)
+						)
+				});
+				newBillingOwnerId = otherOwner?.userId ?? user.id;
+			} else {
+				newBillingOwnerId = user.id;
+			}
+
+			const [newBillingOwner] = await db
+				.select({ email: userSchema.email })
+				.from(userSchema)
+				.where(eq(userSchema.id, newBillingOwnerId));
+
+			await db
+				.update(organization)
+				.set({ billingOwnerId: newBillingOwnerId })
+				.where(eq(organization.id, organizationId));
+
+			if (orgRow?.stripeCustomerId && newBillingOwner?.email) {
+				await stripeInstance.customers.update(orgRow.stripeCustomerId, {
+					email: newBillingOwner.email
+				});
+			}
 		}
 
 		return message(form, {
@@ -747,10 +777,10 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
 	}
 
-	// The new billing owner must be a member of the org.
+	// The new billing owner must be an OWNER of the org.
 	const [[targetRow], [org]] = await Promise.all([
 		db
-			.select({ userId: membership.userId, email: userSchema.email })
+			.select({ userId: membership.userId, role: membership.role, email: userSchema.email })
 			.from(membership)
 			.innerJoin(userSchema, eq(userSchema.id, membership.userId))
 			.where(
@@ -764,6 +794,14 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 
 	if (!targetRow) {
 		return message(form, { status: 'error', title: m.this_home_stingray_yell() }, { status: 400 });
+	}
+
+	if (targetRow.role !== MembershipRole.OWNER) {
+		return message(
+			form,
+			{ status: 'error', title: m.lean_bright_billing_owner_warn() },
+			{ status: 400 }
+		);
 	}
 
 	await db
