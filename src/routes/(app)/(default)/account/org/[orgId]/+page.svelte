@@ -1,11 +1,11 @@
 <script lang="ts">
-	import OrganizationCard from '../../organization-card.svelte';
+	import OrganizationMembersCard from '../../organization-members-card.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 </script>
 
-<OrganizationCard
+<OrganizationMembersCard
 	user={data.user}
 	organization={data.orgWithMembers}
 	orgSubscription={data.orgSubscription}
