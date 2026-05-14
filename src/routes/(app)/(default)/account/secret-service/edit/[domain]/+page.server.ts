@@ -5,7 +5,7 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 import { redirectLocalized } from '$lib/i18n';
 import { getLocale } from '$lib/paraglide/runtime';
 import { saveWhiteLabelSite } from '$lib/server/form/actions';
-import { getWhiteLabelSiteByUserId } from '$lib/server/whiteLabelSite';
+import { getWhiteLabelSiteForUser } from '$lib/server/whiteLabelSite';
 import type { LocalizedWhiteLabelMessage, Theme } from '$lib/types';
 import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const user = locals.user;
 	const locale = getLocale();
 
-	const whiteLabel = await getWhiteLabelSiteByUserId(user.id);
+	const whiteLabel = await getWhiteLabelSiteForUser(user.id);
 
 	if (!whiteLabel) {
 		return error(404, 'No white-label website found.');

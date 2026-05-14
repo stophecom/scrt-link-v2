@@ -1,10 +1,10 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 import { isOriginalHostname } from '$lib/app-routing';
-import { TierOptions } from '$lib/data/enums';
+import { MembershipRole, TierOptions } from '$lib/data/enums';
 
 import { db } from './db';
-import { user, whiteLabelSite } from './db/schema';
+import { membership, organization, user, whiteLabelSite } from './db/schema';
 import { getMembersByOrganizationId } from './organization';
 
 export const getWhiteLabelSiteByHost = async (host: string) => {
@@ -23,6 +23,37 @@ export const getWhiteLabelSiteByUserId = async (userId: string) => {
 		.where(eq(whiteLabelSite.userId, userId));
 
 	return whiteLabelResult;
+};
+
+export const getWhiteLabelSiteByOrgId = async (organizationId: string) => {
+	const [result] = await db
+		.select()
+		.from(whiteLabelSite)
+		.where(eq(whiteLabelSite.organizationId, organizationId));
+	return result ?? null;
+};
+
+// Returns the white-label site a user can manage: their own, or any site linked to
+// an org they own (when they're not the original creator).
+export const getWhiteLabelSiteForUser = async (userId: string) => {
+	const direct = await getWhiteLabelSiteByUserId(userId);
+	if (direct) return direct;
+
+	const [row] = await db
+		.select({ site: whiteLabelSite })
+		.from(whiteLabelSite)
+		.innerJoin(organization, eq(whiteLabelSite.organizationId, organization.id))
+		.innerJoin(
+			membership,
+			and(
+				eq(membership.organizationId, organization.id),
+				eq(membership.userId, userId),
+				eq(membership.role, MembershipRole.OWNER)
+			)
+		)
+		.limit(1);
+
+	return row?.site ?? null;
 };
 
 export const getWhiteLabelSiteById = async (id: string) => {
