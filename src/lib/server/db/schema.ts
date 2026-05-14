@@ -290,7 +290,7 @@ export const stats = pgTable('stats', {
 	totalSecretRequests: integer('total_secret_requests').default(0),
 	whiteLabelSiteId: uuid('white_label_site_id')
 		.unique()
-		.references(() => whiteLabelSite.id),
+		.references(() => whiteLabelSite.id, { onDelete: 'cascade' }),
 	userId: uuid('user_id')
 		.unique()
 		.references(() => user.id, { onDelete: 'cascade' })
