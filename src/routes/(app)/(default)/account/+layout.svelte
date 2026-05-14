@@ -7,6 +7,7 @@
 	import Link from '@lucide/svelte/icons/link';
 	import LogOut from '@lucide/svelte/icons/log-out';
 	import Menu from '@lucide/svelte/icons/menu';
+	import Plus from '@lucide/svelte/icons/plus';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
 	import User from '@lucide/svelte/icons/user';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
@@ -181,13 +182,13 @@
 									</DropdownMenu.Item>
 								{/each}
 							</DropdownMenu.Group>
-							{#if orgNavItems.length > 0}
-								<DropdownMenu.Separator />
-								<DropdownMenu.Label
-									class="text-muted-foreground px-2 py-1 text-xs font-medium tracking-wide uppercase"
-									>{m.wild_inner_fox_honor()}</DropdownMenu.Label
-								>
-								<DropdownMenu.Group>
+							<DropdownMenu.Separator />
+							<DropdownMenu.Label
+								class="text-muted-foreground px-2 py-1 text-xs font-medium tracking-wide uppercase"
+								>{m.wild_inner_fox_honor()}</DropdownMenu.Label
+							>
+							<DropdownMenu.Group>
+								{#if orgNavItems.length > 0}
 									{#each orgNavItems as item (item.href)}
 										<DropdownMenu.Item
 											class={currentPath.startsWith(item.href) ? 'bg-muted font-medium' : ''}
@@ -198,8 +199,18 @@
 											</a>
 										</DropdownMenu.Item>
 									{/each}
-								</DropdownMenu.Group>
-							{/if}
+								{:else}
+									<DropdownMenu.Item>
+										<a
+											href={localizeHref('/account/organization')}
+											class="flex w-full items-center"
+										>
+											<Plus class="mr-2 h-4 w-4 shrink-0" />
+											{m.bold_neat_panda_learn()}
+										</a>
+									</DropdownMenu.Item>
+								{/if}
+							</DropdownMenu.Group>
 							<DropdownMenu.Separator />
 							<DropdownMenu.Item>
 								<form
@@ -239,12 +250,12 @@
 								{/if}
 							</Button>
 						{/each}
+						<div
+							class="text-muted-foreground px-2 pt-4 pb-1 text-xs font-medium tracking-wide uppercase"
+						>
+							{m.wild_inner_fox_honor()}
+						</div>
 						{#if orgNavItems.length > 0}
-							<div
-								class="text-muted-foreground px-2 pt-4 pb-1 text-xs font-medium tracking-wide uppercase"
-							>
-								{m.wild_inner_fox_honor()}
-							</div>
 							{#each orgNavItems as item (item.href)}
 								<Button
 									href={item.href}
@@ -257,6 +268,15 @@
 									<span class="truncate">{item.label}</span>
 								</Button>
 							{/each}
+						{:else}
+							<Button
+								href={localizeHref('/account/organization')}
+								variant="ghost"
+								class="justify-start hover:bg-transparent hover:underline"
+							>
+								<Plus class="mr-2 h-4 w-4" />
+								{m.bold_neat_panda_learn()}
+							</Button>
 						{/if}
 					</nav>
 					<Separator class="my-2" />
