@@ -962,5 +962,7 @@
 	"teaser_white_label_cta": "Ver planos de negócio",
 	"flat_warm_bill_badge": "Faturação",
 	"flat_warm_checkout_owner_only": "Apenas os proprietários da organização podem gerir os planos de faturação",
-	"lean_bright_billing_owner_warn": "O contacto de faturação deve ser um proprietário"
+	"lean_bright_billing_owner_warn": "O contacto de faturação deve ser um proprietário",
+	"flat_warm_stat_seats": "Licenças totais",
+	"flat_warm_stat_monthly": "Total / mês"
 }

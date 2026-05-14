@@ -15,7 +15,6 @@
 	import * as Table from '$lib/components/ui/table';
 	import { InviteStatus, MembershipRole } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
-	import { localizeHref } from '$lib/paraglide/runtime';
 	import type { MembersAndInvitesByOrganization } from '$lib/server/organization';
 	import type {
 		InviteOrganizationMemberFormSchema,
@@ -147,10 +146,9 @@
 					organization.members.filter((m: MembersAndInvitesByOrganization) => m.userId).length,
 					1
 				)}
-				<Table.Caption class="mt-6 px-4"
+				<Table.Caption class="mt-6 px-4 text-balance"
 					>{m.glad_teal_fox_bill({ count: activeCount })}
-					<a href={localizeHref('/account/billing')} class="underline">See billing</a> for more info.</Table.Caption
-				>
+				</Table.Caption>
 			{/if}
 		</Table.Root>
 

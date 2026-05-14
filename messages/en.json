@@ -962,5 +962,7 @@
 	"teaser_white_label_cta": "View Business Plans",
 	"flat_warm_bill_badge": "Billing",
 	"flat_warm_checkout_owner_only": "Only org owners can manage billing plans",
-	"lean_bright_billing_owner_warn": "Billing contact must be an Owner"
+	"lean_bright_billing_owner_warn": "Billing contact must be an Owner",
+	"flat_warm_stat_seats": "Total seats",
+	"flat_warm_stat_monthly": "Total / mo"
 }

@@ -65,7 +65,22 @@
 						{statusLabel[data.orgSubscription.status]?.() ?? data.orgSubscription.status}
 					</span>
 				</div>
-
+				{#if data.seatCount > 0}
+					<div class="text-muted-foreground mb-4 flex gap-6">
+						<div>
+							<span class="text-foreground font-medium">{data.seatCount}</span>
+							<span class="ml-1">{m.flat_warm_stat_seats()}</span>
+						</div>
+						{#if data.monthlyAmountCents > 0}
+							<div>
+								<span class="text-foreground font-medium"
+									>{formatCurrency(data.monthlyAmountCents / 100, data.currency)}</span
+								>
+								<span class="ml-1">{m.flat_warm_stat_monthly()}</span>
+							</div>
+						{/if}
+					</div>
+				{/if}
 				<p class="text-muted-foreground text-sm">
 					{#if data.orgSubscription.cancel_at}
 						{m.flat_warm_fox_cancel({

@@ -115,17 +115,54 @@ export const cancelSubscription = async (subscriptionId: string) =>
 		// cancel_at: Math.round(Date.now() / 1000) + 20, // For testing
 	});
 
-/** Returns the TierOptions value for the seat-plan item in a subscription,
- *  skipping companion base-fee products whose names don't map to a TierOptions. */
-export const getSubscriptionPlanName = async (
+export type OrgSubscriptionStats = {
+	planName: TierOptions;
+	seatCount: number;
+	unitAmountCents: number;
+	interval: 'month' | 'year';
+	currency: string;
+	/** Total cost normalized to a monthly equivalent (cents). */
+	monthlyAmountCents: number;
+};
+
+/** Returns plan name and billing stats for an org subscription.
+ *  Iterates items to find the seat-plan product; sums all items for total monthly cost. */
+export const getOrgSubscriptionStats = async (
 	subscription: Stripe.Subscription
-): Promise<TierOptions> => {
+): Promise<OrgSubscriptionStats> => {
+	let planName = TierOptions.CONFIDENTIAL;
+	let seatCount = 0;
+	let unitAmountCents = 0;
+	let interval: 'month' | 'year' = 'month';
+	let currency = 'usd';
+	let monthlyAmountCents = 0;
+
 	for (const item of subscription.items.data) {
 		const productId = item.plan.product;
 		if (typeof productId !== 'string') continue;
 		const product = await stripeInstance.products.retrieve(productId);
+		const amount = item.plan.amount ?? 0;
+		const qty = item.quantity ?? 1;
+		const itemInterval = (item.plan.interval ?? 'month') as 'month' | 'year';
+		monthlyAmountCents += (itemInterval === 'year' ? amount / 12 : amount) * qty;
+
 		const tier = getEnumFromString(TierOptions, product.name);
-		if (tier) return tier;
+		if (tier) {
+			planName = tier;
+			seatCount = qty;
+			unitAmountCents = amount;
+			interval = itemInterval;
+			currency = item.plan.currency;
+		}
 	}
-	return TierOptions.CONFIDENTIAL;
+
+	return { planName, seatCount, unitAmountCents, interval, currency, monthlyAmountCents };
+};
+
+/** @deprecated Use getOrgSubscriptionStats instead. */
+export const getSubscriptionPlanName = async (
+	subscription: Stripe.Subscription
+): Promise<TierOptions> => {
+	const { planName } = await getOrgSubscriptionStats(subscription);
+	return planName;
 };

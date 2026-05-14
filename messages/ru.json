@@ -962,5 +962,7 @@
 	"teaser_white_label_cta": "Смотреть бизнес-тарифы",
 	"flat_warm_bill_badge": "Оплата",
 	"flat_warm_checkout_owner_only": "Только владельцы организации могут управлять тарифными планами",
-	"lean_bright_billing_owner_warn": "Контакт для выставления счетов должен быть владельцем"
+	"lean_bright_billing_owner_warn": "Контакт для выставления счетов должен быть владельцем",
+	"flat_warm_stat_seats": "Всего мест",
+	"flat_warm_stat_monthly": "Итого / мес."
 }

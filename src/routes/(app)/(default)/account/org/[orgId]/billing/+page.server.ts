@@ -10,7 +10,7 @@ import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { membership, user } from '$lib/server/db/schema';
 import { updateOrganizationBillingOwner } from '$lib/server/form/actions';
-import { getOrgInvoices, getStripePortalUrl, getSubscriptionPlanName } from '$lib/server/stripe';
+import { getOrgInvoices, getOrgSubscriptionStats, getStripePortalUrl } from '$lib/server/stripe';
 import { updateBillingOwnerSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
@@ -30,15 +30,24 @@ export const load: PageServerLoad = async ({ locals, parent, url }) => {
 	let invoices: import('stripe').Stripe.Invoice[] = [];
 	let stripePortalUrl: string | null = null;
 	let planName: string | null = null;
+	let seatCount = 0;
+	let monthlyAmountCents = 0;
+	let currency = 'usd';
 
 	const billingReturnUrl = getAbsoluteLocalizedUrl(getBaseUrl(), url.pathname);
 
 	if (org.stripeCustomerId && orgSubscription) {
-		[invoices, { url: stripePortalUrl }, planName] = await Promise.all([
+		const [invoicesResult, portalResult, stats] = await Promise.all([
 			getOrgInvoices(org.stripeCustomerId),
 			getStripePortalUrl(org.stripeCustomerId, billingReturnUrl),
-			getSubscriptionPlanName(orgSubscription)
+			getOrgSubscriptionStats(orgSubscription)
 		]);
+		invoices = invoicesResult;
+		stripePortalUrl = portalResult.url;
+		planName = stats.planName;
+		seatCount = stats.seatCount;
+		monthlyAmountCents = stats.monthlyAmountCents;
+		currency = stats.currency;
 	}
 
 	// Load owners only so the billing contact dropdown is restricted to owners.
@@ -69,6 +78,9 @@ export const load: PageServerLoad = async ({ locals, parent, url }) => {
 		invoices,
 		stripePortalUrl,
 		planName,
+		seatCount,
+		monthlyAmountCents,
+		currency,
 		members,
 		isOrgOwner,
 		updateBillingOwnerForm,

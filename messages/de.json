@@ -962,5 +962,7 @@
 	"teaser_white_label_cta": "Business-Pläne ansehen",
 	"flat_warm_bill_badge": "Abrechnung",
 	"flat_warm_checkout_owner_only": "Nur Organisations-Inhaber können Abrechnungspläne verwalten",
-	"lean_bright_billing_owner_warn": "Der Abrechnungskontakt muss ein Inhaber sein"
+	"lean_bright_billing_owner_warn": "Der Abrechnungskontakt muss ein Inhaber sein",
+	"flat_warm_stat_seats": "Lizenzen gesamt",
+	"flat_warm_stat_monthly": "Gesamt / Monat"
 }
