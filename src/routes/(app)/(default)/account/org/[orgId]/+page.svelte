@@ -6,12 +6,6 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<OrganizationCard
-	organization={data.orgWithMembers}
-	organizationForm={data.organizationForm}
-	deleteOrganizationForm={data.deleteOrganizationForm}
-/>
-
 <OrganizationMembersCard
 	user={data.user}
 	organization={data.orgWithMembers}
@@ -19,4 +13,10 @@
 	organizationForm={data.organizationForm}
 	inviteOrganizationMemberForm={data.inviteOrganizationMemberForm}
 	manageOrganizationMemberForm={data.manageOrganizationMemberForm}
+/>
+
+<OrganizationCard
+	organization={data.orgWithMembers}
+	organizationForm={data.organizationForm}
+	deleteOrganizationForm={data.deleteOrganizationForm}
 />
