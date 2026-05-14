@@ -945,5 +945,8 @@
 	"flat_warm_inv_date": "Date",
 	"flat_warm_inv_total": "Total",
 	"flat_warm_inv_label": "Facture",
-	"flat_warm_role_admin": "Admin"
+	"flat_warm_role_admin": "Admin",
+	"teaser_white_label_title": "Votre propre expérience de partage de secrets à votre image",
+	"teaser_white_label_description": "Passez à Secret Service ou Top Secret Service pour déployer un site de partage de secrets entièrement white-label sous votre propre domaine — design personnalisé, votre marque, vos règles.",
+	"teaser_white_label_cta": "Voir les offres Business"
 }

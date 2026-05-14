@@ -945,5 +945,8 @@
 	"flat_warm_inv_date": "Datum",
 	"flat_warm_inv_total": "Gesamt",
 	"flat_warm_inv_label": "Rechnung",
-	"flat_warm_role_admin": "Admin"
+	"flat_warm_role_admin": "Admin",
+	"teaser_white_label_title": "Dein eigenes Geheimnis-Sharing unter deiner Marke",
+	"teaser_white_label_description": "Upgrade auf Secret Service oder Top Secret Service, um eine vollständig white-label-fähige Secret-Sharing-Seite unter deiner eigenen Domain zu betreiben – individuelles Design, dein Branding, deine Regeln.",
+	"teaser_white_label_cta": "Business-Pläne ansehen"
 }
