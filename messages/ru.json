@@ -951,6 +951,7 @@
 	"flat_warm_role_owner_desc": "Полный контроль, включая удаление организации",
 	"flat_warm_billing_role_warn": "Контакт по выставлению счетов должен быть Администратором или Владельцем",
 	"flat_warm_org_title": "Организация",
+	"flat_warm_org_members_title": "Участники",
 	"flat_warm_org_members_count": "Всего участников",
 	"flat_warm_org_delete_btn": "Удалить организацию",
 	"flat_warm_org_delete_title": "Удалить организацию",

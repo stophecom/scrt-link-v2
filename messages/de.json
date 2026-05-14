@@ -951,6 +951,7 @@
 	"flat_warm_role_owner_desc": "Vollständige Kontrolle, einschließlich des Löschens der Organisation",
 	"flat_warm_billing_role_warn": "Der Abrechnungskontakt muss Admin oder Eigentümer sein",
 	"flat_warm_org_title": "Organisation",
+	"flat_warm_org_members_title": "Mitglieder",
 	"flat_warm_org_members_count": "Mitglieder gesamt",
 	"flat_warm_org_delete_btn": "Organisation löschen",
 	"flat_warm_org_delete_title": "Organisation löschen",

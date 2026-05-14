@@ -102,7 +102,7 @@
 {/snippet}
 
 {#if organization}
-	<Card class="mb-6" title={organization.name} description={m.tense_witty_gecko_relish()}>
+	<Card class="mb-6" title={m.flat_warm_org_members_title()}>
 		<Table.Root>
 			<Table.Header>
 				<Table.Row>

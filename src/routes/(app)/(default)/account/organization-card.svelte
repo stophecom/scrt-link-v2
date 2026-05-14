@@ -20,7 +20,7 @@
 		organization: {
 			id: string;
 			name: string;
-			role: MembershipRole;
+			role: MembershipRole | null;
 			members: MembersAndInvitesByOrganization[];
 		};
 		organizationForm: SuperValidated<OrganizationFormSchema>;
@@ -42,7 +42,7 @@
 	<span class="inline-block p-1 font-medium">{label}</span>
 {/snippet}
 
-<Card class="mb-6" title={m.flat_warm_org_title()} description={m.tense_witty_gecko_relish()}>
+<Card class="mb-6" title={m.flat_warm_org_title()}>
 	<div class="flex items-center py-1">
 		{@render renderLabel('Name:')}
 		{organization.name}

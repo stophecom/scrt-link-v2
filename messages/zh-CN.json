@@ -951,6 +951,7 @@
 	"flat_warm_role_owner_desc": "完全控制权，包括删除组织",
 	"flat_warm_billing_role_warn": "账单联系人必须是管理员或所有者",
 	"flat_warm_org_title": "组织",
+	"flat_warm_org_members_title": "成员",
 	"flat_warm_org_members_count": "成员总数",
 	"flat_warm_org_delete_btn": "删除组织",
 	"flat_warm_org_delete_title": "删除组织",

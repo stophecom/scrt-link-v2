@@ -951,6 +951,7 @@
 	"flat_warm_role_owner_desc": "Full control, including deleting the organization",
 	"flat_warm_billing_role_warn": "Billing contact must be Admin or Owner",
 	"flat_warm_org_title": "Organization",
+	"flat_warm_org_members_title": "Members",
 	"flat_warm_org_members_count": "Total members",
 	"flat_warm_org_delete_btn": "Delete organization",
 	"flat_warm_org_delete_title": "Delete organization",

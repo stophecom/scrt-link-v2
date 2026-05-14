@@ -951,6 +951,7 @@
 	"flat_warm_role_owner_desc": "Controlo total, incluindo a eliminação da organização",
 	"flat_warm_billing_role_warn": "O contacto de faturação deve ser Admin ou Proprietário",
 	"flat_warm_org_title": "Organização",
+	"flat_warm_org_members_title": "Membros",
 	"flat_warm_org_members_count": "Total de membros",
 	"flat_warm_org_delete_btn": "Eliminar organização",
 	"flat_warm_org_delete_title": "Eliminar organização",
