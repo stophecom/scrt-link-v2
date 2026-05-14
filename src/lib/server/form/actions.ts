@@ -97,9 +97,9 @@ import {
 } from '../user';
 import {
 	checkIsUserAllowedOnWhiteLabelSite,
+	getWhiteLabelSiteByHost,
 	getWhiteLabelSiteByOrgId,
-	getWhiteLabelSiteByUserId,
-	getWhiteLabelSiteForUser
+	getWhiteLabelSiteByUserId
 } from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
@@ -1496,7 +1496,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		published
 	} = form.data;
 
-	const existingWhiteLabelSite = await getWhiteLabelSiteForUser(user.id);
+	const existingWhiteLabelSite = await getWhiteLabelSiteByHost(event.params.domain as string);
 
 	// @todo Delete logo/app icon on S3
 
