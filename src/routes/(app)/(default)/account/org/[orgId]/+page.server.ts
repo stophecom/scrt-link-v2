@@ -5,12 +5,14 @@ import { MembershipRole } from '$lib/data/enums';
 import { redirectLocalized } from '$lib/i18n';
 import {
 	addMemberToOrganization,
+	deleteOrganization,
 	editOrganization,
 	manageOrganizationMember,
 	removeOrganizationMember
 } from '$lib/server/form/actions';
 import { getMembersAndInvitesByOrganization } from '$lib/server/organization';
 import {
+	deleteOrganizationSchema,
 	inviteOrganizationMemberFormSchema,
 	manageOrganizationMemberFormSchema,
 	organizationFormSchema
@@ -28,7 +30,8 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		membersAndInvites,
 		organizationForm,
 		inviteOrganizationMemberForm,
-		manageOrganizationMemberForm
+		manageOrganizationMemberForm,
+		deleteOrganizationForm
 	] = await Promise.all([
 		getMembersAndInvitesByOrganization(org.id),
 		superValidate({ organizationId: org.id, name: org.name }, zod4(organizationFormSchema()), {
@@ -37,7 +40,8 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		superValidate(zod4(inviteOrganizationMemberFormSchema()), { errors: false }),
 		superValidate({ role: MembershipRole.MEMBER }, zod4(manageOrganizationMemberFormSchema()), {
 			errors: false
-		})
+		}),
+		superValidate({ organizationId: org.id }, zod4(deleteOrganizationSchema()), { errors: false })
 	]);
 
 	return {
@@ -46,11 +50,13 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 		organizationForm,
 		inviteOrganizationMemberForm,
 		manageOrganizationMemberForm,
+		deleteOrganizationForm,
 		pageTitle: org.name
 	};
 };
 
 export const actions: Actions = {
+	deleteOrganization,
 	editOrganization,
 	addMemberToOrganization,
 	manageOrganizationMember,

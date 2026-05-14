@@ -33,6 +33,14 @@ export const deleteAccountSchema = () =>
 		})
 	});
 
+export const deleteOrganizationSchema = () =>
+	z.object({
+		confirm: z.boolean().refine((val) => val === true, {
+			message: m.gross_glad_marlin_cure()
+		}),
+		organizationId: z.string()
+	});
+
 export const signInFormSchema = () =>
 	z.object({
 		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
@@ -280,6 +288,7 @@ export type EmailFormSchema = z.infer<ReturnType<typeof emailFormSchema>>;
 export type EmailVerificationCodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
 export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
+export type DeleteOrganizationSchema = ReturnType<typeof deleteOrganizationSchema>;
 export type SecretFormSchema = z.infer<ReturnType<typeof secretFormSchema>>;
 export type UserFormSchema = z.infer<ReturnType<typeof userFormSchema>>;
 export type OrganizationFormSchema = z.infer<ReturnType<typeof organizationFormSchema>>;

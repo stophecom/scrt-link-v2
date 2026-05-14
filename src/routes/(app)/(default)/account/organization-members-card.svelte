@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { Pen, User } from '@lucide/svelte';
+	import { User } from '@lucide/svelte';
 	import type { Stripe } from 'stripe';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
-	import { wait } from '$lib/client/utils';
 	import InviteOrganizationMemberForm from '$lib/components/forms/invite-organization-member-form.svelte';
 	import ManageOrganizationMemberForm from '$lib/components/forms/manage-organization-member-form.svelte';
 	import OrganizationForm from '$lib/components/forms/organization-form.svelte';
@@ -41,7 +40,6 @@
 		manageOrganizationMemberForm?: SuperValidated<ManageOrganizationMemberFormSchema>;
 	} = $props();
 
-	let openDialogName = $state(false);
 	let openDialogInvite = $state(false);
 	let openDialogManage = $state(false);
 
@@ -158,47 +156,22 @@
 
 		{#if organization.role === MembershipRole.OWNER || organization.role === MembershipRole.ADMIN}
 			<Separator class="my-6" />
-			<div class="xs:grid-rows-1 xs:grid-cols-2 grid grid-rows-2 gap-2">
-				<div>
-					<Dialog.Root bind:open={openDialogName}>
-						<Dialog.Trigger class={buttonVariants({ variant: 'outline', class: 'max-xs:w-full' })}
-							><Pen class="me-2 h-4 w-4" /> {m.patchy_polite_wombat_bump()}</Dialog.Trigger
-						>
-						<Dialog.Content class="sm:max-w-[425px]">
-							<Dialog.Header>
-								<Dialog.Title>{m.spry_every_kangaroo_flip()}</Dialog.Title>
-							</Dialog.Header>
-							<OrganizationForm
-								formAction="?/editOrganization"
-								form={organizationForm}
-								onSuccess={() => {
-									wait(200).then(async () => {
-										openDialogName = false;
-									});
-								}}
-							/>
-						</Dialog.Content>
-					</Dialog.Root>
-				</div>
-				<div class="xs:ms-auto">
-					<Dialog.Root bind:open={openDialogInvite}>
-						<Dialog.Trigger class={buttonVariants({ variant: 'default', class: 'max-xs:w-full' })}
-							>{m.spare_lazy_jackal_slide()}</Dialog.Trigger
-						>
-						<Dialog.Content class="sm:max-w-[425px]">
-							<Dialog.Header>
-								<Dialog.Title>{m.mealy_few_mantis_absorb()}</Dialog.Title>
-								<Dialog.Description>{m.mean_key_marmot_fall()}</Dialog.Description>
-							</Dialog.Header>
-							<InviteOrganizationMemberForm
-								formAction="?/addMemberToOrganization"
-								form={inviteOrganizationMemberForm!}
-								organizationId={organization.id}
-							/>
-						</Dialog.Content>
-					</Dialog.Root>
-				</div>
-			</div>
+			<Dialog.Root bind:open={openDialogInvite}>
+				<Dialog.Trigger class={buttonVariants({ variant: 'default' })}
+					>{m.spare_lazy_jackal_slide()}</Dialog.Trigger
+				>
+				<Dialog.Content class="sm:max-w-[425px]">
+					<Dialog.Header>
+						<Dialog.Title>{m.mealy_few_mantis_absorb()}</Dialog.Title>
+						<Dialog.Description>{m.mean_key_marmot_fall()}</Dialog.Description>
+					</Dialog.Header>
+					<InviteOrganizationMemberForm
+						formAction="?/addMemberToOrganization"
+						form={inviteOrganizationMemberForm!}
+						organizationId={organization.id}
+					/>
+				</Dialog.Content>
+			</Dialog.Root>
 		{/if}
 	</Card>
 

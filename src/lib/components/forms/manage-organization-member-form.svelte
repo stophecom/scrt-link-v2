@@ -86,16 +86,16 @@
 				<input type="hidden" name="role" bind:value={$formData.role} />
 				<ul class="text-muted-foreground mt-2 space-y-0.5 text-xs">
 					<li>
-						<span class="font-medium">{m.cuddly_flat_salmon_express()}</span>
-						— {m.flat_warm_role_member_desc()}
+						<span class="font-medium">{m.cuddly_flat_salmon_express()}</span>:
+						{m.flat_warm_role_member_desc()}
 					</li>
 					<li>
-						<span class="font-medium">{m.flat_warm_role_admin()}</span>
-						— {m.flat_warm_role_admin_desc()}
+						<span class="font-medium">{m.flat_warm_role_admin()}</span>:
+						{m.flat_warm_role_admin_desc()}
 					</li>
 					<li>
-						<span class="font-medium">{m.lower_few_turtle_propel()}</span>
-						— {m.flat_warm_role_owner_desc()}
+						<span class="font-medium">{m.lower_few_turtle_propel()}</span>:
+						{m.flat_warm_role_owner_desc()}
 					</li>
 				</ul>
 				{#if isBillingContact}

@@ -31,6 +31,7 @@ import type { LocalizedWhiteLabelMessage, Theme } from '$lib/types';
 import { dropUndefinedValuesFromObject } from '$lib/utils';
 import {
 	apiKeyFormSchema,
+	deleteOrganizationSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
 	encryptionSetupFormSchema,
@@ -81,6 +82,7 @@ import {
 	submitSecretResponse
 } from '../secret-requests';
 import { saveSecret } from '../secrets';
+import { cancelSubscription, getActiveSubscription } from '../stripe';
 import stripeInstance from '../stripe';
 import {
 	checkIfUserExists,
@@ -686,6 +688,43 @@ export const removeOrganizationMember: Action = async (event) => {
 	}
 
 	return message(form, { status: 'error', title: m.free_smug_hound_boil() }, { status: 400 });
+};
+
+export const deleteOrganization: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(deleteOrganizationSchema()));
+	const user = event.locals.user;
+
+	if (!form.valid) return fail(400, { form });
+	if (!user) return redirectLocalized(307, '/signup');
+
+	const { organizationId } = form.data;
+
+	// Only owners may delete the organization.
+	const [memberRow] = await db
+		.select({ role: membership.role })
+		.from(membership)
+		.where(and(eq(membership.userId, user.id), eq(membership.organizationId, organizationId)));
+
+	if (memberRow?.role !== MembershipRole.OWNER) {
+		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
+	}
+
+	const [orgRow] = await db
+		.select({ stripeCustomerId: organization.stripeCustomerId })
+		.from(organization)
+		.where(eq(organization.id, organizationId));
+
+	// Cancel active subscription before deleting.
+	if (orgRow?.stripeCustomerId) {
+		const subscription = await getActiveSubscription(orgRow.stripeCustomerId);
+		if (subscription?.id) {
+			await cancelSubscription(subscription.id);
+		}
+	}
+
+	await db.delete(organization).where(eq(organization.id, organizationId));
+
+	return redirectLocalized(303, '/account/organization');
 };
 
 export const updateOrganizationBillingOwner: Action = async (event) => {

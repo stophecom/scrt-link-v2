@@ -6,4 +6,8 @@
 </script>
 
 <!-- Shown only when the user has no organizations yet (server redirects otherwise) -->
-<OrganizationMembersCard user={data.user} organization={null} organizationForm={data.organizationForm} />
+<OrganizationMembersCard
+	user={data.user}
+	organization={null}
+	organizationForm={data.organizationForm}
+/>

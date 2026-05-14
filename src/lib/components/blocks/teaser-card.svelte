@@ -13,7 +13,7 @@
 
 <div class="border-rainbow relative rounded-lg p-0.5">
 	<div
-		class="bg-background relative grid grid-cols-1 overflow-hidden rounded-lg md:grid-cols-[minmax(60%,1fr)_auto]"
+		class="bg-card relative grid grid-cols-1 overflow-hidden rounded-lg md:grid-cols-[minmax(60%,1fr)_auto]"
 	>
 		<div class="flex flex-col justify-center px-4 py-8 md:p-10">
 			<h2 class="mt-2 mr-8 mb-2 text-2xl font-bold text-pretty md:text-3xl">
