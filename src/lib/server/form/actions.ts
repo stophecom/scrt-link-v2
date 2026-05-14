@@ -75,6 +75,7 @@ import {
 	syncOrgSeatCount
 } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
+import stripeInstance from '../stripe';
 import {
 	getSecretRequestByHash,
 	saveSecretRequest,
@@ -660,12 +661,19 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 	}
 
 	// The new billing owner must be a member of the org.
-	const [targetRow] = await db
-		.select({ userId: membership.userId })
-		.from(membership)
-		.where(
-			and(eq(membership.userId, newBillingOwnerId), eq(membership.organizationId, organizationId))
-		);
+	const [[targetRow], [org]] = await Promise.all([
+		db
+			.select({ userId: membership.userId, email: userSchema.email })
+			.from(membership)
+			.innerJoin(userSchema, eq(userSchema.id, membership.userId))
+			.where(
+				and(eq(membership.userId, newBillingOwnerId), eq(membership.organizationId, organizationId))
+			),
+		db
+			.select({ stripeCustomerId: organization.stripeCustomerId })
+			.from(organization)
+			.where(eq(organization.id, organizationId))
+	]);
 
 	if (!targetRow) {
 		return fail(400, { billingOwnerError: 'Selected user is not a member of this organization.' });
@@ -675,6 +683,11 @@ export const updateOrganizationBillingOwner: Action = async (event) => {
 		.update(organization)
 		.set({ billingOwnerId: newBillingOwnerId })
 		.where(eq(organization.id, organizationId));
+
+	// Keep Stripe customer email in sync so invoices go to the new billing contact.
+	if (org?.stripeCustomerId) {
+		await stripeInstance.customers.update(org.stripeCustomerId, { email: targetRow.email });
+	}
 
 	return { billingOwnerSuccess: true };
 };
