@@ -2,6 +2,7 @@ import Stripe from 'stripe';
 
 import { STRIPE_SECRET_KEY } from '$env/static/private';
 import { TierOptions } from '$lib/data/enums';
+import { getEnumFromString } from '$lib/typescript-helpers';
 
 const stripeInstance = new Stripe(STRIPE_SECRET_KEY, {
 	// https://github.com/stripe/stripe-node#configuration
@@ -113,3 +114,18 @@ export const cancelSubscription = async (subscriptionId: string) =>
 		trial_end: 'now'
 		// cancel_at: Math.round(Date.now() / 1000) + 20, // For testing
 	});
+
+/** Returns the TierOptions value for the seat-plan item in a subscription,
+ *  skipping companion base-fee products whose names don't map to a TierOptions. */
+export const getSubscriptionPlanName = async (
+	subscription: Stripe.Subscription
+): Promise<TierOptions> => {
+	for (const item of subscription.items.data) {
+		const productId = item.plan.product;
+		if (typeof productId !== 'string') continue;
+		const product = await stripeInstance.products.retrieve(productId);
+		const tier = getEnumFromString(TierOptions, product.name);
+		if (tier) return tier;
+	}
+	return TierOptions.CONFIDENTIAL;
+};

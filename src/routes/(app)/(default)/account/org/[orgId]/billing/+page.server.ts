@@ -3,36 +3,16 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { TierOptions } from '$lib/data/enums';
 import { getBaseUrl } from '$lib/constants';
 import { getAbsoluteLocalizedUrl, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { membership, user } from '$lib/server/db/schema';
 import { updateOrganizationBillingOwner } from '$lib/server/form/actions';
-import stripeInstance, { getOrgInvoices, getStripePortalUrl } from '$lib/server/stripe';
-import { getEnumFromString } from '$lib/typescript-helpers';
+import { getOrgInvoices, getStripePortalUrl, getSubscriptionPlanName } from '$lib/server/stripe';
 import { updateBillingOwnerSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
-
-async function getProductName(subscription: import('stripe').Stripe.Subscription) {
-	let productName = TierOptions.CONFIDENTIAL;
-
-	// With base-fee + seat line items, find the item whose product name
-	// maps to a known TierOptions (skip companion "...Base fee" products)
-	for (const item of subscription.items.data) {
-		const productId = item.plan.product;
-		if (typeof productId !== 'string') continue;
-		const plan = await stripeInstance.products.retrieve(productId);
-		const mappedTierOption = getEnumFromString(TierOptions, plan.name);
-		if (mappedTierOption) {
-			productName = mappedTierOption;
-			break;
-		}
-	}
-	return productName;
-}
 
 export const load: PageServerLoad = async ({ locals, parent, url }) => {
 	const user_ = locals.user;
@@ -56,7 +36,7 @@ export const load: PageServerLoad = async ({ locals, parent, url }) => {
 		[invoices, { url: stripePortalUrl }, planName] = await Promise.all([
 			getOrgInvoices(org.stripeCustomerId),
 			getStripePortalUrl(org.stripeCustomerId, billingReturnUrl),
-			getProductName(orgSubscription)
+			getSubscriptionPlanName(orgSubscription)
 		]);
 	}
 

@@ -54,19 +54,25 @@
 
 	const isSubscriptionCanceled = subscription && !!subscription?.cancel_at;
 
-	// We assume a subscription has only one plan associated with it.
-	const activeProduct = $derived(subscription?.items.data[0].plan.product);
+	// Find the seat-plan item (plans only contains seat products, never base-fee companions).
+	const activeProduct = $derived(
+		subscription?.items.data.find((item) => plans.some((p) => p.id === item.plan.product))?.plan
+			.product
+	);
 
-	// Get % yearly savings. We take first plan. (There should be only one)
-	const premiumPlanPrices = plans.length && plans[0].prices;
-	const yearlyPlanSavings =
-		premiumPlanPrices &&
-		premiumPlanPrices?.yearly?.unit_amount &&
-		premiumPlanPrices?.monthly?.unit_amount &&
-		Math.floor(
-			(1 - premiumPlanPrices.yearly.unit_amount / 12 / premiumPlanPrices.monthly.unit_amount) * 100
-		);
 	const orgPlanNames: string[] = [TierOptions.SECRET_SERVICE, TierOptions.TOP_SECRET_SERVICE];
+
+	const personalPlanPrices = $derived(plans.find((p) => !orgPlanNames.includes(p.name))?.prices);
+
+	const yearlyPlanSavings = $derived(
+		personalPlanPrices?.yearly?.unit_amount && personalPlanPrices?.monthly?.unit_amount
+			? Math.floor(
+					(1 -
+						personalPlanPrices.yearly.unit_amount / 12 / personalPlanPrices.monthly.unit_amount) *
+						100
+				)
+			: false
+	);
 
 	// Sort personal plans only (exclude org plans)
 	let plansSorted = $derived(

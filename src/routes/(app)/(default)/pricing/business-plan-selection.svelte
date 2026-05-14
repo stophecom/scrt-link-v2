@@ -28,7 +28,10 @@
 	let { plans, user, orgId, orgSubscription, currency }: Props = $props();
 
 	const isOrgSubscriptionCanceled = orgSubscription && !!orgSubscription?.cancel_at;
-	const activeOrgProduct = $derived(orgSubscription?.items.data[0].plan.product);
+	const activeOrgProduct = $derived(
+		orgSubscription?.items.data.find((item) => plans.some((p) => p.id === item.plan.product))?.plan
+			.product
+	);
 
 	const orgPlanNames = [TierOptions.SECRET_SERVICE, TierOptions.TOP_SECRET_SERVICE];
 	const businessPlans = $derived(
