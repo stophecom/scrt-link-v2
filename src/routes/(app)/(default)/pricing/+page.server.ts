@@ -1,11 +1,8 @@
 import { type Actions, error, fail, redirect } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
 import { type Stripe } from 'stripe';
 
 import { getBaseUrl } from '$lib/constants';
 import { getAbsoluteLocalizedUrl } from '$lib/i18n';
-import { db } from '$lib/server/db';
-import { organization } from '$lib/server/db/schema';
 import { getOrganizationsByUserId } from '$lib/server/organization';
 import { getActiveSubscription, getStripePortalUrl } from '$lib/server/stripe';
 
@@ -34,18 +31,13 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		}
 
 		if (locals.user) {
-			const orgs = await getOrganizationsByUserId(locals.user.id);
-			const org = orgs[0];
+			// Uses first org only — multi-org pricing page is not yet supported.
+			const org = (await getOrganizationsByUserId(locals.user.id))[0];
 			if (org) {
 				orgId = org.id;
 				orgName = org.name;
-				const [orgRow] = await db
-					.select()
-					.from(organization)
-					.where(eq(organization.id, org.id))
-					.limit(1);
-				if (orgRow?.stripeCustomerId) {
-					orgSubscription = await getActiveSubscription(orgRow.stripeCustomerId);
+				if (org.stripeCustomerId) {
+					orgSubscription = await getActiveSubscription(org.stripeCustomerId);
 				}
 			}
 		}

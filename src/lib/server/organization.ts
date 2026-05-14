@@ -54,6 +54,7 @@ export const getOrganizationsByUserId = async (userId: User['id']) =>
 		.select({
 			id: organization.id,
 			name: organization.name,
+			stripeCustomerId: organization.stripeCustomerId,
 			role: membership.role
 		})
 		.from(membership)
