@@ -948,5 +948,6 @@
 	"flat_warm_role_admin": "Администратор",
 	"teaser_white_label_title": "Ваш собственный сервис обмена секретами под вашим брендом",
 	"teaser_white_label_description": "Перейдите на Secret Service или Top Secret Service, чтобы запустить полностью white-label сайт для обмена секретами на собственном домене — уникальный дизайн, ваш бренд, ваши правила.",
-	"teaser_white_label_cta": "Смотреть бизнес-тарифы"
+	"teaser_white_label_cta": "Смотреть бизнес-тарифы",
+	"flat_warm_bill_badge": "Оплата"
 }

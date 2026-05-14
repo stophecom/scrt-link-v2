@@ -463,6 +463,20 @@ export const manageOrganizationMember: Action = async (event) => {
 	}
 
 	if (userId) {
+		// Fetch the target's current role before allowing any change.
+		const [targetMembership] = await db
+			.select({ role: membership.role })
+			.from(membership)
+			.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId)));
+
+		// Admins cannot change the role of an existing Owner (no demotion either).
+		if (
+			userOrganization.role === MembershipRole.ADMIN &&
+			targetMembership?.role === MembershipRole.OWNER
+		) {
+			return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
+		}
+
 		if (role !== MembershipRole.OWNER) {
 			const owners = await db.query.membership.findMany({
 				where: (fields, { eq, and }) =>
@@ -585,7 +599,26 @@ export const removeOrganizationMember: Action = async (event) => {
 	}
 
 	if (userId) {
-		if (isSelf && userOrganization?.role === MembershipRole.OWNER) {
+		// Fetch the target's current role before removing.
+		const [targetMembership] = await db
+			.select({ role: membership.role })
+			.from(membership)
+			.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId)));
+
+		// Only Owners can remove other Owners.
+		if (
+			targetMembership?.role === MembershipRole.OWNER &&
+			userOrganization?.role !== MembershipRole.OWNER
+		) {
+			return message(
+				form,
+				{ status: 'error', title: m.east_ago_hedgehog_pause() },
+				{ status: 403 }
+			);
+		}
+
+		// Last-owner guard: applies whenever an Owner is being removed (self or by another Owner).
+		if (targetMembership?.role === MembershipRole.OWNER) {
 			const owners = await db.query.membership.findMany({
 				where: (fields, { eq, and }) =>
 					and(eq(fields.organizationId, organizationId), eq(fields.role, MembershipRole.OWNER))
@@ -599,9 +632,7 @@ export const removeOrganizationMember: Action = async (event) => {
 						title: m.cuddly_wide_tiger_yell(),
 						description: m.patchy_equal_myna_affirm()
 					},
-					{
-						status: 400
-					}
+					{ status: 400 }
 				);
 			}
 		}
@@ -1418,10 +1449,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 				.set(updateSet)
 				.where(eq(whiteLabelSite.organizationId, existingWhiteLabelSite.organizationId));
 		} else {
-			await db
-				.update(whiteLabelSite)
-				.set(updateSet)
-				.where(eq(whiteLabelSite.userId, user.id));
+			await db.update(whiteLabelSite).set(updateSet).where(eq(whiteLabelSite.userId, user.id));
 		}
 	}
 

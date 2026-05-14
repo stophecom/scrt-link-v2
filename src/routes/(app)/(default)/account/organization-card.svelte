@@ -72,7 +72,8 @@
 	email: string,
 	name: string | null,
 	picture: string | null,
-	isCurrentUser: boolean
+	isCurrentUser: boolean,
+	isBillingContact: boolean
 )}
 	{@const memberName = name || m.witty_wise_grebe_empower()}
 	<div class="flex items-center font-medium">
@@ -85,10 +86,13 @@
 			</Avatar.Root>
 		</div>
 		<div>
-			<div class="flex items-center gap-1 {isCurrentUser ? 'font-bold' : ''}">
+			<div class="flex items-center gap-1.5 {isCurrentUser ? 'font-bold' : ''}">
 				{memberName}
 				{#if isCurrentUser}
 					<User class="text-muted-foreground h-3.5 w-3.5" />
+				{/if}
+				{#if isBillingContact}
+					<span class="bg-muted text-muted-foreground rounded-full px-1.5 py-px text-[10px] font-medium leading-none">{m.flat_warm_bill_badge()}</span>
 				{/if}
 			</div>
 			<div class="text-xs">{email}</div>
@@ -115,7 +119,8 @@
 								member.email,
 								member.name,
 								member.picture,
-								member.userId === user?.id
+								member.userId === user?.id,
+								member.userId === organization.billingOwnerId
 							)}
 						</Table.Cell>
 						<Table.Cell>{member.role}</Table.Cell>
@@ -218,7 +223,8 @@
 								selectedItem.email,
 								selectedItem.name,
 								selectedItem.picture,
-								selectedItem.userId === user?.id
+								selectedItem.userId === user?.id,
+								selectedItem.userId === organization.billingOwnerId
 							)}
 						</dir>
 						<ManageOrganizationMemberForm
@@ -227,7 +233,8 @@
 							inviteId={selectedItem.inviteId}
 							isCurrentUser={selectedItem.userId === user?.id}
 							isOwner={organization.role === MembershipRole.OWNER ||
-								organization.role === MembershipRole.ADMIN}
+								(organization.role === MembershipRole.ADMIN &&
+									selectedItem?.role !== MembershipRole.OWNER)}
 							initialRole={selectedItem.role}
 							form={manageOrganizationMemberForm!}
 							onSuccess={() => {
