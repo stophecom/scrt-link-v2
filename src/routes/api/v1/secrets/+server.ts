@@ -90,7 +90,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		const organizationId = whiteLabelSiteResult?.organizationId;
 
 		// For API users we need to check if user is allowed to use custom domain (white-label host)
-		const isOwner = whiteLabelSiteResult?.userId === userId;
+		const isOwner =
+			whiteLabelSiteResult?.userId !== null && whiteLabelSiteResult?.userId === userId;
 		const isMemberOfWhiteLabelSiteOwningOrganization =
 			userId && organizationId && (await isMemberOfOrganization(userId, organizationId));
 

@@ -181,9 +181,8 @@ export const whiteLabelSite = pgTable('white_label_site', {
 	updatedAt: timestamp('updated_at', { mode: 'date' })
 		.notNull()
 		.$onUpdate(() => new Date()),
-	organizationId: uuid('organization_id').references(() => organization.id),
+	organizationId: uuid('organization_id').unique().references(() => organization.id),
 	userId: uuid('user_id')
-		.notNull()
 		.unique()
 		.references(() => user.id, { onDelete: 'cascade' })
 });

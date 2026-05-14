@@ -1,5 +1,5 @@
 import { sha256Hash } from '@scrt-link/core';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, or } from 'drizzle-orm';
 
 import { generateBase64Token } from '$lib/crypto';
 import { InviteStatus, MembershipRole, TierOptions } from '$lib/data/enums';
@@ -81,6 +81,20 @@ export const isMemberOfOrganization = async (
 		where: and(eq(membership.userId, userId), eq(membership.organizationId, organizationId))
 	});
 
+	return !!result;
+};
+
+export const isUserOrgOwnerOrAdmin = async (
+	userId: string,
+	organizationId: string
+): Promise<boolean> => {
+	const result = await db.query.membership.findFirst({
+		where: and(
+			eq(membership.userId, userId),
+			eq(membership.organizationId, organizationId),
+			or(eq(membership.role, MembershipRole.OWNER), eq(membership.role, MembershipRole.ADMIN))
+		)
+	});
 	return !!result;
 };
 export const getInvitesByOrganizationId = async (organizationId: Organization['id']) =>

@@ -32,7 +32,7 @@ export const load: LayoutServerLoad = async ({ locals, url, params }) => {
 	}
 
 	const { name, logo, logoDarkMode, appIcon, ogImage, theme, enableSecretRequests } = whiteLabel;
-	const ownerTier = await getWhiteLabelSiteOwnerTier(whiteLabel.userId);
+	const ownerTier = await getWhiteLabelSiteOwnerTier(whiteLabel);
 
 	// Enforce mandatory encryption setup for authenticated white-label users
 	const user = locals.user;

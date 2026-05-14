@@ -71,6 +71,7 @@ import {
 import {
 	getOrganizationsByUserId,
 	inviteUserToOrganization,
+	isUserOrgOwnerOrAdmin,
 	syncOrgSeatCount
 } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
@@ -90,7 +91,12 @@ import {
 	verifyUserPassword,
 	welcomeNewUser
 } from '../user';
-import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
+import {
+	checkIsUserAllowedOnWhiteLabelSite,
+	getWhiteLabelSiteByOrgId,
+	getWhiteLabelSiteByUserId,
+	getWhiteLabelSiteForUser
+} from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
@@ -1157,7 +1163,7 @@ export const saveWhiteLabelDomain: Action = async (event) => {
 		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
 	}
 
-	const { customDomain, name } = form.data;
+	const { customDomain, name, organizationId } = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(
@@ -1171,10 +1177,19 @@ export const saveWhiteLabelDomain: Action = async (event) => {
 		);
 	}
 
-	try {
-		const existing = await getWhiteLabelSiteByUserId(user.id);
+	if (organizationId) {
+		const allowed = await isUserOrgOwnerOrAdmin(user.id, organizationId);
+		if (!allowed) {
+			return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 403 });
+		}
+	}
 
-		if (existing.customDomain && existing.customDomain !== customDomain) {
+	try {
+		const existing = organizationId
+			? await getWhiteLabelSiteByOrgId(organizationId)
+			: await getWhiteLabelSiteByUserId(user.id);
+
+		if (existing?.customDomain && existing.customDomain !== customDomain) {
 			await removeDomainFromVercelProject(existing.customDomain);
 		}
 
@@ -1195,13 +1210,23 @@ export const saveWhiteLabelDomain: Action = async (event) => {
 	}
 
 	try {
-		await db
-			.insert(whiteLabelSite)
-			.values({ customDomain, name, userId: user.id })
-			.onConflictDoUpdate({
-				target: whiteLabelSite.userId,
-				set: { customDomain, name }
-			});
+		if (organizationId) {
+			await db
+				.insert(whiteLabelSite)
+				.values({ customDomain, name, organizationId, userId: null })
+				.onConflictDoUpdate({
+					target: whiteLabelSite.organizationId,
+					set: { customDomain, name }
+				});
+		} else {
+			await db
+				.insert(whiteLabelSite)
+				.values({ customDomain, name, userId: user.id })
+				.onConflictDoUpdate({
+					target: whiteLabelSite.userId,
+					set: { customDomain, name }
+				});
+		}
 	} catch (error) {
 		console.error(error);
 
@@ -1249,28 +1274,34 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 
 	const { locale, isPrivate, enabledSecretTypes, enableSecretRequests, organizationId } = form.data;
 
+	if (organizationId) {
+		const allowed = await isUserOrgOwnerOrAdmin(user.id, organizationId);
+		if (!allowed) {
+			return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 403 });
+		}
+	}
+
 	try {
-		await db
-			.insert(whiteLabelSite)
-			.values({
-				locale,
-				private: isPrivate,
-				organizationId,
-				enabledSecretTypes,
-				enableSecretRequests,
-				userId: user.id
-			})
-			.onConflictDoUpdate({
-				target: whiteLabelSite.userId,
-				set: {
-					locale,
-					private: isPrivate,
-					organizationId,
-					enabledSecretTypes,
-					enableSecretRequests,
-					updatedAt: new Date()
-				}
-			});
+		const metaSet = {
+			locale,
+			private: isPrivate,
+			organizationId,
+			enabledSecretTypes,
+			enableSecretRequests,
+			updatedAt: new Date()
+		};
+
+		if (organizationId) {
+			await db
+				.insert(whiteLabelSite)
+				.values({ ...metaSet, userId: null })
+				.onConflictDoUpdate({ target: whiteLabelSite.organizationId, set: metaSet });
+		} else {
+			await db
+				.insert(whiteLabelSite)
+				.values({ ...metaSet, userId: user.id })
+				.onConflictDoUpdate({ target: whiteLabelSite.userId, set: metaSet });
+		}
 	} catch (error) {
 		console.error(error);
 		return message(
@@ -1327,34 +1358,29 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		published
 	} = form.data;
 
-	const existingWhiteLabelSite = await getWhiteLabelSiteByUserId(user.id);
+	const existingWhiteLabelSite = await getWhiteLabelSiteForUser(user.id);
 
 	// @todo Delete logo/app icon on S3
 
 	// We store page content, such as title, lead, description as JSON.
 	// We therefor allow translating user content.
 	const messagesJson =
-		(existingWhiteLabelSite.messages as LocalizedWhiteLabelMessage) ||
+		(existingWhiteLabelSite?.messages as LocalizedWhiteLabelMessage) ??
 		locales.reduce((acc, locale) => {
 			acc[locale] = {};
 			return acc;
 		}, {} as LocalizedWhiteLabelMessage);
 
 	// Prepare theme
-	const themeJson = (existingWhiteLabelSite.theme as Theme) || {};
+	const themeJson = (existingWhiteLabelSite?.theme as Theme) ?? {};
 	Object.assign(themeJson, dropUndefinedValuesFromObject({ primaryColor }));
 
-	// If non existent, create new entry
 	if (!existingWhiteLabelSite) {
-		messagesJson[locale] = { title, lead, description, imprint };
-
-		await db.insert(whiteLabelSite).values({
-			...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
-			published: published,
-			userId: user.id,
-			theme: themeJson,
-			messages: messagesJson
-		});
+		return message(
+			form,
+			{ status: 'error', title: m.dizzy_sour_liger_treasure() },
+			{ status: 404 }
+		);
 	} else {
 		// If we add new supported locales, we need to create the entry first
 		if (!messagesJson[locale]) {
@@ -1366,16 +1392,24 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			dropUndefinedValuesFromObject({ title, lead, description, imprint })
 		);
 
-		await db
-			.update(whiteLabelSite)
-			.set({
-				...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
-				published: published,
-				userId: user.id,
-				theme: themeJson,
-				messages: messagesJson
-			})
-			.where(eq(whiteLabelSite.userId, user.id));
+		const updateSet = {
+			...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
+			published: published,
+			theme: themeJson,
+			messages: messagesJson
+		};
+
+		if (existingWhiteLabelSite.organizationId) {
+			await db
+				.update(whiteLabelSite)
+				.set(updateSet)
+				.where(eq(whiteLabelSite.organizationId, existingWhiteLabelSite.organizationId));
+		} else {
+			await db
+				.update(whiteLabelSite)
+				.set(updateSet)
+				.where(eq(whiteLabelSite.userId, user.id));
+		}
 	}
 
 	return message(form, {

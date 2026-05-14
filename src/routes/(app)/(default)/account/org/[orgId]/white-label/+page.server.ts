@@ -30,7 +30,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 	];
 
 	const whiteLabelDomainForm = await superValidate(
-		{ name: whiteLabel?.name || '', customDomain: whiteLabel?.customDomain || '' },
+		{ name: whiteLabel?.name || '', customDomain: whiteLabel?.customDomain || '', organizationId: org.id },
 		zod4(whiteLabelDomainSchema())
 	);
 

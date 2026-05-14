@@ -120,7 +120,8 @@ export const manageOrganizationMemberFormSchema = () =>
 export const whiteLabelDomainSchema = () =>
 	z.object({
 		name: z.string().max(30),
-		customDomain: z.string().max(30)
+		customDomain: z.string().max(30),
+		organizationId: z.string().nullable().optional()
 	});
 
 export const whiteLabelMetaSchema = () =>
