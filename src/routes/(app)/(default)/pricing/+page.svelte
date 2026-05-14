@@ -53,6 +53,7 @@
 				subscription={data.subscription}
 				orgSubscription={data.orgSubscription}
 				orgId={data.orgId}
+				orgName={data.orgName}
 				bind:showBusiness
 			/>
 		{/if}

@@ -19,6 +19,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 	let orgSubscription: Stripe.Subscription | null = null;
 	let plans: Plan[] | null = null;
 	let orgId: string | null = null;
+	let orgName: string | null = null;
 
 	try {
 		const response = await fetch(`/api/v1/plans`);
@@ -37,6 +38,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 			const org = orgs[0];
 			if (org) {
 				orgId = org.id;
+				orgName = org.name;
 				const [orgRow] = await db
 					.select()
 					.from(organization)
@@ -52,7 +54,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		error(404, `Pricing page currently not available.`);
 	}
 
-	return { plans, subscription, orgSubscription, orgId };
+	return { plans, subscription, orgSubscription, orgId, orgName };
 };
 
 export const actions: Actions = {

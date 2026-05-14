@@ -32,6 +32,7 @@
 		subscription: Stripe.Subscription | null;
 		orgSubscription: Stripe.Subscription | null;
 		orgId: string | null;
+		orgName: string | null;
 		showBusiness?: boolean;
 	};
 	let {
@@ -40,6 +41,7 @@
 		subscription,
 		orgSubscription,
 		orgId,
+		orgName,
 		showBusiness = $bindable(false)
 	}: Props = $props();
 
@@ -165,7 +167,8 @@
 		<BigSwitch
 			bind:checked={showBusiness}
 			left={m.lean_bold_worm_grow()}
-			right={m.great_funny_beaver_gleam()}
+			right={orgName ?? m.great_funny_beaver_gleam()}
+			truncateRight
 		/>
 	</div>
 

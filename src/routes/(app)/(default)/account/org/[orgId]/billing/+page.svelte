@@ -160,6 +160,8 @@
 {:else}
 	<Card class="mb-4">
 		<p class="text-muted-foreground mb-4">{m.flat_warm_bear_none()}</p>
-		<Button href={localizeHref('/pricing')} variant="outline">{m.flat_warm_plan_view()}</Button>
+		<Button href={localizeHref('/pricing?tab=business')} variant="outline"
+			>{m.flat_warm_plan_view()}</Button
+		>
 	</Card>
 {/if}
