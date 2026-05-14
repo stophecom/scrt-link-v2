@@ -75,13 +75,13 @@ import {
 	syncOrgSeatCount
 } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
-import stripeInstance from '../stripe';
 import {
 	getSecretRequestByHash,
 	saveSecretRequest,
 	submitSecretResponse
 } from '../secret-requests';
 import { saveSecret } from '../secrets';
+import stripeInstance from '../stripe';
 import {
 	checkIfUserExists,
 	checkIsEmailVerified,
@@ -474,7 +474,11 @@ export const manageOrganizationMember: Action = async (event) => {
 			userOrganization.role === MembershipRole.ADMIN &&
 			targetMembership?.role === MembershipRole.OWNER
 		) {
-			return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
+			return message(
+				form,
+				{ status: 'error', title: m.east_ago_hedgehog_pause() },
+				{ status: 403 }
+			);
 		}
 
 		if (role !== MembershipRole.OWNER) {

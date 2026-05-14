@@ -92,7 +92,10 @@
 					<User class="text-muted-foreground h-3.5 w-3.5" />
 				{/if}
 				{#if isBillingContact}
-					<span class="bg-muted text-muted-foreground rounded-full px-1.5 py-px text-[10px] font-medium leading-none">{m.flat_warm_bill_badge()}</span>
+					<span
+						class="bg-muted text-muted-foreground rounded-full px-1.5 py-px text-[10px] leading-none font-medium"
+						>{m.flat_warm_bill_badge()}</span
+					>
 				{/if}
 			</div>
 			<div class="text-xs">{email}</div>

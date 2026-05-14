@@ -28,10 +28,7 @@
 </script>
 
 {#if !hasWhiteLabelPlan}
-	<TeaserCard
-		title={m.teaser_white_label_title()}
-		description={m.teaser_white_label_description()}
-	>
+	<TeaserCard title={m.teaser_white_label_title()} description={m.teaser_white_label_description()}>
 		{#snippet cta()}
 			<Button href={localizeHref('/pricing') + '?tab=business'}>
 				<SparklesIcon class="me-2 h-5 w-5" />
@@ -51,7 +48,10 @@
 	/>
 
 	<Card class="mb-6" title={'1. ' + m.flat_warm_fox_setup()}>
-		<WhiteLabelDomainForm form={data.whiteLabelDomainForm} whiteLabelDomain={data.whiteLabelDomain} />
+		<WhiteLabelDomainForm
+			form={data.whiteLabelDomainForm}
+			whiteLabelDomain={data.whiteLabelDomain}
+		/>
 	</Card>
 
 	{#if hasDomain}

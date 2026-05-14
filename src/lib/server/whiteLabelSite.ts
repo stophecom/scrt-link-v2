@@ -95,8 +95,7 @@ export const checkIsUserAllowedOnWhiteLabelSite = async (host: string, userId: s
 		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
 
 		// Site is restricted to either user (personal owner) or members of the assigned organization
-		const isOwner =
-			whiteLabelSiteResult.userId !== null && userId === whiteLabelSiteResult.userId;
+		const isOwner = whiteLabelSiteResult.userId !== null && userId === whiteLabelSiteResult.userId;
 		const orgId = whiteLabelSiteResult.organizationId;
 
 		if (!isOwner) {
