@@ -107,7 +107,10 @@ export const organization = pgTable('organization', {
 	name: text('name').notNull(),
 	createdBy: uuid('created_by').references(() => user.id, { onDelete: 'set null' }),
 	stripeCustomerId: text('stripe_customer_id'),
-	subscriptionTier: subscriptionTier('subscription_tier').default(TierOptions.CONFIDENTIAL)
+	subscriptionTier: subscriptionTier('subscription_tier').default(TierOptions.CONFIDENTIAL),
+	// Designates which user receives the Stripe portal link and billing emails.
+	// Defaults to null (falls back to any org owner). Can be any existing org member.
+	billingOwnerId: uuid('billing_owner_id').references(() => user.id, { onDelete: 'set null' })
 });
 
 export const membershipRole = pgEnum('membership_role', [

@@ -1,8 +1,12 @@
 <script lang="ts">
 	import ExternalLink from '@lucide/svelte/icons/external-link';
 
+	import { enhance } from '$app/forms';
+	import { page } from '$app/state';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card';
+	import * as Select from '$lib/components/ui/select';
+	import { Separator } from '$lib/components/ui/separator';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import { formatCurrency, formatDate } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
@@ -13,6 +17,8 @@
 	let { data }: { data: PageData } = $props();
 
 	let activeTab = $state('overview');
+	let selectedBillingOwnerId = $state(data.billingOwnerId ?? data.members[0]?.userId ?? '');
+	const orgId = $derived(page.params.orgId);
 
 	const statusLabel: Record<string, string> = {
 		active: 'Active',
@@ -96,6 +102,36 @@
 			<Card>
 				<p class="text-muted-foreground mb-4">{m.flat_warm_bear_none()}</p>
 				<Button href={localizeHref('/pricing')} variant="outline" size="sm">View plans</Button>
+			</Card>
+		{/if}
+
+		{#if data.isOrgOwner && data.members.length > 0}
+			<Card class="mt-4">
+				<h3 class="mb-1 font-semibold">Billing contact</h3>
+				<p class="text-muted-foreground mb-4 text-sm">
+					The billing contact receives the Stripe portal link. Defaults to any org owner.
+				</p>
+				<form method="POST" action="?/updateOrganizationBillingOwner" use:enhance>
+					<input type="hidden" name="organizationId" value={orgId} />
+					<div class="flex items-center gap-3">
+						<Select.Root type="single" bind:value={selectedBillingOwnerId}>
+							<Select.Trigger class="w-64">
+								{data.members.find((m) => m.userId === selectedBillingOwnerId)?.email ??
+									'Select member'}
+							</Select.Trigger>
+							<Select.Content>
+								{#each data.members as member (member.userId)}
+									<Select.Item value={member.userId}>
+										{member.name ?? member.email}
+										<span class="text-muted-foreground ml-1 text-xs">({member.email})</span>
+									</Select.Item>
+								{/each}
+							</Select.Content>
+						</Select.Root>
+						<input type="hidden" name="billingOwnerId" value={selectedBillingOwnerId} />
+						<Button type="submit" size="sm" variant="outline">Save</Button>
+					</div>
+				</form>
 			</Card>
 		{/if}
 	</Tabs.TabsContent>

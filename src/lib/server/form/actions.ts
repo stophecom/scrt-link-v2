@@ -618,6 +618,48 @@ export const removeOrganizationMember: Action = async (event) => {
 	return message(form, { status: 'error', title: m.free_smug_hound_boil() }, { status: 400 });
 };
 
+export const updateOrganizationBillingOwner: Action = async (event) => {
+	const user = event.locals.user;
+	if (!user) return redirectLocalized(307, '/signup');
+
+	const data = await event.request.formData();
+	const organizationId = data.get('organizationId') as string | null;
+	const newBillingOwnerId = data.get('billingOwnerId') as string | null;
+
+	if (!organizationId || !newBillingOwnerId) {
+		return error(400, 'Missing required fields.');
+	}
+
+	// Only org owners may change the billing contact.
+	const [memberRow] = await db
+		.select({ role: membership.role })
+		.from(membership)
+		.where(and(eq(membership.userId, user.id), eq(membership.organizationId, organizationId)));
+
+	if (memberRow?.role !== MembershipRole.OWNER) {
+		return error(403, 'Only org owners can change the billing contact.');
+	}
+
+	// The new billing owner must be a member of the org.
+	const [targetRow] = await db
+		.select({ userId: membership.userId })
+		.from(membership)
+		.where(
+			and(eq(membership.userId, newBillingOwnerId), eq(membership.organizationId, organizationId))
+		);
+
+	if (!targetRow) {
+		return error(400, 'Selected user is not a member of this organization.');
+	}
+
+	await db
+		.update(organization)
+		.set({ billingOwnerId: newBillingOwnerId })
+		.where(eq(organization.id, organizationId));
+
+	return { success: true };
+};
+
 export const loginWithEmail: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(emailFormSchema()));
 
