@@ -19,12 +19,12 @@ export const load: PageServerLoad = async ({ locals, parent, url }) => {
 	const user_ = locals.user;
 	if (!user_) return redirectLocalized(307, '/signup');
 
-	const { org, orgSubscription, isOrgOwner, isOrgAdmin } = await parent();
+	const { org, orgSubscription, isOrgOwner } = await parent();
 
-	// Billing page is visible to org owners, admins, and the designated billing contact.
+	// Billing page is owner-only (or the designated billing contact).
 	const isBillingOwner = org.billingOwnerId === user_.id;
-	if (!isOrgOwner && !isOrgAdmin && !isBillingOwner) {
-		return error(403, 'Only org owners, admins, or the billing contact can view billing.');
+	if (!isOrgOwner && !isBillingOwner) {
+		return error(403, 'Only org owners or the billing contact can view billing.');
 	}
 
 	let invoices: import('stripe').Stripe.Invoice[] = [];

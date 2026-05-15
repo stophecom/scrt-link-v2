@@ -12,7 +12,7 @@
 	let { children }: { children: Snippet } = $props();
 
 	const orgId = $derived(page.params.orgId);
-	const isOwner = $derived(page.data.isOrgOwner || page.data.isOrgAdmin);
+	const isAdmin = $derived(page.data.isOrgOwner || page.data.isOrgAdmin);
 	const isOrgOwner = $derived(page.data.isOrgOwner);
 	const currentPath = $derived(page.url.pathname);
 
@@ -23,24 +23,24 @@
 			icon: Users,
 			exact: true
 		},
-		...(isOwner
+		...(isAdmin
 			? [
 					{
 						href: localizeHref(`/account/org/${orgId}/white-label`),
 						label: m.bold_slim_ram_roam(),
 						icon: Globe,
 						exact: false
-					},
-					{
-						href: localizeHref(`/account/org/${orgId}/billing`),
-						label: m.misty_teal_hawk_glow(),
-						icon: CreditCard,
-						exact: false
 					}
 				]
 			: []),
 		...(isOrgOwner
 			? [
+					{
+						href: localizeHref(`/account/org/${orgId}/billing`),
+						label: m.misty_teal_hawk_glow(),
+						icon: CreditCard,
+						exact: false
+					},
 					{
 						href: localizeHref(`/account/org/${orgId}/logs`),
 						label: m.flat_warm_logs_tab(),

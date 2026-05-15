@@ -472,6 +472,15 @@ export const manageOrganizationMember: Action = async (event) => {
 		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
 	}
 
+	// Admins cannot downgrade themselves to Member.
+	if (
+		userOrganization.role === MembershipRole.ADMIN &&
+		userId === user.id &&
+		role === MembershipRole.MEMBER
+	) {
+		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
+	}
+
 	if (userId) {
 		// Fetch the target's current role and org billing owner in parallel.
 		const [[targetMembership], orgRow] = await Promise.all([
