@@ -118,17 +118,31 @@ export const PUT = async ({ locals, request }: RequestEvent) => {
 	const body = await request.json();
 	const { subscriptionId, priceId, orgId, basePriceId } = body;
 
+	let expectedStripeCustomer: string | null = null;
+
 	if (orgId) {
 		const userOrgs = await getOrganizationsByUserId(locals.user.id);
 		const userOrg = userOrgs.find((o) => o.id === orgId && o.role === MembershipRole.OWNER);
 		if (!userOrg) {
 			error(403, 'Not allowed. You must be the owner of this organization.');
 		}
+		const [org] = await db
+			.select({ stripeCustomerId: organization.stripeCustomerId })
+			.from(organization)
+			.where(eq(organization.id, orgId))
+			.limit(1);
+		expectedStripeCustomer = org?.stripeCustomerId ?? null;
 	} else if (!locals.user.stripeCustomerId) {
 		throw new Error('No stripe id associated with user.');
+	} else {
+		expectedStripeCustomer = locals.user.stripeCustomerId;
 	}
 
 	const subscription = await stripeInstance.subscriptions.retrieve(subscriptionId);
+
+	if (expectedStripeCustomer && subscription.customer !== expectedStripeCustomer) {
+		error(403, 'Subscription does not belong to this account.');
+	}
 	const items = subscription.items.data;
 	const seatItem = items.find((i) => !i.price.lookup_key?.includes('_base_')) ?? items[0];
 	const baseItem = items.find((i) => i.price.lookup_key?.includes('_base_'));

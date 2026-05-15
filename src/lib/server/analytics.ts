@@ -39,7 +39,7 @@ export const getUserSignupsByMonth = async (months = 12) => {
 			count: count()
 		})
 		.from(user)
-		.where(sql`${user.createdAt} > now() - interval '${sql.raw(String(months))} months'`)
+		.where(sql`${user.createdAt} > now() - (${months} * interval '1 month')`)
 		.groupBy(sql`date_trunc('month', ${user.createdAt})`)
 		.orderBy(sql`date_trunc('month', ${user.createdAt})`);
 	return result;

@@ -370,6 +370,11 @@ export const addMemberToOrganization: Action = async (event) => {
 		);
 	}
 
+	// Admins cannot invite new Owners
+	if (userOrganization.role === MembershipRole.ADMIN && role === MembershipRole.OWNER) {
+		return message(form, { status: 'error', title: 'Not allowed.' }, { status: 403 });
+	}
+
 	// Handle existing member
 	const existingUser = await getUserByEmail(email);
 	if (existingUser) {
@@ -427,6 +432,8 @@ export const addMemberToOrganization: Action = async (event) => {
 		membershipRole: role,
 		organizationId
 	});
+
+	syncOrgSeatCount(organizationId).catch(console.error);
 
 	return message(form, {
 		status: 'success',
