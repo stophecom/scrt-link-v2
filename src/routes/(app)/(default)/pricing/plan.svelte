@@ -55,20 +55,20 @@
 	class={cn(
 		'bg-card border-border relative row-span-4 grid grid-rows-subgrid gap-4 border p-4 shadow-sm',
 		rest.class,
-		planContent.promotion && !hidePromotion ? 'border-foreground mt-6 rounded-t-none sm:mt-0' : '',
 		isActiveProduct ? 'border-primary' : ''
 	)}
 >
-	{#if planContent.promotion && !hidePromotion}
-		<div
-			class="bg-foreground text-background absolute -right-[1px] bottom-full -left-[1px] flex items-center rounded-t-lg px-4 py-1 text-sm"
-		>
-			{planContent.promotion}
-		</div>
-	{/if}
-
 	<div class="pe-8 pb-1">
-		<h4 class="mb-0.5 text-sm font-medium">{name}</h4>
+		<h4 class="mb-0.5 text-sm font-medium">
+			{name}
+			{#if planContent.promotion && !hidePromotion}
+				<span
+					class="bg-foreground text-background ms-2 inline-flex origin-left scale-75 items-center rounded-full px-3 py-1 text-xs"
+				>
+					{planContent.promotion}
+				</span>
+			{/if}
+		</h4>
 		{#if planContent.subtitle}
 			<p class="text-muted-foreground text-xs">{planContent.subtitle}</p>
 		{/if}
