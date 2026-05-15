@@ -17,7 +17,7 @@
 	const subNavItems = $derived([
 		{
 			href: localizeHref(`/account/org/${orgId}`),
-			label: m.cuddly_flat_salmon_express(),
+			label: m.proof_north_walrus_ask(),
 			icon: Users,
 			exact: true
 		},
