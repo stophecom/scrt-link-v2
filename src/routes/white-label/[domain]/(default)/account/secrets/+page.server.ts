@@ -21,7 +21,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return {
 		user,
 		secrets,
-		secretForm: await secretFormValidator()
+		secretForm: await secretFormValidator(),
+		enabledSecretTypes: locals.whiteLabelSite?.enabledSecretTypes
 	};
 };
 

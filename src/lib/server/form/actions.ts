@@ -5,11 +5,7 @@ import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import {
-	MAX_API_KEYS_PER_USER,
-	MAX_ORGANIZATION_TEAM_SIZE,
-	MAX_ORGANIZATIONS_PER_USER
-} from '$lib/constants';
+import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
@@ -35,6 +31,7 @@ import type { LocalizedWhiteLabelMessage, Theme } from '$lib/types';
 import { dropUndefinedValuesFromObject } from '$lib/utils';
 import {
 	apiKeyFormSchema,
+	deleteOrganizationSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
 	encryptionSetupFormSchema,
@@ -51,7 +48,9 @@ import {
 	settingsFormSchema,
 	signInFormSchema,
 	themeFormSchema,
+	updateBillingOwnerSchema,
 	userFormSchema,
+	whiteLabelDomainSchema,
 	whiteLabelMetaSchema,
 	whiteLabelSiteSchema
 } from '$lib/validators/formSchemas';
@@ -72,9 +71,10 @@ import {
 	deleteEmailVerificationRequests
 } from '../email-verification';
 import {
-	getMembersAndInvitesByOrganization,
 	getOrganizationsByUserId,
-	inviteUserToOrganization
+	inviteUserToOrganization,
+	isUserOrgOwnerOrAdmin,
+	syncOrgSeatCount
 } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
 import {
@@ -83,6 +83,8 @@ import {
 	submitSecretResponse
 } from '../secret-requests';
 import { saveSecret } from '../secrets';
+import { cancelSubscription, getActiveSubscription } from '../stripe';
+import stripeInstance from '../stripe';
 import {
 	checkIfUserExists,
 	checkIsEmailVerified,
@@ -93,7 +95,12 @@ import {
 	verifyUserPassword,
 	welcomeNewUser
 } from '../user';
-import { checkIsUserAllowedOnWhiteLabelSite, getWhiteLabelSiteByUserId } from '../whiteLabelSite';
+import {
+	checkIsUserAllowedOnWhiteLabelSite,
+	getWhiteLabelSiteByHost,
+	getWhiteLabelSiteByOrgId,
+	getWhiteLabelSiteByUserId
+} from '../whiteLabelSite';
 
 export const postSecret: Action = async (event) => {
 	const form = await superValidate(event.request, zod4(secretFormSchema()));
@@ -107,7 +114,7 @@ export const postSecret: Action = async (event) => {
 	const user = event.locals.user;
 	const whiteLabelSiteId = event.locals.whiteLabelSite?.id;
 
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
 	if (form.data.viewLimit > planLimits.maxViewLimit) {
 		return fail(403, { form });
 	}
@@ -296,7 +303,9 @@ export const editOrganization: Action = async (event) => {
 	const userOrganizations = await getOrganizationsByUserId(user.id);
 
 	const isOwner = userOrganizations.some(
-		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+		(item) =>
+			item.id === organizationId &&
+			(item.role === MembershipRole.OWNER || item.role === MembershipRole.ADMIN)
 	);
 
 	if (!organizationId || !isOwner) {
@@ -340,10 +349,12 @@ export const addMemberToOrganization: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	// Make sure user is owner of the organization
+	// Make sure user is owner or admin of the organization
 	const userOrganizations = await getOrganizationsByUserId(user.id);
 	const userOrganization = userOrganizations.find(
-		(item) => item.id === organizationId && item.role === MembershipRole.OWNER
+		(item) =>
+			item.id === organizationId &&
+			(item.role === MembershipRole.OWNER || item.role === MembershipRole.ADMIN)
 	);
 
 	if (!organizationId || !userOrganization) {
@@ -359,21 +370,9 @@ export const addMemberToOrganization: Action = async (event) => {
 		);
 	}
 
-	// Limit amount of team members. @todo Think about metered pricing for organizations.
-	const membersByOrganization = await getMembersAndInvitesByOrganization(userOrganization.id);
-
-	if (membersByOrganization.length >= MAX_ORGANIZATION_TEAM_SIZE) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.early_honest_grizzly_clasp(),
-				description: m.salty_active_toucan_kiss()
-			},
-			{
-				status: 401
-			}
-		);
+	// Admins cannot invite new Owners
+	if (userOrganization.role === MembershipRole.ADMIN && role === MembershipRole.OWNER) {
+		return message(form, { status: 'error', title: 'Not allowed.' }, { status: 403 });
 	}
 
 	// Handle existing member
@@ -434,6 +433,8 @@ export const addMemberToOrganization: Action = async (event) => {
 		organizationId
 	});
 
+	syncOrgSeatCount(organizationId).catch(console.error);
+
 	return message(form, {
 		status: 'success',
 		title: m.weak_stock_elephant_build(),
@@ -455,16 +456,60 @@ export const manageOrganizationMember: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	// Make sure user is owner of the organization
+	// Make sure user is owner or admin of the organization
 	const userOrganizations = await getOrganizationsByUserId(user.id);
 	const userOrganization = userOrganizations.find((item) => item.id === organizationId);
-	const isOwner = userOrganization?.role === MembershipRole.OWNER;
+	const isOwner =
+		userOrganization?.role === MembershipRole.OWNER ||
+		userOrganization?.role === MembershipRole.ADMIN;
 
 	if (!organizationId || !userOrganization || !isOwner || !role) {
 		return message(form, { status: 'error', title: 'Not allowed.' }, { status: 401 });
 	}
 
+	// Admins cannot escalate anyone (including themselves) to Owner.
+	if (userOrganization.role === MembershipRole.ADMIN && role === MembershipRole.OWNER) {
+		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
+	}
+
+	// Admins cannot downgrade themselves to Member.
+	if (
+		userOrganization.role === MembershipRole.ADMIN &&
+		userId === user.id &&
+		role === MembershipRole.MEMBER
+	) {
+		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
+	}
+
 	if (userId) {
+		// Fetch the target's current role and org billing owner in parallel.
+		const [[targetMembership], orgRow] = await Promise.all([
+			db
+				.select({ role: membership.role })
+				.from(membership)
+				.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId))),
+			db.query.organization.findFirst({
+				columns: { billingOwnerId: true, stripeCustomerId: true },
+				where: (fields, { eq }) => eq(fields.id, organizationId)
+			})
+		]);
+
+		// Admins cannot change the role of an existing Owner (no demotion either).
+		if (
+			userOrganization.role === MembershipRole.ADMIN &&
+			targetMembership?.role === MembershipRole.OWNER
+		) {
+			return message(
+				form,
+				{ status: 'error', title: m.east_ago_hedgehog_pause() },
+				{ status: 403 }
+			);
+		}
+
+		const isBillingOwner = orgRow?.billingOwnerId === userId;
+		const isDemotedFromOwner =
+			targetMembership?.role === MembershipRole.OWNER && role !== MembershipRole.OWNER;
+
 		if (role !== MembershipRole.OWNER) {
 			const owners = await db.query.membership.findMany({
 				where: (fields, { eq, and }) =>
@@ -492,6 +537,41 @@ export const manageOrganizationMember: Action = async (event) => {
 
 		if (!result.length) {
 			return message(form, { status: 'error', title: `Member doesn't exist.` }, { status: 401 });
+		}
+
+		// Auto-reassign billing contact when the billing owner is demoted from OWNER.
+		if (isBillingOwner && isDemotedFromOwner) {
+			// Self-demotion: pick first other available owner; otherwise fall back to acting user.
+			let newBillingOwnerId: string;
+			if (user.id === userId) {
+				const otherOwner = await db.query.membership.findFirst({
+					where: (fields, { eq, and, ne }) =>
+						and(
+							eq(fields.organizationId, organizationId),
+							eq(fields.role, MembershipRole.OWNER),
+							ne(fields.userId, userId)
+						)
+				});
+				newBillingOwnerId = otherOwner?.userId ?? user.id;
+			} else {
+				newBillingOwnerId = user.id;
+			}
+
+			const [newBillingOwner] = await db
+				.select({ email: userSchema.email })
+				.from(userSchema)
+				.where(eq(userSchema.id, newBillingOwnerId));
+
+			await db
+				.update(organization)
+				.set({ billingOwnerId: newBillingOwnerId })
+				.where(eq(organization.id, organizationId));
+
+			if (orgRow?.stripeCustomerId && newBillingOwner?.email) {
+				await stripeInstance.customers.update(orgRow.stripeCustomerId, {
+					email: newBillingOwner.email
+				});
+			}
 		}
 
 		return message(form, {
@@ -540,11 +620,13 @@ export const removeOrganizationMember: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	// Make sure user is owner of the organization, OR they are removing themselves
+	// Make sure user is owner/admin of the organization, OR they are removing themselves
 	const userOrganizations = await getOrganizationsByUserId(user.id);
 	const userOrganization = userOrganizations.find((item) => item.id === organizationId);
 
-	const isOwner = userOrganization?.role === MembershipRole.OWNER;
+	const isOwner =
+		userOrganization?.role === MembershipRole.OWNER ||
+		userOrganization?.role === MembershipRole.ADMIN;
 	const isSelf = userId === user.id;
 
 	if (!organizationId || !userOrganization || (!isOwner && !isSelf)) {
@@ -585,7 +667,26 @@ export const removeOrganizationMember: Action = async (event) => {
 	}
 
 	if (userId) {
-		if (isSelf && isOwner) {
+		// Fetch the target's current role before removing.
+		const [targetMembership] = await db
+			.select({ role: membership.role })
+			.from(membership)
+			.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId)));
+
+		// Only Owners can remove other Owners.
+		if (
+			targetMembership?.role === MembershipRole.OWNER &&
+			userOrganization?.role !== MembershipRole.OWNER
+		) {
+			return message(
+				form,
+				{ status: 'error', title: m.east_ago_hedgehog_pause() },
+				{ status: 403 }
+			);
+		}
+
+		// Last-owner guard: applies whenever an Owner is being removed (self or by another Owner).
+		if (targetMembership?.role === MembershipRole.OWNER) {
 			const owners = await db.query.membership.findMany({
 				where: (fields, { eq, and }) =>
 					and(eq(fields.organizationId, organizationId), eq(fields.role, MembershipRole.OWNER))
@@ -599,14 +700,15 @@ export const removeOrganizationMember: Action = async (event) => {
 						title: m.cuddly_wide_tiger_yell(),
 						description: m.patchy_equal_myna_affirm()
 					},
-					{
-						status: 400
-					}
+					{ status: 400 }
 				);
 			}
 		}
 
-		const result = await db.delete(membership).where(eq(membership.userId, userId)).returning();
+		const result = await db
+			.delete(membership)
+			.where(and(eq(membership.userId, userId), eq(membership.organizationId, organizationId)))
+			.returning();
 
 		if (!result.length) {
 			return message(
@@ -622,6 +724,9 @@ export const removeOrganizationMember: Action = async (event) => {
 			);
 		}
 
+		// Sync Stripe subscription quantity (fire-and-forget)
+		syncOrgSeatCount(organizationId).catch(console.error);
+
 		return message(form, {
 			status: 'success',
 			title: m.salty_tense_pug_roam(),
@@ -630,6 +735,102 @@ export const removeOrganizationMember: Action = async (event) => {
 	}
 
 	return message(form, { status: 'error', title: m.free_smug_hound_boil() }, { status: 400 });
+};
+
+export const deleteOrganization: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(deleteOrganizationSchema()));
+	const user = event.locals.user;
+
+	if (!form.valid) return fail(400, { form });
+	if (!user) return redirectLocalized(307, '/signup');
+
+	const { organizationId } = form.data;
+
+	// Only owners may delete the organization.
+	const [memberRow] = await db
+		.select({ role: membership.role })
+		.from(membership)
+		.where(and(eq(membership.userId, user.id), eq(membership.organizationId, organizationId)));
+
+	if (memberRow?.role !== MembershipRole.OWNER) {
+		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
+	}
+
+	const [orgRow] = await db
+		.select({ stripeCustomerId: organization.stripeCustomerId })
+		.from(organization)
+		.where(eq(organization.id, organizationId));
+
+	// Cancel active subscription before deleting.
+	if (orgRow?.stripeCustomerId) {
+		const subscription = await getActiveSubscription(orgRow.stripeCustomerId);
+		if (subscription?.id) {
+			await cancelSubscription(subscription.id);
+		}
+	}
+
+	await db.delete(organization).where(eq(organization.id, organizationId));
+
+	return redirectLocalized(303, '/account/organization');
+};
+
+export const updateOrganizationBillingOwner: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(updateBillingOwnerSchema()));
+	const user = event.locals.user;
+
+	if (!form.valid) return fail(400, { form });
+	if (!user) return redirectLocalized(307, '/signup');
+
+	const { organizationId, billingOwnerId: newBillingOwnerId } = form.data;
+
+	// Only org owners may change the billing contact.
+	const [memberRow] = await db
+		.select({ role: membership.role })
+		.from(membership)
+		.where(and(eq(membership.userId, user.id), eq(membership.organizationId, organizationId)));
+
+	if (memberRow?.role !== MembershipRole.OWNER) {
+		return message(form, { status: 'error', title: m.east_ago_hedgehog_pause() }, { status: 403 });
+	}
+
+	// The new billing owner must be an OWNER of the org.
+	const [[targetRow], [org]] = await Promise.all([
+		db
+			.select({ userId: membership.userId, role: membership.role, email: userSchema.email })
+			.from(membership)
+			.innerJoin(userSchema, eq(userSchema.id, membership.userId))
+			.where(
+				and(eq(membership.userId, newBillingOwnerId), eq(membership.organizationId, organizationId))
+			),
+		db
+			.select({ stripeCustomerId: organization.stripeCustomerId })
+			.from(organization)
+			.where(eq(organization.id, organizationId))
+	]);
+
+	if (!targetRow) {
+		return message(form, { status: 'error', title: m.this_home_stingray_yell() }, { status: 400 });
+	}
+
+	if (targetRow.role !== MembershipRole.OWNER) {
+		return message(
+			form,
+			{ status: 'error', title: m.lean_bright_billing_owner_warn() },
+			{ status: 400 }
+		);
+	}
+
+	await db
+		.update(organization)
+		.set({ billingOwnerId: newBillingOwnerId })
+		.where(eq(organization.id, organizationId));
+
+	// Keep Stripe customer email in sync so invoices go to the new billing contact.
+	if (org?.stripeCustomerId) {
+		await stripeInstance.customers.update(org.stripeCustomerId, { email: targetRow.email });
+	}
+
+	return message(form, { status: 'success', title: m.wild_born_blackbird_peel() });
 };
 
 export const loginWithEmail: Action = async (event) => {
@@ -1097,8 +1298,8 @@ export const revokeAPIToken: Action = async (event) => {
 	});
 };
 
-export const saveWhiteLabelMeta: Action = async (event) => {
-	const form = await superValidate(event.request, zod4(whiteLabelMetaSchema()));
+export const saveWhiteLabelDomain: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(whiteLabelDomainSchema()));
 
 	if (!form.valid) {
 		return fail(400, { form });
@@ -1110,28 +1311,13 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
 
 	if (!planLimits.whiteLabel) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.busy_even_hawk_inspire()
-			},
-			{ status: 405 }
-		);
+		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
 	}
 
-	const {
-		locale,
-		customDomain,
-		isPrivate,
-		name,
-		enabledSecretTypes,
-		enableSecretRequests,
-		organizationId
-	} = form.data;
+	const { customDomain, name, organizationId } = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
 		return message(
@@ -1145,30 +1331,32 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 		);
 	}
 
-	try {
-		const existing = await getWhiteLabelSiteByUserId(user.id);
+	if (organizationId) {
+		const allowed = await isUserOrgOwnerOrAdmin(user.id, organizationId);
+		if (!allowed) {
+			return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 403 });
+		}
+	}
 
-		// If the domain changed, we remove the existing one from vercel
-		if (existing.customDomain && existing.customDomain !== customDomain) {
+	try {
+		const existing = organizationId
+			? await getWhiteLabelSiteByOrgId(organizationId)
+			: await getWhiteLabelSiteByUserId(user.id);
+
+		if (existing?.customDomain && existing.customDomain !== customDomain) {
 			await removeDomainFromVercelProject(existing.customDomain);
 		}
 
-		// Adding domain to vercel
 		const response = await addDomainToVercel(customDomain);
 
 		if (response?.error) {
-			// The error code  "domain_already_in_use" is expected, We therefore exclude it from handling.
 			if (response.error?.code !== 'domain_already_in_use') {
 				return message(
 					form,
-					{
-						status: 'error',
-						title: m.dizzy_sour_liger_treasure()
-					},
+					{ status: 'error', title: m.dizzy_sour_liger_treasure() },
 					{ status: 404 }
 				);
 			}
-
 			throw Error(JSON.stringify(response));
 		}
 	} catch (e) {
@@ -1176,41 +1364,34 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 	}
 
 	try {
-		await db
-			.insert(whiteLabelSite)
-			.values({
-				locale: locale,
-				customDomain,
-				name,
-				private: isPrivate,
-				organizationId: organizationId,
-				enabledSecretTypes,
-				enableSecretRequests,
-				userId: user.id
-			})
-			.onConflictDoUpdate({
-				target: whiteLabelSite.userId,
-				set: {
-					locale,
-					customDomain,
-					name,
-					private: isPrivate,
-					organizationId: organizationId,
-					enabledSecretTypes,
-					enableSecretRequests
-				}
-			});
+		if (organizationId) {
+			await db
+				.insert(whiteLabelSite)
+				.values({ customDomain, name, organizationId, userId: null })
+				.onConflictDoUpdate({
+					target: whiteLabelSite.organizationId,
+					set: { customDomain, name }
+				});
+		} else {
+			await db
+				.insert(whiteLabelSite)
+				.values({ customDomain, name, userId: user.id })
+				.onConflictDoUpdate({
+					target: whiteLabelSite.userId,
+					set: { customDomain, name }
+				});
+		}
 	} catch (error) {
 		console.error(error);
 
 		if ((error as PostgresError)?.code === '23505') {
-			setError(form, 'customDomain', m.dark_each_pug_value({ customDomain: customDomain }));
+			setError(form, 'customDomain', m.dark_each_pug_value({ customDomain }));
 			return message(
 				form,
 				{
 					status: 'error',
 					title: m.dizzy_sour_liger_treasure(),
-					description: m.dark_each_pug_value({ customDomain: customDomain })
+					description: m.dark_each_pug_value({ customDomain })
 				},
 				{ status: 404 }
 			);
@@ -1218,19 +1399,73 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 
 		return message(
 			form,
-			{
-				status: 'error',
-				title: m.dizzy_sour_liger_treasure(),
-				description: 'DB error'
-			},
+			{ status: 'error', title: m.dizzy_sour_liger_treasure(), description: 'DB error' },
 			{ status: 404 }
 		);
 	}
 
-	return message(form, {
-		status: 'success',
-		title: m.lime_curly_capybara_bend()
-	});
+	return message(form, { status: 'success', title: m.lime_curly_capybara_bend() });
+};
+
+export const saveWhiteLabelMeta: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(whiteLabelMetaSchema()));
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
+
+	if (!planLimits.whiteLabel) {
+		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
+	}
+
+	const { locale, isPrivate, enabledSecretTypes, enableSecretRequests, organizationId } = form.data;
+
+	if (organizationId) {
+		const allowed = await isUserOrgOwnerOrAdmin(user.id, organizationId);
+		if (!allowed) {
+			return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 403 });
+		}
+	}
+
+	try {
+		const metaSet = {
+			locale,
+			private: isPrivate,
+			organizationId,
+			enabledSecretTypes,
+			enableSecretRequests,
+			updatedAt: new Date()
+		};
+
+		if (organizationId) {
+			await db
+				.insert(whiteLabelSite)
+				.values({ ...metaSet, userId: null })
+				.onConflictDoUpdate({ target: whiteLabelSite.organizationId, set: metaSet });
+		} else {
+			await db
+				.insert(whiteLabelSite)
+				.values({ ...metaSet, userId: user.id })
+				.onConflictDoUpdate({ target: whiteLabelSite.userId, set: metaSet });
+		}
+	} catch (error) {
+		console.error(error);
+		return message(
+			form,
+			{ status: 'error', title: m.dizzy_sour_liger_treasure(), description: 'DB error' },
+			{ status: 404 }
+		);
+	}
+
+	return message(form, { status: 'success', title: m.lime_curly_capybara_bend() });
 };
 
 export const saveWhiteLabelSite: Action = async (event) => {
@@ -1249,7 +1484,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
 
 	if (!planLimits.whiteLabel) {
 		return message(
@@ -1277,34 +1512,29 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		published
 	} = form.data;
 
-	const existingWhiteLabelSite = await getWhiteLabelSiteByUserId(user.id);
+	const existingWhiteLabelSite = await getWhiteLabelSiteByHost(event.params.domain as string);
 
 	// @todo Delete logo/app icon on S3
 
 	// We store page content, such as title, lead, description as JSON.
 	// We therefor allow translating user content.
 	const messagesJson =
-		(existingWhiteLabelSite.messages as LocalizedWhiteLabelMessage) ||
+		(existingWhiteLabelSite?.messages as LocalizedWhiteLabelMessage) ??
 		locales.reduce((acc, locale) => {
 			acc[locale] = {};
 			return acc;
 		}, {} as LocalizedWhiteLabelMessage);
 
 	// Prepare theme
-	const themeJson = (existingWhiteLabelSite.theme as Theme) || {};
+	const themeJson = (existingWhiteLabelSite?.theme as Theme) ?? {};
 	Object.assign(themeJson, dropUndefinedValuesFromObject({ primaryColor }));
 
-	// If non existent, create new entry
 	if (!existingWhiteLabelSite) {
-		messagesJson[locale] = { title, lead, description, imprint };
-
-		await db.insert(whiteLabelSite).values({
-			...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
-			published: published,
-			userId: user.id,
-			theme: themeJson,
-			messages: messagesJson
-		});
+		return message(
+			form,
+			{ status: 'error', title: m.dizzy_sour_liger_treasure() },
+			{ status: 404 }
+		);
 	} else {
 		// If we add new supported locales, we need to create the entry first
 		if (!messagesJson[locale]) {
@@ -1316,16 +1546,21 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			dropUndefinedValuesFromObject({ title, lead, description, imprint })
 		);
 
-		await db
-			.update(whiteLabelSite)
-			.set({
-				...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
-				published: published,
-				userId: user.id,
-				theme: themeJson,
-				messages: messagesJson
-			})
-			.where(eq(whiteLabelSite.userId, user.id));
+		const updateSet = {
+			...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
+			published: published,
+			theme: themeJson,
+			messages: messagesJson
+		};
+
+		if (existingWhiteLabelSite.organizationId) {
+			await db
+				.update(whiteLabelSite)
+				.set(updateSet)
+				.where(eq(whiteLabelSite.organizationId, existingWhiteLabelSite.organizationId));
+		} else {
+			await db.update(whiteLabelSite).set(updateSet).where(eq(whiteLabelSite.userId, user.id));
+		}
 	}
 
 	return message(form, {

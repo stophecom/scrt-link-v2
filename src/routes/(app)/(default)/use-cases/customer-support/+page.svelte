@@ -61,7 +61,7 @@
 		},
 		{
 			icon: Flame,
-			title: m.tidy_bold_stoat_destroy(),
+			title: m.left_cool_raven_zap(),
 			description: m.steady_firm_kite_erase()
 		}
 	];
@@ -74,7 +74,7 @@
 		},
 		{
 			icon: Inbox,
-			title: m.silent_keen_puma_receive(),
+			title: m.calm_proud_ibis_list(),
 			description: m.wide_firm_sparrow_accept()
 		},
 		{
@@ -89,7 +89,7 @@
 		},
 		{
 			icon: BellRing,
-			title: m.crisp_bold_heron_notify(),
+			title: m.kind_sharp_owl_record(),
 			description: m.bright_tidy_shark_close()
 		},
 		{

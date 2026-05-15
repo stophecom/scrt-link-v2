@@ -12,7 +12,7 @@
 </script>
 
 <Card class="mb-6" title={m.vivid_house_flea_zap()} description={m.wacky_key_vole_roam()}>
-	<SettingsForm {user} form={data.settingsForm} />
+	<SettingsForm {user} effectiveTier={data.effectiveTier} form={data.settingsForm} />
 </Card>
 
 <Card class="mb-6" title={m.shy_smug_crow_sing()} description={m.left_patchy_piranha_foster()}>

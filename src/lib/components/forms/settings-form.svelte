@@ -5,6 +5,7 @@
 	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import * as Form from '$lib/components/ui/form';
+	import { TierOptions } from '$lib/data/enums';
 	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { stripPattern } from '$lib/utils';
@@ -17,11 +18,14 @@
 	type Props = {
 		form: SuperValidated<Infer<SettingsFormSchema>>;
 		user: App.Locals['user'];
+		effectiveTier?: TierOptions;
 	};
 
-	let { user, form: formProp }: Props = $props();
+	let { user, form: formProp, effectiveTier }: Props = $props();
 
-	const planLimits = getUserPlanLimits(user?.subscriptionTier);
+	const planLimits = $derived(
+		getUserPlanLimits(effectiveTier ?? user?.subscriptionTier ?? TierOptions.CONFIDENTIAL)
+	);
 
 	const form = superForm(formProp, {
 		validators: zod4Client(settingsFormSchema()),
@@ -54,7 +58,7 @@
 		</Form.Fieldset>
 
 		{#if $formData.readReceiptOption !== 'none' && !planLimits.readReceiptsAllowed}
-			<UpgradeNotice tier={user?.subscriptionTier} />
+			<UpgradeNotice tier={effectiveTier ?? user?.subscriptionTier} />
 		{/if}
 
 		{#if $formData.readReceiptOption === 'email'}

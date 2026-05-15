@@ -19,7 +19,7 @@
 	<Container>
 		<CreateSecret
 			form={data.secretForm}
-			effectiveTier={data.user?.subscriptionTier}
+			effectiveTier={data.effectiveTier}
 			secretTypes={[SecretType.TEXT]}
 		/>
 	</Container>

@@ -22,8 +22,11 @@
 		// We prioritize data returned from the load function
 		// https://superforms.rocks/concepts/enhance#optimistic-updates
 		invalidateAll: 'force',
-		onUpdated: () => {
-			onSuccess();
+
+		onUpdate: (form) => {
+			if (form.result.type === 'success') {
+				onSuccess();
+			}
 		},
 		onError({ result }) {
 			// We use message for unexpected errors

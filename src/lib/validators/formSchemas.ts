@@ -26,11 +26,25 @@ export const passwordFormSchema = () =>
 			.max(255)
 	});
 
+export const updateBillingOwnerSchema = () =>
+	z.object({
+		organizationId: z.string(),
+		billingOwnerId: z.string()
+	});
+
 export const deleteAccountSchema = () =>
 	z.object({
 		confirm: z.boolean().refine((val) => val === true, {
 			message: m.gross_glad_marlin_cure()
 		})
+	});
+
+export const deleteOrganizationSchema = () =>
+	z.object({
+		confirm: z.boolean().refine((val) => val === true, {
+			message: m.gross_glad_marlin_cure()
+		}),
+		organizationId: z.string()
 	});
 
 export const signInFormSchema = () =>
@@ -117,10 +131,15 @@ export const manageOrganizationMemberFormSchema = () =>
 		role: z.nativeEnum(MembershipRole).optional()
 	});
 
+export const whiteLabelDomainSchema = () =>
+	z.object({
+		name: z.string().max(30),
+		customDomain: z.string().max(30),
+		organizationId: z.string().nullable().optional()
+	});
+
 export const whiteLabelMetaSchema = () =>
 	z.object({
-		customDomain: z.string().max(30),
-		name: z.string().max(30),
 		organizationId: z.string().nullable(),
 		isPrivate: z.boolean(),
 		locale: z.enum(getSupportedLocales() as [string, ...string[]]),
@@ -274,7 +293,9 @@ export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = z.infer<ReturnType<typeof emailFormSchema>>;
 export type EmailVerificationCodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
+export type UpdateBillingOwnerSchema = z.infer<ReturnType<typeof updateBillingOwnerSchema>>;
 export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
+export type DeleteOrganizationSchema = ReturnType<typeof deleteOrganizationSchema>;
 export type SecretFormSchema = z.infer<ReturnType<typeof secretFormSchema>>;
 export type UserFormSchema = z.infer<ReturnType<typeof userFormSchema>>;
 export type OrganizationFormSchema = z.infer<ReturnType<typeof organizationFormSchema>>;
@@ -289,6 +310,7 @@ export type ThemeFormSchema = ReturnType<typeof themeFormSchema>;
 export type RevealSecretFormSchema = z.infer<ReturnType<typeof revealSecretFormSchema>>;
 export type ContactFormSchema = ReturnType<typeof contactFormSchema>;
 export type ApiTokenFormSchema = ReturnType<typeof apiKeyFormSchema>;
+export type WhiteLabelDomainSchema = z.infer<ReturnType<typeof whiteLabelDomainSchema>>;
 export type WhiteLabelMetaSchema = z.infer<ReturnType<typeof whiteLabelMetaSchema>>;
 export type WhiteLabelSiteSchema = z.infer<ReturnType<typeof whiteLabelSiteSchema>>;
 export type EncryptionSetupFormSchema = z.infer<ReturnType<typeof encryptionSetupFormSchema>>;

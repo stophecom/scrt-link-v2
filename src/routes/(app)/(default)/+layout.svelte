@@ -14,7 +14,7 @@
 	let breadcrumb = $derived(page.data.headerBreadcrumb);
 </script>
 
-<Header user={data.user} {isPersistent} {tag} {breadcrumb} />
+<Header user={data.user} effectiveTier={data.effectiveTier} {isPersistent} {tag} {breadcrumb} />
 <main>
 	{@render children()}
 </main>

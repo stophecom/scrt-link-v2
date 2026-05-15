@@ -97,7 +97,7 @@
 		<div class="mt-4 flex justify-end gap-2">
 			<Button variant="outline" onclick={() => (isConfirmationDialogOpen = true)}>
 				<Trash2 class="mr-2 h-4 w-4" />
-				{m.flat_red_ant_burn()}
+				{m.least_moving_spider_roam()}
 			</Button>
 			<CopyButton text={decryptedResponse} />
 		</div>

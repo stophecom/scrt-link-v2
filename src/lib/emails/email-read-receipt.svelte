@@ -22,7 +22,7 @@
 		<Container class="py-12">
 			<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />
 
-			<Heading class="text-primary text-4xl ">{m.novel_cool_moth_dazzle()} 🔥</Heading>
+			<Heading class="text-primary text-4xl ">{m.slimy_broad_dachshund_lock()} 🔥</Heading>
 
 			<Text class="mb-4 text-xl leading-snug ">{m.soft_frail_wolf_fear()}</Text>
 			<Text class="mb-10 text-xl leading-snug"><code>{receiptId}</code></Text>

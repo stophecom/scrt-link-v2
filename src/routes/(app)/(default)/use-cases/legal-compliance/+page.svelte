@@ -27,7 +27,7 @@
 	const painPoints = [
 		{
 			icon: Mail,
-			title: m.warm_steady_crane_thread(),
+			title: m.tidy_wise_dove_send(),
 			description: m.brave_tidy_kiwi_archive()
 		},
 		{
@@ -50,12 +50,12 @@
 	const workflow = [
 		{
 			icon: Lock,
-			title: m.crisp_tidy_raven_seal(),
+			title: m.crisp_bold_raven_lock(),
 			description: m.fresh_firm_dove_wrap()
 		},
 		{
 			icon: Link2,
-			title: m.plain_calm_moth_link(),
+			title: m.careful_bald_frog_harbor(),
 			description: m.brave_keen_stoat_relay()
 		},
 		{
@@ -78,7 +78,7 @@
 		},
 		{
 			icon: Eye,
-			title: m.kind_calm_owl_mark(),
+			title: m.kind_sharp_owl_record(),
 			description: m.mild_sharp_deer_prove()
 		},
 		{
@@ -88,7 +88,7 @@
 		},
 		{
 			icon: KeyRound,
-			title: m.crisp_ready_crab_pair(),
+			title: m.bold_warm_elk_dash(),
 			description: m.bright_plain_shark_cover()
 		},
 		{

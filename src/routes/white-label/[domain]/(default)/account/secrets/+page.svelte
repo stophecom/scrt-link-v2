@@ -14,6 +14,7 @@
 	form={data.secretForm}
 	effectiveTier={data.ownerTier}
 	hidePrimaryFeatureList
+	secretTypes={data.enabledSecretTypes}
 />
 
 <SecretsCard secrets={data.secrets} />

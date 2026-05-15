@@ -55,16 +55,24 @@
 		loading = true;
 		const bucket = PUBLIC_S3_BUCKET;
 
-		const chunks = await handleFileEncryptionAndUpload({
-			controllers,
-			file,
-			masterKey,
-			privateKey,
-			chunkSize,
-			progressCallback: (p) => {
-				progress = p;
-			}
-		});
+		let chunks;
+		try {
+			chunks = await handleFileEncryptionAndUpload({
+				controllers,
+				file,
+				masterKey,
+				privateKey,
+				chunkSize,
+				progressCallback: (p) => {
+					progress = p;
+				}
+			});
+		} catch (e) {
+			console.error('[FileUpload] handleFileEncryptionAndUpload failed:', e);
+			error = e instanceof Error ? e.message : String(e);
+			loading = false;
+			return;
+		}
 
 		const { name, size, type } = file;
 

@@ -92,8 +92,8 @@
 			<Table.Row>
 				<Table.Head>{m.true_knotty_canary_work()}</Table.Head>
 				<Table.Head>{m.elegant_slimy_zebra_fulfill()}</Table.Head>
-				<Table.Head>{m.fit_acidic_samuel_sway()}</Table.Head>
-				<Table.Head>{m.top_fancy_mink_loop()}</Table.Head>
+				<Table.Head>{m.real_proud_dolphin_attend()}</Table.Head>
+				<Table.Head>{m.left_cool_raven_zap()}</Table.Head>
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
@@ -117,7 +117,7 @@
 									isConfirmationDialogOpen = true;
 								}}
 							>
-								<span>{m.arable_mellow_wolf_bubble()}</span>
+								<span>{m.smug_suave_niklas_peel()}</span>
 								<Flame class="ms-1 h-4 w-4" />
 							</button>
 						{/if}

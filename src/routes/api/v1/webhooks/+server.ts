@@ -5,7 +5,7 @@ import Stripe from 'stripe';
 import { STRIPE_WEBHOOK_SECRET } from '$env/static/private';
 import { TierOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
-import { user, whiteLabelSite } from '$lib/server/db/schema';
+import { organization, user, whiteLabelSite } from '$lib/server/db/schema';
 import { removeContactFromAudience } from '$lib/server/resend';
 import stripeInstance from '$lib/server/stripe';
 import { sendSubscriptionTrialStartEmail } from '$lib/server/transactional-email';
@@ -40,16 +40,61 @@ export const POST: RequestHandler = async ({ request }) => {
 			// If payment successful the status changes to active:
 			// https://stripe.com/docs/api/subscriptions/object#subscription_object-status
 			// Possible values are incomplete, incomplete_expired, trialing, active, past_due, canceled, unpaid, or paused.
-			if (['trialing', 'active'].includes(subscription.status)) {
+			const customerId = subscription.customer as string;
+
+			// Check if this customer belongs to an org (org billing takes priority)
+			const [orgResult] = await db
+				.select()
+				.from(organization)
+				.where(eq(organization.stripeCustomerId, customerId))
+				.limit(1);
+
+			if (orgResult) {
+				// Org subscription event
+				if (['trialing', 'active'].includes(subscription.status)) {
+					try {
+						let purchasedTier = TierOptions.CONFIDENTIAL;
+
+						// With base-fee + seat line items, find the item whose product name
+						// maps to a known TierOptions (skip companion "...Base fee" products)
+						for (const item of subscription.items.data) {
+							const productId = item.plan.product;
+							console.log('Purchased product: ', productId);
+							console.log('Customer: ', customerId);
+							if (typeof productId !== 'string') continue;
+							const plan = await stripeInstance.products.retrieve(productId);
+							const mappedTierOption = getEnumFromString(TierOptions, plan.name);
+							if (mappedTierOption) {
+								purchasedTier = mappedTierOption;
+								break;
+							}
+						}
+
+						await db
+							.update(organization)
+							.set({ subscriptionTier: purchasedTier })
+							.where(eq(organization.stripeCustomerId, customerId));
+
+						console.log('✅ Org subscription active:', event.type, purchasedTier);
+					} catch (e) {
+						console.error(e);
+					}
+				} else if (['canceled', 'unpaid'].includes(subscription.status)) {
+					await db
+						.update(organization)
+						.set({ subscriptionTier: TierOptions.CONFIDENTIAL })
+						.where(eq(organization.stripeCustomerId, customerId));
+				}
+			} else if (['trialing', 'active'].includes(subscription.status)) {
+				// Personal subscription event
 				try {
 					const product = subscription.items.data[0].plan.product;
 					console.log('Purchased product: ', product);
-					console.log('Customer: ', subscription.customer);
+					console.log('Customer: ', customerId);
 
 					let purchasedTier = TierOptions.CONFIDENTIAL;
 
 					if (typeof product === 'string') {
-						// We get the purchased product name and map it to the predefined tier options.
 						const plan = await stripeInstance.products.retrieve(product);
 
 						console.log('Plan Name', plan.name);
@@ -62,13 +107,10 @@ export const POST: RequestHandler = async ({ request }) => {
 
 					const [userResult] = await db
 						.update(user)
-						.set({
-							subscriptionTier: purchasedTier
-						})
-						.where(eq(user.stripeCustomerId, subscription.customer as string))
+						.set({ subscriptionTier: purchasedTier })
+						.where(eq(user.stripeCustomerId, customerId))
 						.returning();
 
-					// We send purchase confirmation email
 					if (subscription.status === 'trialing') {
 						await sendSubscriptionTrialStartEmail(
 							userResult.email,
@@ -77,13 +119,9 @@ export const POST: RequestHandler = async ({ request }) => {
 						);
 					}
 
-					// We remove customer from Resend MQL list
 					try {
 						const result = await removeContactFromAudience({ email: userResult.email });
-
-						if (result.error) {
-							throw Error(result.error.message);
-						}
+						if (result.error) throw Error(result.error.message);
 					} catch (error) {
 						console.error(error);
 					}
@@ -93,18 +131,12 @@ export const POST: RequestHandler = async ({ request }) => {
 					console.error(e);
 				}
 			} else if (['canceled', 'unpaid'].includes(subscription.status)) {
-				// We downgrade only after a subscription has got the status canceled or unpaid.
-				// We don't consider the other statuses.
 				const [userResult] = await db
 					.update(user)
-					.set({
-						subscriptionTier: TierOptions.CONFIDENTIAL
-					})
-					.where(eq(user.stripeCustomerId, subscription.customer as string))
+					.set({ subscriptionTier: TierOptions.CONFIDENTIAL })
+					.where(eq(user.stripeCustomerId, customerId))
 					.returning();
 
-				// We unpublish any white-label website.
-				// Wrapped in try/catch since such a site might not exist.
 				try {
 					await db
 						.update(whiteLabelSite)

@@ -20,6 +20,10 @@ export type Plan = {
 	name: string;
 	id: string;
 	prices: { monthly: PriceWithCurrencyOptions; yearly: PriceWithCurrencyOptions };
+	basePrices?: {
+		monthly: PriceWithCurrencyOptions | undefined;
+		yearly: PriceWithCurrencyOptions | undefined;
+	};
 };
 
 export const GET = async () => {
@@ -28,15 +32,30 @@ export const GET = async () => {
 	const getPlans = async () =>
 		Promise.all(
 			products.map(async (item) => {
-				const prices = await getActivePrices(item.id);
+				const { seatPrices, basePrices } = (await getActivePrices(
+					item.id,
+					item.baseFeeProductId
+				)) as {
+					seatPrices: PriceWithCurrencyOptions[];
+					basePrices: PriceWithCurrencyOptions[];
+				};
 
-				const priceByInterval = (interval: string) =>
+				const priceByInterval = (prices: PriceWithCurrencyOptions[], interval: string) =>
 					prices.find(({ recurring }) => recurring?.interval === interval);
 
 				return {
 					name: item.name,
 					id: item.id,
-					prices: { monthly: priceByInterval('month'), yearly: priceByInterval('year') }
+					prices: {
+						monthly: priceByInterval(seatPrices, 'month'),
+						yearly: priceByInterval(seatPrices, 'year')
+					},
+					...(basePrices.length && {
+						basePrices: {
+							monthly: priceByInterval(basePrices, 'month'),
+							yearly: priceByInterval(basePrices, 'year')
+						}
+					})
 				};
 			})
 		);

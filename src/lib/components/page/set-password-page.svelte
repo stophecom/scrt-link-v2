@@ -110,7 +110,7 @@
 						console.error('Failed to re-wrap master key:', e);
 						$encMessage = {
 							status: 'error',
-							title: m.day_clear_bear_grip(),
+							title: m.mad_such_albatross_cherish(),
 							description: m.fancy_raw_rook_win()
 						};
 						cancel();

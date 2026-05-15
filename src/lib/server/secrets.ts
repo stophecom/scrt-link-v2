@@ -7,6 +7,32 @@ import type { SecretFormSchema } from '$lib/validators/formSchemas';
 import { db } from './db';
 import { type Secret, secret, stats } from './db/schema';
 
+// Returns the TypeScript property name (camelCase) used by Drizzle's onConflictDoUpdate set.
+// Column.name returns the SQL snake_case name which Drizzle does not recognize in set objects.
+const getSecretTypeStatsKey = (
+	secretType?: SecretType
+):
+	| keyof Pick<
+			typeof stats.$inferInsert,
+			'textSecrets' | 'fileSecrets' | 'redirectSecrets' | 'snapSecrets' | 'neogramSecrets'
+	  >
+	| null => {
+	switch (secretType) {
+		case SecretType.TEXT:
+			return 'textSecrets';
+		case SecretType.FILE:
+			return 'fileSecrets';
+		case SecretType.REDIRECT:
+			return 'redirectSecrets';
+		case SecretType.SNAP:
+			return 'snapSecrets';
+		case SecretType.NEOGRAM:
+			return 'neogramSecrets';
+		default:
+			return null;
+	}
+};
+
 const getSecretTypeStatsColumn = (secretType?: SecretType) => {
 	switch (secretType) {
 		case SecretType.TEXT:
@@ -47,9 +73,11 @@ export const saveSecret = async ({
 	// Attach user to secret, if exists
 	const receiptId = generateRandomAlphanumericString(8);
 
-	// Build type-specific stats increment
+	// Build type-specific stats increment using TypeScript property names (not SQL column names).
 	const typeColumn = getSecretTypeStatsColumn(secretType);
-	const typeIncrement = typeColumn ? { [typeColumn.name]: sql`${typeColumn} + 1` } : {};
+	const typeKey = getSecretTypeStatsKey(secretType);
+	const typeInitial = typeKey ? { [typeKey]: 1 } : {};
+	const typeIncrement = typeColumn && typeKey ? { [typeKey]: sql`${typeColumn} + 1` } : {};
 
 	const result = await db.transaction(async (tx) => {
 		const [row] = await tx
@@ -72,7 +100,7 @@ export const saveSecret = async ({
 		// Global stats
 		await tx
 			.insert(stats)
-			.values({ id: 1, scope: 'global' })
+			.values({ id: 1, scope: 'global', totalSecrets: 1, ...typeInitial })
 			.onConflictDoUpdate({
 				target: stats.id,
 				set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
@@ -82,10 +110,7 @@ export const saveSecret = async ({
 		if (userId) {
 			await tx
 				.insert(stats)
-				.values({
-					userId: userId,
-					scope: 'user'
-				})
+				.values({ userId, scope: 'user', totalSecrets: 1, ...typeInitial })
 				.onConflictDoUpdate({
 					target: stats.userId,
 					set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }
@@ -96,10 +121,7 @@ export const saveSecret = async ({
 		if (whiteLabelSiteId) {
 			await tx
 				.insert(stats)
-				.values({
-					whiteLabelSiteId: whiteLabelSiteId,
-					scope: 'whiteLabel'
-				})
+				.values({ whiteLabelSiteId, scope: 'whiteLabel', totalSecrets: 1, ...typeInitial })
 				.onConflictDoUpdate({
 					target: stats.whiteLabelSiteId,
 					set: { totalSecrets: sql`${stats.totalSecrets} + 1`, ...typeIncrement }

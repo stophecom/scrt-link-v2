@@ -15,6 +15,7 @@ export enum Role {
 }
 export enum MembershipRole {
 	MEMBER = 'Member',
+	ADMIN = 'Admin',
 	OWNER = 'Owner'
 }
 
@@ -29,7 +30,8 @@ export enum TierOptions {
 	CONFIDENTIAL = 'Confidential',
 	SECRET = 'Secret',
 	TOP_SECRET = 'Top Secret',
-	SECRET_SERVICE = 'Secret Service'
+	SECRET_SERVICE = 'Secret Service',
+	TOP_SECRET_SERVICE = 'Top Secret Service'
 }
 
 export enum ThemeOptions {

@@ -33,7 +33,7 @@ export const privacyFeatures = () => [
 	},
 	{
 		icon: ShieldPlus,
-		text: m.gross_empty_lion_dash()
+		text: m.calm_proud_swan_host()
 	},
 	{
 		icon: Flame,
@@ -81,7 +81,7 @@ export const businessFeatures = () => [
 		description: m.loved_awful_okapi_revive({ SLA: `[SLA](${localizeHref('/sla')})` })
 	},
 	{
-		title: m.ago_direct_squid_bless(),
+		title: m.icy_topical_hare_peel(),
 		icon: ShieldCheck,
 		description: m.proof_seemly_eagle_cry()
 	},

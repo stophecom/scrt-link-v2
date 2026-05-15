@@ -83,7 +83,7 @@
 			class: 'text-success'
 		},
 		viewed: { label: m.soft_done_moth_rest(), icon: MailOpen, class: 'text-muted-foreground' },
-		expired: { label: m.dull_cold_fish_stop(), icon: Clock, class: 'text-destructive' }
+		expired: { label: m.trick_caring_lionfish_grasp(), icon: Clock, class: 'text-destructive' }
 	} as const;
 </script>
 
@@ -113,7 +113,7 @@
 				<Table.Row>
 					<Table.Head>{m.true_knotty_canary_work()}</Table.Head>
 					<Table.Head>{m.bright_calm_deer_note()}</Table.Head>
-					<Table.Head>{m.fair_keen_bee_check()}</Table.Head>
+					<Table.Head>{m.real_proud_dolphin_attend()}</Table.Head>
 					<Table.Head></Table.Head>
 				</Table.Row>
 			</Table.Header>

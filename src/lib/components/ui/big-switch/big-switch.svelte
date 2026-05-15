@@ -3,9 +3,13 @@
 
 	import { cn } from '$lib/client/utils.js';
 
-	type $$Props = SwitchPrimitive.RootProps & { left: string; right: string };
+	type $$Props = SwitchPrimitive.RootProps & {
+		left: string;
+		right: string;
+		truncateRight?: boolean;
+	};
 
-	let { left, right, checked = $bindable(), ...rest }: $$Props = $props();
+	let { left, right, truncateRight = false, checked = $bindable(), ...rest }: $$Props = $props();
 </script>
 
 <SwitchPrimitive.Root
@@ -22,5 +26,5 @@
 		)}
 	/>
 	<div class="relative px-8 py-2">{left}</div>
-	<div class="relative px-8 py-2">{right}</div>
+	<div class={cn('relative px-8 py-2', truncateRight && 'max-w-50 truncate')}>{right}</div>
 </SwitchPrimitive.Root>
