@@ -2,6 +2,7 @@
 	import Check from '@lucide/svelte/icons/check';
 	import X from '@lucide/svelte/icons/x';
 
+	import Markdown from '$lib/components/ui/markdown/markdown.svelte';
 	import * as Table from '$lib/components/ui/table';
 	import { GB, MB } from '$lib/data/units';
 	import { formatBytes } from '$lib/i18n';
@@ -78,7 +79,9 @@
 		<Table.Body>
 			{#each rows as row (row.label)}
 				<Table.Row>
-					<Table.Cell class="font-medium">{row.label}</Table.Cell>
+					<Table.Cell class="font-medium">
+						<Markdown markdown={row.label} />
+					</Table.Cell>
 					{#each row.values as value, i (i)}
 						<Table.Cell class="text-center">
 							{#if typeof value === 'boolean'}

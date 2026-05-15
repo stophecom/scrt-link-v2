@@ -5,9 +5,10 @@
 	import type { SvelteHTMLElements } from 'svelte/elements';
 
 	import { cn } from '$lib/client/utils';
+	import Markdown from '$lib/components/ui/markdown/markdown.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { type SupportedCurrency } from '$lib/data/enums';
-	import { getPlanContents } from '$lib/data/plans';
+	import { getPlanContents, type PlanContentItem } from '$lib/data/plans';
 	import { formatCurrency } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 
@@ -43,6 +44,7 @@
 	}: Props & SvelteHTMLElements['div'] = $props();
 
 	const planContent = getPlanContents(name);
+	const contents = planContent.contents as PlanContentItem[];
 </script>
 
 {#snippet renderPrice(amount: null | number, currency: string)}
@@ -109,9 +111,10 @@
 	<div>
 		<h5 class="mb-3 text-xs font-semibold uppercase">{planContent.title}</h5>
 		<ul>
-			{#each planContent.contents as item, i (i)}
+			{#each contents as item, i (i)}
 				<li class="flex items-center py-1 text-sm">
-					<Check class="text-primary mr-2 h-4 w-4 shrink-0" />{item.label}
+					<Check class="text-primary mr-2 h-4 w-4 shrink-0" />
+					<Markdown markdown={item.label} />
 					{#if item.tooltip}
 						<Tooltip.Root delayDuration={0}>
 							<Tooltip.Trigger

@@ -7,6 +7,8 @@ import { m } from '$lib/paraglide/messages.js';
 
 import { expiresInOptions, expiresInOptionsExtended } from './secretSettings';
 
+export type PlanContentItem = { label: string; tooltip?: string };
+
 // Defaults for visitors without account
 const defaultLimits = {
 	[SecretType.TEXT]: 150,
@@ -119,6 +121,7 @@ export const plans = () => [
 			{ label: m.firm_bold_label_site(), tooltip: m.firm_bold_label_site_info() },
 			{ label: m.aloof_zany_cheetah_greet() },
 			{ label: m.lucky_plain_deer_race(), tooltip: m.lean_secret_team_note() },
+			{ label: m.flat_warm_membership_roles() },
 			{ label: m.open_bold_access_pair() },
 			{ label: m.active_mellow_swan_list({ amount: 7 }) },
 
