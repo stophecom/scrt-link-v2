@@ -177,11 +177,11 @@
 								{/each}
 							</DropdownMenu.Group>
 							<DropdownMenu.Separator />
+							<DropdownMenu.Group>
 							<DropdownMenu.Label
 								class="text-muted-foreground px-2 py-1 text-xs font-medium tracking-wide uppercase"
 								>{m.wild_inner_fox_honor()}</DropdownMenu.Label
 							>
-							<DropdownMenu.Group>
 								{#if orgNavItems.length > 0}
 									{#each orgNavItems as item (item.href)}
 										<DropdownMenu.Item
