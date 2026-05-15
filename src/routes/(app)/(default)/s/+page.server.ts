@@ -188,7 +188,7 @@ export const actions: Actions = {
 						method: 'POST',
 						body: `${body} ${receiptId}`,
 						headers: {
-							Title: m.spry_bald_guppy_cry(),
+							Title: m.slimy_broad_dachshund_lock(),
 							Priority: isLastView ? 'urgent' : 'default',
 							Tags: isLastView ? 'fire' : 'eyes'
 						}

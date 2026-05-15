@@ -79,7 +79,7 @@
 
 	<IntegrationSection />
 
-	<Section wide title={m.alert_fluffy_snail_fetch()} lead={m.bright_steep_racoon_accept()}>
+	<Section wide title={m.gaudy_ago_firefox_tickle()} lead={m.bright_steep_racoon_accept()}>
 		<IntersectionObserver top={-50} once={true}>
 			{#snippet children(intersecting)}
 				<div class="grid grid-rows-4 gap-4 sm:grid-cols-2 sm:grid-rows-2">

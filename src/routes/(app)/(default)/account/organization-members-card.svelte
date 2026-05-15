@@ -93,7 +93,7 @@
 				{#if isBillingContact}
 					<span
 						class="bg-muted text-muted-foreground rounded-full px-1.5 py-px text-[10px] leading-none font-medium"
-						>{m.flat_warm_bill_badge()}</span
+						>{m.misty_teal_hawk_glow()}</span
 					>
 				{/if}
 			</div>
@@ -109,7 +109,7 @@
 				<Table.Row>
 					<Table.Head>{m.cuddly_flat_salmon_express()}</Table.Head>
 					<Table.Head>{m.bad_close_anaconda_forgive()}</Table.Head>
-					<Table.Head>{m.noisy_loved_chicken_forgive()}</Table.Head>
+					<Table.Head>{m.real_proud_dolphin_attend()}</Table.Head>
 					<Table.Head></Table.Head>
 				</Table.Row>
 			</Table.Header>
@@ -223,7 +223,7 @@
 		</Dialog.Content>
 	</Dialog.Root>
 {:else}
-	<Card class="mb-6" title={m.bold_neat_panda_learn()} description={m.fresh_bad_midge_explore()}>
+	<Card class="mb-6" title={m.drab_dark_squirrel_fetch()} description={m.fresh_bad_midge_explore()}>
 		<OrganizationForm
 			form={organizationForm}
 			formAction="?/createOrganization"

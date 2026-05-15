@@ -55,7 +55,7 @@
 <div class="xs:grid-cols-2 mb-6 grid grid-cols-1 gap-4">
 	<Card>
 		<p class="text-muted-foreground truncate text-sm font-medium">
-			{m.flat_warm_logs_total_members()}
+			{m.flat_warm_org_members_count()}
 		</p>
 		<p class="text-3xl font-bold">{summary.totalMembers}</p>
 	</Card>
@@ -78,13 +78,13 @@
 </div>
 
 <!-- Secret Links by type -->
-<Card title={m.flat_warm_logs_secrets()} description={siteDesc} class="mb-6">
+<Card title={m.free_nimble_whale_fry()} description={siteDesc} class="mb-6">
 	<Table.Root>
 		<Table.Header>
 			<Table.Row>
 				<Table.Head>{m.flat_warm_logs_secret_type()}</Table.Head>
 				<Table.Head class="text-right">{m.flat_warm_logs_secret_count()}</Table.Head>
-				<Table.Head class="text-right">{m.flat_warm_logs_secret_share()}</Table.Head>
+				<Table.Head class="text-right">{m.careful_bald_frog_harbor()}</Table.Head>
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
@@ -98,7 +98,7 @@
 		</Table.Body>
 		<Table.Footer>
 			<Table.Row>
-				<Table.Cell class="font-semibold">{m.flat_warm_logs_total()}</Table.Cell>
+				<Table.Cell class="font-semibold">{m.flat_warm_inv_total()}</Table.Cell>
 				<Table.Cell class="text-right font-semibold">{totalSecretTypes}</Table.Cell>
 				<Table.Cell class="text-right font-semibold">100%</Table.Cell>
 			</Table.Row>
@@ -107,7 +107,7 @@
 </Card>
 
 <!-- Members log -->
-<Card title={m.flat_warm_logs_members()}>
+<Card title={m.flat_warm_org_members_title()}>
 	<Table.Root>
 		<Table.Header>
 			<Table.Row>

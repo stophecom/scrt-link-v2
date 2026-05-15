@@ -41,7 +41,7 @@
 		steps={[
 			{ label: m.flat_warm_fox_setup(), completed: hasDomain },
 			{ label: m.warm_swift_eagle_build(), completed: hasAccessControl },
-			{ label: m.flat_warm_fox_design(), completed: isPublished }
+			{ label: m.clear_warm_panda_glow(), completed: isPublished }
 		]}
 		{currentStep}
 		class="mb-8"

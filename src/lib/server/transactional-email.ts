@@ -50,7 +50,7 @@ export const sendReadReceiptEmail = async (
 		props: { receiptId, viewCount, viewLimit, isLastView }
 	});
 	await sendTransactionalEmail({
-		subject: m.spry_bald_guppy_cry(),
+		subject: m.slimy_broad_dachshund_lock(),
 		to: email,
 		html: html
 	});

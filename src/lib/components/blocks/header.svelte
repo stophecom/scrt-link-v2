@@ -116,7 +116,7 @@
 									class="hidden text-xs sm:inline-flex"
 								>
 									<Sparkles class="h-3.5 w-3.5" />
-									{m.bold_vivid_swan_zoom()}
+									{m.fair_red_warbler_bake()}
 								</Button>
 							{/if}
 

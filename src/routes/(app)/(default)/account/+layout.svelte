@@ -200,7 +200,7 @@
 											class="flex w-full items-center"
 										>
 											<Plus class="mr-2 h-4 w-4 shrink-0" />
-											{m.bold_neat_panda_learn()}
+											{m.drab_dark_squirrel_fetch()}
 										</a>
 									</DropdownMenu.Item>
 								{/if}
@@ -269,7 +269,7 @@
 								class="justify-start hover:bg-transparent hover:underline"
 							>
 								<Plus class="mr-2 h-4 w-4" />
-								{m.bold_neat_panda_learn()}
+								{m.drab_dark_squirrel_fetch()}
 							</Button>
 						{/if}
 					</nav>

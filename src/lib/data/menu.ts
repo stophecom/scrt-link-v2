@@ -25,7 +25,7 @@ export const secretMenu = () => [
 	{
 		icon: Redo2,
 		href: '/redirect',
-		label: m.just_mellow_moth_stab()
+		label: m.bad_royal_kudu_nudge()
 	},
 	{
 		icon: Zap,

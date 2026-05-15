@@ -64,7 +64,7 @@ export const plans = () => [
 			{ label: m.long_tired_monkey_rest(), tooltip: m.swift_red_lynx_purr() },
 			{ label: m.green_sour_mongoose_burn(), tooltip: m.quick_gold_fox_wink() },
 			{ label: m.new_still_dingo_create({ limit: formatBytes(1 * GB) }) },
-			{ label: m.pink_many_fox_boost(), tooltip: m.pure_mint_ram_leap() },
+			{ label: m.kind_sharp_owl_record(), tooltip: m.pure_mint_ram_leap() },
 			{ label: m.slimy_livid_pelican_gleam(), tooltip: m.fresh_kind_panda_glow() },
 			{ label: m.active_mellow_swan_list({ amount: 7 }) },
 			{ label: m.tired_new_mantis_buy() }
@@ -90,7 +90,7 @@ export const plans = () => [
 		subtitle: m.sharp_keen_wolf_dash(),
 		title: m.crisp_fluffy_toucan_vent(),
 		contents: [
-			{ label: m.next_bold_request_feat() },
+			{ label: m.calm_proud_ibis_list() },
 			{ label: m.new_still_dingo_create({ limit: formatBytes(100 * GB) }) },
 			{ label: m.active_mellow_swan_list({ amount: 30 }) },
 			{ label: m.blue_jumpy_shell_climb(), tooltip: m.keen_rose_ant_zoom() },

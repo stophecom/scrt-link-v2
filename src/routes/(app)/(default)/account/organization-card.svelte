@@ -43,7 +43,7 @@
 	<span class="inline-block p-1 font-medium">{label}</span>
 {/snippet}
 
-<Card class="mb-6" title={m.flat_warm_org_title()}>
+<Card class="mb-6" title={m.wild_inner_fox_honor()}>
 	<div class="flex items-center py-1">
 		{@render renderLabel('Name:')}
 		{organization.name}
@@ -77,7 +77,7 @@
 	<div class="flex py-1">
 		{@render renderLabel(m.flat_warm_org_plan_label() + ':')}
 		<span class="inline-block p-1"
-			>{organization.subscriptionTier ?? m.flat_warm_org_plan_none()}</span
+			>{organization.subscriptionTier ?? m.vivid_super_husky_mend()}</span
 		>
 	</div>
 
@@ -90,7 +90,7 @@
 				</Dialog.Trigger>
 				<Dialog.Content class="sm:max-w-[425px]">
 					<Dialog.Header>
-						<Dialog.Title>{m.flat_warm_org_delete_title()}</Dialog.Title>
+						<Dialog.Title>{m.flat_warm_org_delete_btn()}</Dialog.Title>
 						<Dialog.Description>{m.flat_warm_org_delete_desc()}</Dialog.Description>
 					</Dialog.Header>
 					<DeleteOrganizationForm

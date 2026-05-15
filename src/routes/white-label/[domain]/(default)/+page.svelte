@@ -10,7 +10,7 @@
 </script>
 
 <WhiteLabelPage
-	metaTitle={m.active_polite_manatee_support()}
+	metaTitle={m.red_trite_turkey_flip()}
 	title={data?.title || m.odd_swift_spider_tear()}
 	lead={data?.lead || m.jumpy_alert_pig_expand()}
 >
