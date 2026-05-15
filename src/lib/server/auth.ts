@@ -32,6 +32,7 @@ export async function createSession(event: RequestEvent, userId: string) {
 		expiresAt: new Date(Date.now() + DAY_IN_MS * 30)
 	};
 	await db.insert(table.session).values(session);
+	await db.update(table.user).set({ lastLoginAt: new Date() }).where(eq(table.user.id, userId));
 
 	setSessionTokenCookie(event, sessionToken, session.expiresAt);
 }

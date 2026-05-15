@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Activity from '@lucide/svelte/icons/activity';
 	import CreditCard from '@lucide/svelte/icons/credit-card';
 	import Globe from '@lucide/svelte/icons/globe';
 	import Users from '@lucide/svelte/icons/users';
@@ -12,6 +13,7 @@
 
 	const orgId = $derived(page.params.orgId);
 	const isOwner = $derived(page.data.isOrgOwner || page.data.isOrgAdmin);
+	const isOrgOwner = $derived(page.data.isOrgOwner);
 	const currentPath = $derived(page.url.pathname);
 
 	const subNavItems = $derived([
@@ -33,6 +35,16 @@
 						href: localizeHref(`/account/org/${orgId}/billing`),
 						label: m.misty_teal_hawk_glow(),
 						icon: CreditCard,
+						exact: false
+					}
+				]
+			: []),
+		...(isOrgOwner
+			? [
+					{
+						href: localizeHref(`/account/org/${orgId}/logs`),
+						label: m.flat_warm_logs_tab(),
+						icon: Activity,
 						exact: false
 					}
 				]

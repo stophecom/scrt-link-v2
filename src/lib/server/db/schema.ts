@@ -46,6 +46,7 @@ export const user = pgTable('user', {
 	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified'),
 	encryptionEnabled: boolean('encryption_enabled').default(false),
+	lastLoginAt: timestamp('last_login_at', { mode: 'date' }),
 	createdAt: timestamp('created_att', { mode: 'date' }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date' })
 		.notNull()

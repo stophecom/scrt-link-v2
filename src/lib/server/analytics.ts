@@ -179,6 +179,75 @@ export const getApiKeyStats = async () => {
 	return result;
 };
 
+// ── Org Stats ─────────────────────────────────────────
+
+export const getOrgStats = async (orgId: string) => {
+	const [summary, secretTypes, members] = await Promise.all([
+		// Summary: member count, MAU, total secrets
+		db
+			.select({
+				totalMembers: count(membership.userId),
+				mau: count(
+					sql`CASE WHEN ${user.lastLoginAt} IS NOT NULL AND ${user.lastLoginAt} >= now() - interval '30 days' THEN 1 END`
+				),
+				totalSecrets: sql<number>`coalesce(sum(${stats.totalSecrets}), 0)`,
+				totalSecretRequests: sql<number>`coalesce(sum(${stats.totalSecretRequests}), 0)`
+			})
+			.from(membership)
+			.innerJoin(user, eq(user.id, membership.userId))
+			.leftJoin(stats, sql`${stats.userId} = ${membership.userId} AND ${stats.scope} = 'user'`)
+			.where(eq(membership.organizationId, orgId))
+			.then(([r]) => r ?? { totalMembers: 0, mau: 0, totalSecrets: 0, totalSecretRequests: 0 }),
+
+		// Secret type breakdown from the org's white-label site stats
+		db
+			.select({
+				domain: whiteLabelSite.customDomain,
+				textSecrets: sql<number>`coalesce(${stats.textSecrets}, 0)`,
+				fileSecrets: sql<number>`coalesce(${stats.fileSecrets}, 0)`,
+				redirectSecrets: sql<number>`coalesce(${stats.redirectSecrets}, 0)`,
+				snapSecrets: sql<number>`coalesce(${stats.snapSecrets}, 0)`,
+				neogramSecrets: sql<number>`coalesce(${stats.neogramSecrets}, 0)`
+			})
+			.from(whiteLabelSite)
+			.leftJoin(stats, eq(stats.whiteLabelSiteId, whiteLabelSite.id))
+			.where(eq(whiteLabelSite.organizationId, orgId))
+			.then(
+				([r]) =>
+					r ?? {
+						domain: null,
+						textSecrets: 0,
+						fileSecrets: 0,
+						redirectSecrets: 0,
+						snapSecrets: 0,
+						neogramSecrets: 0
+					}
+			),
+
+		// Members log: sorted by lastLoginAt desc
+		db
+			.select({
+				userId: user.id,
+				email: user.email,
+				name: user.name,
+				picture: user.picture,
+				role: membership.role,
+				emailVerified: user.emailVerified,
+				lastLoginAt: user.lastLoginAt,
+				totalSecrets: sql<number>`coalesce(${stats.totalSecrets}, 0)`
+			})
+			.from(membership)
+			.innerJoin(user, eq(user.id, membership.userId))
+			.leftJoin(stats, sql`${stats.userId} = ${membership.userId} AND ${stats.scope} = 'user'`)
+			.where(eq(membership.organizationId, orgId))
+			.orderBy(sql`${user.lastLoginAt} DESC NULLS LAST`)
+	]);
+
+	return { summary, secretTypes, members };
+};
+
+export type OrgStats = Awaited<ReturnType<typeof getOrgStats>>;
+
 // ── White Label ────────────────────────────────────────
 
 export const getWhiteLabelStats = async () => {
