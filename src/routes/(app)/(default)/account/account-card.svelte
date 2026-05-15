@@ -68,16 +68,6 @@
 		</Tooltip.Content>
 	</Tooltip.Root>
 
-	<div class="flex py-1">
-		{@render renderLabel(m.weird_ok_sparrow_praise())}
-		<span class="inline-block p-1"
-			>{user?.subscriptionTier}
-			(<a class="hover:text-primary underline" href={localizeHref('/pricing')}
-				>{m.good_wacky_alligator_dare()}</a
-			>)</span
-		>
-	</div>
-
 	<Separator class="my-6" />
 	<div class="flex flex-wrap">
 		<Button class="mr-2 mb-2" variant="outline" href={localizeHref('/set-password')}

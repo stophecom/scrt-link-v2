@@ -1,52 +1,7 @@
-import { getBaseUrl } from '$lib/constants';
-import { getAbsoluteLocalizedUrl, redirectLocalized } from '$lib/i18n';
-import { m } from '$lib/paraglide/messages.js';
-import stripeInstance, {
-	getActiveSubscription,
-	getOrgInvoices,
-	getStripePortalUrl
-} from '$lib/server/stripe';
+import { redirectLocalized } from '$lib/i18n';
 
 import type { PageServerLoad } from './$types';
 
-async function getProductName(subscription: import('stripe').Stripe.Subscription) {
-	const productId = subscription.items.data[0]?.plan?.product;
-	if (!productId || typeof productId !== 'string') return null;
-	const product = await stripeInstance.products.retrieve(productId);
-	return product.name;
-}
-
-export const load: PageServerLoad = async ({ locals }) => {
-	const user = locals.user;
-	if (!user) return redirectLocalized(307, '/signup');
-
-	let subscription: import('stripe').Stripe.Subscription | null = null;
-	let invoices: import('stripe').Stripe.Invoice[] = [];
-	let stripePortalUrl: string | null = null;
-	let planName: string | null = null;
-
-	const billingReturnUrl = getAbsoluteLocalizedUrl(getBaseUrl(), '/account/billing');
-
-	try {
-		if (user.stripeCustomerId) {
-			subscription = await getActiveSubscription(user.stripeCustomerId);
-			if (subscription) {
-				[invoices, { url: stripePortalUrl }, planName] = await Promise.all([
-					getOrgInvoices(user.stripeCustomerId),
-					getStripePortalUrl(user.stripeCustomerId, billingReturnUrl),
-					getProductName(subscription)
-				]);
-			}
-		}
-	} catch (e) {
-		console.error(e);
-	}
-
-	return {
-		subscription,
-		invoices,
-		stripePortalUrl,
-		planName,
-		pageTitle: m.misty_teal_hawk_glow()
-	};
+export const load: PageServerLoad = async () => {
+	return redirectLocalized(301, '/account/profile');
 };
