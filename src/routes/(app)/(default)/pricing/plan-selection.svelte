@@ -33,7 +33,6 @@
 		orgSubscription: Stripe.Subscription | null;
 		orgId: string | null;
 		orgName: string | null;
-		isOrgOwner: boolean;
 		showBusiness?: boolean;
 	};
 	let {
@@ -43,7 +42,6 @@
 		orgSubscription,
 		orgId,
 		orgName,
-		isOrgOwner,
 		showBusiness = $bindable(false)
 	}: Props = $props();
 
@@ -157,7 +155,7 @@
 {/snippet}
 
 <div>
-	<div class="mb-12 flex justify-center">
+	<div class="mb-6 flex justify-center">
 		<BigSwitch
 			bind:checked={showBusiness}
 			left={m.lean_bold_worm_grow()}
@@ -167,14 +165,7 @@
 	</div>
 
 	{#if showBusiness}
-		<BusinessPlanSelection
-			{plans}
-			{user}
-			{orgId}
-			{orgSubscription}
-			{isOrgOwner}
-			currency={currency.current}
-		/>
+		<BusinessPlanSelection {plans} {user} {orgId} {orgSubscription} currency={currency.current} />
 	{:else}
 		{#if subscription && !isSubscriptionCanceled}
 			{@render subscriptionInfo(

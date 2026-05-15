@@ -24,9 +24,8 @@
 		orgId: string | null;
 		orgSubscription: Stripe.Subscription | null;
 		currency: SupportedCurrency;
-		isOrgOwner: boolean;
 	};
-	let { plans, user, orgId, orgSubscription, currency, isOrgOwner }: Props = $props();
+	let { plans, user, orgId, orgSubscription, currency }: Props = $props();
 
 	const isOrgSubscriptionCanceled = orgSubscription && !!orgSubscription?.cancel_at;
 	const activeOrgProduct = $derived(
@@ -111,9 +110,7 @@
 			currency={displayCurrency}
 			{isActiveProduct}
 		>
-			{#if !isOrgOwner}
-				<p class="text-muted-foreground text-center text-sm">{m.flat_warm_checkout_owner_only()}</p>
-			{:else if !orgSubscription || isOrgSubscriptionCanceled}
+			{#if !orgSubscription || isOrgSubscriptionCanceled}
 				<Button class="w-full" onclick={() => handleSubmit(priceId, basePriceId)}>
 					{m.noisy_safe_moth_mop()}
 				</Button>

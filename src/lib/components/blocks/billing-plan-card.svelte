@@ -49,8 +49,8 @@
 	};
 </script>
 
-{#if subscription}
-	<Card title={m.flat_warm_plan_current()} class={className}>
+<Card title={m.flat_warm_plan_current()} class={className}>
+	{#if subscription}
 		<div class="flex flex-wrap items-start justify-between gap-4">
 			<div>
 				<div class="mb-1 flex items-center gap-2">
@@ -99,12 +99,10 @@
 				</Button>
 			{/if}
 		</div>
-	</Card>
-{:else}
-	<Card title={m.flat_warm_plan_current()}>
+	{:else}
 		<p class="text-muted-foreground mb-4">{m.flat_warm_bear_none()}</p>
-		<Button href={pricingHref ?? localizeHref('/pricing')} variant="outline" size="sm">
+		<Button href={pricingHref ?? localizeHref('/pricing')} variant="outline">
 			{m.flat_warm_plan_view()}
 		</Button>
-	</Card>
-{/if}
+	{/if}
+</Card>

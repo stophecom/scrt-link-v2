@@ -3,6 +3,7 @@
 	import type { Stripe } from 'stripe';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
+	import { goto } from '$app/navigation';
 	import InviteOrganizationMemberForm from '$lib/components/forms/invite-organization-member-form.svelte';
 	import ManageOrganizationMemberForm from '$lib/components/forms/manage-organization-member-form.svelte';
 	import OrganizationForm from '$lib/components/forms/organization-form.svelte';
@@ -15,6 +16,7 @@
 	import * as Table from '$lib/components/ui/table';
 	import { InviteStatus, MembershipRole } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 	import type { MembersAndInvitesByOrganization } from '$lib/server/organization';
 	import type {
 		InviteOrganizationMemberFormSchema,
@@ -221,7 +223,11 @@
 		</Dialog.Content>
 	</Dialog.Root>
 {:else}
-	<Card class="mb-6" title={m.drab_dark_squirrel_fetch()} description={m.fresh_bad_midge_explore()}>
-		<OrganizationForm form={organizationForm} formAction="?/createOrganization" />
+	<Card class="mb-6" title={m.bold_neat_panda_learn()} description={m.fresh_bad_midge_explore()}>
+		<OrganizationForm
+			form={organizationForm}
+			formAction="?/createOrganization"
+			onSuccess={() => goto(localizeHref('/pricing?tab=business'))}
+		/>
 	</Card>
 {/if}

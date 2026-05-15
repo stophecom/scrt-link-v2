@@ -54,8 +54,7 @@
 		{ label: m.bold_slim_ram_roam(), values: [true, true] },
 		{ label: m.bright_calm_seal_rest(), values: [true, true] },
 		{ label: m.bold_stat_log_feat(), values: [false, true] },
-		{ label: m.keen_beta_first_feat(), values: [false, true] },
-		{ label: m.swift_bold_hawk_soar(), values: [true, true] },
+		{ label: m.swift_bold_hawk_soar(), values: [false, true] },
 		{
 			label: m.keen_warm_eel_swim(),
 			values: [m.tired_new_mantis_buy(), m.still_busy_starfish_dare()]

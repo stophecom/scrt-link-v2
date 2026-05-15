@@ -54,7 +54,6 @@
 				orgSubscription={data.orgSubscription}
 				orgId={data.orgId}
 				orgName={data.orgName}
-				isOrgOwner={data.isOrgOwner}
 				bind:showBusiness
 			/>
 		{/if}

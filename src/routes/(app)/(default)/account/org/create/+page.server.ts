@@ -55,6 +55,6 @@ export const actions: Actions = {
 			role: MembershipRole.OWNER
 		});
 
-		return redirectLocalized(303, `/account/org/${org.id}`);
+		return redirectLocalized(303, `/pricing?tab=business`);
 	}
 };

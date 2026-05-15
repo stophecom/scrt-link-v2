@@ -121,7 +121,7 @@ export const plans = () => [
 			{ label: m.lucky_plain_deer_race(), tooltip: m.lean_secret_team_note() },
 			{ label: m.open_bold_access_pair() },
 			{ label: m.active_mellow_swan_list({ amount: 7 }) },
-			{ label: m.inner_fun_mink_push() },
+
 			{ label: m.tired_new_mantis_buy() }
 		],
 		limits: {
@@ -141,7 +141,7 @@ export const plans = () => [
 	},
 	{
 		name: TierOptions.TOP_SECRET_SERVICE,
-		icon: Building,
+		icon: Building2,
 		isOrgPlan: true,
 		subtitle: m.bold_warm_hawk_step(),
 		title: m.keen_bold_service_plus(),
@@ -149,7 +149,7 @@ export const plans = () => [
 			{ label: m.muddy_any_tapir_roar(), tooltip: m.keen_top_team_note() },
 			{ label: m.active_mellow_swan_list({ amount: 30 }) },
 			{ label: m.bold_stat_log_feat() },
-			{ label: m.keen_beta_first_feat() },
+			{ label: m.inner_fun_mink_push() },
 			{ label: m.still_busy_starfish_dare() }
 		],
 		limits: {
@@ -169,7 +169,7 @@ export const plans = () => [
 	},
 	{
 		name: 'Secret Enterprise',
-		icon: Building2,
+		icon: Building,
 		isOrgPlan: true,
 		subtitle: m.pure_keen_fox_soar(),
 		title: m.fine_warm_elk_trust(),
