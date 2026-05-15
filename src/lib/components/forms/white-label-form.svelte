@@ -58,7 +58,7 @@
 		</Form.Field>
 
 		<div class="pt-4">
-			<Form.Button delayed={$delayed}
+			<Form.Button variant="outline" delayed={$delayed}
 				><Save class="me-2 h-4 w-4" /> {m.caring_light_tiger_taste()}</Form.Button
 			>
 		</div>
