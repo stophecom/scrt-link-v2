@@ -5,7 +5,6 @@
 	import { m } from '$lib/paraglide/messages.js';
 
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
-	import Card from '../ui/card/card.svelte';
 
 	const explanationSteps = () => [
 		{
@@ -32,8 +31,8 @@
 	description: string,
 	iterator: number
 )}
-	<Card
-		class="grid grid-cols-[33%_1fr] grid-rows-2 gap-2 px-4! !py-0 ps-0! sm:grid-cols-none sm:grid-rows-[min-content_min-content_1fr]  sm:py-6! sm:ps-4! sm:text-center"
+	<div
+		class="border-border bg-card grid w-full grid-cols-[33%_1fr] grid-rows-2 gap-2 rounded border px-4 ps-0! shadow-lg sm:grid-cols-none sm:grid-rows-[min-content_min-content_1fr] sm:py-6! sm:ps-4! sm:text-center md:p-8"
 	>
 		<h4 class="xs:text-2xl order-2 self-end text-xl font-bold sm:order-1 sm:mb-4 sm:text-2xl">
 			{iterator + 1}. {title}
@@ -42,7 +41,7 @@
 		<p class="xs:text-sm order-3 text-xs font-semibold sm:order-3">
 			{description}
 		</p>
-	</Card>
+	</div>
 {/snippet}
 
 <IntersectionObserver top={-100} once={true}>

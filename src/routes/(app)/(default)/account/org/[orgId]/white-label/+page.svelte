@@ -19,8 +19,7 @@
 	const WHITE_LABEL_TIERS = [TierOptions.SECRET_SERVICE, TierOptions.TOP_SECRET_SERVICE];
 	let hasWhiteLabelPlan = $derived(
 		(data.org.subscriptionTier != null && WHITE_LABEL_TIERS.includes(data.org.subscriptionTier)) ||
-			(data.user.subscriptionTier != null &&
-				WHITE_LABEL_TIERS.includes(data.user.subscriptionTier))
+			(data.user.subscriptionTier != null && WHITE_LABEL_TIERS.includes(data.user.subscriptionTier))
 	);
 
 	let hasDomain = $derived(!!data.whiteLabelDomain);

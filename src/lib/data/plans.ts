@@ -124,7 +124,6 @@ export const plans = () => [
 			{ label: m.flat_warm_membership_roles() },
 			{ label: m.open_bold_access_pair() },
 			{ label: m.active_mellow_swan_list({ amount: 7 }) },
-
 			{ label: m.tired_new_mantis_buy() }
 		],
 		limits: {
