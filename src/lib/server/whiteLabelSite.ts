@@ -4,7 +4,7 @@ import { isOriginalHostname } from '$lib/app-routing';
 import { TierOptions } from '$lib/data/enums';
 
 import { db } from './db';
-import { user, whiteLabelSite } from './db/schema';
+import { organization, user, whiteLabelSite } from './db/schema';
 import { getMembersByOrganizationId } from './organization';
 
 export const getWhiteLabelSiteByHost = async (host: string) => {
@@ -25,6 +25,14 @@ export const getWhiteLabelSiteByUserId = async (userId: string) => {
 	return whiteLabelResult;
 };
 
+export const getWhiteLabelSiteByOrgId = async (organizationId: string) => {
+	const [result] = await db
+		.select()
+		.from(whiteLabelSite)
+		.where(eq(whiteLabelSite.organizationId, organizationId));
+	return result ?? null;
+};
+
 export const getWhiteLabelSiteById = async (id: string) => {
 	const [whiteLabelResult] = await db
 		.select()
@@ -34,13 +42,27 @@ export const getWhiteLabelSiteById = async (id: string) => {
 	return whiteLabelResult;
 };
 
-export const getWhiteLabelSiteOwnerTier = async (ownerUserId: string): Promise<TierOptions> => {
-	const [owner] = await db
-		.select({ subscriptionTier: user.subscriptionTier })
-		.from(user)
-		.where(eq(user.id, ownerUserId));
+export const getWhiteLabelSiteOwnerTier = async (site: {
+	userId: string | null;
+	organizationId: string | null;
+}): Promise<TierOptions> => {
+	if (site.userId) {
+		const [owner] = await db
+			.select({ subscriptionTier: user.subscriptionTier })
+			.from(user)
+			.where(eq(user.id, site.userId));
+		return owner?.subscriptionTier ?? TierOptions.CONFIDENTIAL;
+	}
 
-	return owner?.subscriptionTier ?? TierOptions.CONFIDENTIAL;
+	if (site.organizationId) {
+		const [org] = await db
+			.select({ subscriptionTier: organization.subscriptionTier })
+			.from(organization)
+			.where(eq(organization.id, site.organizationId));
+		return org?.subscriptionTier ?? TierOptions.CONFIDENTIAL;
+	}
+
+	return TierOptions.CONFIDENTIAL;
 };
 
 export const checkIsUserAllowedOnWhiteLabelSite = async (host: string, userId: string) => {
@@ -49,8 +71,8 @@ export const checkIsUserAllowedOnWhiteLabelSite = async (host: string, userId: s
 	if (host && !isOriginalHostname(host)) {
 		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
 
-		// Site is restricted to either user (owner) or members of the assigned organization
-		const isOwner = userId === whiteLabelSiteResult.userId;
+		// Site is restricted to either user (personal owner) or members of the assigned organization
+		const isOwner = whiteLabelSiteResult.userId !== null && userId === whiteLabelSiteResult.userId;
 		const orgId = whiteLabelSiteResult.organizationId;
 
 		if (!isOwner) {

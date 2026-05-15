@@ -27,7 +27,8 @@ export const subscriptionTier = pgEnum('subscription_tier', [
 	TierOptions.CONFIDENTIAL,
 	TierOptions.SECRET,
 	TierOptions.TOP_SECRET,
-	TierOptions.SECRET_SERVICE
+	TierOptions.SECRET_SERVICE,
+	TierOptions.TOP_SECRET_SERVICE
 ]);
 
 export const role = pgEnum('role', [Role.USER, Role.ADMIN]);
@@ -45,6 +46,7 @@ export const user = pgTable('user', {
 	preferences: jsonb('preferences'),
 	emailVerified: boolean('email_verified'),
 	encryptionEnabled: boolean('encryption_enabled').default(false),
+	lastLoginAt: timestamp('last_login_at', { mode: 'date' }),
 	createdAt: timestamp('created_att', { mode: 'date' }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date' })
 		.notNull()
@@ -104,11 +106,17 @@ export const secretTypeEnum = pgEnum('secret_type_enum', [
 export const organization = pgTable('organization', {
 	id: uuid('id').primaryKey().defaultRandom(),
 	name: text('name').notNull(),
-	createdBy: uuid('created_by').references(() => user.id, { onDelete: 'set null' })
+	createdBy: uuid('created_by').references(() => user.id, { onDelete: 'set null' }),
+	stripeCustomerId: text('stripe_customer_id'),
+	subscriptionTier: subscriptionTier('subscription_tier').default(TierOptions.CONFIDENTIAL),
+	// Designates which user receives the Stripe portal link and billing emails.
+	// Defaults to null (falls back to any org owner). Can be any existing org member.
+	billingOwnerId: uuid('billing_owner_id').references(() => user.id, { onDelete: 'set null' })
 });
 
 export const membershipRole = pgEnum('membership_role', [
 	MembershipRole.MEMBER,
+	MembershipRole.ADMIN,
 	MembershipRole.OWNER
 ]);
 
@@ -174,9 +182,10 @@ export const whiteLabelSite = pgTable('white_label_site', {
 	updatedAt: timestamp('updated_at', { mode: 'date' })
 		.notNull()
 		.$onUpdate(() => new Date()),
-	organizationId: uuid('organization_id').references(() => organization.id),
+	organizationId: uuid('organization_id')
+		.unique()
+		.references(() => organization.id, { onDelete: 'cascade' }),
 	userId: uuid('user_id')
-		.notNull()
 		.unique()
 		.references(() => user.id, { onDelete: 'cascade' })
 });
@@ -282,7 +291,7 @@ export const stats = pgTable('stats', {
 	totalSecretRequests: integer('total_secret_requests').default(0),
 	whiteLabelSiteId: uuid('white_label_site_id')
 		.unique()
-		.references(() => whiteLabelSite.id),
+		.references(() => whiteLabelSite.id, { onDelete: 'cascade' }),
 	userId: uuid('user_id')
 		.unique()
 		.references(() => user.id, { onDelete: 'cascade' })

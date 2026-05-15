@@ -9,6 +9,7 @@ declare global {
 			whiteLabelSite: Awaited<
 				ReturnType<typeof import('$lib/server/whiteLabelSite').getWhiteLabelSiteByHost>
 			> | null;
+			effectiveTier: import('$lib/data/enums').TierOptions;
 		}
 
 		namespace Superforms {

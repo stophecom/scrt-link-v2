@@ -19,7 +19,7 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let planLimits = $derived(getUserPlanLimits(data.user?.subscriptionTier));
+	let planLimits = $derived(getUserPlanLimits(data.effectiveTier));
 
 	let isConfirmationDialogOpen = $state(false);
 	let selectedKeyForDeletion = $state<{ id: string; description: string | null } | null>(null);
@@ -31,7 +31,7 @@
 		title={m.actual_keen_rooster_find()}
 		description={m.patchy_swift_fish_cuddle()}
 	>
-		<ApiTokenForm user={data.user} form={data.apiKeyForm} />
+		<ApiTokenForm user={data.user} effectiveTier={data.effectiveTier} form={data.apiKeyForm} />
 	</Card>
 
 	<Card class="mb-6" title={m.lost_slimy_pelican_achieve()}>
@@ -69,7 +69,7 @@
 		{/if}
 	</Card>
 {:else}
-	<UpgradeNotice tier={data.user?.subscriptionTier} class="mb-6" />
+	<UpgradeNotice tier={data.effectiveTier} class="mb-6" />
 {/if}
 
 <Dialog.Root bind:open={isConfirmationDialogOpen}>

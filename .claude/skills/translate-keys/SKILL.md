@@ -23,14 +23,18 @@ Target locales to update:
 ## Procedure
 
 1. Read `messages/en.json` and get the list of keys in order.
-2. For each target locale file:
+2. **Remove duplicate translations** — run `pnpm deduplicate-translations`.
+   - This finds keys with identical English values, picks the most-used key as canonical (by `git grep` count in `src/`), rewrites all `src/` references, and removes the duplicate keys from every locale file.
+   - Run with `--dry-run` first if you want to preview changes before applying.
+   - Skip this step if you only added new keys and didn't touch existing ones.
+3. For each target locale file:
    1. Read the file.
    2. Identify missing keys — any key that is in en.json but **absent, `null`, or empty string** in the target.
    3. If zero missing keys, skip this locale and report "up to date".
    4. Otherwise translate each missing value from English into the target language, following the preservation rules below.
    5. Build the final object by iterating **en.json's key order**: for each en.json key, use the target file's existing value if present, otherwise use the translated value. This preserves key order.
    6. Write the file as JSON with **tab indentation**, UTF-8, with a single trailing newline. Equivalent to `JSON.stringify(obj, null, '\t') + '\n'`.
-3. Report a one-line summary per locale.
+4. Report a one-line summary per locale.
 
 ## Preservation rules (do NOT translate these)
 
@@ -43,7 +47,8 @@ Target locales to update:
 
 ## Translation style
 
-- Match the tone of existing translations already in the same locale file. Before translating, scan a few existing entries to calibrate formality (e.g. German `du` vs. `Sie`, French `tu` vs. `vous`, Spanish `tú` vs. `usted`). Default to the register already used in that file.
+- Match the tone of existing translations already in the same locale file. Before translating, scan a few existing entries to calibrate formality (French `tu` vs. `vous`, Spanish `tú` vs. `usted`). Default to the register already used in that file.
+- **German**: always use informal address — `du`/`dich`/`dein` (never `Sie`/`Ihnen`/`Ihr`).
 - Prefer concise, UI-natural phrasings over literal translations. UI strings should read like the product speaks the user's language natively.
 - Keep punctuation consistent with the target language (French thin-space before `:`/`!`/`?`, Spanish inverted `¿¡`, German `ß` where appropriate, CJK full-width punctuation).
 
@@ -56,3 +61,5 @@ Target locales to update:
 ## After running
 
 Run `pnpm lint` to confirm JSON formatting still passes Prettier. Fix any drift before committing.
+
+Run `pnpm cleanup-translation-keys` to remove any keys from locale files that are no longer referenced in `src/`. Do this periodically or after deleting features.

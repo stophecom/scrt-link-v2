@@ -3,9 +3,10 @@ import { sequence } from '@sveltejs/kit/hooks';
 import { createGuardHook } from 'svelte-guard';
 
 import { isOriginalHostname } from '$lib/app-routing';
-import { ThemeOptions } from '$lib/data/enums';
+import { ThemeOptions, TierOptions } from '$lib/data/enums';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import * as auth from '$lib/server/auth.js';
+import { getEffectiveTierForUser } from '$lib/server/organization';
 import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 
 const guards = import.meta.glob('./routes/**/-guard.*');
@@ -16,6 +17,7 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	if (!sessionToken) {
 		event.locals.user = null;
 		event.locals.session = null;
+		event.locals.effectiveTier = TierOptions.CONFIDENTIAL;
 		return resolve(event);
 	}
 
@@ -28,6 +30,9 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 
 	event.locals.user = user;
 	event.locals.session = session;
+	event.locals.effectiveTier = user
+		? await getEffectiveTierForUser(user.id, user.subscriptionTier ?? TierOptions.CONFIDENTIAL)
+		: TierOptions.CONFIDENTIAL;
 
 	return resolve(event);
 };

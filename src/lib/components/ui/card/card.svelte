@@ -23,7 +23,9 @@
 		</CardTitle>
 	{/if}
 	{#if description}
-		<p class="mb-4 text-xl leading-normal text-pretty">{description}</p>
+		<p class="text-md leading-normal text-pretty">{description}</p>
 	{/if}
-	{@render children?.()}
+	<div class="pt-2">
+		{@render children?.()}
+	</div>
 </div>

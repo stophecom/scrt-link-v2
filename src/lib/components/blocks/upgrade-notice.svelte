@@ -33,12 +33,12 @@
 			case TierOptions.SECRET:
 			case TierOptions.TOP_SECRET:
 				return {
-					title: m.blue_inclusive_sloth_flow(),
+					title: m.fair_red_warbler_bake(),
 					link: m.cute_witty_puffin_grow()
 				};
 			default:
 				return {
-					title: m.acidic_aqua_octopus_revive(),
+					title: m.fair_red_warbler_bake(),
 					link: m.loved_legal_clownfish_kiss()
 				};
 		}

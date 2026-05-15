@@ -52,12 +52,12 @@
 	const workflow = [
 		{
 			icon: Lock,
-			title: m.plain_brisk_raven_type(),
+			title: m.crisp_bold_raven_lock(),
 			description: m.fresh_bold_wren_encode()
 		},
 		{
 			icon: Link2,
-			title: m.tidy_firm_moth_drop(),
+			title: m.careful_bald_frog_harbor(),
 			description: m.brave_calm_dove_pass()
 		},
 		{
@@ -85,12 +85,12 @@
 		},
 		{
 			icon: KeyRound,
-			title: m.tight_brisk_crab_layer(),
+			title: m.bold_warm_elk_dash(),
 			description: m.bright_tidy_shark_gate()
 		},
 		{
 			icon: Inbox,
-			title: m.bold_sharp_owl_invite(),
+			title: m.calm_proud_ibis_list(),
 			description: m.plain_warm_pika_collect()
 		},
 		{

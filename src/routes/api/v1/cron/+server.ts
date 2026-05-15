@@ -13,7 +13,8 @@ import {
 	apiKey,
 	emailVerificationRequest,
 	rateLimit,
-	secret as secretSchema
+	secret as secretSchema,
+	secretRequest
 } from '$lib/server/db/schema';
 
 const BucketName = PUBLIC_S3_BUCKET;
@@ -80,6 +81,24 @@ export const GET: RequestHandler = async ({ request }) => {
 			.returning();
 
 		console.log(`Cron: Deleted ${deletedSecrets.length} entries from the Secrets database.`);
+
+		// Delete secret requests expired >7 days ago, or created >30 days ago
+		const deleteExpiredRequestsBeforeDate = subtractDays(new Date(), 7);
+		const deleteOldRequestsBeforeDate = subtractDays(new Date(), 30);
+
+		const deletedSecretRequests = await db
+			.delete(secretRequest)
+			.where(
+				or(
+					lte(secretRequest.expiresAt, deleteExpiredRequestsBeforeDate),
+					lte(secretRequest.createdAt, deleteOldRequestsBeforeDate)
+				)
+			)
+			.returning();
+
+		console.log(
+			`Cron: Deleted ${deletedSecretRequests.length} entries from the Secret Requests database.`
+		);
 
 		// Delete email verification requests if expired
 		const deletedEmailVerificationRequests = await db

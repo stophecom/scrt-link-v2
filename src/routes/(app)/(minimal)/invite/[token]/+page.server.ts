@@ -6,6 +6,7 @@ import { InviteStatus } from '$lib/data/enums.js';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db/index.js';
 import { invite, membership, organization } from '$lib/server/db/schema.js';
+import { syncOrgSeatCount } from '$lib/server/organization.js';
 import { createOrUpdateUser } from '$lib/server/user.js';
 
 export const load = async (event) => {
@@ -46,6 +47,8 @@ export const load = async (event) => {
 				organizationId: existingInvite.organizationId,
 				role: existingInvite.membershipRole
 			});
+			// Sync Stripe subscription quantity (fire-and-forget)
+			syncOrgSeatCount(existingInvite.organizationId).catch(console.error);
 		}
 
 		// Cleanup

@@ -1,4 +1,4 @@
-import { Factory, Plane, Rocket, Send } from '@lucide/svelte';
+import { Building, Building2, Factory, Plane, Rocket, Send } from '@lucide/svelte';
 
 import { SecretType, TierOptions } from '$lib/data/enums';
 import { GB, MB } from '$lib/data/units';
@@ -7,6 +7,8 @@ import { m } from '$lib/paraglide/messages.js';
 
 import { expiresInOptions, expiresInOptionsExtended } from './secretSettings';
 
+export type PlanContentItem = { label: string; tooltip?: string };
+
 // Defaults for visitors without account
 const defaultLimits = {
 	[SecretType.TEXT]: 150,
@@ -14,6 +16,7 @@ const defaultLimits = {
 	[SecretType.REDIRECT]: false,
 	[SecretType.SNAP]: false,
 	[SecretType.NEOGRAM]: false,
+	secretRequests: false,
 	apiAccess: false,
 	passwordAllowed: false,
 	readReceiptsAllowed: false,
@@ -42,6 +45,7 @@ export const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: false,
 			[SecretType.NEOGRAM]: false,
+			secretRequests: false,
 			apiAccess: false,
 			passwordAllowed: false,
 			readReceiptsAllowed: false,
@@ -60,7 +64,7 @@ export const plans = () => [
 			{ label: m.long_tired_monkey_rest(), tooltip: m.swift_red_lynx_purr() },
 			{ label: m.green_sour_mongoose_burn(), tooltip: m.quick_gold_fox_wink() },
 			{ label: m.new_still_dingo_create({ limit: formatBytes(1 * GB) }) },
-			{ label: m.pink_many_fox_boost(), tooltip: m.pure_mint_ram_leap() },
+			{ label: m.kind_sharp_owl_record(), tooltip: m.pure_mint_ram_leap() },
 			{ label: m.slimy_livid_pelican_gleam(), tooltip: m.fresh_kind_panda_glow() },
 			{ label: m.active_mellow_swan_list({ amount: 7 }) },
 			{ label: m.tired_new_mantis_buy() }
@@ -71,6 +75,7 @@ export const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: true,
 			[SecretType.NEOGRAM]: true,
+			secretRequests: false,
 			apiAccess: false,
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
@@ -85,6 +90,7 @@ export const plans = () => [
 		subtitle: m.sharp_keen_wolf_dash(),
 		title: m.crisp_fluffy_toucan_vent(),
 		contents: [
+			{ label: m.calm_proud_ibis_list() },
 			{ label: m.new_still_dingo_create({ limit: formatBytes(100 * GB) }) },
 			{ label: m.active_mellow_swan_list({ amount: 30 }) },
 			{ label: m.blue_jumpy_shell_climb(), tooltip: m.keen_rose_ant_zoom() },
@@ -96,6 +102,7 @@ export const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: true,
 			[SecretType.NEOGRAM]: true,
+			secretRequests: true,
 			apiAccess: true,
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
@@ -105,16 +112,48 @@ export const plans = () => [
 		}
 	},
 	{
-		name: TierOptions.SECRET_SERVICE, // Limits apply to owner and org members on white-label sites.
+		name: TierOptions.SECRET_SERVICE,
 		icon: Factory,
-		subtitle: m.brave_cool_bear_roam(),
+		isOrgPlan: true,
+		subtitle: m.lean_slim_crow_lead(),
 		title: m.bold_warm_falcon_soar(),
 		contents: [
+			{ label: m.firm_bold_label_site(), tooltip: m.firm_bold_label_site_info() },
 			{ label: m.aloof_zany_cheetah_greet() },
-			{ label: m.proud_cool_lemur_commend({ amount: 30 }) },
-			{ label: m.muddy_any_tapir_roar() },
-			{ label: m.calm_bright_otter_rest() },
-			{ label: m.inner_fun_mink_push() }
+			{ label: m.lucky_plain_deer_race(), tooltip: m.lean_secret_team_note() },
+			{ label: m.flat_warm_membership_roles() },
+			{ label: m.open_bold_access_pair() },
+			{ label: m.active_mellow_swan_list({ amount: 7 }) },
+
+			{ label: m.tired_new_mantis_buy() }
+		],
+		limits: {
+			[SecretType.TEXT]: 100_000,
+			[SecretType.FILE]: 1 * GB,
+			[SecretType.REDIRECT]: true,
+			[SecretType.SNAP]: true,
+			[SecretType.NEOGRAM]: true,
+			secretRequests: false,
+			apiAccess: false,
+			passwordAllowed: true,
+			readReceiptsAllowed: true,
+			expirationOptions: expiresInOptions,
+			whiteLabel: true,
+			maxViewLimit: 1000
+		}
+	},
+	{
+		name: TierOptions.TOP_SECRET_SERVICE,
+		icon: Building2,
+		isOrgPlan: true,
+		subtitle: m.bold_warm_hawk_step(),
+		title: m.keen_bold_service_plus(),
+		contents: [
+			{ label: m.muddy_any_tapir_roar(), tooltip: m.keen_top_team_note() },
+			{ label: m.active_mellow_swan_list({ amount: 30 }) },
+			{ label: m.bold_stat_log_feat() },
+			{ label: m.inner_fun_mink_push() },
+			{ label: m.still_busy_starfish_dare() }
 		],
 		limits: {
 			[SecretType.TEXT]: 100_000,
@@ -122,6 +161,7 @@ export const plans = () => [
 			[SecretType.REDIRECT]: true,
 			[SecretType.SNAP]: true,
 			[SecretType.NEOGRAM]: true,
+			secretRequests: true,
 			apiAccess: true,
 			passwordAllowed: true,
 			readReceiptsAllowed: true,
@@ -129,6 +169,19 @@ export const plans = () => [
 			whiteLabel: true,
 			maxViewLimit: 1000
 		}
+	},
+	{
+		name: 'Secret Enterprise',
+		icon: Building,
+		isOrgPlan: true,
+		subtitle: m.pure_keen_fox_soar(),
+		title: m.fine_warm_elk_trust(),
+		contents: [
+			{ label: m.bold_bring_infra_feat() },
+			{ label: m.firm_dedicated_hosting() },
+			{ label: m.bold_calm_ram_help() },
+			{ label: m.bold_custom_sla_dpa() }
+		]
 	}
 ];
 

@@ -6,6 +6,7 @@
 	import Link from '@lucide/svelte/icons/link';
 	import LogOut from '@lucide/svelte/icons/log-out';
 	import Menu from '@lucide/svelte/icons/menu';
+	import Plus from '@lucide/svelte/icons/plus';
 	import SettingsGroup from '@lucide/svelte/icons/settings';
 	import User from '@lucide/svelte/icons/user';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
@@ -21,8 +22,9 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import { Separator } from '$lib/components/ui/separator';
 	import { Spinner } from '$lib/components/ui/spinner';
-	import { Role, TierOptions } from '$lib/data/enums';
+	import { Role } from '$lib/data/enums';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
@@ -76,7 +78,11 @@
 
 	// Navigation items
 	const isAdmin = $derived(page.data.user?.role === Role.ADMIN);
-	const navItems = $derived([
+	const userOrganizations = $derived(
+		(page.data.userOrganizations ?? []) as { id: string; name: string }[]
+	);
+
+	const personalNavItems = $derived([
 		...(isAdmin
 			? [
 					{
@@ -103,11 +109,6 @@
 			icon: KeyRound
 		},
 		{
-			href: localizeHref('/account/secret-service'),
-			label: TierOptions.SECRET_SERVICE,
-			icon: Factory
-		},
-		{
 			href: localizeHref('/account/profile'),
 			label: m.novel_proud_anaconda_zoom(),
 			icon: User
@@ -118,6 +119,17 @@
 			icon: SettingsGroup
 		}
 	]);
+
+	const orgNavItems = $derived(
+		userOrganizations.map((org) => ({
+			href: localizeHref(`/account/org/${org.id}`),
+			label: org.name,
+			icon: Factory,
+			badge: undefined as string | undefined
+		}))
+	);
+
+	const navItems = $derived([...personalNavItems, ...orgNavItems]);
 
 	let currentPath = $derived(page.url.pathname);
 	let currentItem = $derived(
@@ -147,9 +159,9 @@
 						</DropdownMenu.Trigger>
 						<DropdownMenu.Content class="w-[var(--bits-dropdown-menu-anchor-width)]">
 							<DropdownMenu.Group>
-								{#each navItems as item (item.href)}
+								{#each personalNavItems as item (item.href)}
 									<DropdownMenu.Item
-										class={currentPath === item.href ? 'bg-muted font-medium' : ''}
+										class={currentPath.startsWith(item.href) ? 'bg-muted font-medium' : ''}
 									>
 										<a href={item.href} class="flex w-full items-center">
 											<svelte:component this={item.icon} class="mr-2 h-4 w-4" />
@@ -163,6 +175,35 @@
 										</a>
 									</DropdownMenu.Item>
 								{/each}
+							</DropdownMenu.Group>
+							<DropdownMenu.Separator />
+							<DropdownMenu.Group>
+								<DropdownMenu.Label
+									class="text-muted-foreground px-2 py-1 text-xs font-medium tracking-wide uppercase"
+									>{m.wild_inner_fox_honor()}</DropdownMenu.Label
+								>
+								{#if orgNavItems.length > 0}
+									{#each orgNavItems as item (item.href)}
+										<DropdownMenu.Item
+											class={currentPath.startsWith(item.href) ? 'bg-muted font-medium' : ''}
+										>
+											<a href={item.href} class="flex w-full min-w-0 items-center">
+												<svelte:component this={item.icon} class="mr-2 h-4 w-4 shrink-0" />
+												<span class="truncate">{item.label}</span>
+											</a>
+										</DropdownMenu.Item>
+									{/each}
+								{:else}
+									<DropdownMenu.Item>
+										<a
+											href={localizeHref('/account/organization')}
+											class="flex w-full items-center"
+										>
+											<Plus class="mr-2 h-4 w-4 shrink-0" />
+											{m.drab_dark_squirrel_fetch()}
+										</a>
+									</DropdownMenu.Item>
+								{/if}
 							</DropdownMenu.Group>
 							<DropdownMenu.Separator />
 							<DropdownMenu.Item>
@@ -185,11 +226,11 @@
 				<!-- Desktop Navigation (Sidebar) -->
 				<aside class="hidden shrink-0 lg:block lg:w-1/4">
 					<nav class="flex flex-col space-y-1">
-						{#each navItems as item (item.href)}
+						{#each personalNavItems as item (item.href)}
 							<Button
 								href={item.href}
-								variant={currentPath === item.href ? 'secondary' : 'ghost'}
-								class="justify-start {currentPath === item.href
+								variant={currentPath.startsWith(item.href) ? 'secondary' : 'ghost'}
+								class="justify-start {currentPath.startsWith(item.href)
 									? 'bg-muted hover:bg-muted'
 									: 'hover:bg-transparent hover:underline'}"
 							>
@@ -203,7 +244,36 @@
 								{/if}
 							</Button>
 						{/each}
+						<div
+							class="text-muted-foreground px-2 pt-4 pb-1 text-xs font-medium tracking-wide uppercase"
+						>
+							{m.wild_inner_fox_honor()}
+						</div>
+						{#if orgNavItems.length > 0}
+							{#each orgNavItems as item (item.href)}
+								<Button
+									href={item.href}
+									variant={currentPath.startsWith(item.href) ? 'secondary' : 'ghost'}
+									class="justify-start {currentPath.startsWith(item.href)
+										? 'bg-muted hover:bg-muted'
+										: 'hover:bg-transparent hover:underline'}"
+								>
+									<svelte:component this={item.icon} class="mr-2 h-4 w-4 shrink-0" />
+									<span class="truncate">{item.label}</span>
+								</Button>
+							{/each}
+						{:else}
+							<Button
+								href={localizeHref('/account/org/create')}
+								variant="ghost"
+								class="justify-start hover:bg-transparent hover:underline"
+							>
+								<Plus class="mr-2 h-4 w-4" />
+								{m.drab_dark_squirrel_fetch()}
+							</Button>
+						{/if}
 					</nav>
+					<Separator class="my-2" />
 					<div class="mt-1">
 						<form method="post" action="/account?/logout" use:enhance={handleLogout}>
 							<Button

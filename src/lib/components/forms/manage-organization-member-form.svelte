@@ -2,7 +2,7 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
+	import RoleSelector from '$lib/components/forms/form-fields/role-selector.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { Separator } from '$lib/components/ui/separator';
 	import { MembershipRole } from '$lib/data/enums';
@@ -68,15 +68,7 @@
 	<form method="POST" use:enhance action="?/manageOrganizationMember">
 		{#if isOwner}
 			<Form.Fieldset {form} name="role" class="pb-4">
-				<RadioGroup
-					options={[
-						{ value: MembershipRole.MEMBER, label: m.cuddly_flat_salmon_express() },
-						{ value: MembershipRole.OWNER, label: m.lower_few_turtle_propel() }
-					]}
-					label={m.bad_close_anaconda_forgive()}
-					bind:value={$formData.role}
-				/>
-				<input type="hidden" name="role" bind:value={$formData.role} />
+				<RoleSelector bind:value={$formData.role} />
 			</Form.Fieldset>
 			{#if userId || inviteId}
 				<Button type="submit" formaction="?/manageOrganizationMember" class="mb-2 w-full"
