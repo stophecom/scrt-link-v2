@@ -59,6 +59,23 @@ export function flyAndScale(
 	};
 }
 
+// Strips common Markdown syntax to produce plain text suitable for JSON-LD / structured data.
+export const stripMarkdown = (text: string): string =>
+	text
+		.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
+		.replace(/!\[[^\]]*\]\([^)]+\)/g, '') // ![alt](url) → remove
+		.replace(/`{1,3}([^`]+)`{1,3}/g, '$1') // `code` or ```code``` → code
+		.replace(/\*\*([^*]+)\*\*/g, '$1') // **bold** → bold
+		.replace(/__([^_]+)__/g, '$1') // __bold__ → bold
+		.replace(/\*([^*]+)\*/g, '$1') // *italic* → italic
+		.replace(/_([^_]+)_/g, '$1') // _italic_ → italic
+		.replace(/^#{1,6}\s+/gm, '') // # heading → heading
+		.replace(/^>\s+/gm, '') // > blockquote → blockquote
+		.replace(/^[-*+]\s+/gm, '') // - list item → list item
+		.replace(/\n{2,}/g, ' ') // multiple newlines → single space
+		.replace(/\n/g, ' ')
+		.trim();
+
 // Custom
 export const copyText = (text: string) => navigator.clipboard.writeText(text);
 

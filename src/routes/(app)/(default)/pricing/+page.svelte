@@ -97,7 +97,7 @@
 	</Section>
 
 	<Section title={m.few_awful_chipmunk_trust()} lead={m.pretty_factual_piranha_hug()}>
-		<Accordion items={accountAndBilling()} defaultOpen={[0]} />
+		<Accordion items={accountAndBilling()} defaultOpen={[0]} jsonLd />
 	</Section>
 
 	<Section
