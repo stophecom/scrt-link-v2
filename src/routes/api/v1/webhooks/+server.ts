@@ -80,10 +80,20 @@ export const POST: RequestHandler = async ({ request }) => {
 						console.error(e);
 					}
 				} else if (['canceled', 'unpaid'].includes(subscription.status)) {
-					await db
+					const [orgResult] = await db
 						.update(organization)
 						.set({ subscriptionTier: TierOptions.CONFIDENTIAL })
-						.where(eq(organization.stripeCustomerId, customerId));
+						.where(eq(organization.stripeCustomerId, customerId))
+						.returning();
+
+					try {
+						await db
+							.update(whiteLabelSite)
+							.set({ published: false })
+							.where(eq(whiteLabelSite.organizationId, orgResult.id));
+					} catch (error) {
+						console.error(error);
+					}
 				}
 			} else if (['trialing', 'active'].includes(subscription.status)) {
 				// Personal subscription event
