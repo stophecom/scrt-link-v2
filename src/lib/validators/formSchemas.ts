@@ -257,8 +257,8 @@ export const passwordChangeWithEncryptionFormSchema = () =>
 export const secretRequestFormSchema = () =>
 	z.object({
 		requestIdHash: z.string().length(64), // SHA-256 hash
-		publicKey: z.string().min(100).max(2000), // RSA-2048 public JWK is ~600 bytes
-		encryptedPrivateKey: z.string().min(100).max(2000), // RSA-2048 private JWK wrapped with MK
+		publicKey: z.string().min(100).max(600), // RSA-2048 public JWK JSON is ~426 chars
+		encryptedPrivateKey: z.string().min(100).max(2500), // IV + AES-GCM(RSA-2048 private JWK) base64 is ~2256 chars
 		encryptedNote: z.string().max(10_000).optional(),
 		encryptedNoteForOwner: z.string().max(10_000).optional(),
 		expiresIn: z
