@@ -321,12 +321,15 @@ export const editOrganization: Action = async (event) => {
 		);
 	}
 
-	await db
+	const [updatedOrg] = await db
 		.update(organization)
-		.set({
-			name
-		})
-		.where(eq(organization.id, organizationId));
+		.set({ name })
+		.where(eq(organization.id, organizationId))
+		.returning();
+
+	if (updatedOrg?.stripeCustomerId) {
+		await stripeInstance.customers.update(updatedOrg.stripeCustomerId, { name });
+	}
 
 	return message(form, {
 		status: 'success',
