@@ -42,25 +42,14 @@ export const GET = async ({ params, locals }: RequestEvent) => {
 			const needsCnameVerification = domainJson?.name !== domainJson.apexName;
 			const subdomain = getSubdomain(domainJson.name, domainJson.apexName);
 
+			const cnameValue = configJson.recommendedCNAME?.[0]?.value ?? 'cname.vercel-dns.com.';
+			const aRecordValue = configJson.recommendedIPv4?.[0]?.value?.[0] ?? '76.76.21.21';
+
 			const instructions = needsTxtVerification
 				? domainJson.verification
 				: needsCnameVerification
-					? [
-							{
-								type: 'CNAME',
-								domain: subdomain,
-								value: 'cname.vercel-dns.com.',
-								reason: ''
-							}
-						]
-					: [
-							{
-								type: 'A',
-								domain: '@',
-								value: '76.76.21.21',
-								reason: ''
-							}
-						];
+					? [{ type: 'CNAME', domain: subdomain, value: cnameValue, reason: '' }]
+					: [{ type: 'A', domain: '@', value: aRecordValue, reason: '' }];
 
 			return json({ message: 'Pending Verification', verified: false, instructions });
 		}

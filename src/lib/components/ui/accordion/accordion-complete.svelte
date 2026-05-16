@@ -2,6 +2,7 @@
 	import { Accordion as AccordionPrimitive } from 'bits-ui';
 	import { slide } from 'svelte/transition';
 
+	import { stripMarkdown } from '$lib/client/utils';
 	import Markdown from '$lib/components/ui/markdown';
 
 	import Content from './accordion-content.svelte';
@@ -14,9 +15,35 @@
 			body: string;
 		}[];
 		defaultOpen?: number[];
+		jsonLd?: boolean;
 	};
-	let { items, defaultOpen = [] }: Props = $props();
+	let { items, defaultOpen = [], jsonLd = false }: Props = $props();
+
+	const jsonLdHtml = $derived.by(() => {
+		if (!jsonLd) return null;
+		const payload = JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'FAQPage',
+			mainEntity: items.map((item) => ({
+				'@type': 'Question',
+				name: stripMarkdown(item.heading),
+				acceptedAnswer: {
+					'@type': 'Answer',
+					text: stripMarkdown(item.body)
+				}
+			}))
+		});
+		// Split closing tag to prevent parser treating it as end of <script> block
+		return `<script type="application/ld+json">${payload}<` + `/script>`;
+	});
 </script>
+
+<svelte:head>
+	{#if jsonLdHtml}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+		{@html jsonLdHtml}
+	{/if}
+</svelte:head>
 
 <AccordionPrimitive.Root
 	class="mb-4 w-full"

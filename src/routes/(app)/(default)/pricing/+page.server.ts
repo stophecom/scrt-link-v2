@@ -49,7 +49,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		error(404, `Pricing page currently not available.`);
 	}
 
-	return { plans, subscription, orgSubscription, orgId, orgName };
+	return { plans, subscription, orgSubscription, orgId, orgName, isPersistentHeader: true };
 };
 
 export const actions: Actions = {
