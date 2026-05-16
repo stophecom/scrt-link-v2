@@ -1557,6 +1557,10 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		};
 
 		if (existingWhiteLabelSite.organizationId) {
+			const allowed = await isUserOrgOwnerOrAdmin(user.id, existingWhiteLabelSite.organizationId);
+			if (!allowed) {
+				return message(form, { status: 'error', title: m.dizzy_sour_liger_treasure() }, { status: 403 });
+			}
 			await db
 				.update(whiteLabelSite)
 				.set(updateSet)
