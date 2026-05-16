@@ -13,10 +13,10 @@
 	type Props = {
 		title: string;
 		lead?: string | Snippet;
+		renderAsHtml?: boolean;
 		metaTitle?: string;
 		metaDescription?: string;
 		metaKeywords?: string;
-		markNotTranslated?: boolean;
 		children: Snippet;
 		wide?: boolean;
 	};
@@ -24,6 +24,7 @@
 	let {
 		title,
 		lead,
+		renderAsHtml,
 		metaTitle,
 		metaDescription = m.elegant_muddy_wren_value(),
 		metaKeywords = m.wise_honest_otter_jump(),
@@ -44,7 +45,7 @@
 		<PageTitle {title} class="text-center" />
 
 		{#if lead}
-			<PageLead {lead} renderAsHtml class="text-center" />
+			<PageLead {lead} {renderAsHtml} class="text-center" />
 		{/if}
 	</Container>
 	{@render children?.()}

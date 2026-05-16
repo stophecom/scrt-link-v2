@@ -6,7 +6,7 @@
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Quote from '$lib/components/blocks/quote.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import CenteredPage from '$lib/components/page/centered-page.svelte';
+	import { CenteredPage } from '$lib/components/page';
 	import Accordion from '$lib/components/ui/accordion';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';

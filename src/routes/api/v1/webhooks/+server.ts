@@ -80,19 +80,23 @@ export const POST: RequestHandler = async ({ request }) => {
 						console.error(e);
 					}
 				} else if (['canceled', 'unpaid'].includes(subscription.status)) {
-					const [orgResult] = await db
-						.update(organization)
-						.set({ subscriptionTier: TierOptions.CONFIDENTIAL })
-						.where(eq(organization.stripeCustomerId, customerId))
-						.returning();
-
 					try {
-						await db
-							.update(whiteLabelSite)
-							.set({ published: false })
-							.where(eq(whiteLabelSite.organizationId, orgResult.id));
+						const [orgResult] = await db
+							.update(organization)
+							.set({ subscriptionTier: TierOptions.CONFIDENTIAL })
+							.where(eq(organization.stripeCustomerId, customerId))
+							.returning();
+
+						if (!orgResult) {
+							console.warn(`[webhooks] No org found for customerId ${customerId} on cancellation`);
+						} else {
+							await db
+								.update(whiteLabelSite)
+								.set({ published: false })
+								.where(eq(whiteLabelSite.organizationId, orgResult.id));
+						}
 					} catch (error) {
-						console.error(error);
+						console.error('[webhooks] Failed to process org cancellation:', error);
 					}
 				}
 			} else if (['trialing', 'active'].includes(subscription.status)) {

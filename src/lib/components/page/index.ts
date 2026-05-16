@@ -1,3 +1,4 @@
+import CenteredPage from '../page/centered-page.svelte';
 import EncryptionFormPage from '../page/encryption-form-page.svelte';
 import RecoverEncryptionPage from '../page/recover-encryption-page.svelte';
 import ResetPasswordPage from '../page/reset-password-page.svelte';
@@ -8,6 +9,7 @@ import WhiteLabelPage from '../page/white-label-page.svelte';
 import Root from './default-page.svelte';
 
 export {
+	CenteredPage,
 	EncryptionFormPage,
 	Root as Page,
 	RecoverEncryptionPage,
