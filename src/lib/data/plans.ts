@@ -12,10 +12,10 @@ export type PlanContentItem = { label: string; tooltip?: string };
 // Defaults for visitors without account
 const defaultLimits = {
 	[SecretType.TEXT]: 150,
-	[SecretType.FILE]: 10 * MB,
+	[SecretType.FILE]: 1 * MB,
 	[SecretType.REDIRECT]: false,
 	[SecretType.SNAP]: false,
-	[SecretType.NEOGRAM]: false,
+	[SecretType.NEOGRAM]: true,
 	secretRequests: false,
 	apiAccess: false,
 	passwordAllowed: false,
