@@ -8,6 +8,6 @@
 </script>
 
 <Section wide title={m.few_awful_chipmunk_trust()} lead={m.stock_keen_marten_commend()}>
-	<Accordion items={business()} />
+	<Accordion items={business()} jsonLd />
 	<Button variant="outline" href={localizeHref('/faq')}>{m.inner_known_mare_breathe()}</Button>
 </Section>

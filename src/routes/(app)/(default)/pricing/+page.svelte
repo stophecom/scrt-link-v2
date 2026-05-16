@@ -6,7 +6,7 @@
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Quote from '$lib/components/blocks/quote.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import Page from '$lib/components/page/default-page.svelte';
+	import { CenteredPage } from '$lib/components/page';
 	import Accordion from '$lib/components/ui/accordion';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
@@ -37,15 +37,15 @@
 	});
 </script>
 
-<Page
+<CenteredPage
 	wide
 	title={m.moving_quaint_buzzard_trip()}
-	lead={m.slimy_next_shad_fall()}
+	lead={m.stark_bold_pricing_lead()}
 	metaDescription={m.extra_minor_lark_clip()}
 	metaKeywords={m.vivid_hour_starfish_fear()}
 	class="pb-0"
 >
-	<Container variant="wide" class="mb-6 sm:py-10">
+	<Container variant="wide" class="mb-6 sm:py-4">
 		{#if data.plans}
 			<PlanSelection
 				plans={data.plans}
@@ -97,7 +97,7 @@
 	</Section>
 
 	<Section title={m.few_awful_chipmunk_trust()} lead={m.pretty_factual_piranha_hug()}>
-		<Accordion items={accountAndBilling()} defaultOpen={[0]} />
+		<Accordion items={accountAndBilling()} defaultOpen={[0]} jsonLd />
 	</Section>
 
 	<Section
@@ -130,4 +130,4 @@
 		>
 		<small>{m.mild_warm_jay_sing()}</small>
 	</div>
-</Page>
+</CenteredPage>

@@ -321,12 +321,15 @@ export const editOrganization: Action = async (event) => {
 		);
 	}
 
-	await db
+	const [updatedOrg] = await db
 		.update(organization)
-		.set({
-			name
-		})
-		.where(eq(organization.id, organizationId));
+		.set({ name })
+		.where(eq(organization.id, organizationId))
+		.returning();
+
+	if (updatedOrg?.stripeCustomerId) {
+		await stripeInstance.customers.update(updatedOrg.stripeCustomerId, { name });
+	}
 
 	return message(form, {
 		status: 'success',
@@ -1554,6 +1557,14 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		};
 
 		if (existingWhiteLabelSite.organizationId) {
+			const allowed = await isUserOrgOwnerOrAdmin(user.id, existingWhiteLabelSite.organizationId);
+			if (!allowed) {
+				return message(
+					form,
+					{ status: 'error', title: m.dizzy_sour_liger_treasure() },
+					{ status: 403 }
+				);
+			}
 			await db
 				.update(whiteLabelSite)
 				.set(updateSet)

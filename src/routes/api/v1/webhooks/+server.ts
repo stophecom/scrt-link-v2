@@ -23,9 +23,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		event = stripeInstance.webhooks.constructEvent(rawBody, sig, webhookSecret);
 	} catch (e) {
 		const errorMessage = e instanceof Error ? e.message : 'Unexpected error';
-		// On error, log and return the error message.
-		console.error(e);
-		throw new Error(errorMessage);
+		console.error('[webhook] signature verification failed:', errorMessage);
+		return new Response(errorMessage, { status: 400 });
 	}
 
 	// Successfully constructed event.
@@ -80,10 +79,24 @@ export const POST: RequestHandler = async ({ request }) => {
 						console.error(e);
 					}
 				} else if (['canceled', 'unpaid'].includes(subscription.status)) {
-					await db
-						.update(organization)
-						.set({ subscriptionTier: TierOptions.CONFIDENTIAL })
-						.where(eq(organization.stripeCustomerId, customerId));
+					try {
+						const [orgResult] = await db
+							.update(organization)
+							.set({ subscriptionTier: TierOptions.CONFIDENTIAL })
+							.where(eq(organization.stripeCustomerId, customerId))
+							.returning();
+
+						if (!orgResult) {
+							console.warn(`[webhooks] No org found for customerId ${customerId} on cancellation`);
+						} else {
+							await db
+								.update(whiteLabelSite)
+								.set({ published: false })
+								.where(eq(whiteLabelSite.organizationId, orgResult.id));
+						}
+					} catch (error) {
+						console.error('[webhooks] Failed to process org cancellation:', error);
+					}
 				}
 			} else if (['trialing', 'active'].includes(subscription.status)) {
 				// Personal subscription event
@@ -111,6 +124,11 @@ export const POST: RequestHandler = async ({ request }) => {
 						.where(eq(user.stripeCustomerId, customerId))
 						.returning();
 
+					if (!userResult) {
+						console.warn(`[webhook] no user found for customerId ${customerId}`);
+						break;
+					}
+
 					if (subscription.status === 'trialing') {
 						await sendSubscriptionTrialStartEmail(
 							userResult.email,
@@ -136,6 +154,11 @@ export const POST: RequestHandler = async ({ request }) => {
 					.set({ subscriptionTier: TierOptions.CONFIDENTIAL })
 					.where(eq(user.stripeCustomerId, customerId))
 					.returning();
+
+				if (!userResult) {
+					console.warn(`[webhook] no user found for customerId ${customerId} on cancellation`);
+					break;
+				}
 
 				try {
 					await db

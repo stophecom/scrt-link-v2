@@ -55,6 +55,10 @@ export interface DomainConfigResponse {
 	acceptedChallenges?: ('dns-01' | 'http-01')[];
 	/** Whether or not the domain is configured AND we can automatically generate a TLS certificate. */
 	misconfigured: boolean;
+	/** Ranked list of recommended A record IPs. Index 0 is the preferred value. */
+	recommendedIPv4?: { rank: number; value: string[] }[];
+	/** Ranked list of recommended CNAME targets. Index 0 is the preferred value. */
+	recommendedCNAME?: { rank: number; value: string }[];
 }
 
 // From https://vercel.com/docs/rest-api/endpoints#verify-project-domain

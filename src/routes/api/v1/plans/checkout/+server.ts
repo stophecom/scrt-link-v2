@@ -51,7 +51,6 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 			const params: Stripe.Checkout.SessionCreateParams = {
 				locale: 'auto',
 				mode: 'subscription',
-
 				allow_promotion_codes: true,
 				customer: stripeCustomerId,
 				currency,
