@@ -1507,7 +1507,20 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		lead,
 		description,
 		imprint,
-		primaryColor,
+		lightBackground,
+		lightForeground,
+		lightPrimary,
+		lightCard,
+		lightDestructive,
+		lightSuccess,
+		lightInfo,
+		darkBackground,
+		darkForeground,
+		darkPrimary,
+		darkCard,
+		darkDestructive,
+		darkSuccess,
+		darkInfo,
 		logo,
 		logoDarkMode,
 		appIcon,
@@ -1530,7 +1543,36 @@ export const saveWhiteLabelSite: Action = async (event) => {
 
 	// Prepare theme
 	const themeJson = (existingWhiteLabelSite?.theme as Theme) ?? {};
-	Object.assign(themeJson, dropUndefinedValuesFromObject({ primaryColor }));
+
+	// Legacy: keep top-level primaryColor in sync with lightPrimary
+	themeJson.primaryColor = (lightPrimary ??
+		themeJson.primaryColor) as typeof themeJson.primaryColor;
+
+	const lightColors = dropUndefinedValuesFromObject({
+		background: lightBackground,
+		foreground: lightForeground,
+		primary: lightPrimary,
+		card: lightCard,
+		destructive: lightDestructive,
+		success: lightSuccess,
+		info: lightInfo
+	});
+	if (Object.keys(lightColors).length) {
+		themeJson.light = { ...themeJson.light, ...lightColors } as typeof themeJson.light;
+	}
+
+	const darkColors = dropUndefinedValuesFromObject({
+		background: darkBackground,
+		foreground: darkForeground,
+		primary: darkPrimary,
+		card: darkCard,
+		destructive: darkDestructive,
+		success: darkSuccess,
+		info: darkInfo
+	});
+	if (Object.keys(darkColors).length) {
+		themeJson.dark = { ...themeJson.dark, ...darkColors } as typeof themeJson.dark;
+	}
 
 	if (!existingWhiteLabelSite) {
 		return message(

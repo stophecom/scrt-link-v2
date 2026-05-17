@@ -3,10 +3,42 @@
 
 	import { page } from '$app/state';
 	import { getLocale } from '$lib/paraglide/runtime';
+	import type { Theme } from '$lib/types';
 
 	import type { LayoutData } from './$types';
 
 	let { children, data }: { data: LayoutData; children: Snippet } = $props();
+
+	// Build a dynamic <style> tag injecting CSS custom property overrides for both modes.
+	// String-concat prevents Svelte's CSS preprocessor from trying to parse the template literal.
+	function buildThemeStyleTag(theme: Theme | undefined): string {
+		if (!theme) return '';
+		const rules: string[] = [];
+
+		const cssVars = (colors: Theme['light'] | undefined, fallbackPrimary?: string): string[] => {
+			const pairs: string[] = [];
+			if (colors?.background) pairs.push(`  --background:${colors.background}`);
+			if (colors?.foreground) pairs.push(`  --foreground:${colors.foreground}`);
+			const primary = colors?.primary ?? fallbackPrimary;
+			if (primary) pairs.push(`  --primary:${primary}`);
+			if (colors?.card) pairs.push(`  --card:${colors.card}`);
+			if (colors?.destructive) pairs.push(`  --destructive:${colors.destructive}`);
+			if (colors?.success) pairs.push(`  --success:${colors.success}`);
+			if (colors?.info) pairs.push(`  --info:${colors.info}`);
+			return pairs;
+		};
+
+		const lightPairs = cssVars(theme.light, theme.primaryColor);
+		if (lightPairs.length) rules.push(`:root{${lightPairs.join(';')}}`);
+
+		const darkPairs = cssVars(theme.dark);
+		if (darkPairs.length) rules.push(`.dark{${darkPairs.join(';')}}`);
+
+		if (!rules.length) return '';
+		return '<' + 'style>' + rules.join('') + '</' + 'style>';
+	}
+
+	const themeStyleTag = $derived(buildThemeStyleTag(data.theme as Theme));
 
 	const faviconUrl32 = data.appIcon
 		? `${data.appIcon}?auto=compress&w=32&h=32&fit=crop&fm=png`
@@ -45,6 +77,8 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<div class="min-h-screen" style="--color-primary: {data.theme?.primaryColor || '#000000'}">
+<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+{@html themeStyleTag}
+<div class="min-h-screen">
 	{@render children()}
 </div>
