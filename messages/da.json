@@ -937,5 +937,16 @@
 	"flat_warm_logs_secret_type": "Type",
 	"flat_warm_logs_secret_count": "Antal",
 	"flat_warm_logs_req_responded": "Besvaret",
-	"flat_warm_logs_req_rate": "Svarprocent"
+	"flat_warm_logs_req_rate": "Svarprocent",
+	"white_label_theme_background": "Baggrund",
+	"white_label_theme_foreground": "Forgrund",
+	"white_label_theme_primary": "Primær",
+	"white_label_theme_primary_foreground": "Primær forgrund",
+	"white_label_theme_advanced_colors": "Flere farver",
+	"white_label_theme_less_colors": "Færre farver",
+	"white_label_theme_reset": "Nulstil tema",
+	"white_label_theme_card": "Kort",
+	"white_label_theme_destructive": "Destruktiv",
+	"white_label_theme_success": "Succes",
+	"white_label_theme_info": "Info"
 }
