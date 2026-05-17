@@ -8,7 +8,14 @@ const map: Record<Locale, string> = {
 	es: 'Español',
 	pt: 'Português',
 	ru: 'Русский',
-	'zh-CN': '中文(简体)'
+	'zh-CN': '中文(简体)',
+	it: 'Italiano',
+	pl: 'Polski',
+	sv: 'Svenska',
+	nl: 'Nederlands',
+	ja: '日本語',
+	no: 'Norsk',
+	da: 'Dansk'
 };
 
 export const getSupportedLocales = () => {

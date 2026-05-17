@@ -5,7 +5,7 @@
 
 	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
-	import { copyText } from '$lib/client/utils';
+	import { copyText, originToUnicode } from '$lib/client/utils';
 	import SecretForm, { type SecretFormProps } from '$lib/components/forms/secret-form.svelte';
 	import Card from '$lib/components/ui/card';
 	import * as Tabs from '$lib/components/ui/tabs';
@@ -39,7 +39,7 @@
 
 	let masterKey = $state('');
 	let successMessage = $state('');
-	let link: string = $derived(`${page.url.origin}/s#${masterKey}`);
+	let link: string = $derived(`${originToUnicode(page.url.origin)}/s#${masterKey}`);
 	let currentTab = $state('text');
 
 	let enabledSecretTypes = $derived(
