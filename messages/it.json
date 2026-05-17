@@ -937,5 +937,16 @@
 	"flat_warm_logs_secret_type": "Tipo",
 	"flat_warm_logs_secret_count": "Conteggio",
 	"flat_warm_logs_req_responded": "Risposto",
-	"flat_warm_logs_req_rate": "Tasso di risposta"
+	"flat_warm_logs_req_rate": "Tasso di risposta",
+	"white_label_theme_background": "Sfondo",
+	"white_label_theme_foreground": "Primo piano",
+	"white_label_theme_primary": "Principale",
+	"white_label_theme_primary_foreground": "Primo piano principale",
+	"white_label_theme_advanced_colors": "Altri colori",
+	"white_label_theme_less_colors": "Meno colori",
+	"white_label_theme_reset": "Reimposta tema",
+	"white_label_theme_card": "Scheda",
+	"white_label_theme_destructive": "Distruttivo",
+	"white_label_theme_success": "Successo",
+	"white_label_theme_info": "Info"
 }

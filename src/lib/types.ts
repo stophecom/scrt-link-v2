@@ -14,8 +14,21 @@ export type BlogPostMeta = {
 };
 
 type ColorValueHex = `#${string}`;
+
+type ThemeColors = {
+	background?: ColorValueHex;
+	foreground?: ColorValueHex;
+	primary?: ColorValueHex;
+	card?: ColorValueHex;
+	destructive?: ColorValueHex;
+	success?: ColorValueHex;
+	info?: ColorValueHex;
+};
+
 export type Theme = {
-	primaryColor: ColorValueHex;
+	primaryColor?: ColorValueHex; // LEGACY — kept for backwards compat
+	light?: ThemeColors;
+	dark?: ThemeColors;
 };
 
 // Vercel Domain API
