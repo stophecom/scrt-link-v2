@@ -1,14 +1,20 @@
 <script lang="ts">
 	import {
 		encryptResponseContent,
+		exportPublicKey,
 		generateAESKey,
+		generateKeyPair,
+		generateRandomUrlSafeString,
 		importPublicKeyJWK,
+		MASTER_PASSWORD_LENGTH,
+		SecretType,
 		wrapAESKeyWithRSA
 	} from '@scrt-link/core';
 	import { onMount } from 'svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4 } from 'sveltekit-superforms/adapters';
 
+	import SecretFileUpload from '$lib/components/forms/form-fields/secret-file-upload.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { m } from '$lib/paraglide/messages.js';
@@ -23,6 +29,8 @@
 		form: SuperValidated<SecretResponseFormSchema>;
 		publicKeyJWK: string;
 		requestIdHash: string;
+		allowAttachment?: boolean;
+		maxAttachmentSize?: number;
 		successMessage?: string;
 	};
 
@@ -30,10 +38,21 @@
 		form: formProp,
 		publicKeyJWK,
 		requestIdHash,
+		allowAttachment = false,
+		maxAttachmentSize,
 		successMessage = $bindable('')
 	}: Props = $props();
 
 	let responseText = $state('');
+
+	// Attachment state — a random file password + an ephemeral ECDSA keypair.
+	// The password is delivered E2E inside the response envelope; the public key
+	// is sent in plaintext so the server can authorize chunk downloads.
+	const fileKey = generateRandomUrlSafeString(MASTER_PASSWORD_LENGTH);
+	let signingKeyPair: CryptoKeyPair | undefined = $state();
+	let fileContent = $state(''); // JSON { bucket, chunks }
+	let fileMeta = $state(''); // JSON { name, size, mimeType, isSingleChunk }
+	let isFileUploading = $state(false);
 
 	const sForm = superForm(formProp, {
 		validators: zod4(secretResponseFormSchema()),
@@ -41,11 +60,14 @@
 		applyAction: false,
 
 		onSubmit: async ({ jsonData, cancel }) => {
-			if (!responseText.trim()) {
+			const hasText = !!responseText.trim();
+			const hasFile = !!fileContent && !!fileMeta;
+
+			if (!hasText && !hasFile) {
 				$message = {
 					status: 'error',
 					title: 'Error',
-					description: 'Please enter your response.'
+					description: 'Please enter your response or attach a file.'
 				};
 				cancel();
 				return;
@@ -58,15 +80,29 @@
 				// Generate a random AES key for this response
 				const aesKey = await generateAESKey();
 
-				// Encrypt the response content with AES
-				$formData.encryptedResponseContent = await encryptResponseContent(responseText, aesKey);
-
 				// Wrap the AES key with the RSA public key
 				$formData.wrappedResponseKey = await wrapAESKeyWithRSA(aesKey, rsaPublicKey);
 
+				if (hasText) {
+					$formData.encryptedResponseContent = await encryptResponseContent(responseText, aesKey);
+				}
+
+				if (hasFile && signingKeyPair) {
+					// Pack the file password + reference + meta into the E2E envelope
+					$formData.encryptedResponseFile = await encryptResponseContent(
+						JSON.stringify({
+							fileKey,
+							fileReference: JSON.parse(fileContent),
+							fileMeta: JSON.parse(fileMeta)
+						}),
+						aesKey
+					);
+					$formData.responseFilePublicKey = await exportPublicKey(signingKeyPair.publicKey);
+				}
+
 				// Encrypt metadata with the same AES key
 				$formData.encryptedResponseMeta = await encryptResponseContent(
-					JSON.stringify({ type: 'text' }),
+					JSON.stringify({ type: hasFile ? 'file' : 'text' }),
 					aesKey
 				);
 
@@ -105,8 +141,11 @@
 
 	const { form: formData, message, delayed, enhance } = sForm;
 
-	onMount(() => {
+	onMount(async () => {
 		$formData.requestIdHash = requestIdHash;
+		if (allowAttachment) {
+			signingKeyPair = await generateKeyPair();
+		}
 	});
 </script>
 
@@ -122,7 +161,26 @@
 			/>
 		</Form.Field>
 
-		<Form.Button delayed={$delayed} data-testid="submit-response"
+		{#if allowAttachment && signingKeyPair}
+			<div>
+				<div class="mb-1 text-sm leading-none font-medium">
+					{m.flat_warm_resp_attachment_label()}
+				</div>
+				<div class="min-h-32 py-2">
+					<SecretFileUpload
+						secretType={SecretType.FILE}
+						bind:content={fileContent}
+						bind:meta={fileMeta}
+						masterKey={fileKey}
+						privateKey={signingKeyPair.privateKey}
+						maxFileSize={maxAttachmentSize}
+						bind:loading={isFileUploading}
+					/>
+				</div>
+			</div>
+		{/if}
+
+		<Form.Button delayed={$delayed} disabled={isFileUploading} data-testid="submit-response"
 			>{m.bold_true_ram_send()}</Form.Button
 		>
 	</form>

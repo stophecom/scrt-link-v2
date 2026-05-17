@@ -28,6 +28,7 @@
 	import { getExpiresInOptions } from '../../data/secretSettings';
 	import UpgradeNotice from '../blocks/upgrade-notice.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
+	import Checkbox from './form-fields/checkbox.svelte';
 	import RadioGroup from './form-fields/radio-group.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
@@ -166,6 +167,14 @@
 				label={m.soft_kind_swan_write()}
 				placeholder={m.pale_quick_finch_hint()}
 				rows={4}
+			/>
+		</Form.Field>
+
+		<Form.Field form={sForm} name="allowAttachment" class="pb-2">
+			<Checkbox
+				bind:checked={$formData.allowAttachment}
+				label={m.flat_warm_req_allow_attachment()}
+				data-testid="input-allow-attachment"
 			/>
 		</Form.Field>
 

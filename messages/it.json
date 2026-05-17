@@ -937,5 +937,9 @@
 	"flat_warm_logs_secret_type": "Tipo",
 	"flat_warm_logs_secret_count": "Conteggio",
 	"flat_warm_logs_req_responded": "Risposto",
-	"flat_warm_logs_req_rate": "Tasso di risposta"
+	"flat_warm_logs_req_rate": "Tasso di risposta",
+	"flat_warm_req_allow_attachment": "Consenti allegato",
+	"flat_warm_resp_attachment_label": "Allegato (facoltativo)",
+	"flat_warm_resp_download_attachment": "Scarica allegato",
+	"flat_warm_resp_attachment_heading": "Allegato"
 }

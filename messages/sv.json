@@ -937,5 +937,9 @@
 	"flat_warm_logs_secret_type": "Typ",
 	"flat_warm_logs_secret_count": "Antal",
 	"flat_warm_logs_req_responded": "Besvarad",
-	"flat_warm_logs_req_rate": "Svarsfrekvens"
+	"flat_warm_logs_req_rate": "Svarsfrekvens",
+	"flat_warm_req_allow_attachment": "Tillåt bilaga",
+	"flat_warm_resp_attachment_label": "Bilaga (valfritt)",
+	"flat_warm_resp_download_attachment": "Ladda ner bilaga",
+	"flat_warm_resp_attachment_heading": "Bilaga"
 }

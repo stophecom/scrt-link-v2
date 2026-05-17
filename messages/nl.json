@@ -937,5 +937,9 @@
 	"flat_warm_logs_secret_type": "Type",
 	"flat_warm_logs_secret_count": "Aantal",
 	"flat_warm_logs_req_responded": "Beantwoord",
-	"flat_warm_logs_req_rate": "Responspercentage"
+	"flat_warm_logs_req_rate": "Responspercentage",
+	"flat_warm_req_allow_attachment": "Bijlage toestaan",
+	"flat_warm_resp_attachment_label": "Bijlage (optioneel)",
+	"flat_warm_resp_download_attachment": "Bijlage downloaden",
+	"flat_warm_resp_attachment_heading": "Bijlage"
 }

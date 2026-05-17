@@ -937,5 +937,9 @@
 	"flat_warm_logs_secret_type": "类型",
 	"flat_warm_logs_secret_count": "数量",
 	"flat_warm_logs_req_responded": "已回复",
-	"flat_warm_logs_req_rate": "回复率"
+	"flat_warm_logs_req_rate": "回复率",
+	"flat_warm_req_allow_attachment": "允许附件",
+	"flat_warm_resp_attachment_label": "附件（可选）",
+	"flat_warm_resp_download_attachment": "下载附件",
+	"flat_warm_resp_attachment_heading": "附件"
 }

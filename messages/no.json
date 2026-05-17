@@ -937,5 +937,9 @@
 	"flat_warm_logs_secret_type": "Type",
 	"flat_warm_logs_secret_count": "Antall",
 	"flat_warm_logs_req_responded": "Besvart",
-	"flat_warm_logs_req_rate": "Svarprosent"
+	"flat_warm_logs_req_rate": "Svarprosent",
+	"flat_warm_req_allow_attachment": "Tillat vedlegg",
+	"flat_warm_resp_attachment_label": "Vedlegg (valgfritt)",
+	"flat_warm_resp_download_attachment": "Last ned vedlegg",
+	"flat_warm_resp_attachment_heading": "Vedlegg"
 }

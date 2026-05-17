@@ -1846,8 +1846,14 @@ export const postSecretResponse: Action = async (event) => {
 		return message(form, rateLimitErrorMessage(), { status: 429 });
 	}
 
-	const { requestIdHash, encryptedResponseContent, wrappedResponseKey, encryptedResponseMeta } =
-		form.data;
+	const {
+		requestIdHash,
+		encryptedResponseContent,
+		wrappedResponseKey,
+		encryptedResponseMeta,
+		encryptedResponseFile,
+		responseFilePublicKey
+	} = form.data;
 
 	// Verify the request exists, is not expired, and has no response yet
 	const request = await getSecretRequestByHash(requestIdHash);
@@ -1881,7 +1887,9 @@ export const postSecretResponse: Action = async (event) => {
 			requestIdHash,
 			encryptedResponseContent,
 			wrappedResponseKey,
-			encryptedResponseMeta
+			encryptedResponseMeta,
+			encryptedResponseFile,
+			responseFilePublicKey
 		});
 
 		if (!result) {
