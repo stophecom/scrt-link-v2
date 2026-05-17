@@ -1,6 +1,6 @@
 ---
 name: translate-keys
-description: Translate newly added keys in messages/en.json to all other locales (de, es, fr, pt, ru, zh-CN). Use after adding keys to en.json.
+description: Translate newly added keys in messages/en.json to all other locales (de, es, fr, pt, ru, zh-CN, it, pl, sv, nl, ja, no, da). Use after adding keys to en.json.
 ---
 
 # translate-keys
@@ -19,6 +19,13 @@ Target locales to update:
 - `messages/pt.json` (Portuguese)
 - `messages/ru.json` (Russian)
 - `messages/zh-CN.json` (Simplified Chinese)
+- `messages/it.json` (Italian)
+- `messages/pl.json` (Polish)
+- `messages/sv.json` (Swedish)
+- `messages/nl.json` (Dutch)
+- `messages/ja.json` (Japanese)
+- `messages/no.json` (Norwegian Bokmål)
+- `messages/da.json` (Danish)
 
 ## Procedure
 
