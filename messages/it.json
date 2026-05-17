@@ -941,5 +941,16 @@
 	"flat_warm_req_allow_attachment": "Consenti allegato",
 	"flat_warm_resp_attachment_label": "Allegato (facoltativo)",
 	"flat_warm_resp_download_attachment": "Scarica allegato",
-	"flat_warm_resp_attachment_heading": "Allegato"
+	"flat_warm_resp_attachment_heading": "Allegato",
+	"white_label_theme_background": "Sfondo",
+	"white_label_theme_foreground": "Primo piano",
+	"white_label_theme_primary": "Principale",
+	"white_label_theme_primary_foreground": "Primo piano principale",
+	"white_label_theme_advanced_colors": "Altri colori",
+	"white_label_theme_less_colors": "Meno colori",
+	"white_label_theme_reset": "Reimposta tema",
+	"white_label_theme_card": "Scheda",
+	"white_label_theme_destructive": "Distruttivo",
+	"white_label_theme_success": "Successo",
+	"white_label_theme_info": "Info"
 }

@@ -22,7 +22,10 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		error(404, 'Request not found.');
 	}
 
-	if ((!request.encryptedResponseContent && !request.encryptedResponseFile) || !request.wrappedResponseKey) {
+	if (
+		(!request.encryptedResponseContent && !request.encryptedResponseFile) ||
+		!request.wrappedResponseKey
+	) {
 		error(400, 'No response has been submitted yet.');
 	}
 

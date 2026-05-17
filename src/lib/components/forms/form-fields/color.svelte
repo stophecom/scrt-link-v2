@@ -22,7 +22,7 @@
 <Form.Control let:attrs>
 	<Form.Label class={isHiddenLabel ? 'sr-only' : ''}>{label}</Form.Label>
 	<div
-		class="ring-offset-background focus-within:ring-ring relative h-14 w-24 rounded focus-within:ring-2 focus-within:ring-offset-2"
+		class="border-border ring-offset-background focus-within:ring-ring relative h-14 w-24 rounded border focus-within:ring-2 focus-within:ring-offset-2"
 		style="background-color: {value}"
 	>
 		<input

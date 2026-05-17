@@ -1,11 +1,13 @@
 <script lang="ts">
 	import {
 		CheckCircle2,
+		ChevronDown,
 		ChevronLeft,
 		ChevronUp,
 		CircleAlert,
 		SquareArrowUpRight
 	} from '@lucide/svelte';
+	import { mode } from 'mode-watcher';
 	import { useDebounce } from 'runed';
 	import { tick } from 'svelte';
 	import { elasticOut } from 'svelte/easing';
@@ -14,6 +16,7 @@
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
+	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
 	import PageLead from '$lib/components/blocks/page-lead.svelte';
 	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import Color from '$lib/components/forms/form-fields/color.svelte';
@@ -31,6 +34,7 @@
 	import Markdown from '$lib/components/ui/markdown';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import Spinner from '$lib/components/ui/spinner/spinner.svelte';
+	import Toggle from '$lib/components/ui/toggle/toggle.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
@@ -41,6 +45,7 @@
 
 	let showSuccess = $state(false);
 	let showSpinner = $state(false);
+	let showAdvancedColors = $state(false);
 
 	const submitDebounced = useDebounce(() => {
 		submit();
@@ -55,6 +60,12 @@
 
 		onChange() {
 			submitDebounced();
+		},
+		onUpdated() {
+			if (typeof document !== 'undefined') {
+				const iframe = document.getElementById('iframe-preview') as HTMLIFrameElement;
+				if (iframe) iframe.src += '';
+			}
 		},
 		onError({ result }) {
 			// We use message for unexpected errors
@@ -78,13 +89,6 @@
 	$effect(() => {
 		if ($message) {
 			showSpinner = true;
-
-			if (typeof document !== 'undefined') {
-				const iframe = document.getElementById('iframe-preview') as HTMLIFrameElement;
-				if (iframe) {
-					iframe.src += '';
-				}
-			}
 
 			setTimeout(() => {
 				showSpinner = false;
@@ -195,13 +199,94 @@
 			</Card>
 
 			<Card class="mb-6" title={m.shy_smug_crow_sing()} description={m.strong_strong_swan_hurl()}>
-				<Form.Field {form} name="primaryColor">
-					<Color
-						label={m.last_wild_mongoose_heart()}
-						bind:value={$formData.primaryColor}
-						{...$constraints.primaryColor}
-					/>
-				</Form.Field>
+				<div class="grid grid-cols-4 gap-4">
+					{#if mode.current === 'dark'}
+						<Form.Field {form} name="darkPrimary">
+							<Color label={m.white_label_theme_primary()} bind:value={$formData.darkPrimary} />
+						</Form.Field>
+						{#if showAdvancedColors}
+							<Form.Field {form} name="darkBackground">
+								<Color
+									label={m.white_label_theme_background()}
+									bind:value={$formData.darkBackground}
+								/>
+							</Form.Field>
+							<Form.Field {form} name="darkForeground">
+								<Color
+									label={m.white_label_theme_foreground()}
+									bind:value={$formData.darkForeground}
+								/>
+							</Form.Field>
+							<Form.Field {form} name="darkCard">
+								<Color label={m.white_label_theme_card()} bind:value={$formData.darkCard} />
+							</Form.Field>
+							<Form.Field {form} name="darkDestructive">
+								<Color
+									label={m.white_label_theme_destructive()}
+									bind:value={$formData.darkDestructive}
+								/>
+							</Form.Field>
+							<Form.Field {form} name="darkSuccess">
+								<Color label={m.white_label_theme_success()} bind:value={$formData.darkSuccess} />
+							</Form.Field>
+							<Form.Field {form} name="darkInfo">
+								<Color label={m.white_label_theme_info()} bind:value={$formData.darkInfo} />
+							</Form.Field>
+						{/if}
+					{:else}
+						<Form.Field {form} name="lightPrimary">
+							<Color label={m.white_label_theme_primary()} bind:value={$formData.lightPrimary} />
+						</Form.Field>
+						{#if showAdvancedColors}
+							<Form.Field {form} name="lightBackground">
+								<Color
+									label={m.white_label_theme_background()}
+									bind:value={$formData.lightBackground}
+								/>
+							</Form.Field>
+							<Form.Field {form} name="lightForeground">
+								<Color
+									label={m.white_label_theme_foreground()}
+									bind:value={$formData.lightForeground}
+								/>
+							</Form.Field>
+							<Form.Field {form} name="lightCard">
+								<Color label={m.white_label_theme_card()} bind:value={$formData.lightCard} />
+							</Form.Field>
+
+							<Form.Field {form} name="lightDestructive">
+								<Color
+									label={m.white_label_theme_destructive()}
+									bind:value={$formData.lightDestructive}
+								/>
+							</Form.Field>
+							<Form.Field {form} name="lightSuccess">
+								<Color label={m.white_label_theme_success()} bind:value={$formData.lightSuccess} />
+							</Form.Field>
+							<Form.Field {form} name="lightInfo">
+								<Color label={m.white_label_theme_info()} bind:value={$formData.lightInfo} />
+							</Form.Field>
+						{/if}
+					{/if}
+				</div>
+
+				<div class="mt-3 flex items-center gap-2">
+					<Toggle variant="outline" size="sm" bind:pressed={showAdvancedColors}>
+						{showAdvancedColors
+							? m.white_label_theme_less_colors()
+							: m.white_label_theme_advanced_colors()}
+						<ChevronDown class="ml-2 h-4 w-4 {showAdvancedColors ? 'rotate-180' : ''}" />
+					</Toggle>
+					<Button type="submit" formaction="?/resetWhiteLabelTheme" variant="outline" size="sm">
+						{m.white_label_theme_reset()}
+					</Button>
+				</div>
+
+				<Separator class="my-4" />
+				<div class="flex items-center gap-3">
+					<span class="text-sm font-medium">{m.hour_lofty_warthog_wish()}</span>
+					<DarkModeSwitcher />
+				</div>
 			</Card>
 
 			<Card
