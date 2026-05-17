@@ -4,12 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-	/* Trust palette */
-	--theme-color-navy: #29416b;
-	--theme-color-slate: #3d556e;
-	--theme-color-cream: #f3eee5;
-	--theme-color-red: #d92f2f;
-
+	--theme-color-navy: hsl(214 43% 29%);
 	/* Legacy theme color options */
 	--theme-color-pink: #e60077;
 	--theme-color-purple: #8645b5;
@@ -25,65 +20,44 @@
 
 		--header-height: 64px; /* Default value. May be overwritten in Header. */
 
-		--background: 38 37% 97%; /* cream */
-		--foreground: 218 50% 12%; /* deep navy */
+		/* Theme colors */
+		--primary: var(--theme-color-navy);
+		--accent: hsl(0, 69%, 52%);
 
-		--muted: 38 20% 94%;
-		--muted-foreground: 211 18% 25%;
+		/* Interface colors */
+		--background: hsl(38 37% 97%); /* cream */
+		--foreground: hsl(218 50% 12%); /* deep navy */
 
-		--popover: 38 25% 97%;
-		--popover-foreground: 218 50% 10%;
+		--muted: oklch(from var(--background) calc(l - 0.05) c h);
+		--muted-foreground: oklch(from var(--text-background) calc(l - 0.1) c h);
 
-		--card: 38 25% 99%;
-		--card-foreground: 218 50% 10%;
+		--card: oklch(from var(--background) calc(l + 0.015) c h);
+		--border: oklch(from var(--background) calc(l - 0.11) c h);
 
-		--border: 38 15% 82%;
-		--input: 38 15% 82%;
-
-		--primary: 214 43% 29%;
-		--primary-foreground: 0 0% 100%;
-
-		--destructive: 0 68% 42%;
-		--destructive-foreground: 0 0% 100%;
-
-		--success: 142 60% 32%;
-		--success-foreground: 142 60% 26%;
-
-		--info: 199 92% 36%;
-
-		--ring: 218 43% 18%;
-
-		--radius: 0.5rem;
+		/* Functional colors */
+		--destructive: hsl(0 68% 42%);
+		--success: hsl(142 60% 32%);
+		--info: hsl(199 92% 36%);
 	}
 
 	.dark {
-		--background: 218 43% 8%; /* deep dark navy */
-		--foreground: 38 25% 90%; /* warm cream */
+		/* Theme colors */
+		--primary: hsl(214 43% 59%);
+		--accent: hsl(0, 69%, 52%);
 
-		--muted: 218 30% 15%;
-		--muted-foreground: 218 12% 62%;
+		/* Interface colors */
+		--background: hsl(218 43% 8%); /* deep dark navy */
+		--foreground: hsl(38 25% 90%); /* warm cream */
+		--muted: oklch(from var(--color-background) calc(l + 0.05) c h);
+		--muted-foreground: oklch(from var(--color-foreground) calc(l + 0.1) c h);
 
-		--popover: 218 43% 6%;
-		--popover-foreground: 38 25% 93%;
+		--card: oklch(from var(--color-background) calc(l - 0.015) c h);
+		--border: oklch(from var(--color-background) calc(l + 0.11) c h);
 
-		--card: 218 35% 5%;
-		--card-foreground: 38 25% 95%;
-
-		--border: 218 22% 22%;
-		--input: 218 22% 22%;
-
-		--primary: 214 43% 59%;
-		--primary-foreground: 0 0% 0%;
-
-		--destructive: 0 72% 68%;
-		--destructive-foreground: 0 0% 100%;
-
-		--success: 142 50% 55%;
-		--success-foreground: 142 40% 90%;
-
-		--info: 199 85% 58%;
-
-		--ring: 38 25% 72%;
+		/* Functional colors */
+		--destructive: hsl(0 72% 68%);
+		--success: hsl(142 50% 55%);
+		--info: hsl(199 85% 58%);
 	}
 
 	button:not(:disabled),
@@ -155,34 +129,32 @@
 	--breakpoint-xs: 26rem; /* 416px */
 	--breakpoint-2xl: initial;
 
-	--color-border: hsl(var(--border));
-	--color-input: hsl(var(--input));
-	--color-ring: hsl(var(--ring));
+	/* Theming (Partially used by white-label) */
+	--color-primary: var(--primary);
+	--color-primary-foreground: contrast-color(var(--color-primary));
+	--color-accent: var(--accent);
 
-	--color-background: hsl(var(--background));
-	--color-foreground: hsl(var(--foreground));
+	/* Interface */
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-border: var(--border);
 
-	--color-primary: hsl(var(--primary));
-	--color-primary-foreground: hsl(var(--primary-foreground));
+	/* Functional colors */
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: contrast-color(var(--color-destructive));
+	--color-success: var(--success);
+	--color-info: var(--info);
 
-	--color-accent: var(--theme-color-red);
+	/* Additional theming options where we use defaults from existing variables */
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
 
-	--color-destructive: hsl(var(--destructive));
-	--color-destructive-foreground: hsl(var(--destructive-foreground));
+	--color-input: var(--color-border);
+	--color-ring: var(--color-primary);
 
-	--color-success: hsl(var(--success));
-	--color-success-foreground: hsl(var(--success-foreground));
-
-	--color-info: hsl(var(--info));
-
-	--color-muted: hsl(var(--muted));
-	--color-muted-foreground: hsl(var(--muted-foreground));
-
-	--color-popover: hsl(var(--popover));
-	--color-popover-foreground: hsl(var(--popover-foreground));
-
-	--color-card: hsl(var(--card));
-	--color-card-foreground: hsl(var(--card-foreground));
+	--color-popover: var(--color-background);
+	--color-popover-foreground: var(--color-foreground);
 }
 
 @utility prose {

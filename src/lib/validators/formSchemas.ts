@@ -159,6 +159,62 @@ export const whiteLabelSiteSchema = () =>
 		description: z.string().max(5000).nullable().optional(),
 		imprint: z.string().nullable().optional(),
 		primaryColor: z.string().optional(),
+		lightBackground: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		lightForeground: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		lightPrimary: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		lightCard: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		lightDestructive: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		lightSuccess: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		lightInfo: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		darkBackground: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		darkForeground: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		darkPrimary: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		darkCard: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		darkDestructive: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		darkSuccess: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		darkInfo: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
 		logo: z.string().nullable().optional(),
 		logoDarkMode: z.string().nullable().optional(),
 		appIcon: z.string().nullable().optional(),

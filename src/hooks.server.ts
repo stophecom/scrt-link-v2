@@ -49,11 +49,20 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 	});
 
 const handleWhiteLabelSite: Handle = async ({ event, resolve }) => {
-	const domain = event.params.domain ?? event.url.hostname;
-	event.locals.whiteLabelSite =
-		domain && !isOriginalHostname(domain)
-			? ((await getWhiteLabelSiteByHost(domain)) ?? null)
-			: null;
+	const hostname = event.url.hostname;
+
+	// Determine the domain to look up:
+	// - Custom domain request: use the hostname itself
+	// - Preview route (/white-label/[domain]/...): use the route param
+	// - All other app routes (e.g. /account/white-label/edit/[domain]): don't set whiteLabelSite
+	let domain: string | null = null;
+	if (!isOriginalHostname(hostname)) {
+		domain = hostname;
+	} else if (event.route.id?.startsWith('/white-label/[domain]')) {
+		domain = event.params.domain ?? null;
+	}
+
+	event.locals.whiteLabelSite = domain ? ((await getWhiteLabelSiteByHost(domain)) ?? null) : null;
 	return resolve(event);
 };
 
@@ -101,6 +110,13 @@ function buildThemeStyle(theme: Theme): string {
 }
 
 const handleTheme: Handle = async ({ event, resolve }) => {
+	// White-label sites inject their own theme via white-label/[domain]/+layout.svelte
+	if (event.locals.whiteLabelSite) {
+		return resolve(event, {
+			transformPageChunk: ({ html }) => html.replace('%THEME_CSS%', '')
+		});
+	}
+
 	const themeOption =
 		(event.locals.user?.preferences?.themeColor as ThemeOptions) ?? ThemeOptions.NAVY;
 	const theme = THEME_MAP[themeOption] ?? THEME_MAP[ThemeOptions.NAVY];
