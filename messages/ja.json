@@ -908,7 +908,7 @@
 	"flat_warm_logs_secret_count": "件数",
 	"flat_warm_logs_req_responded": "回答済み",
 	"flat_warm_logs_req_rate": "回答率",
-	"flat_warm_req_allow_attachment": "添付を許可",
+	"flat_warm_req_allow_attachment": "ファイル添付を許可",
 	"flat_warm_resp_attachment_label": "添付ファイル（任意）",
 	"flat_warm_resp_download_attachment": "ダウンロード",
 	"flat_warm_resp_download_again": "再ダウンロード",

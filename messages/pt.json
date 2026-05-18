@@ -908,7 +908,7 @@
 	"flat_warm_logs_secret_count": "Contagem",
 	"flat_warm_logs_req_responded": "Respondido",
 	"flat_warm_logs_req_rate": "Taxa de resposta",
-	"flat_warm_req_allow_attachment": "Permitir anexo",
+	"flat_warm_req_allow_attachment": "Permitir anexo de arquivo",
 	"flat_warm_resp_attachment_label": "Anexo (opcional)",
 	"flat_warm_resp_download_attachment": "Baixar",
 	"flat_warm_resp_download_again": "Baixar novamente",

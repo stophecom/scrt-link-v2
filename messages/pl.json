@@ -908,7 +908,7 @@
 	"flat_warm_logs_secret_count": "Liczba",
 	"flat_warm_logs_req_responded": "Odpowiedziano",
 	"flat_warm_logs_req_rate": "Wskaźnik odpowiedzi",
-	"flat_warm_req_allow_attachment": "Zezwól na załącznik",
+	"flat_warm_req_allow_attachment": "Zezwól na załącznik pliku",
 	"flat_warm_resp_attachment_label": "Załącznik (opcjonalnie)",
 	"flat_warm_resp_download_attachment": "Pobierz",
 	"flat_warm_resp_download_again": "Pobierz ponownie",

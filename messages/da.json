@@ -908,7 +908,7 @@
 	"flat_warm_logs_secret_count": "Antal",
 	"flat_warm_logs_req_responded": "Besvaret",
 	"flat_warm_logs_req_rate": "Svarprocent",
-	"flat_warm_req_allow_attachment": "Tillad vedhæftning",
+	"flat_warm_req_allow_attachment": "Tillad filvedhæftning",
 	"flat_warm_resp_attachment_label": "Vedhæftning (valgfri)",
 	"flat_warm_resp_download_attachment": "Download",
 	"flat_warm_resp_download_again": "Download igen",

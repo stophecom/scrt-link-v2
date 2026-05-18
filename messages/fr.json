@@ -908,7 +908,7 @@
 	"flat_warm_logs_secret_count": "Nombre",
 	"flat_warm_logs_req_responded": "Répondu",
 	"flat_warm_logs_req_rate": "Taux de réponse",
-	"flat_warm_req_allow_attachment": "Autoriser une pièce jointe",
+	"flat_warm_req_allow_attachment": "Autoriser un fichier joint",
 	"flat_warm_resp_attachment_label": "Pièce jointe (facultatif)",
 	"flat_warm_resp_download_attachment": "Télécharger",
 	"flat_warm_resp_download_again": "Télécharger à nouveau",
