@@ -202,16 +202,13 @@
 			{#if isSecretFileOrSnap}
 				{#if isSnap}
 					<!-- Secret Type: Snap -->
-					<SnapRevelation {imageUrl} />
+					<SnapRevelation {imageUrl} destructionTimer={metaParsed?.destructionTimer} />
 				{:else}
 					<!-- Secret Type: File -->
 					<FileRevelation {progress} {fileMeta} />
 				{/if}
 			{:else if isNeogram}
-				<NeogramRevelation
-					neogram={content}
-					neogramDestructionTimer={metaParsed?.neogramDestructionTimer}
-				/>
+				<NeogramRevelation neogram={content} destructionTimer={metaParsed?.destructionTimer} />
 			{:else}
 				<!-- Secret Type: Text -->
 				<div class="break-words whitespace-pre-wrap" data-testid="secret-revelation-content">

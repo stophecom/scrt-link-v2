@@ -40,7 +40,7 @@
 
 	export type Meta = Partial<FileMeta> & {
 		secretType: SecretType;
-		neogramDestructionTimer?: number;
+		destructionTimer?: number;
 	};
 
 	export type SecretFormProps = {
@@ -58,7 +58,7 @@
 		secretType
 	}: SecretFormProps = $props();
 
-	let neogramDestructionTimer = $state(5);
+	let destructionTimer = $state(5);
 
 	let isLoggedIn = $derived(!!effectiveTier);
 	let isWhiteLabel = $derived(!isOriginalHostname(page.url.hostname));
@@ -72,12 +72,11 @@
 			const { content, password, expiresIn, meta, secretIdHash, publicKey, publicNote } = $formData;
 
 			// Encrypt secret before submitting
-			let encryptedMeta =
-				meta ||
-				JSON.stringify({
-					secretType: secretType,
-					neogramDestructionTimer
-				});
+			const metaObject = meta ? JSON.parse(meta) : { secretType };
+			if (secretType === SecretType.NEOGRAM || secretType === SecretType.SNAP) {
+				metaObject.destructionTimer = destructionTimer;
+			}
+			let encryptedMeta = JSON.stringify(metaObject);
 
 			let encryptedContent = content;
 
@@ -296,14 +295,14 @@
 				</Form.Field>
 			{/if}
 
-			{#if secretType === SecretType.NEOGRAM && isNeogramAllowed}
-				<Label for="neogramCountdownTime">{m.due_super_halibut_snap()}</Label>
+			{#if (secretType === SecretType.NEOGRAM && isNeogramAllowed) || (secretType === SecretType.SNAP && isSnapAllowed)}
+				<Label for="destructionTimer">{m.due_super_halibut_snap()}</Label>
 				<Input
-					id="neogramCountdownTime"
+					id="destructionTimer"
 					class="w-44"
 					type="number"
 					max="1000"
-					bind:value={neogramDestructionTimer}
+					bind:value={destructionTimer}
 				/>
 			{/if}
 
