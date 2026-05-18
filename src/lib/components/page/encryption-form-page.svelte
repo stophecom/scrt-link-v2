@@ -197,11 +197,12 @@
 					bind:value={$pwFormData.password}
 					{...$pwConstraints.password}
 					autocomplete="current-password"
+					data-testid="input-password"
 				/>
 			</Form.Field>
 
 			<div class="py-4">
-				<Form.Button delayed={isUnlocking} class="w-full" size="lg">
+				<Form.Button delayed={isUnlocking} class="w-full" size="lg" data-testid="submit-unlock">
 					{isUnlocking ? m.ago_agent_sawfish_nurture() : m.patient_minor_anteater_tear()}
 				</Form.Button>
 			</div>

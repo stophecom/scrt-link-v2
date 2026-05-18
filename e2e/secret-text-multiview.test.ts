@@ -1,9 +1,10 @@
 import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
+import { authFile } from './auth';
+
 test.describe.configure({ mode: 'serial' });
 
-const email = process.env.E2E_USER_EMAIL || 'e2e@scrt.link';
 const password = process.env.E2E_USER_PASSWORD || 'foobar123';
 
 const VIEW_LIMIT = 3;
@@ -13,37 +14,20 @@ let page: Page;
 let secretUrl: string;
 
 test.beforeAll(async ({ browser }) => {
-	page = await browser.newPage();
+	const context = await browser.newContext({ storageState: authFile });
+	page = await context.newPage();
 
-	// Log in — viewLimit > 1 requires a paid-tier account
-	await page.goto('/login');
-	await page.waitForLoadState('networkidle');
-	await page.getByTestId('input-email').fill(email);
-
-	const emailResponse = page.waitForResponse((r) => r.url().includes('?/loginWithEmail'));
-	await page.getByTestId('submit-email').click();
-	await emailResponse;
-
-	await page.waitForURL('**/login/password', { timeout: 10000 });
-
-	const emailInput = page.getByTestId('input-email');
-	if (!(await emailInput.inputValue())) {
-		await emailInput.fill(email);
-	}
-	await page.waitForLoadState('networkidle');
-	const passwordInput = page.getByTestId('input-password');
-	await passwordInput.click();
-	await passwordInput.fill(password);
-	await expect(passwordInput).toHaveValue(password);
-
-	await Promise.all([
-		page.waitForURL(/\/account/, { timeout: 15000 }),
-		page.getByTestId('submit-login').click()
-	]);
+	// Unlock the in-memory master key via the encryption page (session is pre-loaded
+	// from storageState, so no new login request is made).
+	await page.goto('/encryption');
+	await expect(page.getByTestId('input-password')).toBeVisible({ timeout: 10000 });
+	await page.getByTestId('input-password').fill(password);
+	await page.getByTestId('submit-unlock').click();
+	await page.waitForURL(/\/account/, { timeout: 15000 });
 });
 
 test.afterAll(async () => {
-	await page.close();
+	await page.context().close();
 });
 
 test('Create a secret with viewLimit > 1', async ({ baseURL }) => {
