@@ -84,8 +84,8 @@ import {
 } from '../secret-requests';
 import { saveSecret } from '../secrets';
 import { cancelSubscription, getActiveSubscription } from '../stripe';
-import { sendSecretRequestResponseReceiptEmail } from '../transactional-email';
 import stripeInstance from '../stripe';
+import { sendSecretRequestResponseReceiptEmail } from '../transactional-email';
 import {
 	checkIfUserExists,
 	checkIsEmailVerified,
