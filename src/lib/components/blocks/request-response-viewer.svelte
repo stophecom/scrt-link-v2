@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AlertTriangle, Download, Trash2, Unlock } from '@lucide/svelte';
+	import { Trash2, TriangleAlert, Unlock } from '@lucide/svelte';
 	import { decryptResponseContent, unwrapAESKeyWithRSA, unwrapPrivateKey } from '@scrt-link/core';
 	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
@@ -47,7 +47,6 @@
 	let fileMeta = $state<FileMeta | undefined>(undefined);
 	let fileReference = $state<FileReference | undefined>(undefined);
 	let downloadProgress = $state(0);
-	let isDownloading = $state(false);
 	let downloadError = $state('');
 
 	const decrypt = async () => {
@@ -97,7 +96,6 @@
 
 	const downloadAttachment = async () => {
 		if (!fileMeta || !fileReference) return;
-		isDownloading = true;
 		downloadError = '';
 		try {
 			// Single chunk — download and decrypt directly.
@@ -139,8 +137,6 @@
 			);
 		} catch (e) {
 			downloadError = e instanceof Error ? e.message : String(e);
-		} finally {
-			isDownloading = false;
 		}
 	};
 
@@ -164,7 +160,7 @@
 
 	{#if decryptionError}
 		<div class="bg-destructive/10 text-destructive flex items-start gap-3 rounded-lg p-4">
-			<AlertTriangle class="mt-0.5 h-5 w-5 shrink-0" />
+			<TriangleAlert class="mt-0.5 h-5 w-5 shrink-0" />
 			<div>
 				<p class="font-medium">{m.red_sharp_viper_fail()}</p>
 				<p class="mt-1 text-sm opacity-80">{decryptionError}</p>
@@ -177,24 +173,27 @@
 		</div>
 	{:else}
 		{#if decryptedResponse}
-			<div class="bg-muted rounded-lg p-4" data-testid="decrypted-response">
-				<pre class="font-mono text-sm break-words whitespace-pre-wrap">{decryptedResponse}</pre>
+			<div
+				class="bg-muted grid grid-cols-[1fr_min-content] gap-4 rounded-lg p-4"
+				data-testid="decrypted-response"
+			>
+				<pre
+					class="wrap-break-words font-mono text-sm whitespace-pre-wrap">{decryptedResponse}</pre>
+				{#if decryptedResponse}
+					<CopyButton variant="outline" size="sm" text={decryptedResponse} />
+				{/if}
 			</div>
 		{/if}
 
 		{#if fileMeta}
-			<div class="mt-4" data-testid="decrypted-attachment">
-				<FileRevelation progress={downloadProgress} {fileMeta} />
-				<div class="mt-3 flex justify-end">
-					<Button
-						onclick={downloadAttachment}
-						disabled={isDownloading}
-						data-testid="download-attachment"
-					>
-						<Download class="mr-2 h-4 w-4" />
-						{m.flat_warm_resp_download_attachment()}
-					</Button>
-				</div>
+			<div class="mt-6" data-testid="decrypted-attachment">
+				<h3 class="mb-1 text-lg font-semibold">{m.flat_warm_resp_attachment_heading()}</h3>
+				<FileRevelation
+					progress={downloadProgress}
+					{fileMeta}
+					handleDownload={downloadAttachment}
+				/>
+
 				{#if downloadError}
 					<p class="text-destructive mt-2 text-sm">{downloadError}</p>
 				{/if}
@@ -202,14 +201,15 @@
 		{/if}
 
 		{#if decryptedResponse || fileMeta}
-			<div class="mt-4 flex justify-end gap-2">
-				<Button variant="outline" onclick={() => (isConfirmationDialogOpen = true)}>
+			<div class="mt-4 flex justify-start gap-2">
+				<Button
+					variant="outline"
+					class="border-destructive text-destructive"
+					onclick={() => (isConfirmationDialogOpen = true)}
+				>
 					<Trash2 class="mr-2 h-4 w-4" />
 					{m.least_moving_spider_roam()}
 				</Button>
-				{#if decryptedResponse}
-					<CopyButton text={decryptedResponse} />
-				{/if}
 			</div>
 		{/if}
 	{/if}
