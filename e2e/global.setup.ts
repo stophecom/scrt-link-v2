@@ -1,7 +1,6 @@
+import { expect, test as setup } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
-
-import { expect, test as setup } from '@playwright/test';
 
 import { authFile } from './auth';
 
