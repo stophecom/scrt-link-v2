@@ -84,6 +84,7 @@ import {
 } from '../secret-requests';
 import { saveSecret } from '../secrets';
 import { cancelSubscription, getActiveSubscription } from '../stripe';
+import { sendSecretRequestResponseReceiptEmail } from '../transactional-email';
 import stripeInstance from '../stripe';
 import {
 	checkIfUserExists,
@@ -1942,6 +1943,38 @@ export const postSecretResponse: Action = async (event) => {
 				{ status: 409 }
 			);
 		}
+
+		// Notify requester — fire-and-forget, errors must not fail the submission
+		(async () => {
+			try {
+				const [settings] = await db
+					.select()
+					.from(userSettings)
+					.where(eq(userSettings.userId, request.userId));
+
+				if (!settings) return;
+
+				const { readReceipt, ntfyEndpoint, email } = settings;
+
+				if (readReceipt === 'email' && email && request.receiptId) {
+					await sendSecretRequestResponseReceiptEmail(email, request.receiptId);
+				}
+
+				if (readReceipt === 'ntfy' && ntfyEndpoint) {
+					await fetch(`https://ntfy.sh/${ntfyEndpoint}`, {
+						method: 'POST',
+						body: `${m.gold_tidy_crane_body()} ${request.receiptId}`,
+						headers: {
+							Title: m.gold_tidy_crane_subject(),
+							Priority: 'default',
+							Tags: 'envelope'
+						}
+					});
+				}
+			} catch (e) {
+				console.error('[postSecretResponse] notification failed:', e);
+			}
+		})();
 
 		return message(form, {
 			status: 'success',

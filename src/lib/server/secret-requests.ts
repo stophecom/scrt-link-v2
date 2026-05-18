@@ -124,6 +124,7 @@ export const getSecretRequestByHash = async (requestIdHash: string) => {
 			respondedAt: secretRequest.respondedAt,
 			viewedAt: secretRequest.viewedAt,
 			userId: secretRequest.userId,
+			receiptId: secretRequest.receiptId,
 			createdAt: secretRequest.createdAt,
 			requesterName: user.name,
 			requesterEmail: user.email,
