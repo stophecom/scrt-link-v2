@@ -157,7 +157,7 @@
 				data-testid="input-response-content"
 				label={m.neat_shy_mole_type()}
 				placeholder={m.pale_soft_wren_hint()}
-				rows={6}
+				rows={3}
 			/>
 		</Form.Field>
 
