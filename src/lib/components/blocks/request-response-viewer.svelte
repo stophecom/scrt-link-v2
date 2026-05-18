@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Trash2, TriangleAlert, Unlock } from '@lucide/svelte';
+	import { ArrowLeft, Trash2, TriangleAlert, Unlock } from '@lucide/svelte';
 	import { decryptResponseContent, unwrapAESKeyWithRSA, unwrapPrivateKey } from '@scrt-link/core';
 	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
@@ -148,7 +148,8 @@
 </script>
 
 <Button variant="ghost" size="sm" href={localizeHref('/account/requests')} class="mb-4">
-	&larr; {m.swift_slim_deer_turn()}
+	<ArrowLeft class="me-2 h-4 w-4" />
+	{m.swift_slim_deer_turn()}
 </Button>
 
 <Card title={m.safe_deep_wolf_read()}>

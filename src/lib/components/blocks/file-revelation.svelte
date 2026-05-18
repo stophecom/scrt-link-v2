@@ -28,7 +28,7 @@
 
 	<div class="relative flex flex-wrap items-center gap-4">
 		<div class="grid grid-cols-[min-content_1fr] gap-4">
-			<div class="flex min-w-10 items-center">
+			<div class="flex min-w-12 items-center justify-center">
 				{#if isDownloading}
 					<div
 						transition:fade
