@@ -170,7 +170,7 @@
 			/>
 		</Form.Field>
 
-		<Form.Field form={sForm} name="allowAttachment" class="pb-2">
+		<Form.Field form={sForm} name="allowAttachment" class="mb-4 pb-2">
 			<Checkbox
 				bind:checked={$formData.allowAttachment}
 				label={m.flat_warm_req_allow_attachment()}
@@ -196,10 +196,7 @@
 		</div>
 
 		<div class="flex flex-col items-stretch sm:flex-row">
-			<Toggle
-				class="mb-1"
-				bind:pressed={isOptionsVisible}
-				aria-label={m.topical_zany_grebe_exhale()}
+			<Toggle bind:pressed={isOptionsVisible} aria-label={m.topical_zany_grebe_exhale()}
 				>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 				<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
 			>
