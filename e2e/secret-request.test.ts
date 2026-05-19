@@ -86,7 +86,9 @@ test('Response page shows note and accepts response', async () => {
 	await page.getByTestId('input-response-content').fill(responseText);
 
 	// Submit the response
-	const responsePromise = page.waitForResponse((r) => r.url().includes('/r/') && r.request().method() === 'POST');
+	const responsePromise = page.waitForResponse(
+		(r) => r.url().includes('/r/') && r.request().method() === 'POST'
+	);
 	await page.getByTestId('submit-response').click();
 	await responsePromise;
 
@@ -170,7 +172,9 @@ test('Response page accepts a file attachment', async () => {
 	// Submit is disabled while the encrypted chunk uploads to S3
 	await expect(page.getByTestId('submit-response')).toBeEnabled({ timeout: 30000 });
 
-	const responsePromise = page.waitForResponse((r) => r.url().includes('/r/') && r.request().method() === 'POST');
+	const responsePromise = page.waitForResponse(
+		(r) => r.url().includes('/r/') && r.request().method() === 'POST'
+	);
 	await page.getByTestId('submit-response').click();
 	await responsePromise;
 
