@@ -202,16 +202,17 @@
 			{#if isSecretFileOrSnap}
 				{#if isSnap}
 					<!-- Secret Type: Snap -->
-					<SnapRevelation {imageUrl} />
+					<SnapRevelation {imageUrl} destructionTimer={metaParsed?.destructionTimer} />
 				{:else}
 					<!-- Secret Type: File -->
+					<h3 class="mb-2 pt-4 text-2xl font-semibold">{m.house_warm_fox_transform()}</h3>
+					<p class="mb-3">
+						{m.helpful_mean_salmon_slurp()}
+					</p>
 					<FileRevelation {progress} {fileMeta} />
 				{/if}
 			{:else if isNeogram}
-				<NeogramRevelation
-					neogram={content}
-					neogramDestructionTimer={metaParsed?.neogramDestructionTimer}
-				/>
+				<NeogramRevelation neogram={content} destructionTimer={metaParsed?.destructionTimer} />
 			{:else}
 				<!-- Secret Type: Text -->
 				<div class="break-words whitespace-pre-wrap" data-testid="secret-revelation-content">

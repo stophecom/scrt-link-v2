@@ -5,9 +5,9 @@
 	import Typewriter from '../helpers/typewriter.svelte';
 	import Container from '../ui/container/container.svelte';
 
-	type Props = { neogram?: string; neogramDestructionTimer?: number };
+	type Props = { neogram?: string; destructionTimer?: number };
 
-	let { neogram, neogramDestructionTimer = 5 }: Props = $props();
+	let { neogram, destructionTimer = 5 }: Props = $props();
 
 	let finished = $state(false);
 	let blur = $state(false);
@@ -18,7 +18,8 @@
 		<div class="min-h-3 pb-2">
 			{#if finished}
 				<CountDown
-					duration={neogramDestructionTimer}
+					duration={destructionTimer}
+					showTimer={true}
 					onComplete={() => {
 						setTimeout(() => {
 							// We wait for the transition to run.
