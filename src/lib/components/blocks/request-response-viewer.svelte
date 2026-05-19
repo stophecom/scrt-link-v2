@@ -51,8 +51,7 @@
 	let destructionDate = $derived(
 		data.request.respondedAt
 			? new Date(
-					data.request.respondedAt.getTime() +
-						SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS * 86400000
+					data.request.respondedAt.getTime() + SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS * 86400000
 				)
 			: null
 	);
