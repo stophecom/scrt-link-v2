@@ -73,7 +73,7 @@
 		top: 1.5px;
 		bottom: 1.5px;
 		right: 1.5px;
-		background-color: hsl(var(--background));
+		background-color: var(--color-background);
 		border-radius: 999px;
 	}
 
