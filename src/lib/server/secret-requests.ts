@@ -196,6 +196,7 @@ export const fetchUserRequests = async (userId: string) => {
 		id: r.id,
 		receiptId: r.receiptId ?? null,
 		hasNote: !!r.encryptedNote,
+		hasAttachment: !!r.encryptedResponseFile,
 		encryptedNoteForOwner: r.encryptedNoteForOwner ?? null,
 		expiresAt: r.expiresAt,
 		respondedAt: r.respondedAt,

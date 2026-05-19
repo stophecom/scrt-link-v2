@@ -61,8 +61,6 @@
 	"orange_arable_sloth_cuddle": "Vérifiez votre e-mail",
 	"nimble_fancy_pony_amuse": "Trop de requêtes",
 	"yummy_fair_gazelle_link": "Mot de passe",
-	"swift_calm_owl_reveal": "Afficher le mot de passe",
-	"swift_calm_owl_conceal": "Masquer le mot de passe",
 	"legal_weak_jay_bless": "Se connecter",
 	"ago_crazy_pelican_pray": "pour continuer à votre compte.",
 	"aloof_careful_trout_dine": "Le mot de passe doit contenir au moins {number} caractères.",
@@ -704,7 +702,7 @@
 	"keen_bright_fox_peek": "Afficher la réponse",
 	"swift_slim_deer_turn": "Retour aux demandes",
 	"safe_deep_wolf_read": "Réponse secrète",
-	"glad_true_lark_note": "Réponse reçue le {receivedAt}. Disparaît le {destructionDate}.",
+	"glad_true_lark_note": "Réponse reçue le {dateTime}",
 	"red_sharp_viper_fail": "Échec du déchiffrement",
 	"slow_calm_newt_spin": "Déchiffrement de la réponse...",
 	"brave_kind_lamb_give": "Soumettre un secret",
@@ -915,10 +913,6 @@
 	"flat_warm_resp_download_attachment": "Télécharger",
 	"flat_warm_resp_download_again": "Télécharger à nouveau",
 	"flat_warm_resp_attachment_heading": "Pièce jointe",
-	"gold_tidy_crane_subject": "Une réponse a été soumise",
-	"gold_tidy_crane_heading": "Une réponse a été soumise",
-	"gold_tidy_crane_body": "Vous avez reçu une réponse à la demande suivante :",
-	"gold_tidy_crane_expiry": "Vous avez {retentionPeriod} jours pour consulter la réponse. Après cela, elle sera définitivement supprimée.",
 	"white_label_theme_background": "Arrière-plan",
 	"white_label_theme_foreground": "Premier plan",
 	"white_label_theme_primary": "Primaire",
@@ -929,5 +923,8 @@
 	"white_label_theme_card": "Carte",
 	"white_label_theme_destructive": "Destructif",
 	"white_label_theme_success": "Succès",
-	"white_label_theme_info": "Info"
+	"white_label_theme_info": "Info",
+	"swift_calm_owl_reveal": "Afficher le mot de passe",
+	"swift_calm_owl_conceal": "Masquer le mot de passe",
+	"polite_bad_parrot_scold": "Disparaît"
 }
