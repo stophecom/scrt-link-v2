@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Body, Container, Head, Heading, Hr, Html, Img, Link, Text } from 'svelte-email-tailwind';
 
+	import { SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS } from '$lib/client/constants';
 	import { getBaseUrl } from '$lib/constants';
 	import { appName } from '$lib/data/app';
 	import { m } from '$lib/paraglide/messages.js';
@@ -24,7 +25,11 @@
 			<Text class="mb-4 text-xl leading-snug">{m.gold_tidy_crane_body()}</Text>
 			<Text class="mb-10 text-xl leading-snug"><code>{receiptId}</code></Text>
 
-			<Text class="text-muted">{m.gold_tidy_crane_expiry()}</Text>
+			<Text class="text-muted"
+				>{m.gold_tidy_crane_expiry({
+					retentionPeriod: SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS
+				})}</Text
+			>
 
 			<Hr class="border-border mt-8" />
 

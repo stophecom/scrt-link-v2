@@ -5,6 +5,7 @@
 	import { toast } from 'svelte-sonner';
 
 	import { enhance } from '$app/forms';
+	import { SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS } from '$lib/client/constants';
 	import { getMasterKey, isKeyUnlocked } from '$lib/client/key-manager';
 	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
 	import FileRevelation from '$lib/components/blocks/file-revelation.svelte';
@@ -155,7 +156,15 @@
 <Card title={m.safe_deep_wolf_read()}>
 	{#if data.request.respondedAt}
 		<p class="text-muted-foreground mb-4 text-sm">
-			{m.glad_true_lark_note({ dateTime: formatDateTime(data.request.respondedAt) })}
+			{m.glad_true_lark_note({
+				receivedAt: formatDateTime(data.request.respondedAt),
+				destructionDate: formatDateTime(
+					new Date(
+						new Date(data.request.respondedAt).getTime() +
+							SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS * 86400000
+					)
+				)
+			})}
 		</p>
 	{/if}
 

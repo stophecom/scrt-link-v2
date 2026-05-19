@@ -13,7 +13,7 @@ export const getBaseUrl = () => {
 			return `https://${PUBLIC_PRODUCTION_URL}`;
 		}
 		default: {
-			return `http://localhost:5173`;
+			return `https://localhost:5173`;
 		}
 	}
 };

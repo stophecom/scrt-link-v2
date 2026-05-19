@@ -6,6 +6,7 @@ import { lte } from 'drizzle-orm';
 
 import { CRON_SECRET } from '$env/static/private';
 import { PUBLIC_S3_BUCKET } from '$env/static/public';
+import { SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS } from '$lib/client/constants';
 import { FILE_RETENTION_PERIOD_IN_DAYS } from '$lib/constants';
 import { s3Client } from '$lib/s3';
 import { db } from '$lib/server/db';
@@ -82,16 +83,18 @@ export const GET: RequestHandler = async ({ request }) => {
 
 		console.log(`Cron: Deleted ${deletedSecrets.length} entries from the Secrets database.`);
 
-		// Delete secret requests expired >7 days ago, or created >30 days ago
-		const deleteExpiredRequestsBeforeDate = subtractDays(new Date(), 7);
-		const deleteOldRequestsBeforeDate = subtractDays(new Date(), 30);
+		// Delete secret requests expired >30 days ago, or responded >30 days ago
+		const deleteOldRequestsBeforeDate = subtractDays(
+			new Date(),
+			SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS
+		);
 
 		const deletedSecretRequests = await db
 			.delete(secretRequest)
 			.where(
 				or(
-					lte(secretRequest.expiresAt, deleteExpiredRequestsBeforeDate),
-					lte(secretRequest.createdAt, deleteOldRequestsBeforeDate)
+					lte(secretRequest.expiresAt, deleteOldRequestsBeforeDate),
+					lte(secretRequest.respondedAt, deleteOldRequestsBeforeDate)
 				)
 			)
 			.returning();
