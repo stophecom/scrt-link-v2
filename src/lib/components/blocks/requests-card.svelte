@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { Clock, Eye, Hourglass, Mail, MailOpen, Trash2 } from '@lucide/svelte';
+	import { Clock, Eye, Hourglass, Mail, MailOpen, Paperclip, Trash2 } from '@lucide/svelte';
 	import { decryptResponseContent } from '@scrt-link/core';
 	import { toast } from 'svelte-sonner';
 
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
+	import { SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS } from '$lib/client/constants';
 	import { getMasterKey, isKeyUnlocked } from '$lib/client/key-manager';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
@@ -23,6 +24,7 @@
 		id: string;
 		receiptId: string | null;
 		hasNote: boolean;
+		hasAttachment: boolean;
 		encryptedNoteForOwner: string | null;
 		expiresAt: Date;
 		respondedAt: Date | null;
@@ -127,6 +129,11 @@
 							>
 						</Table.Cell>
 						<Table.Cell>
+							{#if request.hasAttachment}
+								<Paperclip
+									class="text-muted-foreground mr-1.5 inline-block h-3.5 w-3.5 align-text-bottom"
+								/>
+							{/if}
 							{#if decryptedNotes[request.id]}
 								<Tooltip.Root>
 									<Tooltip.Trigger>
@@ -157,8 +164,15 @@
 									<p>{m.shy_brave_owl_born()}: {formatDateTime(request.createdAt)}</p>
 									{#if request.respondedAt}
 										<p>{m.calm_rich_puma_back()}: {formatDateTime(request.respondedAt)}</p>
-									{/if}
-									{#if request.expiresAt > currentDate}
+										<p class="text-destructive">
+											{m.polite_bad_parrot_scold()}: {formatDateTime(
+												new Date(
+													request.respondedAt.getTime() +
+														SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS * 86400000
+												)
+											)}
+										</p>
+									{:else if request.expiresAt > currentDate}
 										<p>{m.warm_old_crab_fade()}: {formatDateTime(request.expiresAt)}</p>
 									{:else}
 										<p>{m.trick_caring_lionfish_grasp()}</p>

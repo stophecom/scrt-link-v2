@@ -61,8 +61,6 @@
 	"orange_arable_sloth_cuddle": "Sprawdź swoją skrzynkę e-mail",
 	"nimble_fancy_pony_amuse": "Zbyt wiele żądań",
 	"yummy_fair_gazelle_link": "Hasło",
-	"swift_calm_owl_reveal": "Pokaż hasło",
-	"swift_calm_owl_conceal": "Ukryj hasło",
 	"legal_weak_jay_bless": "Zaloguj się",
 	"ago_crazy_pelican_pray": "aby przejść do swojego konta.",
 	"aloof_careful_trout_dine": "Hasło musi zawierać co najmniej {number} znaków.",
@@ -915,10 +913,6 @@
 	"flat_warm_resp_download_attachment": "Pobierz",
 	"flat_warm_resp_download_again": "Pobierz ponownie",
 	"flat_warm_resp_attachment_heading": "Załącznik",
-	"gold_tidy_crane_subject": "Odpowiedź została przesłana",
-	"gold_tidy_crane_heading": "Odpowiedź została przesłana",
-	"gold_tidy_crane_body": "Otrzymałeś odpowiedź na następujące żądanie:",
-	"gold_tidy_crane_expiry": "Masz {retentionPeriod} dni na wyświetlenie odpowiedzi. Po tym czasie zostanie ona trwale usunięta.",
 	"white_label_theme_background": "Tło",
 	"white_label_theme_foreground": "Pierwszy plan",
 	"white_label_theme_primary": "Podstawowy",
@@ -929,5 +923,12 @@
 	"white_label_theme_card": "Karta",
 	"white_label_theme_destructive": "Destruktywny",
 	"white_label_theme_success": "Sukces",
-	"white_label_theme_info": "Info"
+	"white_label_theme_info": "Info",
+	"swift_calm_owl_reveal": "Pokaż hasło",
+	"swift_calm_owl_conceal": "Ukryj hasło",
+	"gold_tidy_crane_subject": "Odpowiedź została przesłana",
+	"gold_tidy_crane_heading": "Odpowiedź została przesłana",
+	"gold_tidy_crane_body": "Otrzymałeś odpowiedź na następujące żądanie:",
+	"gold_tidy_crane_expiry": "Masz {retentionPeriod} dni na wyświetlenie odpowiedzi. Po tym czasie zostanie ona trwale usunięta.",
+	"polite_bad_parrot_scold": "Znika"
 }

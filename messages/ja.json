@@ -61,8 +61,6 @@
 	"orange_arable_sloth_cuddle": "メールを確認してください",
 	"nimble_fancy_pony_amuse": "リクエストが多すぎます",
 	"yummy_fair_gazelle_link": "パスワード",
-	"swift_calm_owl_reveal": "パスワードを表示",
-	"swift_calm_owl_conceal": "パスワードを非表示",
 	"legal_weak_jay_bless": "サインイン",
 	"ago_crazy_pelican_pray": "してアカウントに進みます。",
 	"aloof_careful_trout_dine": "パスワードは {number} 文字以上で入力してください。",
@@ -915,10 +913,6 @@
 	"flat_warm_resp_download_attachment": "ダウンロード",
 	"flat_warm_resp_download_again": "再ダウンロード",
 	"flat_warm_resp_attachment_heading": "添付ファイル",
-	"gold_tidy_crane_subject": "回答が送信されました",
-	"gold_tidy_crane_heading": "回答が送信されました",
-	"gold_tidy_crane_body": "以下のリクエストへの回答を受け取りました：",
-	"gold_tidy_crane_expiry": "回答を確認できる期間は{retentionPeriod}日間です。それ以降は完全に削除されます。",
 	"white_label_theme_background": "背景",
 	"white_label_theme_foreground": "前景",
 	"white_label_theme_primary": "プライマリ",
@@ -929,5 +923,12 @@
 	"white_label_theme_card": "カード",
 	"white_label_theme_destructive": "危険",
 	"white_label_theme_success": "成功",
-	"white_label_theme_info": "情報"
+	"white_label_theme_info": "情報",
+	"swift_calm_owl_reveal": "パスワードを表示",
+	"swift_calm_owl_conceal": "パスワードを非表示",
+	"gold_tidy_crane_subject": "回答が送信されました",
+	"gold_tidy_crane_heading": "回答が送信されました",
+	"gold_tidy_crane_body": "以下のリクエストへの回答を受け取りました：",
+	"gold_tidy_crane_expiry": "回答を確認できる期間は{retentionPeriod}日間です。それ以降は完全に削除されます。",
+	"polite_bad_parrot_scold": "消える"
 }

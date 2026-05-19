@@ -61,8 +61,6 @@
 	"orange_arable_sloth_cuddle": "Controlla la tua email",
 	"nimble_fancy_pony_amuse": "Troppe richieste",
 	"yummy_fair_gazelle_link": "Password",
-	"swift_calm_owl_reveal": "Mostra password",
-	"swift_calm_owl_conceal": "Nascondi password",
 	"legal_weak_jay_bless": "Accedi",
 	"ago_crazy_pelican_pray": "per continuare al tuo account.",
 	"aloof_careful_trout_dine": "La password deve contenere almeno {number} caratteri.",
@@ -915,10 +913,6 @@
 	"flat_warm_resp_download_attachment": "Scarica",
 	"flat_warm_resp_download_again": "Scarica di nuovo",
 	"flat_warm_resp_attachment_heading": "Allegato",
-	"gold_tidy_crane_subject": "È stata inviata una risposta",
-	"gold_tidy_crane_heading": "È stata inviata una risposta",
-	"gold_tidy_crane_body": "Hai ricevuto una risposta alla seguente richiesta:",
-	"gold_tidy_crane_expiry": "Hai {retentionPeriod} giorni per visualizzare la risposta. Dopo, sparirà per sempre.",
 	"white_label_theme_background": "Sfondo",
 	"white_label_theme_foreground": "Primo piano",
 	"white_label_theme_primary": "Principale",
@@ -929,5 +923,12 @@
 	"white_label_theme_card": "Scheda",
 	"white_label_theme_destructive": "Distruttivo",
 	"white_label_theme_success": "Successo",
-	"white_label_theme_info": "Info"
+	"white_label_theme_info": "Info",
+	"swift_calm_owl_reveal": "Mostra password",
+	"swift_calm_owl_conceal": "Nascondi password",
+	"gold_tidy_crane_subject": "È stata inviata una risposta",
+	"gold_tidy_crane_heading": "È stata inviata una risposta",
+	"gold_tidy_crane_body": "Hai ricevuto una risposta alla seguente richiesta:",
+	"gold_tidy_crane_expiry": "Hai {retentionPeriod} giorni per visualizzare la risposta. Dopo, sparirà per sempre.",
+	"polite_bad_parrot_scold": "Scompare"
 }
