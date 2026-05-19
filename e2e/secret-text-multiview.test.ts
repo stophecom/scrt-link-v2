@@ -24,6 +24,7 @@ test.beforeAll(async ({ browser }) => {
 	await page.getByTestId('input-password').fill(password);
 	await page.getByTestId('submit-unlock').click();
 	await page.waitForURL(/\/account/, { timeout: 15000 });
+	await page.waitForLoadState('networkidle');
 });
 
 test.afterAll(async () => {
@@ -32,12 +33,17 @@ test.afterAll(async () => {
 
 test('Create a secret with viewLimit > 1', async ({ baseURL }) => {
 	await page.goto('/text');
+	// Wait for onMount/setCryptoKeys to finish — submit becomes enabled only after privateKey is set
+	await expect(page.getByTestId('secret-form-submit')).toBeEnabled({ timeout: 15000 });
 
 	await page.getByTestId('input-secret-content').fill(secret);
 
-	await page.getByTestId('secret-form-more-options').click();
-
+	const toggle = page.getByTestId('secret-form-more-options');
 	const viewLimitInput = page.locator('input[name="viewLimit"]');
+	if ((await toggle.getAttribute('aria-pressed')) !== 'true') {
+		await toggle.click();
+		await expect(viewLimitInput).toBeVisible({ timeout: 5000 });
+	}
 	await viewLimitInput.fill(String(VIEW_LIMIT));
 
 	await expect(page.getByTestId('secret-form-submit')).toBeEnabled();

@@ -38,6 +38,7 @@ test.beforeAll(async ({ browser }) => {
 	await page.getByTestId('input-password').fill(password);
 	await page.getByTestId('submit-unlock').click();
 	await page.waitForURL(/\/account/, { timeout: 15000 });
+	await page.waitForLoadState('networkidle');
 });
 
 test.afterAll(async () => {
@@ -46,9 +47,9 @@ test.afterAll(async () => {
 
 test('Create a secret request with note', async () => {
 	await page.goto('/account/requests');
+	await page.waitForURL('**/account/requests', { timeout: 15000 });
 	await page.waitForLoadState('networkidle');
 
-	// Wait for encryption key to be restored and form to be ready
 	await expect(page.getByTestId('input-request-note')).toBeVisible({ timeout: 15000 });
 
 	// Fill in the note
@@ -131,6 +132,7 @@ test('View response and verify decrypted content', async () => {
 
 test('Create a secret request that allows an attachment', async () => {
 	await page.goto('/account/requests');
+	await page.waitForURL('**/account/requests', { timeout: 15000 });
 	await page.waitForLoadState('networkidle');
 
 	await expect(page.getByTestId('input-request-note')).toBeVisible({ timeout: 15000 });

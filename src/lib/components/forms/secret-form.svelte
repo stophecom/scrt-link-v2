@@ -251,8 +251,8 @@
 		{/if}
 
 		<div
-			class="overflow-y-clip transition-all duration-300 ease-in-out {isOptionsVisible
-				? 'visible h-[calc(auto)] pb-4 opacity-100'
+			class="overflow-hidden transition-all duration-300 ease-in-out {isOptionsVisible
+				? 'h-auto pb-4 opacity-100'
 				: 'invisible h-0 opacity-0'}"
 		>
 			<Form.Field {form} name="password">
