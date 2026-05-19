@@ -61,8 +61,6 @@
 	"orange_arable_sloth_cuddle": "Check je e-mail",
 	"nimble_fancy_pony_amuse": "Te veel verzoeken",
 	"yummy_fair_gazelle_link": "Wachtwoord",
-	"swift_calm_owl_reveal": "Wachtwoord tonen",
-	"swift_calm_owl_conceal": "Wachtwoord verbergen",
 	"legal_weak_jay_bless": "Inloggen",
 	"ago_crazy_pelican_pray": "om door te gaan naar je account.",
 	"aloof_careful_trout_dine": "Wachtwoord moet minstens {number} tekens bevatten.",
@@ -915,10 +913,6 @@
 	"flat_warm_resp_download_attachment": "Downloaden",
 	"flat_warm_resp_download_again": "Opnieuw downloaden",
 	"flat_warm_resp_attachment_heading": "Bijlage",
-	"gold_tidy_crane_subject": "Er is een reactie ingediend",
-	"gold_tidy_crane_heading": "Er is een reactie ingediend",
-	"gold_tidy_crane_body": "Je hebt een reactie ontvangen op het volgende verzoek:",
-	"gold_tidy_crane_expiry": "Je hebt {retentionPeriod} dagen om de reactie te bekijken. Daarna is hij voorgoed weg.",
 	"white_label_theme_background": "Achtergrond",
 	"white_label_theme_foreground": "Voorgrond",
 	"white_label_theme_primary": "Primair",
@@ -929,5 +923,12 @@
 	"white_label_theme_card": "Kaart",
 	"white_label_theme_destructive": "Destructief",
 	"white_label_theme_success": "Succes",
-	"white_label_theme_info": "Info"
+	"white_label_theme_info": "Info",
+	"swift_calm_owl_reveal": "Wachtwoord tonen",
+	"swift_calm_owl_conceal": "Wachtwoord verbergen",
+	"gold_tidy_crane_subject": "Er is een reactie ingediend",
+	"gold_tidy_crane_heading": "Er is een reactie ingediend",
+	"gold_tidy_crane_body": "Je hebt een reactie ontvangen op het volgende verzoek:",
+	"gold_tidy_crane_expiry": "Je hebt {retentionPeriod} dagen om de reactie te bekijken. Daarna is hij voorgoed weg.",
+	"polite_bad_parrot_scold": "Verdwijnt"
 }

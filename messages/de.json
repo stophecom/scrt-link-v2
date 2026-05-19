@@ -61,8 +61,6 @@
 	"orange_arable_sloth_cuddle": "E-Mails überprüfen",
 	"nimble_fancy_pony_amuse": "Zu viele Anfragen",
 	"yummy_fair_gazelle_link": "Passwort",
-	"swift_calm_owl_reveal": "Passwort anzeigen",
-	"swift_calm_owl_conceal": "Passwort verbergen",
 	"legal_weak_jay_bless": "Anmelden",
 	"ago_crazy_pelican_pray": "um zu deinem Konto zu gelangen.",
 	"aloof_careful_trout_dine": "Das Passwort muss mindestens {number} Zeichen lang sein.",
@@ -704,7 +702,7 @@
 	"keen_bright_fox_peek": "Antwort ansehen",
 	"swift_slim_deer_turn": "Zurück zu den Anfragen",
 	"safe_deep_wolf_read": "Geheimnisantwort",
-	"glad_true_lark_note": "Antwort erhalten am {receivedAt}. Wird gelöscht am {destructionDate}.",
+	"glad_true_lark_note": "Antwort erhalten am {dateTime}",
 	"red_sharp_viper_fail": "Entschlüsselung fehlgeschlagen",
 	"slow_calm_newt_spin": "Antwort wird entschlüsselt...",
 	"brave_kind_lamb_give": "Geheimnis übermitteln",
@@ -915,10 +913,6 @@
 	"flat_warm_resp_download_attachment": "Herunterladen",
 	"flat_warm_resp_download_again": "Erneut herunterladen",
 	"flat_warm_resp_attachment_heading": "Anhang",
-	"gold_tidy_crane_subject": "Eine Antwort wurde eingereicht",
-	"gold_tidy_crane_heading": "Eine Antwort wurde eingereicht",
-	"gold_tidy_crane_body": "Du hast eine Antwort auf folgende Anfrage erhalten:",
-	"gold_tidy_crane_expiry": "Du hast {retentionPeriod} Tage, um die Antwort anzusehen. Danach ist sie für immer weg.",
 	"white_label_theme_background": "Hintergrund",
 	"white_label_theme_foreground": "Vordergrund",
 	"white_label_theme_primary": "Primärfarbe",
@@ -929,5 +923,8 @@
 	"white_label_theme_card": "Karte",
 	"white_label_theme_destructive": "Destruktiv",
 	"white_label_theme_success": "Erfolg",
-	"white_label_theme_info": "Info"
+	"white_label_theme_info": "Info",
+	"swift_calm_owl_reveal": "Passwort anzeigen",
+	"swift_calm_owl_conceal": "Passwort verbergen",
+	"polite_bad_parrot_scold": "Verschwindet"
 }
