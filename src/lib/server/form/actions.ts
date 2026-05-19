@@ -1925,6 +1925,10 @@ export const postSecretResponse: Action = async (event) => {
 		);
 	}
 
+	if (encryptedResponseFile && !request.allowAttachment) {
+		return fail(400, { form });
+	}
+
 	try {
 		const result = await submitSecretResponse({
 			requestIdHash,
@@ -1960,7 +1964,7 @@ export const postSecretResponse: Action = async (event) => {
 					await sendSecretRequestResponseReceiptEmail(email, request.receiptId);
 				}
 
-				if (readReceipt === 'ntfy' && ntfyEndpoint) {
+				if (readReceipt === 'ntfy' && ntfyEndpoint && request.receiptId) {
 					await fetch(`https://ntfy.sh/${ntfyEndpoint}`, {
 						method: 'POST',
 						body: `${m.gold_tidy_crane_body()} ${request.receiptId}`,

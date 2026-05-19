@@ -42,13 +42,20 @@
 	let decryptionError = $state('');
 	let isDecrypting = $state(false);
 	let isConfirmationDialogOpen = $state(false);
-
-	// Attachment state
 	let fileKey = $state('');
 	let fileMeta = $state<FileMeta | undefined>(undefined);
 	let fileReference = $state<FileReference | undefined>(undefined);
 	let downloadProgress = $state(0);
 	let downloadError = $state('');
+
+	let destructionDate = $derived(
+		data.request.respondedAt
+			? new Date(
+					data.request.respondedAt.getTime() +
+						SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS * 86400000
+				)
+			: null
+	);
 
 	const decrypt = async () => {
 		if (!isKeyUnlocked()) {
@@ -85,19 +92,21 @@
 		}
 	};
 
-	const handleProgress = async (getProgress: () => Promise<number>) => {
-		const progressInterval = setInterval(async () => {
+	const handleProgress = (getProgress: () => Promise<number>): (() => void) => {
+		const id = setInterval(async () => {
 			downloadProgress = await getProgress();
 			if (downloadProgress >= 1) {
 				downloadProgress = 1;
-				clearInterval(progressInterval);
+				clearInterval(id);
 			}
 		}, 500);
+		return () => clearInterval(id);
 	};
 
 	const downloadAttachment = async () => {
 		if (!fileMeta || !fileReference) return;
 		downloadError = '';
+		let cancelProgress: (() => void) | undefined;
 		try {
 			// Single chunk — download and decrypt directly.
 			if (fileMeta.isSingleChunk && fileReference.chunks.length === 1) {
@@ -110,7 +119,7 @@
 					progress: 0
 				};
 				const res = new Response(handleFileChunksDownload(file));
-				await handleProgress(() => Promise.resolve(file.progress));
+				cancelProgress = handleProgress(() => Promise.resolve(file.progress));
 				const blob = await res.blob();
 				const decryptedFile = new File([blob], fileMeta.name);
 				const url = window.URL.createObjectURL(decryptedFile);
@@ -130,13 +139,14 @@
 			const sanitizedMessage = JSON.parse(JSON.stringify(fileInfo));
 			await sendMessageToServiceWorker({ request: 'file_info', data: sanitizedMessage });
 			createDownloadLinkAndClick(fileInfo.url);
-			await handleProgress(() =>
+			cancelProgress = handleProgress(() =>
 				sendMessageToServiceWorker<number>({
 					request: 'progress',
 					data: { secretIdHash: data.request.requestIdHash }
 				})
 			);
 		} catch (e) {
+			cancelProgress?.();
 			downloadError = e instanceof Error ? e.message : String(e);
 		}
 	};
@@ -154,16 +164,11 @@
 </Button>
 
 <Card title={m.safe_deep_wolf_read()}>
-	{#if data.request.respondedAt}
+	{#if data.request.respondedAt && destructionDate}
 		<p class="text-muted-foreground mb-4 text-sm">
 			{m.glad_true_lark_note({
 				receivedAt: formatDateTime(data.request.respondedAt),
-				destructionDate: formatDateTime(
-					new Date(
-						new Date(data.request.respondedAt).getTime() +
-							SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS * 86400000
-					)
-				)
+				destructionDate: formatDateTime(destructionDate)
 			})}
 		</p>
 	{/if}
@@ -189,9 +194,7 @@
 			>
 				<pre
 					class="wrap-break-words font-mono text-sm whitespace-pre-wrap">{decryptedResponse}</pre>
-				{#if decryptedResponse}
-					<CopyButton variant="outline" size="sm" text={decryptedResponse} />
-				{/if}
+				<CopyButton variant="outline" size="sm" text={decryptedResponse} />
 			</div>
 		{/if}
 

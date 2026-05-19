@@ -67,7 +67,7 @@ export const sendSubscriptionTrialStartEmail = async (
 	await sendTransactionalEmail({
 		subject: m.level_every_chicken_fall(),
 		to: email,
-		html: html
+		html
 	});
 };
 
@@ -76,7 +76,7 @@ export const sendSecretRequestResponseReceiptEmail = async (email: string, recei
 	await sendTransactionalEmail({
 		subject: m.gold_tidy_crane_subject(),
 		to: email,
-		html: html
+		html
 	});
 	console.log(`Send secret request response notification to ${email}.`);
 };
