@@ -74,7 +74,6 @@
 
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		/* background-image: radial-gradient(circle, hsl(var(--background)) 46%, hsl(var(--muted))); */
 		position: relative;
 	}
 
