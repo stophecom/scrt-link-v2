@@ -85,6 +85,7 @@ import {
 import { saveSecret } from '../secrets';
 import { cancelSubscription, getActiveSubscription } from '../stripe';
 import stripeInstance from '../stripe';
+import { sendSecretRequestResponseReceiptEmail } from '../transactional-email';
 import {
 	checkIfUserExists,
 	checkIsEmailVerified,
@@ -1888,8 +1889,14 @@ export const postSecretResponse: Action = async (event) => {
 		return message(form, rateLimitErrorMessage(), { status: 429 });
 	}
 
-	const { requestIdHash, encryptedResponseContent, wrappedResponseKey, encryptedResponseMeta } =
-		form.data;
+	const {
+		requestIdHash,
+		encryptedResponseContent,
+		wrappedResponseKey,
+		encryptedResponseMeta,
+		encryptedResponseFile,
+		responseFilePublicKey
+	} = form.data;
 
 	// Verify the request exists, is not expired, and has no response yet
 	const request = await getSecretRequestByHash(requestIdHash);
@@ -1918,12 +1925,18 @@ export const postSecretResponse: Action = async (event) => {
 		);
 	}
 
+	if (encryptedResponseFile && !request.allowAttachment) {
+		return fail(400, { form });
+	}
+
 	try {
 		const result = await submitSecretResponse({
 			requestIdHash,
 			encryptedResponseContent,
 			wrappedResponseKey,
-			encryptedResponseMeta
+			encryptedResponseMeta,
+			encryptedResponseFile,
+			responseFilePublicKey
 		});
 
 		if (!result) {
@@ -1934,6 +1947,38 @@ export const postSecretResponse: Action = async (event) => {
 				{ status: 409 }
 			);
 		}
+
+		// Notify requester — fire-and-forget, errors must not fail the submission
+		(async () => {
+			try {
+				const [settings] = await db
+					.select()
+					.from(userSettings)
+					.where(eq(userSettings.userId, request.userId));
+
+				if (!settings) return;
+
+				const { readReceipt, ntfyEndpoint, email } = settings;
+
+				if (readReceipt === 'email' && email && request.receiptId) {
+					await sendSecretRequestResponseReceiptEmail(email, request.receiptId);
+				}
+
+				if (readReceipt === 'ntfy' && ntfyEndpoint && request.receiptId) {
+					await fetch(`https://ntfy.sh/${ntfyEndpoint}`, {
+						method: 'POST',
+						body: `${m.gold_tidy_crane_body()} ${request.receiptId}`,
+						headers: {
+							Title: m.gold_tidy_crane_subject(),
+							Priority: 'default',
+							Tags: 'envelope'
+						}
+					});
+				}
+			} catch (e) {
+				console.error('[postSecretResponse] notification failed:', e);
+			}
+		})();
 
 		return message(form, {
 			status: 'success',

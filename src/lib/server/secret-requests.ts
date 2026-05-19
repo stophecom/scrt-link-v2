@@ -1,11 +1,15 @@
+import { SecretType } from '@scrt-link/core';
 import { error } from '@sveltejs/kit';
 import { and, count, desc, eq, isNotNull, isNull, sql } from 'drizzle-orm';
 
 import { generateRandomAlphanumericString } from '$lib/crypto';
+import { TierOptions } from '$lib/data/enums';
+import { getUserPlanLimits } from '$lib/data/plans';
 import type { SecretRequestFormSchema } from '$lib/validators/formSchemas';
 
 import { db } from './db';
 import { type SecretRequest, secretRequest, stats, user } from './db/schema';
+import { getEffectiveTierForUser } from './organization';
 
 const maskEmail = (email: string) => {
 	const [local, domain] = email.split('@');
@@ -25,6 +29,7 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 		encryptedPrivateKey,
 		encryptedNote,
 		encryptedNoteForOwner,
+		allowAttachment,
 		expiresIn
 	} = data;
 
@@ -39,6 +44,7 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 				encryptedPrivateKey,
 				encryptedNote,
 				encryptedNoteForOwner,
+				allowAttachment,
 				receiptId,
 				expiresAt: new Date(Date.now() + expiresIn),
 				userId
@@ -80,9 +86,18 @@ export const loadSecretResponsePageData = async (requestIdHash: string) => {
 		error(410, 'This request has expired.');
 	}
 
+	// The requester bears the storage cost, so the attachment is capped by their plan.
+	const effectiveTier = await getEffectiveTierForUser(
+		request.userId,
+		(request.requesterSubscriptionTier as TierOptions) ?? TierOptions.CONFIDENTIAL
+	);
+	const maxAttachmentSize = Number(getUserPlanLimits(effectiveTier)[SecretType.FILE]);
+
 	return {
 		publicKey: request.publicKey,
 		encryptedNote: request.encryptedNote,
+		allowAttachment: request.allowAttachment,
+		maxAttachmentSize,
 		requestIdHash,
 		alreadyResponded: !!request.respondedAt,
 		requesterName: request.requesterName,
@@ -99,17 +114,22 @@ export const getSecretRequestByHash = async (requestIdHash: string) => {
 			publicKey: secretRequest.publicKey,
 			encryptedPrivateKey: secretRequest.encryptedPrivateKey,
 			encryptedNote: secretRequest.encryptedNote,
+			allowAttachment: secretRequest.allowAttachment,
 			wrappedResponseKey: secretRequest.wrappedResponseKey,
 			encryptedResponseMeta: secretRequest.encryptedResponseMeta,
 			encryptedResponseContent: secretRequest.encryptedResponseContent,
+			encryptedResponseFile: secretRequest.encryptedResponseFile,
+			responseFilePublicKey: secretRequest.responseFilePublicKey,
 			expiresAt: secretRequest.expiresAt,
 			respondedAt: secretRequest.respondedAt,
 			viewedAt: secretRequest.viewedAt,
 			userId: secretRequest.userId,
+			receiptId: secretRequest.receiptId,
 			createdAt: secretRequest.createdAt,
 			requesterName: user.name,
 			requesterEmail: user.email,
-			requesterEmailVerified: user.emailVerified
+			requesterEmailVerified: user.emailVerified,
+			requesterSubscriptionTier: user.subscriptionTier
 		})
 		.from(secretRequest)
 		.innerJoin(user, eq(secretRequest.userId, user.id))
@@ -120,9 +140,11 @@ export const getSecretRequestByHash = async (requestIdHash: string) => {
 
 type SubmitResponse = {
 	requestIdHash: string;
-	encryptedResponseContent: string;
+	encryptedResponseContent?: string;
 	wrappedResponseKey: string;
 	encryptedResponseMeta?: string;
+	encryptedResponseFile?: string;
+	responseFilePublicKey?: string;
 };
 
 export const submitSecretResponse = async (data: SubmitResponse) => {
@@ -132,6 +154,8 @@ export const submitSecretResponse = async (data: SubmitResponse) => {
 			encryptedResponseContent: data.encryptedResponseContent,
 			wrappedResponseKey: data.wrappedResponseKey,
 			encryptedResponseMeta: data.encryptedResponseMeta,
+			encryptedResponseFile: data.encryptedResponseFile,
+			responseFilePublicKey: data.responseFilePublicKey,
 			respondedAt: new Date()
 		})
 		.where(

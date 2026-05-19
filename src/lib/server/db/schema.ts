@@ -241,10 +241,16 @@ export const secretRequest = pgTable(
 		encryptedNoteForOwner: text('encrypted_note_for_owner'),
 		// User-friendly tracking identifier
 		receiptId: text('receipt_id'),
+		// Whether the responder is allowed to attach a file
+		allowAttachment: boolean('allow_attachment').notNull().default(false),
 		// Response fields (nullable — filled when someone responds)
 		wrappedResponseKey: text('wrapped_response_key'),
 		encryptedResponseMeta: text('encrypted_response_meta'),
 		encryptedResponseContent: text('encrypted_response_content'),
+		// AES-GCM(JSON { fileKey, fileReference, fileMeta }) — same per-response AES key
+		encryptedResponseFile: text('encrypted_response_file'),
+		// ECDSA public key (PEM) for verifying attachment chunk download requests
+		responseFilePublicKey: text('response_file_public_key'),
 		// Lifecycle timestamps
 		expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
 		respondedAt: timestamp('responded_at', { withTimezone: true, mode: 'date' }),

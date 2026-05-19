@@ -317,6 +317,7 @@ export const secretRequestFormSchema = () =>
 		encryptedPrivateKey: z.string().min(100).max(2500), // IV + AES-GCM(RSA-2048 private JWK) base64 is ~2256 chars
 		encryptedNote: z.string().max(10_000).optional(),
 		encryptedNoteForOwner: z.string().max(10_000).optional(),
+		allowAttachment: z.boolean().default(false),
 		expiresIn: z
 			.union(
 				[
@@ -337,12 +338,21 @@ export const secretRequestFormSchema = () =>
 	});
 
 export const secretResponseFormSchema = () =>
-	z.object({
-		requestIdHash: z.string().length(64),
-		encryptedResponseContent: z.string().min(1).max(1_000_000),
-		wrappedResponseKey: z.string().min(1).max(512), // RSA-2048 OAEP wrapped AES key is ~344 base64 chars
-		encryptedResponseMeta: z.string().max(1_000).optional()
-	});
+	z
+		.object({
+			requestIdHash: z.string().length(64),
+			encryptedResponseContent: z.string().max(1_000_000).optional(),
+			wrappedResponseKey: z.string().min(1).max(512), // RSA-2048 OAEP wrapped AES key is ~344 base64 chars
+			encryptedResponseMeta: z.string().max(1_000).optional(),
+			// AES-GCM(JSON { fileKey, fileReference, fileMeta }) — same AES key as content
+			encryptedResponseFile: z.string().max(200_000).optional(),
+			// ECDSA public key (PEM) used to authorize attachment chunk downloads
+			responseFilePublicKey: z.string().max(500).optional()
+		})
+		.refine((data) => !!data.encryptedResponseContent || !!data.encryptedResponseFile, {
+			message: 'Provide a message or attach a file.',
+			path: ['encryptedResponseContent']
+		});
 
 // @todo infer types by default
 export type SignInFormSchema = ReturnType<typeof signInFormSchema>;

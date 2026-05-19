@@ -28,6 +28,7 @@
 	import { getExpiresInOptions } from '../../data/secretSettings';
 	import UpgradeNotice from '../blocks/upgrade-notice.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
+	import Checkbox from './form-fields/checkbox.svelte';
 	import RadioGroup from './form-fields/radio-group.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
@@ -169,6 +170,14 @@
 			/>
 		</Form.Field>
 
+		<Form.Field form={sForm} name="allowAttachment" class="mb-4 pb-2">
+			<Checkbox
+				bind:checked={$formData.allowAttachment}
+				label={m.flat_warm_req_allow_attachment()}
+				data-testid="input-allow-attachment"
+			/>
+		</Form.Field>
+
 		<div
 			class="overflow-y-clip transition-all duration-300 ease-in-out {isOptionsVisible
 				? 'visible h-[calc(auto)] pb-4 opacity-100'
@@ -187,10 +196,7 @@
 		</div>
 
 		<div class="flex flex-col items-stretch sm:flex-row">
-			<Toggle
-				class="mb-1"
-				bind:pressed={isOptionsVisible}
-				aria-label={m.topical_zany_grebe_exhale()}
+			<Toggle bind:pressed={isOptionsVisible} aria-label={m.topical_zany_grebe_exhale()}
 				>{isOptionsVisible ? m.teal_wide_owl_arise() : m.main_direct_salmon_savor()}
 				<ChevronDown class="ml-2 h-4 w-4 {isOptionsVisible ? 'rotate-180' : ''}" /></Toggle
 			>

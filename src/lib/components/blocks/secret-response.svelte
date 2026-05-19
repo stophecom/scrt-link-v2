@@ -15,6 +15,8 @@
 	type Props = {
 		data: {
 			encryptedNote: string | null;
+			allowAttachment: boolean;
+			maxAttachmentSize: number;
 			alreadyResponded: boolean;
 			requesterName: string | null;
 			requesterEmail: string;
@@ -92,6 +94,8 @@
 			form={data.form}
 			publicKeyJWK={data.publicKey}
 			requestIdHash={data.requestIdHash}
+			allowAttachment={data.allowAttachment}
+			maxAttachmentSize={data.maxAttachmentSize}
 			bind:successMessage
 		/>
 	</Card>

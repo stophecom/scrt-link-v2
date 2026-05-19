@@ -52,3 +52,6 @@ tasks
 
 # Config / Certificates
 *.pem
+
+# Playwright auth state (contains session cookies)
+e2e/.auth/

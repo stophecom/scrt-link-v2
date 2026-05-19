@@ -30,7 +30,10 @@ export const load: PageServerLoad = async (event) => {
 		error(404, 'Request not found.');
 	}
 
-	if (!request.encryptedResponseContent || !request.wrappedResponseKey) {
+	if (
+		(!request.encryptedResponseContent && !request.encryptedResponseFile) ||
+		!request.wrappedResponseKey
+	) {
 		error(400, 'No response has been submitted yet.');
 	}
 
@@ -41,10 +44,12 @@ export const load: PageServerLoad = async (event) => {
 	return {
 		request: {
 			id: request.id,
+			requestIdHash: request.requestIdHash,
 			encryptedPrivateKey: request.encryptedPrivateKey,
 			encryptedResponseContent: request.encryptedResponseContent,
 			wrappedResponseKey: request.wrappedResponseKey,
 			encryptedResponseMeta: request.encryptedResponseMeta,
+			encryptedResponseFile: request.encryptedResponseFile,
 			respondedAt: request.respondedAt,
 			createdAt: request.createdAt
 		},
