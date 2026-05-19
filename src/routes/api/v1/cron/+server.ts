@@ -1,11 +1,12 @@
 import { DeleteObjectCommand, paginateListObjectsV2 } from '@aws-sdk/client-s3';
 import type { RequestHandler } from '@sveltejs/kit';
 import { error, json } from '@sveltejs/kit';
-import { eq, or } from 'drizzle-orm';
+import { and, eq, isNull, or } from 'drizzle-orm';
 import { lte } from 'drizzle-orm';
 
 import { CRON_SECRET } from '$env/static/private';
 import { PUBLIC_S3_BUCKET } from '$env/static/public';
+import { SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS } from '$lib/client/constants';
 import { FILE_RETENTION_PERIOD_IN_DAYS } from '$lib/constants';
 import { s3Client } from '$lib/s3';
 import { db } from '$lib/server/db';
@@ -82,16 +83,21 @@ export const GET: RequestHandler = async ({ request }) => {
 
 		console.log(`Cron: Deleted ${deletedSecrets.length} entries from the Secrets database.`);
 
-		// Delete secret requests expired >7 days ago, or created >30 days ago
-		const deleteExpiredRequestsBeforeDate = subtractDays(new Date(), 7);
-		const deleteOldRequestsBeforeDate = subtractDays(new Date(), 30);
+		// Delete secret requests older than the retention period (unanswered or responded)
+		const deleteRequestsBeforeDate = subtractDays(
+			new Date(),
+			SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS
+		);
 
 		const deletedSecretRequests = await db
 			.delete(secretRequest)
 			.where(
 				or(
-					lte(secretRequest.expiresAt, deleteExpiredRequestsBeforeDate),
-					lte(secretRequest.createdAt, deleteOldRequestsBeforeDate)
+					and(
+						lte(secretRequest.expiresAt, deleteRequestsBeforeDate),
+						isNull(secretRequest.respondedAt)
+					),
+					lte(secretRequest.respondedAt, deleteRequestsBeforeDate)
 				)
 			)
 			.returning();

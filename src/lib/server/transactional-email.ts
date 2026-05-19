@@ -5,6 +5,7 @@ import EmailContact from '$lib/emails/email-contact.svelte';
 import EmailOrganizationInvitation from '$lib/emails/email-organization-invitation.svelte';
 import EmailOtpVerification from '$lib/emails/email-otp-verification.svelte';
 import EmailReadReceipt from '$lib/emails/email-read-receipt.svelte';
+import EmailSecretRequestResponse from '$lib/emails/email-secret-request-response.svelte';
 import EmailSubscriptionTrialStart from '$lib/emails/email-subscription-trial-start.svelte';
 import EmailWelcome from '$lib/emails/email-welcome.svelte';
 import { m } from '$lib/paraglide/messages.js';
@@ -66,8 +67,18 @@ export const sendSubscriptionTrialStartEmail = async (
 	await sendTransactionalEmail({
 		subject: m.level_every_chicken_fall(),
 		to: email,
-		html: html
+		html
 	});
+};
+
+export const sendSecretRequestResponseReceiptEmail = async (email: string, receiptId: string) => {
+	const { html } = render(EmailSecretRequestResponse, { props: { receiptId } });
+	await sendTransactionalEmail({
+		subject: m.gold_tidy_crane_subject(),
+		to: email,
+		html
+	});
+	console.log(`Send secret request response notification to ${email}.`);
 };
 
 export const sendOrganisationInvitationEmail = async (

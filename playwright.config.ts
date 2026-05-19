@@ -2,6 +2,15 @@ import type { PlaywrightTestConfig } from '@playwright/test';
 // Run local tests headed: PUBLIC_ENV=development pnpm test:e2e --ui --headed
 const isLocalTest = process.env.PUBLIC_ENV === 'development';
 
+const sharedProjects: PlaywrightTestConfig['projects'] = [
+	{ name: 'setup', testMatch: /global\.setup\.ts/ },
+	{
+		name: 'e2e',
+		dependencies: ['setup'],
+		testIgnore: /global\.setup\.ts/
+	}
+];
+
 // Runs in local webserver
 const config: PlaywrightTestConfig = {
 	// webServer: {
@@ -16,7 +25,8 @@ const config: PlaywrightTestConfig = {
 		video: 'off',
 		screenshot: 'only-on-failure'
 	},
-	testDir: 'e2e'
+	testDir: 'e2e',
+	projects: sharedProjects
 };
 
 // Runs on published websites
@@ -33,8 +43,8 @@ const configPublished: PlaywrightTestConfig = {
 		screenshot: 'only-on-failure',
 		baseURL: process.env.VERCEL_URL
 	},
-
-	testDir: 'e2e'
+	testDir: 'e2e',
+	projects: sharedProjects
 };
 
 export default isLocalTest ? config : configPublished;

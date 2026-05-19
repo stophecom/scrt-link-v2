@@ -31,6 +31,10 @@ export type FileReference = {
 
 export interface SecretFile extends FileMeta, FileReference {
 	secretIdHash: string;
+	// When set, chunk downloads are authorized against a secret request
+	// (ECDSA signature verified vs. secret_request.responseFilePublicKey)
+	// instead of the secret table.
+	requestIdHash?: string;
 	decryptionKey: string;
 	progress: number;
 }
@@ -147,17 +151,24 @@ export const uploadFileToS3 = async ({
 
 const chunkDownload = async ({
 	secretIdHash,
+	requestIdHash,
 	bucket,
 	chunk
-}: Pick<SecretFile, 'secretIdHash' | 'bucket'> & { chunk: Chunk }) => {
+}: Pick<SecretFile, 'secretIdHash' | 'requestIdHash' | 'bucket'> & { chunk: Chunk }) => {
 	const { key, signature } = chunk;
 	const keyHash = await sha256Hash(key);
 
-	const { url } = await api<SignedUrlGetResponse>(
-		`/secrets/files/${key}`,
-		{ method: 'POST' },
-		{ secretIdHash, bucket, keyHash, signature }
-	);
+	const { url } = requestIdHash
+		? await api<SignedUrlGetResponse>(
+				`/secret-requests/files/${key}`,
+				{ method: 'POST' },
+				{ requestIdHash, bucket, keyHash, signature }
+			)
+		: await api<SignedUrlGetResponse>(
+				`/secrets/files/${key}`,
+				{ method: 'POST' },
+				{ secretIdHash, bucket, keyHash, signature }
+			);
 	const response = await fetch(url);
 
 	if (!response.ok || !response.body) {
@@ -168,7 +179,7 @@ const chunkDownload = async ({
 
 // Function runs in Service Worker, which means no access to DOM, etc.
 export const handleFileChunksDownload = (file: SecretFile) => {
-	const { secretIdHash, chunks, bucket, decryptionKey } = file;
+	const { secretIdHash, requestIdHash, chunks, bucket, decryptionKey } = file;
 
 	let loaded = 0;
 	const totalSize = chunks.map((o) => o['size']).reduce((a, b) => a + b);
@@ -178,7 +189,7 @@ export const handleFileChunksDownload = (file: SecretFile) => {
 			// We download the chunks in sequence.
 			// We could do concurrent fetching but the order of the chunks in the stream is important.
 			for (const chunk of chunks) {
-				const response = await chunkDownload({ secretIdHash, bucket, chunk });
+				const response = await chunkDownload({ secretIdHash, requestIdHash, bucket, chunk });
 
 				// This stream is for reading the download progress
 				const res = new Response(
