@@ -6,9 +6,9 @@
 
 	import Container from '../ui/container/container.svelte';
 
-	type Props = { imageUrl?: string };
+	type Props = { imageUrl?: string; destructionTimer?: number };
 
-	let { imageUrl }: Props = $props();
+	let { imageUrl, destructionTimer = 5 }: Props = $props();
 
 	let finished = $state(false);
 </script>
@@ -18,6 +18,8 @@
 		<div class="pb-2">
 			{#if imageUrl}
 				<CountDown
+					duration={destructionTimer}
+					showTimer={true}
 					onComplete={() => {
 						finished = true;
 						setTimeout(() => {
