@@ -27,7 +27,12 @@ const config = {
 			mode: 'auto',
 			directives: {
 				'default-src': ['none'],
-				'script-src': ['self', 'https://js.stripe.com', 'https://vercel.live'],
+				'script-src': [
+					'self',
+					'https://js.stripe.com',
+					'https://vercel.live',
+					"'sha256-uQ+6xeJ5jfvD5SmN5W7ZFR4dF9DbDwscZWrWOLfV+RM='"
+				],
 				'style-src': ['self', 'unsafe-inline'],
 				'img-src': [
 					'self',
@@ -37,7 +42,7 @@ const config = {
 					'https://lh3.googleusercontent.com'
 				],
 				'connect-src': ['self', 'https://*.os.zrh1.flow.swiss', 'https://plausible.io'],
-				'frame-src': ['https://js.stripe.com'],
+				'frame-src': ['https://js.stripe.com', 'https://vercel.live'],
 				'worker-src': ['self'],
 				'object-src': ['none'],
 				'base-uri': ['self'],
