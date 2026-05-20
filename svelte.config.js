@@ -36,7 +36,7 @@ const config = {
 					'https://scrt-link.imgix.net',
 					'https://lh3.googleusercontent.com'
 				],
-				'connect-src': ['self', 'https://*.os.zrh1.flow.swiss', 'https://plausible.io'],
+				'connect-src': ['self', 'data:', 'https://*.os.zrh1.flow.swiss', 'https://plausible.io'],
 				'frame-src': ['https://js.stripe.com', 'https://vercel.live'],
 				'worker-src': ['self'],
 				'object-src': ['none'],
