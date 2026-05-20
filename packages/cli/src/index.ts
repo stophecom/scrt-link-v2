@@ -24,7 +24,7 @@ program
 	.option('--views <n>', 'View limit 1–1000 (default: 1)')
 	.option('--note <text>', 'Public note visible to the recipient before revealing')
 	.option('--password <pass>', 'Password-protect the secret')
-	.option('--host <host>', 'API host for self-hosted instances (default: scrt.link)')
+	.option('--host <host>', 'API host for white-label instances (default: scrt.link)')
 	.option('--api-key <key>', 'API key (or set SCRT_LINK_API_KEY env var)')
 	.action(async (secret: string, opts) => {
 		const apiKey: string = opts.apiKey ?? process.env.SCRT_LINK_API_KEY ?? '';

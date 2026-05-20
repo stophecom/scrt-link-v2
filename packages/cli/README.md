@@ -27,7 +27,7 @@ scrtlink "https://example.com" \
   --note "Bitcoin wallet" \
   --password "unlock123"
 
-# Self-hosted / white-label instance
+# White-label instance
 scrtlink "my secret" --host br3f.com
 ```
 
@@ -40,7 +40,7 @@ scrtlink "my secret" --host br3f.com
 | `--views`    | View limit 1–1000                 | `1`         |
 | `--note`     | Public note shown before reveal   | —           |
 | `--password` | Password-protect the secret       | —           |
-| `--host`     | Override API host (self-hosted)   | `scrt.link` |
+| `--host`     | Override API host (white-label)   | `scrt.link` |
 | `--api-key`  | API key (overrides env var)       | —           |
 
 The command prints the secret link to stdout, making it pipeable:
