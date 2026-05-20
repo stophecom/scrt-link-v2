@@ -1,8 +1,10 @@
 # scrt-link-v2
 
-Version 2 - built with [Svelte](https://github.com/sveltejs/cli).
+[scrt.link](https://scrt.link) is a secure secret-sharing platform. Secrets are encrypted on the client before being sent to the server — the server never sees the plaintext. Once a secret has been viewed (or expires), it is permanently deleted.
 
-Live: [scrt.link](scrt.link)
+Version 2 — built with [SvelteKit](https://svelte.dev) and [TypeScript](https://www.typescriptlang.org/).
+
+Live: [scrt.link](https://scrt.link)
 
 ## Developing
 
@@ -237,6 +239,70 @@ pnpm --filter @scrt-link/client build
 
 # Publish package
 cd packages/client
+npm login
+npm version patch
+npm publish --access public
+```
+
+### CLI
+
+Install and use the `scrtlink` CLI to create encrypted secrets from the command line.
+
+```bash
+# Install globally
+npm install -g @scrt-link/cli
+
+# Or run without installing
+npx @scrt-link/cli "my secret"
+```
+
+#### Usage
+
+```bash
+# Set your API key once (or pass --api-key per command)
+export SCRT_LINK_API_KEY=ak_...
+
+# Basic — prints the secret link to stdout
+scrtlink "super-secret-password"
+
+# With options
+scrtlink "https://example.com" \
+  --type redirect \
+  --expires 1h \
+  --views 5 \
+  --password "unlock123"
+
+# White-label instance
+scrtlink "my secret" --host br3f.com
+```
+
+Options:
+
+| Flag         | Description                       | Default     |
+| ------------ | --------------------------------- | ----------- |
+| `--type`     | `text` \| `redirect` \| `neogram` | `text`      |
+| `--expires`  | `1h` \| `1d` \| `1w` \| `1m`      | `1w`        |
+| `--views`    | View limit 1–1000                 | `1`         |
+| `--note`     | Public note shown before reveal   | —           |
+| `--password` | Password-protect the secret       | —           |
+| `--host`     | Override API host (self-hosted)   | `scrt.link` |
+| `--api-key`  | API key (overrides env var)       | —           |
+
+The command prints the secret link to stdout, making it pipeable:
+
+```bash
+scrtlink "my secret" | pbcopy
+echo "my secret" | xargs scrtlink
+```
+
+#### Build & publish
+
+```bash
+# Build
+pnpm --filter @scrt-link/cli build
+
+# Publish
+cd packages/cli
 npm login
 npm version patch
 npm publish --access public
