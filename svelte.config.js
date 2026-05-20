@@ -27,12 +27,7 @@ const config = {
 			mode: 'auto',
 			directives: {
 				'default-src': ['none'],
-				'script-src': [
-					'self',
-					'https://js.stripe.com',
-					'https://vercel.live',
-					"'sha256-uQ+6xeJ5jfvD5SmN5W7ZFR4dF9DbDwscZWrWOLfV+RM='"
-				],
+				'script-src': ['self', 'https://js.stripe.com', 'https://vercel.live'],
 				'style-src': ['self', 'unsafe-inline'],
 				'img-src': [
 					'self',
