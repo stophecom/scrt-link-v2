@@ -2,7 +2,6 @@ import scrtLink, { SecretType } from '@scrt-link/client';
 import { program } from 'commander';
 
 const EXPIRES_MAP: Record<string, number> = {
-	'10m': 10 * 60 * 1000,
 	'1h': 60 * 60 * 1000,
 	'1d': 24 * 60 * 60 * 1000,
 	'1w': 7 * 24 * 60 * 60 * 1000,
@@ -21,7 +20,7 @@ program
 	.version('0.0.1')
 	.argument('<secret>', 'The secret content to encrypt and share')
 	.option('--type <type>', 'Secret type: text | redirect | neogram (default: text)')
-	.option('--expires <duration>', 'Expiration: 10m | 1h | 1d | 1w | 1m (default: 1w)')
+	.option('--expires <duration>', 'Expiration: 1h | 1d | 1w | 1m (default: 1w)')
 	.option('--views <n>', 'View limit 1–1000 (default: 1)')
 	.option('--note <text>', 'Public note visible to the recipient before revealing')
 	.option('--password <pass>', 'Password-protect the secret')
@@ -34,7 +33,14 @@ program
 			process.exit(1);
 		}
 
-		const expiresIn = EXPIRES_MAP[opts.expires ?? '1w'] ?? EXPIRES_MAP['1w'];
+		const expiresKey = opts.expires ?? '1w';
+		if (!(expiresKey in EXPIRES_MAP)) {
+			console.error(
+				`Error: Invalid --expires value "${expiresKey}". Allowed: ${Object.keys(EXPIRES_MAP).join(', ')}.`
+			);
+			process.exit(1);
+		}
+		const expiresIn = EXPIRES_MAP[expiresKey];
 		const viewLimit = opts.views !== undefined ? parseInt(opts.views, 10) : 1;
 		const secretType = TYPE_MAP[opts.type ?? 'text'] ?? SecretType.TEXT;
 
