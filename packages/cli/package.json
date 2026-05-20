@@ -1,6 +1,6 @@
 {
 	"name": "@scrt-link/cli",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "CLI for scrt.link — create encrypted secrets from the command line",
 	"keywords": [
 		"scrt.link",

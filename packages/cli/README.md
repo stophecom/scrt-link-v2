@@ -39,15 +39,15 @@ scrtlink "my secret" --host br3f.com
 
 ## Options
 
-| Flag | Description | Default |
-|------|-------------|---------|
-| `--type` | `text` \| `redirect` \| `neogram` | `text` |
-| `--expires` | `1h` \| `1d` \| `1w` \| `1m` | `1w` |
-| `--views` | View limit 1–1000 | `1` |
-| `--note` | Public note shown before reveal | — |
-| `--password` | Password-protect the secret | — |
-| `--host` | Override API host (self-hosted) | `scrt.link` |
-| `--api-key` | API key (overrides env var) | — |
+| Flag         | Description                       | Default     |
+| ------------ | --------------------------------- | ----------- |
+| `--type`     | `text` \| `redirect` \| `neogram` | `text`      |
+| `--expires`  | `1h` \| `1d` \| `1w` \| `1m`      | `1w`        |
+| `--views`    | View limit 1–1000                 | `1`         |
+| `--note`     | Public note shown before reveal   | —           |
+| `--password` | Password-protect the secret       | —           |
+| `--host`     | Override API host (self-hosted)   | `scrt.link` |
+| `--api-key`  | API key (overrides env var)       | —           |
 
 The command prints the secret link to stdout, making it pipeable:
 
