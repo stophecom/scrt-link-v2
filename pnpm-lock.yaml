@@ -225,13 +225,13 @@ importers:
 
   packages/cli:
     dependencies:
-      '@scrt-link/client':
-        specifier: workspace:*
-        version: link:../client
       commander:
         specifier: ^12.0.0
         version: 12.1.0
     devDependencies:
+      '@scrt-link/client':
+        specifier: workspace:*
+        version: link:../client
       '@types/node':
         specifier: ^25.5.2
         version: 25.5.2

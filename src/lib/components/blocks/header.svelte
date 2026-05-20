@@ -57,7 +57,7 @@
 				class="fixed top-0 left-0 h-[var(--header-height)] w-full transition-all duration-300 ease-in-out {intersecting &&
 				!persistHeader
 					? 'bg-transparent'
-					: 'bg-background shadow-sm'}"
+					: 'bg-card shadow-sm'}"
 			>
 				{#if announcementVisible}
 					<div class="bg-primary text-primary-foreground">
