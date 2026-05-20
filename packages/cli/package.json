@@ -2,7 +2,13 @@
 	"name": "@scrt-link/cli",
 	"version": "0.0.1",
 	"description": "CLI for scrt.link — create encrypted secrets from the command line",
-	"keywords": ["scrt.link", "secrets", "cli", "encryption", "security"],
+	"keywords": [
+		"scrt.link",
+		"secrets",
+		"cli",
+		"encryption",
+		"security"
+	],
 	"homepage": "https://github.com/stophecom/scrt-link-v2#readme",
 	"bugs": {
 		"url": "https://github.com/stophecom/scrt-link-v2/issues"
