@@ -3,11 +3,12 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 import { isOriginalHostname } from '$lib/app-routing';
+import { TierOptions } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
 import { db } from '$lib/server/db';
 import { apiKey } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/schema';
-import { isMemberOfOrganization } from '$lib/server/organization';
+import { getEffectiveTierForUser, isMemberOfOrganization } from '$lib/server/organization';
 import { saveSecret } from '$lib/server/secrets';
 import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 import { secretFormSchema } from '$lib/validators/formSchemas';
@@ -55,6 +56,15 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	const userId = userWithApiKey.user?.id;
 	const userTier = userWithApiKey.user?.subscriptionTier ?? undefined;
+	const effectiveTier = userId
+		? await getEffectiveTierForUser(userId, userTier ?? TierOptions.CONFIDENTIAL)
+		: userTier;
+
+	const planLimits = getUserPlanLimits(effectiveTier);
+
+	if (!planLimits.apiAccess) {
+		return jsonWithCors({ error: 'API access requires a premium plan.' }, { status: 403 });
+	}
 
 	const body = await request.json();
 	const validation = secretFormSchema().safeParse(body);
@@ -66,7 +76,6 @@ export const POST: RequestHandler = async ({ request }) => {
 		);
 	}
 
-	const planLimits = getUserPlanLimits(userTier);
 	if (validation.data.viewLimit > planLimits.maxViewLimit) {
 		return jsonWithCors(
 			{ error: `View limit exceeds your plan maximum of ${planLimits.maxViewLimit}.` },

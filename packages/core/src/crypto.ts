@@ -1,21 +1,18 @@
 // Collection of crypto helper functions
-// These helpers only run in the Browser: crypto as in window.crypto
+// Compatible with browser and Node.js 18+ (uses Web Crypto API globals).
+// decryptFile uses the File constructor, which requires Node.js 20+.
 
 // Create random bytes for Salt, Initialization Vector (IV), etc.
 const getRandomBytes = (length = 16) => crypto.getRandomValues(new Uint8Array(length));
 
-const blobToBase64 = async (blob: Blob) => {
-	return new Promise<string>((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onloadend = () => {
-			if (typeof reader.result === 'string') {
-				resolve(reader.result);
-			} else {
-				reject('Failed to create base64 from blob.');
-			}
-		};
-		reader.readAsDataURL(blob);
-	});
+const blobToBase64 = async (blob: Blob): Promise<string> => {
+	const buffer = await blob.arrayBuffer();
+	const bytes = new Uint8Array(buffer);
+	let binary = '';
+	for (const byte of bytes) {
+		binary += String.fromCharCode(byte);
+	}
+	return `data:application/octet-stream;base64,${btoa(binary)}`;
 };
 
 export const encodeText = (text: string) => {
