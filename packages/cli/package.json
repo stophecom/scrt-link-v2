@@ -1,0 +1,39 @@
+{
+	"name": "@scrt-link/cli",
+	"version": "0.0.1",
+	"description": "CLI for scrt.link — create encrypted secrets from the command line",
+	"keywords": ["scrt.link", "secrets", "cli", "encryption", "security"],
+	"homepage": "https://github.com/stophecom/scrt-link-v2#readme",
+	"bugs": {
+		"url": "https://github.com/stophecom/scrt-link-v2/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/stophecom/scrt-link-v2.git"
+	},
+	"license": "MIT",
+	"author": "stophe",
+	"type": "module",
+	"bin": {
+		"scrtlink": "./dist/index.js"
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"prepublishOnly": "npm run build"
+	},
+	"dependencies": {
+		"@scrt-link/client": "workspace:*",
+		"commander": "^12.0.0"
+	},
+	"devDependencies": {
+		"tsup": "^8.0.0",
+		"typescript": "^5.0.0"
+	},
+	"engines": {
+		"node": ">=18"
+	}
+}
