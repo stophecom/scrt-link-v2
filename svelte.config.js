@@ -21,7 +21,31 @@ const config = {
 				? (await import('@sveltejs/adapter-node')).default()
 				: (await import('@sveltejs/adapter-vercel')).default(),
 
-		csrf: { checkOrigin: process.env.CSRF_CHECK_ORIGIN === 'false' ? false : true } // For debug purposes only
+		csrf: { checkOrigin: process.env.CSRF_CHECK_ORIGIN === 'false' ? false : true }, // For debug purposes only
+
+		csp: {
+			mode: 'auto',
+			directives: {
+				'default-src': ['none'],
+				'script-src': ['self', 'https://js.stripe.com', 'https://vercel.live'],
+				'style-src': ['self', 'unsafe-inline'],
+				'img-src': [
+					'self',
+					'data:',
+					'https://*.os.zrh1.flow.swiss',
+					'https://scrt-link.imgix.net',
+					'https://lh3.googleusercontent.com'
+				],
+				'connect-src': ['self', 'data:', 'https://*.os.zrh1.flow.swiss', 'https://plausible.io'],
+				'frame-src': ['https://js.stripe.com', 'https://vercel.live'],
+				'worker-src': ['self'],
+				'object-src': ['none'],
+				'base-uri': ['self'],
+				'frame-ancestors': ['none'],
+				'form-action': ['self'],
+				'manifest-src': ['self']
+			}
+		}
 	},
 
 	extensions: ['.svelte', '.svx', '.md']
