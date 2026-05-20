@@ -52,7 +52,8 @@ program
 			if ('secretLink' in result && result.secretLink) {
 				process.stdout.write(result.secretLink + '\n');
 			} else {
-				console.error('Error:', (result as { message?: string }).message ?? 'Unknown error');
+				const errResult = result as { error?: string; message?: string };
+				console.error('Error:', errResult.error ?? errResult.message ?? JSON.stringify(result));
 				process.exit(1);
 			}
 		} catch (err) {
