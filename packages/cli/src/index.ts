@@ -8,7 +8,7 @@ const EXPIRES_MAP: Record<string, number> = {
 	'1m': 30 * 24 * 60 * 60 * 1000
 };
 
-const TYPE_MAP: Record<string, SecretType> = {
+const TYPE_MAP: Record<string, SecretType.TEXT | SecretType.REDIRECT | SecretType.NEOGRAM> = {
 	text: SecretType.TEXT,
 	redirect: SecretType.REDIRECT,
 	neogram: SecretType.NEOGRAM
