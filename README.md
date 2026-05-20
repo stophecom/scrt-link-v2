@@ -251,9 +251,6 @@ Install and use the `scrtlink` CLI to create encrypted secrets from the command 
 ```bash
 # Install globally
 npm install -g @scrt-link/cli
-
-# Or run without installing
-npx @scrt-link/cli "my secret"
 ```
 
 #### Usage
@@ -285,7 +282,7 @@ Options:
 | `--views`    | View limit 1–1000                 | `1`         |
 | `--note`     | Public note shown before reveal   | —           |
 | `--password` | Password-protect the secret       | —           |
-| `--host`     | Override API host (self-hosted)   | `scrt.link` |
+| `--host`     | Override API host (white-label)   | `scrt.link` |
 | `--api-key`  | API key (overrides env var)       | —           |
 
 The command prints the secret link to stdout, making it pipeable:
