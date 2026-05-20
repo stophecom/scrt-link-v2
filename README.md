@@ -251,9 +251,6 @@ Install and use the `scrtlink` CLI to create encrypted secrets from the command 
 ```bash
 # Install globally
 npm install -g @scrt-link/cli
-
-# Or run without installing
-npx @scrt-link/cli "my secret"
 ```
 
 #### Usage

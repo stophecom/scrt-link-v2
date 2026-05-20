@@ -1,6 +1,6 @@
 {
 	"name": "@scrt-link/cli",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "CLI for scrt.link — create encrypted secrets from the command line",
 	"keywords": [
 		"scrt.link",
@@ -32,10 +32,10 @@
 		"prepublishOnly": "npm run build"
 	},
 	"dependencies": {
-		"@scrt-link/client": "workspace:*",
 		"commander": "^12.0.0"
 	},
 	"devDependencies": {
+		"@scrt-link/client": "workspace:*",
 		"@types/node": "^25.5.2",
 		"tsup": "^8.0.0",
 		"typescript": "^5.0.0"

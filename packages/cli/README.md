@@ -10,12 +10,6 @@ CLI for [scrt.link](https://scrt.link) — create end-to-end encrypted, self-des
 npm install -g @scrt-link/cli
 ```
 
-Or run without installing:
-
-```bash
-npx @scrt-link/cli "my secret"
-```
-
 ## Usage
 
 ```bash
