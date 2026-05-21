@@ -56,7 +56,11 @@ export const productMenu = () => [
 	},
 	{
 		href: '/api-documentation',
-		label: m.salty_sea_insect_fry()
+		label: 'API Docs'
+	},
+	{
+		href: '/cli',
+		label: 'CLI'
 	},
 	{
 		href: 'https://deepwiki.com/stophecom/scrt-link-v2',
