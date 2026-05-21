@@ -5,6 +5,7 @@
 		Layers,
 		Lock,
 		Minus,
+		Radar,
 		RefreshCw,
 		ScanSearch,
 		ShieldAlert,
@@ -36,6 +37,19 @@
 			label: 'SSL Labs',
 			href: 'https://www.ssllabs.com/ssltest/analyze.html?d=scrt.link',
 			grade: 'A+'
+		}
+	];
+
+	const riskScans = [
+		{
+			label: 'Sucuri',
+			href: 'https://sitecheck.sucuri.net/results/scrt.link',
+			grade: 'Low'
+		},
+		{
+			label: 'Pentest Tools',
+			href: 'https://pentest-tools.com/website-vulnerability-scanning/website-scanner',
+			grade: 'Low'
 		}
 	];
 
@@ -102,7 +116,7 @@
 
 	<Section wide>
 		<h3 class="mb-2 font-semibold">{m.clean_live_bear_verify()}</h3>
-		<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+		<div class="mb-8 grid max-w-200 grid-cols-2 gap-3 sm:grid-cols-3">
 			{#each badges as badge, i (i)}
 				<a
 					href={badge.href}
@@ -116,6 +130,26 @@
 					</div>
 					<SquareArrowOutUpRight class="text-muted-foreground ms-2 h-4 w-4" />
 					<div class="bg-success/20 text-success rounded p-2 text-xl font-bold">{badge.grade}</div>
+				</a>
+			{/each}
+		</div>
+		<h3 class="mb-2 font-semibold">{m.early_mad_mole_assess()}</h3>
+		<div class="grid max-w-200 grid-cols-2 gap-3 sm:grid-cols-3">
+			{#each riskScans as scan, i (i)}
+				<a
+					href={scan.href}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="border-info bg-info/5 hover:bg-info/10 grid shrink-0 grid-cols-[1fr_min-content_min-content] items-center gap-4 rounded border p-2 transition-colors duration-300"
+				>
+					<div class="flex items-center gap-3">
+						<Radar class="text-info ms-2 h-4 w-4" />
+
+						<span class="inline-flex items-center text-sm font-medium">{scan.label}</span>
+					</div>
+
+					<SquareArrowOutUpRight class="text-muted-foreground ms-2 h-4 w-4" />
+					<div class="bg-info/20 text-info rounded p-2 text-lg font-bold">{scan.grade}</div>
 				</a>
 			{/each}
 		</div>

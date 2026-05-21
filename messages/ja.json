@@ -234,6 +234,7 @@
 	"plain_safe_bear_describe": "信頼性が高く監査済みの少数のプロバイダーに依存しています — 不必要なサードパーティはありません。",
 	"mealy_clean_crow_disclose": "脆弱性を発見しましたか？以下からご報告ください：",
 	"clean_live_bear_verify": "セキュリティレポート（ライブ）",
+	"early_mad_mole_assess": "セキュリティリスク評価",
 	"tired_just_wolf_audit": "クリックしてサードパーティの監査をリアルタイムで確認する。",
 	"real_safe_crow_name": "プロバイダー",
 	"real_safe_crow_role": "役割",
