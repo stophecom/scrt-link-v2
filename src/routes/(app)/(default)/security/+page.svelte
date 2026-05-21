@@ -24,15 +24,18 @@
 	const badges = [
 		{
 			label: 'Security Headers',
-			href: 'https://securityheaders.com/?q=scrt.link&followRedirects=on'
+			href: 'https://securityheaders.com/?q=scrt.link&followRedirects=on',
+			grade: 'A+'
 		},
 		{
 			label: 'Mozilla Observatory',
-			href: 'https://developer.mozilla.org/en-US/observatory/analyze?host=scrt.link'
+			href: 'https://developer.mozilla.org/en-US/observatory/analyze?host=scrt.link',
+			grade: 'A+'
 		},
 		{
 			label: 'SSL Labs',
-			href: 'https://www.ssllabs.com/ssltest/analyze.html?d=scrt.link'
+			href: 'https://www.ssllabs.com/ssltest/analyze.html?d=scrt.link',
+			grade: 'A+'
 		}
 	];
 
@@ -99,7 +102,7 @@
 
 	<Section wide>
 		<h3 class="mb-2 font-semibold">{m.clean_live_bear_verify()}</h3>
-		<div class="grid max-w-200 gap-3 sm:grid-cols-3">
+		<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
 			{#each badges as badge, i (i)}
 				<a
 					href={badge.href}
@@ -112,7 +115,7 @@
 						<span class="inline-flex items-center text-sm font-medium">{badge.label}</span>
 					</div>
 					<SquareArrowOutUpRight class="text-muted-foreground ms-2 h-4 w-4" />
-					<div class="bg-success/20 text-success rounded p-2 text-xl font-bold">A+</div>
+					<div class="bg-success/20 text-success rounded p-2 text-xl font-bold">{badge.grade}</div>
 				</a>
 			{/each}
 		</div>
@@ -186,5 +189,9 @@
 			</table>
 		</div>
 	</Section>
+
 	<FaqSection items={securityAndPrivacy()} variant="card" />
+	<Section wide title={m.civil_safe_hawk_report()}>
+		<Markdown markdown={m.civil_safe_hawk_body()} />
+	</Section>
 </Page>
