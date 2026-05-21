@@ -26,15 +26,15 @@ scrtlink <secret> [options]
 
 ### Options
 
-| Flag | Description | Default |
-|------|-------------|---------|
-| `--type` | `text` \| `redirect` \| `neogram` | `text` |
-| `--expires` | `1h` \| `1d` \| `1w` \| `1m` | `1w` |
-| `--views` | View limit 1–1000 | `1` |
-| `--note` | Public note shown to recipient before reveal | — |
-| `--password` | Password-protect the secret | — |
-| `--host` | Override API host (white-label instances) | `scrt.link` |
-| `--api-key` | API key — overrides `SCRT_LINK_API_KEY` env var | — |
+| Flag         | Description                                     | Default     |
+| ------------ | ----------------------------------------------- | ----------- |
+| `--type`     | `text` \| `redirect` \| `neogram`               | `text`      |
+| `--expires`  | `1h` \| `1d` \| `1w` \| `1m`                    | `1w`        |
+| `--views`    | View limit 1–1000                               | `1`         |
+| `--note`     | Public note shown to recipient before reveal    | —           |
+| `--password` | Password-protect the secret                     | —           |
+| `--host`     | Override API host (white-label instances)       | `scrt.link` |
+| `--api-key`  | API key — overrides `SCRT_LINK_API_KEY` env var | —           |
 
 ### Examples
 
@@ -67,7 +67,7 @@ Or pass it inline for a single command:
 scrtlink "my secret" --api-key ak_...
 ```
 
-## Self-hosted / White-label
+## White-label
 
 Point the CLI at your own scrt.link instance with `--host`:
 
@@ -77,8 +77,8 @@ scrtlink "my secret" --host yourdomain.com
 
 ## Secret Types
 
-| Type | Description |
-|------|-------------|
-| `text` | Plain text secret (default) |
-| `redirect` | A URL — recipient is redirected after reveal |
-| `neogram` | Self-destructing message with animated reveal |
+| Type       | Description                                   |
+| ---------- | --------------------------------------------- |
+| `text`     | Plain text secret (default)                   |
+| `redirect` | A URL — recipient is redirected after reveal  |
+| `neogram`  | Self-destructing message with animated reveal |
