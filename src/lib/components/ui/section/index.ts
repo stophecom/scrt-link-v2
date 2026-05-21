@@ -3,14 +3,14 @@ import { tv, type VariantProps } from 'tailwind-variants';
 import Root from './section.svelte';
 
 export const sectionVariants = tv({
-	base: 'py-16',
+	base: 'py-16 md:py-24',
 	variants: {
 		variant: {
 			default: '', // Transparent
 			contrast: 'bg-foreground text-background',
 			muted: 'bg-muted',
 			neutral: 'bg-background',
-			card: 'bg-card'
+			card: 'bg-card border-y border-border'
 		}
 	},
 	defaultVariants: {

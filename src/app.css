@@ -13,6 +13,13 @@
 	--theme-color-teal: #068484;
 
 	--color-grain-opacity: 0.04;
+
+	/* Custom resets */
+	abbr[title] {
+		text-decoration: none; /* Removes modern browser underlines */
+		border-bottom: none; /* Removes older browser underlines */
+		cursor: inherit; /* Removes the help/question mark cursor if present */
+	}
 }
 
 @layer base {
@@ -30,7 +37,7 @@
 		--foreground: hsl(218 50% 12%); /* deep navy */
 
 		--muted: oklch(from var(--background) calc(l - 0.05) c h);
-		--muted-foreground: oklch(from var(--text-background) calc(l - 0.1) c h);
+		--muted-foreground: oklch(from var(--foreground) calc(l + 0.2) c h);
 
 		--card: oklch(from var(--background) calc(l + 0.015) c h);
 		--border: oklch(from var(--background) calc(l - 0.11) c h);
@@ -50,7 +57,7 @@
 		--background: hsl(218 43% 8%); /* deep dark navy */
 		--foreground: hsl(38 25% 90%); /* warm cream */
 		--muted: oklch(from var(--color-background) calc(l + 0.05) c h);
-		--muted-foreground: oklch(from var(--color-foreground) calc(l + 0.1) c h);
+		--muted-foreground: oklch(from var(--foreground) calc(l - 0.2) c h);
 
 		--card: oklch(from var(--color-background) calc(l - 0.015) c h);
 		--border: oklch(from var(--color-background) calc(l + 0.11) c h);
