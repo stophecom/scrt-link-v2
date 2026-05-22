@@ -4,10 +4,9 @@
 		hashRecoveryKey,
 		unwrapMasterKeyWithRecovery
 	} from '@scrt-link/core';
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { setMasterKey } from '$lib/client/key-manager';
@@ -119,12 +118,6 @@
 						{$delayed ? m.aware_tense_pig_vent() : m.simple_bad_haddock_agree()}
 					</Form.Button>
 				</div>
-
-				{#if dev}
-					<div class="py-3">
-						<SuperDebug data={$recFormData} />
-					</div>
-				{/if}
 			</form>
 		</FormWrapper>
 	{/if}

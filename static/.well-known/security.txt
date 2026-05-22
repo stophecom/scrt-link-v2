@@ -1,0 +1,5 @@
+Contact: mailto:security@scrt.link
+Expires: 2027-05-21T00:00:00Z
+Canonical: https://scrt.link/.well-known/security.txt
+Preferred-Languages: en, de
+Policy: https://scrt.link/security

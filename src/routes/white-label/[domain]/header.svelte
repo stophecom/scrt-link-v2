@@ -26,7 +26,7 @@
 	let logoSrc = $derived(mode.current === 'dark' ? logoDarkMode : logo);
 </script>
 
-<header class="bg-background shadow-sm" {...rest}>
+<header class="bg-card shadow-sm" {...rest}>
 	<Container class="flex justify-between py-2" variant={wide ? 'wide' : 'default'}>
 		<a class="inline-flex h-12 w-36 items-center" href={localizeHref('/')}>
 			{#if logoSrc}

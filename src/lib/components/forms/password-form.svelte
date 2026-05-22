@@ -1,8 +1,7 @@
 <script lang="ts">
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { m } from '$lib/paraglide/messages.js';
@@ -56,12 +55,5 @@
 				>{m.flat_moving_finch_assure()}</Form.Button
 			>
 		</div>
-
-		<!-- For debugging -->
-		{#if dev}
-			<div class="py-3">
-				<SuperDebug data={$formData} />
-			</div>
-		{/if}
 	</form>
 </FormWrapper>
