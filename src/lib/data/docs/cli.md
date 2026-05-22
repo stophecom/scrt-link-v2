@@ -45,7 +45,7 @@ scrtlink "https://example.com" --type redirect --expires 1h
 # Password-protected secret, viewable up to 5 times
 scrtlink "my secret" --password "unlock123" --views 5
 
-# Add a note the recipient sees before revealing
+# Add a note to yourself. This is only visible to you in the dashboard.
 scrtlink "my secret" --note "Your one-time credentials"
 
 # Pipe the link directly to clipboard (macOS)
