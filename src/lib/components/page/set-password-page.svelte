@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { derivePDK, generatePdkSalt, unwrapMasterKey, wrapMasterKey } from '@scrt-link/core';
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { getMasterKey, setMasterKey } from '$lib/client/key-manager';
@@ -187,12 +186,6 @@
 						{$encDelayed ? m.bold_warm_falcon_type() : m.flat_moving_finch_assure()}
 					</Form.Button>
 				</div>
-
-				{#if dev}
-					<div class="py-3">
-						<SuperDebug data={$encFormData} />
-					</div>
-				{/if}
 			</form>
 		</FormWrapper>
 	{:else}
