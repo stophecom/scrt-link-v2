@@ -3,7 +3,7 @@ import { tv, type VariantProps } from 'tailwind-variants';
 import Root from './section.svelte';
 
 export const sectionVariants = tv({
-	base: 'py-16 md:py-24',
+	base: 'py-16 md:py-20',
 	variants: {
 		variant: {
 			default: '', // Transparent
