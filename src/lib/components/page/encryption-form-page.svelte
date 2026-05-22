@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { derivePDK, generateEncryptionSetup, unwrapMasterKey } from '@scrt-link/core';
 	import { Checkbox } from 'bits-ui';
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
@@ -232,12 +231,6 @@
 						{$pwDelayed ? m.aware_tense_pig_vent() : m.few_blue_wallaby_read()}
 					</Form.Button>
 				</div>
-
-				{#if dev}
-					<div class="py-3">
-						<SuperDebug data={$pwFormData} />
-					</div>
-				{/if}
 			</form>
 		</FormWrapper>
 	{:else if step === 'recovery'}

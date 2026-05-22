@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { derivePDK, unwrapMasterKey } from '@scrt-link/core';
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import { dev } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { setMasterKey } from '$lib/client/key-manager';
 	import { setPendingPassword } from '$lib/client/pending-password';
@@ -106,12 +105,5 @@
 				>{m.legal_weak_jay_bless()}</Form.Button
 			>
 		</div>
-
-		<!-- For debugging -->
-		{#if dev}
-			<div class="py-3">
-				<SuperDebug data={$formData} />
-			</div>
-		{/if}
 	</form>
 </FormWrapper>
