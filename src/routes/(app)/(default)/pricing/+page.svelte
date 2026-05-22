@@ -3,11 +3,11 @@
 
 	import { replaceState } from '$app/navigation';
 	import { page } from '$app/state';
+	import FaqSection from '$lib/components/blocks/faq-section.svelte';
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Quote from '$lib/components/blocks/quote.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import { CenteredPage } from '$lib/components/page';
-	import Accordion from '$lib/components/ui/accordion';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import { Section } from '$lib/components/ui/section';
@@ -87,7 +87,7 @@
 		<ComparisonTable {showBusiness} />
 	</Section>
 
-	<Section wide variant="muted">
+	<Section wide variant="card">
 		<Quote
 			text="Not every piece of information needs to be stored, tracked, or logged. Some messages are meant for one moment — and one moment only."
 			author="Chris"
@@ -96,9 +96,7 @@
 		/>
 	</Section>
 
-	<Section title={m.few_awful_chipmunk_trust()} lead={m.pretty_factual_piranha_hug()}>
-		<Accordion items={accountAndBilling()} defaultOpen={[0]} jsonLd />
-	</Section>
+	<FaqSection items={accountAndBilling()} />
 
 	<Section
 		wide
@@ -121,7 +119,7 @@
 			</Button>
 		</div>
 	</Section>
-	<div class="bg-card flex flex-wrap items-center justify-center gap-2 py-3">
+	<div class="flex flex-wrap items-center justify-center gap-2 py-3">
 		<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"
 			><rect width="24" height="24" rx="3" fill="#D52B1E" /><path
 				d="M10.5 6h3v12h-3z"
