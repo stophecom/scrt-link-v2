@@ -8,6 +8,9 @@ jobs:
     name: Run end-to-end tests on published site
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
+    # Without this, a hung `playwright install` (a known CDN-stall failure mode)
+    # squats on the runner until GitHub's 6h max-job-time kills it.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
@@ -15,7 +18,17 @@ jobs:
           node-version: 24
       - uses: pnpm/action-setup@v6
       - name: Install dependencies
-        run: pnpm install && npx playwright install --with-deps
+        run: pnpm install
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install Playwright browser
+        # Bound the flaky browser download so a stall fails fast and is retryable.
+        # Only chromium is needed (playwright.config.ts specifies no other browser).
+        timeout-minutes: 8
+        run: npx playwright install --with-deps chromium
       - name: Run tests on preview PR
         if: github.event.deployment_status.environment != 'Production'
         run: xvfb-run npx playwright test
