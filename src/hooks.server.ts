@@ -7,6 +7,7 @@ import { ThemeOptions, TierOptions } from '$lib/data/enums';
 import { paraglideMiddleware } from '$lib/paraglide/server';
 import * as auth from '$lib/server/auth.js';
 import { getEffectiveTierForUser } from '$lib/server/organization';
+import { applyFrameHeaders } from '$lib/server/security-headers';
 import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 
 const guards = import.meta.glob('./routes/**/-guard.*');
@@ -129,12 +130,15 @@ const handleTheme: Handle = async ({ event, resolve }) => {
 const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event);
 	response.headers.set('X-Content-Type-Options', 'nosniff');
-	response.headers.set('X-Frame-Options', 'DENY');
 	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 	response.headers.set(
 		'Permissions-Policy',
 		'camera=(), microphone=(), geolocation=(), usb=(), payment=()'
 	);
+
+	// White-label pages may be embedded same-origin; everything else stays frame-denied.
+	// `event.locals.whiteLabelSite` is populated by handleWhiteLabelSite during resolve().
+	applyFrameHeaders(response.headers, Boolean(event.locals.whiteLabelSite));
 	return response;
 };
 

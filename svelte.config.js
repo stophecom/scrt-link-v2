@@ -39,7 +39,7 @@ const config = {
 				],
 				'media-src': ['self'],
 				'connect-src': ['self', 'data:', 'https://*.os.zrh1.flow.swiss', 'https://plausible.io'],
-				'frame-src': ['https://js.stripe.com', 'https://vercel.live'],
+				'frame-src': ['self', 'https://js.stripe.com', 'https://vercel.live'],
 				'worker-src': ['self'],
 				'object-src': ['none'],
 				'base-uri': ['self'],
