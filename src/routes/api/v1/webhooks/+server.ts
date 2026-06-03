@@ -4,12 +4,14 @@ import Stripe from 'stripe';
 
 import { STRIPE_WEBHOOK_SECRET } from '$env/static/private';
 import { TierOptions } from '$lib/data/enums';
+import { removeDomainFromVercelProject } from '$lib/domains';
 import { db } from '$lib/server/db';
 import { organization, user, whiteLabelSite } from '$lib/server/db/schema';
 import { removeContactFromAudience } from '$lib/server/resend';
 import stripeInstance from '$lib/server/stripe';
 import { sendSubscriptionTrialStartEmail } from '$lib/server/transactional-email';
 import { getEnumFromString } from '$lib/typescript-helpers';
+import { domainsToDetachOnDowngrade } from '$lib/white-label-publish';
 
 const webhookSecret: string = STRIPE_WEBHOOK_SECRET!;
 
@@ -89,10 +91,20 @@ export const POST: RequestHandler = async ({ request }) => {
 						if (!orgResult) {
 							console.warn(`[webhooks] No org found for customerId ${customerId} on cancellation`);
 						} else {
-							await db
+							const unpublished = await db
 								.update(whiteLabelSite)
 								.set({ published: false })
-								.where(eq(whiteLabelSite.organizationId, orgResult.id));
+								.where(eq(whiteLabelSite.organizationId, orgResult.id))
+								.returning({ customDomain: whiteLabelSite.customDomain });
+
+							// Detach custom domains from Vercel — they are only registered while published.
+							for (const domain of domainsToDetachOnDowngrade(unpublished)) {
+								try {
+									await removeDomainFromVercelProject(domain);
+								} catch (e) {
+									console.error('[webhooks] Failed to detach domain on cancellation:', e);
+								}
+							}
 						}
 					} catch (error) {
 						console.error('[webhooks] Failed to process org cancellation:', error);
@@ -161,10 +173,20 @@ export const POST: RequestHandler = async ({ request }) => {
 				}
 
 				try {
-					await db
+					const unpublished = await db
 						.update(whiteLabelSite)
 						.set({ published: false })
-						.where(eq(whiteLabelSite.userId, userResult.id));
+						.where(eq(whiteLabelSite.userId, userResult.id))
+						.returning({ customDomain: whiteLabelSite.customDomain });
+
+					// Detach custom domains from Vercel — they are only registered while published.
+					for (const domain of domainsToDetachOnDowngrade(unpublished)) {
+						try {
+							await removeDomainFromVercelProject(domain);
+						} catch (e) {
+							console.error('[webhooks] Failed to detach domain on cancellation:', e);
+						}
+					}
 				} catch (error) {
 					console.error(error);
 				}

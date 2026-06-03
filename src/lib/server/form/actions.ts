@@ -52,8 +52,10 @@ import {
 	userFormSchema,
 	whiteLabelDomainSchema,
 	whiteLabelMetaSchema,
+	whiteLabelPublishSchema,
 	whiteLabelSiteSchema
 } from '$lib/validators/formSchemas';
+import { decideWhiteLabelPublish } from '$lib/white-label-publish';
 
 import {
 	consumeVerificationCookie,
@@ -1315,12 +1317,6 @@ export const saveWhiteLabelDomain: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
-
-	if (!planLimits.whiteLabel) {
-		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
-	}
-
 	const { customDomain, name, organizationId } = form.data;
 
 	if (!validDomainRegex.test(customDomain)) {
@@ -1342,29 +1338,19 @@ export const saveWhiteLabelDomain: Action = async (event) => {
 		}
 	}
 
-	try {
-		const existing = organizationId
-			? await getWhiteLabelSiteByOrgId(organizationId)
-			: await getWhiteLabelSiteByUserId(user.id);
+	// Drafting is free: registering the domain on Vercel is deferred until publish.
+	// Only keep Vercel in sync when an already-published site changes its domain.
+	const existing = organizationId
+		? await getWhiteLabelSiteByOrgId(organizationId)
+		: await getWhiteLabelSiteByUserId(user.id);
 
-		if (existing?.customDomain && existing.customDomain !== customDomain) {
+	if (existing?.published && existing.customDomain && existing.customDomain !== customDomain) {
+		try {
 			await removeDomainFromVercelProject(existing.customDomain);
+			await addDomainToVercel(customDomain);
+		} catch (e) {
+			console.error(e);
 		}
-
-		const response = await addDomainToVercel(customDomain);
-
-		if (response?.error) {
-			if (response.error?.code !== 'domain_already_in_use') {
-				return message(
-					form,
-					{ status: 'error', title: m.dizzy_sour_liger_treasure() },
-					{ status: 404 }
-				);
-			}
-			throw Error(JSON.stringify(response));
-		}
-	} catch (e) {
-		console.error(e);
 	}
 
 	try {
@@ -1422,12 +1408,6 @@ export const saveWhiteLabelMeta: Action = async (event) => {
 
 	if (!user) {
 		return redirectLocalized(307, '/signup');
-	}
-
-	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
-
-	if (!planLimits.whiteLabel) {
-		return message(form, { status: 'error', title: m.busy_even_hawk_inspire() }, { status: 405 });
 	}
 
 	const { locale, isPrivate, enabledSecretTypes, enableSecretRequests, organizationId } = form.data;
@@ -1488,19 +1468,8 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const planLimits = getUserPlanLimits(event.locals.effectiveTier);
-
-	if (!planLimits.whiteLabel) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.busy_even_hawk_inspire(),
-				description: `Please upgrade to perform this action.`
-			},
-			{ status: 405 }
-		);
-	}
+	// Drafting (theme, branding, content) is free. Publishing is gated and handled by the
+	// dedicated setWhiteLabelPublished action — this action never changes the published flag.
 
 	// Reminder: All form data is optional
 	const {
@@ -1525,8 +1494,7 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		logo,
 		logoDarkMode,
 		appIcon,
-		ogImage,
-		published
+		ogImage
 	} = form.data;
 
 	const existingWhiteLabelSite = await getWhiteLabelSiteByHost(event.params.domain as string);
@@ -1594,7 +1562,6 @@ export const saveWhiteLabelSite: Action = async (event) => {
 
 		const updateSet = {
 			...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),
-			published: published,
 			theme: themeJson,
 			messages: messagesJson
 		};
@@ -1620,6 +1587,90 @@ export const saveWhiteLabelSite: Action = async (event) => {
 	return message(form, {
 		status: 'success',
 		title: 'Success'
+	});
+};
+
+// Dedicated, plan-gated publish toggle. Drafting is free; only flipping a site live
+// (published: true) requires a qualifying plan, and that is also when the custom domain
+// is registered on Vercel. Unpublishing is always allowed and detaches the domain.
+export const setWhiteLabelPublished: Action = async (event) => {
+	const form = await superValidate(event.request, zod4(whiteLabelPublishSchema()));
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	const user = event.locals.user;
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	const site = await getWhiteLabelSiteByHost(event.params.domain as string);
+
+	const isOrgOwnerOrAdmin = site?.organizationId
+		? await isUserOrgOwnerOrAdmin(user.id, site.organizationId)
+		: false;
+
+	const decision = decideWhiteLabelPublish({
+		site,
+		userId: user.id,
+		isOrgOwnerOrAdmin,
+		whiteLabelAllowed: getUserPlanLimits(event.locals.effectiveTier).whiteLabel,
+		desiredPublished: form.data.published
+	});
+
+	if (!decision.ok) {
+		if (decision.reason === 'no-plan') {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.white_label_publish_upgrade_title(),
+					description: m.white_label_publish_upgrade_description()
+				},
+				{ status: decision.status }
+			);
+		}
+		const title =
+			decision.reason === 'forbidden' ? m.busy_even_hawk_inspire() : m.dizzy_sour_liger_treasure();
+		return message(form, { status: 'error', title }, { status: decision.status });
+	}
+
+	// decision.ok guarantees a non-null site.
+	const customDomain = site!.customDomain;
+
+	if (decision.vercel === 'attach' && customDomain) {
+		// Register the domain on Vercel only now, at publish time.
+		try {
+			const response = await addDomainToVercel(customDomain);
+			if (response?.error && response.error?.code !== 'domain_already_in_use') {
+				return message(
+					form,
+					{ status: 'error', title: m.dizzy_sour_liger_treasure() },
+					{ status: 404 }
+				);
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	} else if (decision.vercel === 'detach' && customDomain) {
+		// Unpublishing: detach the domain from Vercel.
+		try {
+			await removeDomainFromVercelProject(customDomain);
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	await db
+		.update(whiteLabelSite)
+		.set({ published: decision.published })
+		.where(eq(whiteLabelSite.id, site!.id));
+
+	return message(form, {
+		status: 'success',
+		title: decision.published ? m.white_label_publish_success() : m.white_label_unpublish_success()
 	});
 };
 
