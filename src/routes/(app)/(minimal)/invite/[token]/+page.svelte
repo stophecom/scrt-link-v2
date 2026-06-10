@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { SingleFormPage } from '$lib/components/page';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Link from '$lib/components/ui/link';
@@ -17,9 +18,9 @@
 		? m.tough_keen_bee_pause({ organizationName: data.organizationName })
 		: m.simple_last_slug_lend()}
 >
-	<Button class="mt-12 w-full" href={localizeHref(data.hasPassword ? '/account' : '/set-password')}
-		>{m.few_blue_wallaby_read()}</Button
-	>
+	<form method="POST" action="?/acceptInvitation" use:enhance class="mt-12">
+		<Button type="submit" class="w-full">{m.glad_loud_crab_accept()}</Button>
+	</form>
 	<div class="py-5">
 		<Separator />
 	</div>
