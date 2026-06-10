@@ -3,21 +3,17 @@ import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 import { InviteStatus } from '$lib/data/enums.js';
+import { redirectLocalized } from '$lib/i18n';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db/index.js';
 import { invite, membership, organization } from '$lib/server/db/schema.js';
 import { syncOrgSeatCount } from '$lib/server/organization.js';
 import { createOrUpdateUser } from '$lib/server/user.js';
 
-export const load = async (event) => {
-	const otpToken = event.params.token;
+import type { Actions, RequestEvent } from './$types';
 
-	if (!otpToken) {
-		throw error(500, `No token found.`);
-	}
-
-	const otpTokenHash = await sha256Hash(otpToken);
-
+async function getValidInvite(token: string) {
+	const otpTokenHash = await sha256Hash(token);
 	const [existingInvite] = await db.select().from(invite).where(eq(invite.token, otpTokenHash));
 
 	if (!existingInvite) {
@@ -32,48 +28,71 @@ export const load = async (event) => {
 		throw error(401, `Invitation expired. Request new one.`);
 	}
 
-	try {
-		// Create or update user
-		const { userId, passwordHash } = await createOrUpdateUser({
-			email: existingInvite.email,
-			name: existingInvite.name,
-			emailVerified: true
-		});
+	return existingInvite;
+}
 
-		// Add to membership
-		if (userId && existingInvite.organizationId) {
-			await db.insert(membership).values({
-				userId: userId,
-				organizationId: existingInvite.organizationId,
-				role: existingInvite.membershipRole
+export const load = async (event) => {
+	const otpToken = event.params.token;
+
+	if (!otpToken) {
+		throw error(500, `No token found.`);
+	}
+
+	const existingInvite = await getValidInvite(otpToken);
+
+	let organizationName = '';
+	if (existingInvite.organizationId) {
+		const [organizationResult] = await db
+			.select()
+			.from(organization)
+			.where(eq(organization.id, existingInvite.organizationId));
+
+		organizationName = organizationResult?.name ?? '';
+	}
+
+	return {
+		organizationName,
+		email: existingInvite.email
+	};
+};
+
+export const actions: Actions = {
+	acceptInvitation: async (event: RequestEvent) => {
+		const otpToken = event.params.token;
+
+		if (!otpToken) {
+			throw error(500, `No token found.`);
+		}
+
+		const existingInvite = await getValidInvite(otpToken);
+
+		let passwordHash: string | null | undefined;
+
+		try {
+			const result = await createOrUpdateUser({
+				email: existingInvite.email,
+				name: existingInvite.name,
+				emailVerified: true
 			});
-			// Sync Stripe subscription quantity (fire-and-forget)
-			syncOrgSeatCount(existingInvite.organizationId).catch(console.error);
+
+			if (result.userId && existingInvite.organizationId) {
+				await db.insert(membership).values({
+					userId: result.userId,
+					organizationId: existingInvite.organizationId,
+					role: existingInvite.membershipRole
+				});
+				syncOrgSeatCount(existingInvite.organizationId).catch(console.error);
+			}
+
+			await db.delete(invite).where(eq(invite.id, existingInvite.id));
+			await auth.createSession(event, result.userId);
+
+			passwordHash = result.passwordHash;
+		} catch (e) {
+			console.error(e);
+			error(500, 'Failed to accept invitation.');
 		}
 
-		// Cleanup
-		await db.delete(invite).where(eq(invite.id, existingInvite.id));
-
-		// Create session
-		await auth.createSession(event, userId);
-
-		// Get organization name from invite
-		let organizationName = '';
-		if (existingInvite.organizationId) {
-			const [organizationResult] = await db
-				.select()
-				.from(organization)
-				.where(eq(organization.id, existingInvite.organizationId));
-
-			organizationName = organizationResult.name;
-		}
-
-		return {
-			organizationName: organizationName,
-			hasPassword: !!passwordHash
-		};
-	} catch (e) {
-		console.error(e);
-		error(500, 'Failed to register.');
+		return redirectLocalized(303, passwordHash ? '/account' : '/set-password');
 	}
 };
