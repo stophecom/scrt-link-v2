@@ -9,8 +9,6 @@ categories:
 published: true
 ---
 
-# How to Send Large Files via Email: 3 Simple and Secure Methods
-
 You've written the email, attached the file, hit send — and there it is: _"Attachment size exceeds the allowable limit."_ Whether it's a video, a design bundle, a database export, or a folder full of documents, email simply wasn't built for large files.
 
 The good news: you don't need the attachment at all. You need a link. And if the file is anything remotely sensitive, you need a **secure** link — one that's end-to-end encrypted and doesn't sit on a server forever.
@@ -79,9 +77,9 @@ Plenty of tools can transfer a big file. Almost none of them protect it. Here's 
 | End-to-end encryption           | ❌               | ❌                 | ✅        |
 | One-time access (self-destruct) | ❌               | ❌                 | ✅        |
 | Automatic expiration            | ❌               | ⚠️ manual          | ✅        |
-| Password protection             | ❌               | ⚠️ some plans      | ✅        |
+| Password protection             | ❌               | ⚠️ some providers  | ✅        |
 | No recipient account needed     | ✅               | ⚠️ sometimes       | ✅        |
-| Provider can't read your file   | ❌               | ❌                 | ✅        |
+| Provider can't read your file   | ❌               | ⚠️ some providers  | ✅        |
 | GDPR / CCPA friendly            | ❌               | ⚠️                 | ✅        |
 
 The core difference: with scrt.link, **the file stops existing once it's delivered**. There's no copy left behind to leak, get breached, or be subpoenaed. Zero-knowledge by design.
