@@ -1,2 +1,8 @@
 packages:
   - 'packages/*'
+
+overrides:
+  shell-quote: ^1.8.4
+  js-cookie: ^3.0.7
+  kysely: ^0.28.17
+  esbuild: ^0.28.1
