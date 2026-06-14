@@ -27,7 +27,12 @@ const config = {
 			mode: 'auto',
 			directives: {
 				'default-src': ['none'],
-				'script-src': ['self', 'https://js.stripe.com', 'https://vercel.live'],
+				'script-src': [
+					'self',
+					'https://js.stripe.com',
+					'https://vercel.live',
+					'https://www.googletagmanager.com'
+				],
 				'style-src': ['self', 'unsafe-inline'],
 				'img-src': [
 					'self',
@@ -35,10 +40,23 @@ const config = {
 					'blob:',
 					'https://*.os.zrh1.flow.swiss',
 					'https://scrt-link.imgix.net',
-					'https://lh3.googleusercontent.com'
+					'https://lh3.googleusercontent.com',
+					'https://www.googletagmanager.com',
+					'https://www.google.com',
+					'https://googleads.g.doubleclick.net'
 				],
 				'media-src': ['self'],
-				'connect-src': ['self', 'data:', 'https://*.os.zrh1.flow.swiss', 'https://plausible.io'],
+				'connect-src': [
+					'self',
+					'data:',
+					'https://*.os.zrh1.flow.swiss',
+					'https://plausible.io',
+					'https://www.googletagmanager.com',
+					'https://*.google-analytics.com',
+					'https://*.analytics.google.com',
+					'https://googleads.g.doubleclick.net',
+					'https://www.googleadservices.com'
+				],
 				'frame-src': ['self', 'https://js.stripe.com', 'https://vercel.live'],
 				'worker-src': ['self'],
 				'object-src': ['none'],
