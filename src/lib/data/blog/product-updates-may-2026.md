@@ -53,7 +53,7 @@ If you've been using dark mode and noticed buttons that were hard to read, this 
 
 ---
 
-As always, feedback is welcome — reach out via the [contact page](/contact) or open an issue on [GitHub](https://github.com/stophecom/scrt-link).
+As always, feedback is welcome — reach out via the [contact page](/contact) or open an issue on [GitHub](https://github.com/stophecom/scrt-link-v2).
 
 Stay safe,  
 Chris

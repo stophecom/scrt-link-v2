@@ -100,8 +100,7 @@
 		{
 			href: localizeHref('/account/requests'),
 			label: m.calm_proud_ibis_list(),
-			icon: ConciergeBell,
-			badge: 'Beta'
+			icon: ConciergeBell
 		},
 		{
 			href: localizeHref('/account/api'),
