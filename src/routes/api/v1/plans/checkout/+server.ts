@@ -8,7 +8,7 @@ import { MembershipRole } from '$lib/data/enums';
 import { getAbsoluteLocalizedUrl } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
-import { organization } from '$lib/server/db/schema';
+import { organization, user } from '$lib/server/db/schema';
 import { getMembersByOrganizationId, getOrganizationsByUserId } from '$lib/server/organization';
 import stripeInstance from '$lib/server/stripe';
 
@@ -77,8 +77,16 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 	}
 
 	// Personal plan checkout
-	if (!locals.user.stripeCustomerId) {
-		throw new Error('No stripe id associated with user.');
+
+	// Get or create Stripe customer for the user
+	let stripeCustomerId = locals.user.stripeCustomerId;
+	if (!stripeCustomerId) {
+		const customer = await stripeInstance.customers.create({
+			email: locals.user.email,
+			metadata: { userId: locals.user.id }
+		});
+		stripeCustomerId = customer.id;
+		await db.update(user).set({ stripeCustomerId }).where(eq(user.id, locals.user.id));
 	}
 
 	try {
@@ -86,7 +94,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 			locale: 'auto',
 			mode: 'subscription',
 			allow_promotion_codes: true,
-			customer: locals.user.stripeCustomerId,
+			customer: stripeCustomerId,
 			currency,
 			line_items: [{ price: priceId, quantity: 1 }],
 			subscription_data: {
