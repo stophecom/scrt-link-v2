@@ -957,5 +957,6 @@
 	"gold_tidy_crane_heading": "已提交回复",
 	"gold_tidy_crane_body": "您已收到以下请求的回复：",
 	"gold_tidy_crane_expiry": "您有 {retentionPeriod} 天时间查看回复。逾期后将永久删除。",
-	"polite_bad_parrot_scold": "消失"
+	"polite_bad_parrot_scold": "消失",
+	"grand_proud_otter_cheer": "探索已解锁的功能"
 }

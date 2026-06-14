@@ -40,11 +40,15 @@
 
 	let persistHeader = $derived(isPersistent || !!tag);
 
+	// Set to `true` to re-enable the header announcement/promo banner.
+	const announcementEnabled = false;
 	const showAnnouncement = new PersistedState<boolean>(
 		'showAnnouncement:secret-requests-beta',
 		true
 	);
-	const announcementVisible = $derived(showAnnouncement.current && !isMinimal);
+	const announcementVisible = $derived(
+		announcementEnabled && showAnnouncement.current && !isMinimal
+	);
 </script>
 
 <IntersectionObserver bottom={persistHeader ? 0 : 100}>

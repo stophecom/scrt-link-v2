@@ -957,5 +957,6 @@
 	"gold_tidy_crane_heading": "Odpowiedź została przesłana",
 	"gold_tidy_crane_body": "Otrzymałeś odpowiedź na następujące żądanie:",
 	"gold_tidy_crane_expiry": "Masz {retentionPeriod} dni na wyświetlenie odpowiedzi. Po tym czasie zostanie ona trwale usunięta.",
-	"polite_bad_parrot_scold": "Znika"
+	"polite_bad_parrot_scold": "Znika",
+	"grand_proud_otter_cheer": "Odkryj odblokowane funkcje"
 }
