@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SocialLinks from '$lib/components/blocks/social-links.svelte';
 	import ContactForm from '$lib/components/forms/contact-form.svelte';
 	import Page from '$lib/components/page/default-page.svelte';
 	import Card from '$lib/components/ui/card';
@@ -18,6 +19,10 @@
 		</Card>
 		<div class="prose">
 			<a href="mailto:{emailSupport}">{emailSupport}</a>
+		</div>
+		<div class="mt-6">
+			<h5 class="text-primary mb-1 font-semibold">{m.social_follow_heading()}</h5>
+			<SocialLinks class="-ms-2" />
 		</div>
 	</Container>
 </Page>
