@@ -440,6 +440,7 @@
 	"dull_flat_loris_bless": "Nous sommes ravis de vous informer que votre mise à niveau a été réussie ! Profitez des fonctionnalités supplémentaires dès aujourd'hui. Nous ne vous facturerons qu'après la fin de votre période d'essai de {trialPeriod} jours. Annulez à tout moment.",
 	"still_icy_donkey_fold": "Le plan suivant est maintenant actif :",
 	"pretty_aloof_owl_yell": "Merci pour votre mise à niveau !",
+	"grand_proud_otter_cheer": "Découvrir les fonctionnalités débloquées",
 	"red_noisy_beaver_roar": "Votre domaine",
 	"teary_broad_vole_feel": "Définissez votre domaine ou sous-domaine personnalisé ({domain} ou {subdomain}).",
 	"free_less_trout_peel": "Marque personnalisée",
@@ -953,5 +954,6 @@
 	"white_label_theme_info": "Info",
 	"swift_calm_owl_reveal": "Afficher le mot de passe",
 	"swift_calm_owl_conceal": "Masquer le mot de passe",
-	"polite_bad_parrot_scold": "Disparaît"
+	"polite_bad_parrot_scold": "Disparaît",
+	"calm_brave_otter_read": "Lire notre politique de confidentialité"
 }

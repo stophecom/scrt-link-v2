@@ -440,6 +440,7 @@
 	"dull_flat_loris_bless": "Мы рады сообщить вам, что ваше обновление прошло успешно! Наслаждайтесь дополнительными функциями начиная с сегодняшнего дня. Мы взимаем оплату только после окончания вашего пробного периода в {trialPeriod} дней. Отменить можно в любое время.",
 	"still_icy_donkey_fold": "Следующий план теперь активен:",
 	"pretty_aloof_owl_yell": "Спасибо за обновление!",
+	"grand_proud_otter_cheer": "Открыть разблокированные возможности",
 	"red_noisy_beaver_roar": "Ваш домен",
 	"teary_broad_vole_feel": "Установите свой собственный домен или поддомен ({domain} или {subdomain}).",
 	"free_less_trout_peel": "Индивидуальный брендинг",
@@ -951,5 +952,6 @@
 	"white_label_theme_destructive": "Опасное действие",
 	"white_label_theme_success": "Успех",
 	"white_label_theme_info": "Информация",
-	"polite_bad_parrot_scold": "Исчезает"
+	"polite_bad_parrot_scold": "Исчезает",
+	"calm_brave_otter_read": "Читать нашу политику конфиденциальности"
 }
