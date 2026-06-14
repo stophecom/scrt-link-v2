@@ -64,7 +64,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 				},
 				success_url: getAbsoluteLocalizedUrl(
 					getBaseUrl(),
-					'/pricing?session_id={CHECKOUT_SESSION_ID}'
+					'/account/upgrade-success?session_id={CHECKOUT_SESSION_ID}'
 				),
 				cancel_url: getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing')
 			};
@@ -94,7 +94,7 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 			},
 			success_url: getAbsoluteLocalizedUrl(
 				getBaseUrl(),
-				'/pricing?session_id={CHECKOUT_SESSION_ID}'
+				'/account/upgrade-success?session_id={CHECKOUT_SESSION_ID}'
 			),
 			cancel_url: getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing')
 		};

@@ -957,5 +957,6 @@
 	"gold_tidy_crane_heading": "回答が送信されました",
 	"gold_tidy_crane_body": "以下のリクエストへの回答を受け取りました：",
 	"gold_tidy_crane_expiry": "回答を確認できる期間は{retentionPeriod}日間です。それ以降は完全に削除されます。",
-	"polite_bad_parrot_scold": "消える"
+	"polite_bad_parrot_scold": "消える",
+	"grand_proud_otter_cheer": "新機能を見る"
 }

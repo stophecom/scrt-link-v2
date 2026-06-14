@@ -957,5 +957,6 @@
 	"gold_tidy_crane_heading": "Uma resposta foi enviada",
 	"gold_tidy_crane_body": "Você recebeu uma resposta para a seguinte solicitação:",
 	"gold_tidy_crane_expiry": "Você tem {retentionPeriod} dias para visualizar a resposta. Depois disso, ela será apagada para sempre.",
-	"polite_bad_parrot_scold": "Desaparece"
+	"polite_bad_parrot_scold": "Desaparece",
+	"grand_proud_otter_cheer": "Explorar novos recursos"
 }
