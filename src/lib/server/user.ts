@@ -12,7 +12,6 @@ import {
 	userSettings
 } from './db/schema';
 import { addContactToAudience } from './resend';
-import stripeInstance from './stripe';
 import { sendWelcomeEmail } from './transactional-email';
 
 // --- Encryption Key Management Actions ---
@@ -110,17 +109,9 @@ export const createOrUpdateUser = async ({
 		})
 		.returning();
 
-	// In case a user doesn't have a stripe account, we create one
-	if (!userResult.stripeCustomerId) {
-		const stripeCustomer = await stripeInstance.customers.create({
-			email: userResult.email
-		});
-
-		await db
-			.update(userSchema)
-			.set({ stripeCustomerId: stripeCustomer.id })
-			.where(eq(userSchema.id, userResult.id));
-	}
+	// Note: We no longer create a Stripe customer here. A personal Stripe customer
+	// is created lazily on first checkout (see src/routes/api/v1/plans/checkout/+server.ts),
+	// mirroring how organizations handle it.
 
 	// Add user settings
 	await db
