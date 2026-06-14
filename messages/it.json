@@ -957,5 +957,6 @@
 	"gold_tidy_crane_heading": "È stata inviata una risposta",
 	"gold_tidy_crane_body": "Hai ricevuto una risposta alla seguente richiesta:",
 	"gold_tidy_crane_expiry": "Hai {retentionPeriod} giorni per visualizzare la risposta. Dopo, sparirà per sempre.",
-	"polite_bad_parrot_scold": "Scompare"
+	"polite_bad_parrot_scold": "Scompare",
+	"grand_proud_otter_cheer": "Esplora le funzionalità sbloccate"
 }

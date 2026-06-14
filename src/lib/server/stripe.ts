@@ -93,6 +93,12 @@ export const getActiveSubscription = async (stripeCustomerId: string) => {
 	return activeSubscriptions || null;
 };
 
+/** Retrieves a completed checkout session with its subscription expanded. */
+export const getCheckoutSession = async (sessionId: string) =>
+	(await stripeInstance.checkout.sessions.retrieve(sessionId, {
+		expand: ['subscription']
+	})) as Stripe.Checkout.Session & { subscription: Stripe.Subscription | null };
+
 export const getStripePortalUrl = async (stripeCustomerId: string, returnUrl: string) =>
 	await stripeInstance.billingPortal.sessions.create({
 		customer: stripeCustomerId,
