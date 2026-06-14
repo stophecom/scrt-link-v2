@@ -50,7 +50,7 @@ A handful of smaller improvements landed over the past few weeks:
 
 ---
 
-As always, feedback is welcome — reach out via the [contact page](/contact) or open an issue on [GitHub](https://github.com/stophecom/scrt-link).
+As always, feedback is welcome — reach out via the [contact page](/contact) or open an issue on [GitHub](https://github.com/stophecom/scrt-link-v2).
 
 Stay safe,  
 Chris
