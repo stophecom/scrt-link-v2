@@ -1,5 +1,6 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"social_follow_heading": "Follow us",
 	"keen_proud_otter_news": "Secret Requests is out of beta",
 	"bold_neat_otter_gate": "Secret Requests is available on the Top Secret plan and above.",
 	"fresh_calm_heron_note": "New:",

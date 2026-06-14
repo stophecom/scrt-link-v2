@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SocialLinks from '$lib/components/blocks/social-links.svelte';
 	import Page from '$lib/components/page/default-page.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
@@ -13,5 +14,9 @@
 >
 	<Container>
 		<Markdown markdown={m.polite_clean_canary_walk()} format={true} />
+		<div class="mt-6">
+			<h5 class="text-primary mb-1 font-semibold">{m.social_follow_heading()}</h5>
+			<SocialLinks class="-ms-2" />
+		</div>
 	</Container>
 </Page>
