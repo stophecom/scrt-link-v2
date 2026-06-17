@@ -30,7 +30,9 @@ export const generateUuid = () => crypto.randomUUID();
 export const generateRandomUrlSafeString = (length = 36) => {
 	const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 	const numbers = '0123456789';
-	const specialCharacters = '$~-_.'; // Technically more characters are allowed in the fragment identifier part of the URL.
+	// Restricted to the base64url alphabet (RFC 3986 unreserved): never percent-encoded,
+	// never mangled by email/chat clients, and leaves `.` free as a fragment delimiter.
+	const specialCharacters = '-_';
 	const charset = [...letters, ...numbers, ...specialCharacters];
 
 	const values = getRandomBytes(length);
@@ -61,6 +63,16 @@ export const base64ToBinary = (base64: string) => {
 
 	return stringToArrayBuffer(base64Decoded);
 };
+
+// Base64url (RFC 4648 §5): uses `-` `_` instead of `+` `/` and drops `=` padding.
+// Safe to place in a URL fragment without percent-encoding or client mangling.
+export const binaryToBase64Url = (arrayBuffer: ArrayBuffer) =>
+	binaryToBase64(arrayBuffer).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+// Tolerant decoder: accepts both base64url (new links) and standard base64 (legacy
+// links). `atob` handles missing `=` padding, so we only need to map the alphabet back.
+export const base64UrlToBinary = (base64Url: string) =>
+	base64ToBinary(base64Url.replace(/-/g, '+').replace(/_/g, '/'));
 
 export const encryptData = async (
 	data: ArrayBuffer,

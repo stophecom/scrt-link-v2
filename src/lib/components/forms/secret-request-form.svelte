@@ -76,8 +76,9 @@
 			$formData.encryptedNote = encryptedNote;
 			$formData.encryptedNoteForOwner = encryptedNoteForOwner;
 
-			// Build the request link
-			const hashFragment = noteKey ? `${requestId}|${noteKey}` : requestId;
+			// Build the request link. `.` delimits requestId from noteKey; both are now
+			// base64url so the whole fragment stays URL-safe (no `|`, `+`, `/`, `=`).
+			const hashFragment = noteKey ? `${requestId}.${noteKey}` : requestId;
 			requestLink = `${page.url.origin}/r/${$formData.requestIdHash}#${hashFragment}`;
 
 			if (plausible) {
