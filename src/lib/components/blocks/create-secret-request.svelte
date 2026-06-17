@@ -16,18 +16,22 @@
 	import CopyButton from '../ui/copy-button';
 	import Markdown from '../ui/markdown';
 	import ShareButton from '../ui/share-button';
+	import UpgradeNotice from './upgrade-notice.svelte';
 
 	type Props = {
 		form: SuperValidated<SecretRequestFormSchema>;
 		subscriptionTier?: TierOptions | null;
+		isWhiteLabel?: boolean;
 	};
 
-	let { form, subscriptionTier }: Props = $props();
+	let { form, subscriptionTier, isWhiteLabel = false }: Props = $props();
 
 	let successMessage = $state('');
 	let requestLink = $state('');
 
 	let planLimits = $derived(getUserPlanLimits(subscriptionTier));
+	// On white-label sites the feature is gated per-site, not by the owner's plan.
+	let canCreate = $derived(isWhiteLabel || planLimits.secretRequests);
 
 	$effect(() => {
 		if (successMessage && requestLink) {
@@ -63,6 +67,8 @@
 	<Button onclick={() => (successMessage = '')} variant="ghost" size="sm">
 		<Reply class="mr-2 h-4 w-4" />{m.trite_fun_starfish_ripple()}
 	</Button>
+{:else if !canCreate}
+	<UpgradeNotice tier={subscriptionTier} upgradeDescription={m.bold_neat_otter_gate()} />
 {:else}
 	<Card title={m.fresh_bold_eagle_build()}>
 		<SecretRequestForm

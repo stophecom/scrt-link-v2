@@ -1,8 +1,10 @@
 <script lang="ts">
 	import Page from '$lib/components/page/default-page.svelte';
+	import { Button } from '$lib/components/ui/button';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizeHref } from '$lib/paraglide/runtime';
 </script>
 
 <Page
@@ -13,5 +15,8 @@
 >
 	<Container>
 		<Markdown markdown={m.trick_tidy_monkey_grow()} format={true} />
+		<div class="mt-8">
+			<Button href={localizeHref('/privacy-policy')}>{m.calm_brave_otter_read()}</Button>
+		</div>
 	</Container>
 </Page>

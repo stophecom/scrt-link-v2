@@ -1874,6 +1874,23 @@ export const postSecretRequest: Action = async (event) => {
 		);
 	}
 
+	// Plan gating only applies to the main app. On white-label sites the feature
+	// is gated per-site via `enableSecretRequests` (asserted in the route).
+	if (!event.locals.whiteLabelSite) {
+		const planLimits = getUserPlanLimits(event.locals.effectiveTier);
+		if (!planLimits.secretRequests) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.sad_arable_canary_mop(),
+					description: m.bold_neat_otter_gate()
+				},
+				{ status: 403 }
+			);
+		}
+	}
+
 	try {
 		const { expiresIn, expiresAt, receiptId } = await saveSecretRequest({
 			userId: user.id,
