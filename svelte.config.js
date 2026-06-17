@@ -31,7 +31,9 @@ const config = {
 					'self',
 					'https://js.stripe.com',
 					'https://vercel.live',
-					'https://www.googletagmanager.com'
+					'https://www.googletagmanager.com',
+					'https://www.google.com',
+					'https://www.gstatic.com'
 				],
 				'style-src': ['self', 'unsafe-inline'],
 				'img-src': [
@@ -57,7 +59,12 @@ const config = {
 					'https://googleads.g.doubleclick.net',
 					'https://www.googleadservices.com'
 				],
-				'frame-src': ['self', 'https://js.stripe.com', 'https://vercel.live'],
+				'frame-src': [
+					'self',
+					'https://js.stripe.com',
+					'https://vercel.live',
+					'https://www.google.com'
+				],
 				'worker-src': ['self'],
 				'object-src': ['none'],
 				'base-uri': ['self'],
