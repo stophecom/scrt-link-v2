@@ -2,7 +2,14 @@
 // Used when a requester wants to receive encrypted data from someone without a shared secret.
 // The requester generates an RSA key pair; the responder encrypts with the public key.
 
-import { base64ToBinary, binaryToBase64, decodeText, encodeText } from './crypto';
+import {
+	base64ToBinary,
+	base64UrlToBinary,
+	binaryToBase64,
+	binaryToBase64Url,
+	decodeText,
+	encodeText
+} from './crypto';
 
 const RSA_ALGORITHM = 'RSA-OAEP';
 const RSA_HASH = 'SHA-256';
@@ -189,7 +196,8 @@ export async function encryptRequestNote(note: string): Promise<{
 }> {
 	const aesKey = await generateAESKey();
 	const rawKey = await crypto.subtle.exportKey('raw', aesKey);
-	const noteKey = binaryToBase64(rawKey);
+	// base64url so the key is safe to drop into a URL fragment unencoded.
+	const noteKey = binaryToBase64Url(rawKey);
 	const encryptedNote = await encryptResponseContent(note, aesKey);
 	return { encryptedNote, noteKey };
 }
@@ -201,7 +209,8 @@ export async function decryptRequestNote(
 	encryptedNote: string,
 	noteKeyBase64: string
 ): Promise<string> {
-	const rawKey = base64ToBinary(noteKeyBase64);
+	// base64UrlToBinary also decodes legacy standard-base64 keys from older links.
+	const rawKey = base64UrlToBinary(noteKeyBase64);
 	const aesKey = await crypto.subtle.importKey(
 		'raw',
 		rawKey,

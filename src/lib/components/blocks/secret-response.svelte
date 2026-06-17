@@ -37,9 +37,11 @@
 		if (data.encryptedNote) {
 			const hash = page.url.hash.slice(1);
 			if (hash) {
-				const pipeIndex = hash.indexOf('|');
-				if (pipeIndex !== -1) {
-					const noteKey = hash.substring(pipeIndex + 1);
+				// New links use `.` as delimiter; legacy links use `|`. Check `|` first so a
+				// legacy requestId (whose old charset could contain `.`) is split correctly.
+				const delimiterIndex = hash.includes('|') ? hash.indexOf('|') : hash.indexOf('.');
+				if (delimiterIndex !== -1) {
+					const noteKey = hash.substring(delimiterIndex + 1);
 					try {
 						decryptedNote = await decryptRequestNote(data.encryptedNote, noteKey);
 					} catch {
