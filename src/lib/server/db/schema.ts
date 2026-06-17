@@ -37,6 +37,10 @@ export const user = pgTable('user', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	email: text('email').notNull().unique(),
 	passwordHash: text('password_hash'),
+	// Auth scheme version. 1 = legacy hash of the plaintext password (pre zero-knowledge fix).
+	// 2 = hash of the client-derived auth verifier (plaintext password never reaches the server).
+	// Legacy rows are migrated to 2 lazily on their next successful login.
+	authVersion: integer('auth_version').notNull().default(1),
 	name: text('name'),
 	picture: text('picture'),
 	googleId: text('google_id'),

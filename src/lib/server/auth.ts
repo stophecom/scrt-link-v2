@@ -20,7 +20,15 @@ const preferencesSchema = z
 	})
 	.default({ themeColor: ThemeOptions.NAVY });
 
-export const sessionCookieName = 'auth-session';
+// Bumped to `-v2` to force every existing session to re-authenticate after the
+// zero-knowledge auth-verifier change. On the next request the old `auth-session`
+// cookie is ignored, so users log in again through `loginWithPassword`, which
+// migrates their stored credential from authVersion 1 (hash of plaintext) to
+// authVersion 2 (hash of the client-derived verifier). Without this, an
+// already-authenticated v1 user could hit a password-verify endpoint (change
+// password, recovery-key setup) that now sends the verifier and get a spurious
+// "wrong password" error until their session expired.
+export const sessionCookieName = 'auth-session-v2';
 
 export async function createSession(event: RequestEvent, userId: string) {
 	const sessionToken = generateBase64Token();

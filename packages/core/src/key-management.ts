@@ -61,6 +61,64 @@ export async function derivePDK(
 	);
 }
 
+// --- Authentication Verifier ---
+
+const AUTH_ALGORITHM = 'PBKDF2';
+const AUTH_HASH = 'SHA-256';
+const DEFAULT_AUTH_ITERATIONS = 600_000;
+const AUTH_VERIFIER_BYTES = 32;
+
+/**
+ * Normalize an email for use as a stable, deterministic salt.
+ * Must produce identical output everywhere the verifier is derived.
+ */
+export function normalizeEmail(email: string): string {
+	return email.trim().toLowerCase();
+}
+
+/**
+ * Derive an authentication verifier from the password.
+ *
+ * This is the value sent to the server *in place of* the plaintext password.
+ * The server hashes it again (scrypt + random salt) before storing/comparing,
+ * so the plaintext password never leaves the browser.
+ *
+ * The salt is derived from the user's email with a domain-separation prefix.
+ * Because this salt differs from the random `pdkSalt` used for the PDK, the
+ * verifier is cryptographically independent of the encryption key hierarchy:
+ * the server can authenticate the user but can never derive the Master Key
+ * from what it receives. Restores the zero-knowledge property.
+ *
+ * Returns a hex-encoded string.
+ */
+export async function deriveAuthVerifier(
+	password: string,
+	email: string,
+	iterations: number = DEFAULT_AUTH_ITERATIONS
+): Promise<string> {
+	const salt = encodeText(`scrt-auth:${normalizeEmail(email)}`);
+	const passwordKey = await crypto.subtle.importKey(
+		'raw',
+		encodeText(password),
+		AUTH_ALGORITHM,
+		false,
+		['deriveBits']
+	);
+
+	const bits = await crypto.subtle.deriveBits(
+		{
+			name: AUTH_ALGORITHM,
+			salt: salt as BufferSource,
+			iterations,
+			hash: AUTH_HASH
+		},
+		passwordKey,
+		AUTH_VERIFIER_BYTES * 8
+	);
+
+	return Array.from(new Uint8Array(bits), (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
 // --- Master Key ---
 
 /**

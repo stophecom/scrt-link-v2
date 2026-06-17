@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { derivePDK, generateEncryptionSetup, unwrapMasterKey } from '@scrt-link/core';
+	import {
+		deriveAuthVerifier,
+		derivePDK,
+		generateEncryptionSetup,
+		unwrapMasterKey
+	} from '@scrt-link/core';
 	import { Checkbox } from 'bits-ui';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
@@ -87,16 +92,27 @@
 	}
 
 	// --- Step 1: Password verification form ---
+	// Plaintext is kept locally (to derive the PDK) while only the verifier is sent.
+	let capturedPassword = '';
 	const pwForm = superForm(passwordFormData, {
 		validators: zod4Client(passwordFormSchema()),
 		validationMethod: 'auto',
 		applyAction: false,
+		// dataType json so we send the auth verifier, not the plaintext. A plain form submits
+		// the DOM input value snapshotted before onSubmit runs, so mutating $pwFormData there
+		// is too late and the plaintext gets sent; jsonData lets us control the payload.
+		dataType: 'json',
+
+		onSubmit: async ({ jsonData }) => {
+			// Keep the plaintext locally (to derive the master key) but send only the verifier.
+			capturedPassword = $pwFormData.password;
+			const verifier = await deriveAuthVerifier(capturedPassword, page.data.user?.email ?? '');
+			jsonData({ password: verifier });
+		},
 
 		onUpdated: async ({ form }) => {
 			if (form.message?.status === 'success' && !form.errors.password) {
-				const pw = form.data.password;
-
-				runEncryptionSetup(pw).then((ok) => {
+				runEncryptionSetup(capturedPassword).then((ok) => {
 					if (!ok) {
 						$pwMessage = {
 							status: 'error',
@@ -105,9 +121,18 @@
 						};
 					}
 				});
+			} else if (form.errors.password) {
+				// Wrong password: the field now holds the echoed verifier — restore the plaintext.
+				$pwFormData.password = capturedPassword;
+				$pwMessage = {
+					status: 'error',
+					title: m.weak_quaint_lamb_fry(),
+					description: m.petty_flaky_lynx_boil()
+				};
 			}
 		},
 		onError({ result }) {
+			$pwFormData.password = capturedPassword;
 			$pwMessage = {
 				status: 'error',
 				title: `${result.status}`,
