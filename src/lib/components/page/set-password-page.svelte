@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { derivePDK, generatePdkSalt, unwrapMasterKey, wrapMasterKey } from '@scrt-link/core';
+	import {
+		deriveAuthVerifier,
+		derivePDK,
+		generatePdkSalt,
+		unwrapMasterKey,
+		wrapMasterKey
+	} from '@scrt-link/core';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
@@ -93,15 +99,18 @@
 						const newPdk = await derivePDK(formValues.password, newSalt, pdkIterations);
 						const newWrappedMk = await wrapMasterKey(masterKey, newPdk);
 
+						// Send auth verifiers, never the plaintext passwords (which were used
+						// above for PDK derivation and stay client-side).
+						const email = page.data.user?.email ?? '';
 						const payload: Record<string, string> = {
-							password: formValues.password,
+							password: await deriveAuthVerifier(formValues.password, email),
 							pdkSalt: newSalt,
 							encryptedMasterKey: newWrappedMk
 						};
 
 						// Only include currentPassword when not in recovery flow
 						if (!isRecoveryFlow && formValues.currentPassword) {
-							payload.currentPassword = formValues.currentPassword;
+							payload.currentPassword = await deriveAuthVerifier(formValues.currentPassword, email);
 						}
 
 						jsonData(payload);

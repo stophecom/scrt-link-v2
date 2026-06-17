@@ -50,10 +50,16 @@ export const deleteOrganizationSchema = () =>
 export const signInFormSchema = () =>
 	z.object({
 		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
+		// During submit the client replaces this field's value with the auth verifier
+		// (a 64-char hex string). It is validated client-side as the real password,
+		// and sent to the server as the verifier — the plaintext never leaves the browser.
 		password: z
 			.string()
 			.min(6, m.aloof_careful_trout_dine({ number: 6 }))
-			.max(512)
+			.max(512),
+		// Plaintext password, sent only by un-migrated (authVersion 1) accounts on the
+		// one-time legacy login, so the server can verify the old hash and re-key to v2.
+		legacyPassword: z.string().max(512).optional()
 	});
 
 // Set default value for expiresIn to the "medium" option.

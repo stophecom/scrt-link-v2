@@ -888,7 +888,9 @@ export const loginWithPassword: Action = async (event) => {
 
 	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
 
-	const { email, password } = form.data;
+	// `password` carries the client-derived auth verifier (not the plaintext).
+	// `legacyPassword` is only sent by un-migrated accounts on the one-time migration retry.
+	const { email, password: authVerifier, legacyPassword } = form.data;
 
 	if (!form.valid) {
 		return fail(400, { form });
@@ -908,9 +910,28 @@ export const loginWithPassword: Action = async (event) => {
 			throw Error('Email not verified.');
 		}
 
-		const isPasswordValid = await verifyUserPassword(user.id, password);
-		if (!isPasswordValid) {
-			throw Error(`Password doesn't match`);
+		if (user.authVersion >= 2) {
+			// Zero-knowledge scheme: verify the auth verifier against the stored hash.
+			if (!(await verifyUserPassword(user.id, authVerifier))) {
+				throw Error(`Password doesn't match`);
+			}
+		} else {
+			// Legacy account (hash of the plaintext password). Ask the client to resend
+			// the plaintext once so we can verify the old hash and re-key to the new scheme.
+			if (!legacyPassword) {
+				return { form, needsLegacyMigration: true };
+			}
+
+			if (!(await verifyUserPassword(user.id, legacyPassword))) {
+				throw Error(`Password doesn't match`);
+			}
+
+			// Migrate: store the hash of the verifier and mark the account as v2.
+			// The plaintext password is never persisted again.
+			await db
+				.update(userSchema)
+				.set({ passwordHash: await scryptHash(authVerifier), authVersion: 2 })
+				.where(eq(userSchema.id, user.id));
 		}
 
 		// Create session
@@ -1163,7 +1184,7 @@ export const setPassword: Action = async (event) => {
 			await db.transaction(async (tx) => {
 				await tx
 					.update(userSchema)
-					.set({ passwordHash: hashedPassword })
+					.set({ passwordHash: hashedPassword, authVersion: 2 })
 					.where(eq(userSchema.id, user.id));
 
 				if (pdkSalt && encryptedMasterKey) {
@@ -1209,7 +1230,7 @@ export const setPassword: Action = async (event) => {
 
 		await db
 			.update(userSchema)
-			.set({ passwordHash: hashedPassword })
+			.set({ passwordHash: hashedPassword, authVersion: 2 })
 			.where(eq(userSchema.id, user.id));
 	} catch (e) {
 		console.error(e);

@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { derivePDK, generateNewRecoveryKey, unwrapMasterKey } from '@scrt-link/core';
+	import {
+		deriveAuthVerifier,
+		derivePDK,
+		generateNewRecoveryKey,
+		unwrapMasterKey
+	} from '@scrt-link/core';
 	import { Checkbox } from 'bits-ui';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms';
@@ -51,8 +56,16 @@
 
 	const pwForm = superForm(pwFormData, {
 		validators: zod4Client(passwordFormSchema()),
-		onSubmit: async () => {
+		// dataType json so we send the auth verifier, not the plaintext. A plain form submits
+		// the DOM input value snapshotted before onSubmit runs, so mutating $pwForm_formData
+		// there is too late and the plaintext gets sent; jsonData lets us control the payload.
+		dataType: 'json',
+		applyAction: false,
+		onSubmit: async ({ jsonData }) => {
+			// Keep the plaintext locally (to unlock the master key) but send only the verifier.
 			capturedPassword = $pwForm_formData.password;
+			const verifier = await deriveAuthVerifier(capturedPassword, page.data.user?.email ?? '');
+			jsonData({ password: verifier });
 		},
 		onUpdated: async ({ form }) => {
 			if (form.message?.status === 'success' && !form.errors.password) {
@@ -85,9 +98,18 @@
 						description: m.cool_shy_walrus_dare()
 					};
 				}
+			} else if (form.errors.password) {
+				// Wrong password: the field now holds the echoed verifier — restore the plaintext.
+				$pwForm_formData.password = capturedPassword;
+				$pwMessage = {
+					status: 'error',
+					title: m.weak_quaint_lamb_fry(),
+					description: m.petty_flaky_lynx_boil()
+				};
 			}
 		},
 		onError({ result }) {
+			$pwForm_formData.password = capturedPassword;
 			$pwMessage = {
 				status: 'error',
 				title: `${result.status}`,
