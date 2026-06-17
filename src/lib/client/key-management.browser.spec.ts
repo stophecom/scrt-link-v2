@@ -2,6 +2,7 @@
 import {
 	decodeRecoveryCode,
 	decryptWithKey,
+	deriveAuthVerifier,
 	derivePDK,
 	encodeRecoveryCode,
 	encryptWithKey,
@@ -121,6 +122,70 @@ describe('Key Management', () => {
 		const encrypted = await encryptWithKey(plaintext.buffer, mk);
 		const decrypted = await decryptWithKey(encrypted, unwrapped);
 		expect(new TextDecoder().decode(decrypted)).toBe('recovery test');
+	});
+
+	test('deriveAuthVerifier returns a 64-char hex string', async () => {
+		const verifier = await deriveAuthVerifier('mypassword123', 'user@example.com', 1000);
+
+		expect(verifier).toHaveLength(64);
+		expect(verifier).toMatch(/^[0-9a-f]{64}$/);
+	});
+
+	test('deriveAuthVerifier is deterministic for same password + email', async () => {
+		const a = await deriveAuthVerifier('mypassword123', 'user@example.com', 1000);
+		const b = await deriveAuthVerifier('mypassword123', 'user@example.com', 1000);
+
+		expect(a).toBe(b);
+	});
+
+	test('deriveAuthVerifier normalizes email (case/whitespace insensitive)', async () => {
+		const a = await deriveAuthVerifier('mypassword123', 'User@Example.com', 1000);
+		const b = await deriveAuthVerifier('mypassword123', '  user@example.com  ', 1000);
+
+		expect(a).toBe(b);
+	});
+
+	test('deriveAuthVerifier differs for different email (email is the salt)', async () => {
+		const a = await deriveAuthVerifier('mypassword123', 'a@example.com', 1000);
+		const b = await deriveAuthVerifier('mypassword123', 'b@example.com', 1000);
+
+		expect(a).not.toBe(b);
+	});
+
+	test('deriveAuthVerifier differs for different password', async () => {
+		const a = await deriveAuthVerifier('password-one', 'user@example.com', 1000);
+		const b = await deriveAuthVerifier('password-two', 'user@example.com', 1000);
+
+		expect(a).not.toBe(b);
+	});
+
+	// The core zero-knowledge property: the verifier sent to the server is derived with
+	// a domain-separated salt ("scrt-auth:" + email), so it is independent of any key
+	// the same password derives. Here we show that even PBKDF2 over the *raw* email salt
+	// (worst-case overlap with a PDK salt) yields a different value than the verifier.
+	test('deriveAuthVerifier is domain-separated from raw PBKDF2 over the email', async () => {
+		const password = 'mypassword123';
+		const email = 'user@example.com';
+
+		const passwordKey = await crypto.subtle.importKey(
+			'raw',
+			new TextEncoder().encode(password),
+			'PBKDF2',
+			false,
+			['deriveBits']
+		);
+		const rawBits = await crypto.subtle.deriveBits(
+			{ name: 'PBKDF2', salt: new TextEncoder().encode(email), iterations: 1000, hash: 'SHA-256' },
+			passwordKey,
+			256
+		);
+		const rawHex = Array.from(new Uint8Array(rawBits), (b) => b.toString(16).padStart(2, '0')).join(
+			''
+		);
+
+		const verifier = await deriveAuthVerifier(password, email, 1000);
+
+		expect(verifier).not.toBe(rawHex);
 	});
 
 	test('encryptWithKey + decryptWithKey round-trip', async () => {
