@@ -3,7 +3,7 @@ import { ArcticFetchError, OAuth2RequestError, type OAuth2Tokens } from 'arctic'
 
 import * as auth from '$lib/server/auth';
 import { google } from '$lib/server/auth';
-import { getGoogleOAuthCookies } from '$lib/server/cookies';
+import { getGoogleOAuthCookies, setSignupTrackingCookie } from '$lib/server/cookies';
 import { createOrUpdateUser, welcomeNewUser } from '$lib/server/user';
 
 export async function GET(event: RequestEvent): Promise<Response> {
@@ -31,7 +31,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		const googleUser: UserInfoResponse = await response.json();
 
 		// Create or update user
-		const { userId, name, encryptionEnabled, passwordHash } = await createOrUpdateUser({
+		const { userId, name, encryptionEnabled, passwordHash, isNewUser } = await createOrUpdateUser({
 			email: googleUser.email,
 			emailVerified: googleUser.email_verified || false,
 			googleId: googleUser.sub,
@@ -39,7 +39,10 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			name: googleUser.name
 		});
 
-		await welcomeNewUser({ email: googleUser.email, name });
+		// Signal the client to fire a one-off Plausible "Signup" event after redirect.
+		if (isNewUser) setSignupTrackingCookie(event, 'google');
+
+		await welcomeNewUser({ email: googleUser.email, name, isNewUser });
 
 		// Create session
 		await auth.createSession(event, userId);
