@@ -3,15 +3,16 @@ import { eq } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
+import { getUserPlanLimits } from '$lib/data/plans';
 import { redirectLocalized } from '$lib/i18n';
 import { getLocale } from '$lib/paraglide/runtime';
 import { db } from '$lib/server/db';
 import { whiteLabelSite as whiteLabelSiteTable } from '$lib/server/db/schema';
-import { saveWhiteLabelSite } from '$lib/server/form/actions';
+import { saveWhiteLabelSite, setWhiteLabelPublished } from '$lib/server/form/actions';
 import { isUserOrgOwnerOrAdmin } from '$lib/server/organization';
 import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 import type { LocalizedWhiteLabelMessage, Theme } from '$lib/types';
-import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
+import { whiteLabelPublishSchema, whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -65,8 +66,7 @@ async function buildWhiteLabelSiteForm(domain: string, locale: ReturnType<typeof
 			darkCard: theme.dark?.card ?? defaultTheme.dark.card,
 			darkDestructive: theme.dark?.destructive ?? defaultTheme.dark.destructive,
 			darkSuccess: theme.dark?.success ?? defaultTheme.dark.success,
-			darkInfo: theme.dark?.info ?? defaultTheme.dark.info,
-			published: site.published || false
+			darkInfo: theme.dark?.info ?? defaultTheme.dark.info
 		},
 		zod4(whiteLabelSiteSchema()),
 		{ id: 'whiteLabelSite' }
@@ -86,14 +86,23 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 	const whiteLabelSiteForm = await buildWhiteLabelSiteForm(params.domain, getLocale());
 	if (!whiteLabelSiteForm) return error(404, 'No white-label website found.');
 
+	const publishForm = await superValidate(
+		{ published: whiteLabel.published || false },
+		zod4(whiteLabelPublishSchema()),
+		{ id: 'whiteLabelPublish' }
+	);
+
 	return {
 		domain: whiteLabel.customDomain,
-		whiteLabelSiteForm
+		whiteLabelSiteForm,
+		publishForm,
+		canPublish: getUserPlanLimits(locals.effectiveTier).whiteLabel
 	};
 };
 
 export const actions: Actions = {
 	saveWhiteLabelSite: saveWhiteLabelSite,
+	setWhiteLabelPublished: setWhiteLabelPublished,
 	resetWhiteLabelTheme: async ({ locals, params }) => {
 		if (!locals.user) return fail(401);
 

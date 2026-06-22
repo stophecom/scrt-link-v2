@@ -2,7 +2,6 @@
 	import { Palette, SparklesIcon } from '@lucide/svelte';
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
-	import TeaserCard from '$lib/components/blocks/teaser-card.svelte';
 	import WhiteLabelDomainForm from '$lib/components/forms/white-label-domain-form.svelte';
 	import WhiteLabelForm from '$lib/components/forms/white-label-form.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -28,73 +27,73 @@
 	let currentStep = $derived(!hasDomain ? 0 : !hasAccessControl ? 1 : 2);
 </script>
 
-{#if !hasWhiteLabelPlan}
-	<TeaserCard title={m.teaser_white_label_title()} description={m.teaser_white_label_description()}>
-		{#snippet cta()}
-			<Button href={localizeHref('/pricing') + '?tab=business'}>
-				<SparklesIcon class="me-2 h-5 w-5" />
-				{m.teaser_white_label_cta()}
-			</Button>
-		{/snippet}
-	</TeaserCard>
-{:else}
-	<Stepper
-		steps={[
-			{ label: m.flat_warm_fox_setup(), completed: hasDomain },
-			{ label: m.warm_swift_eagle_build(), completed: hasAccessControl },
-			{ label: m.clear_warm_panda_glow(), completed: isPublished }
-		]}
-		{currentStep}
-		class="mb-8"
-	/>
+<Stepper
+	steps={[
+		{ label: m.flat_warm_fox_setup(), completed: hasDomain },
+		{ label: m.warm_swift_eagle_build(), completed: hasAccessControl },
+		{ label: m.clear_warm_panda_glow(), completed: isPublished }
+	]}
+	{currentStep}
+	class="mb-8"
+/>
 
-	<Card class="mb-6" title={'1. ' + m.flat_warm_fox_setup()}>
-		<WhiteLabelDomainForm
-			form={data.whiteLabelDomainForm}
-			whiteLabelDomain={data.whiteLabelDomain}
-			organizationId={data.org.id}
-		/>
+<Card class="mb-6" title={'1. ' + m.flat_warm_fox_setup()}>
+	<WhiteLabelDomainForm
+		form={data.whiteLabelDomainForm}
+		whiteLabelDomain={data.whiteLabelDomain}
+		organizationId={data.org.id}
+	/>
+</Card>
+
+{#if hasDomain}
+	<Card class="mb-6" title={'2. ' + m.warm_swift_eagle_build()}>
+		<WhiteLabelForm form={data.whiteLabelForm} />
 	</Card>
 
-	{#if hasDomain}
-		<Card class="mb-6" title={'2. ' + m.warm_swift_eagle_build()}>
-			<WhiteLabelForm form={data.whiteLabelForm} />
-		</Card>
-
-		<div class="customize-card border-rainbow relative mb-6 rounded-lg p-0.5">
-			<div
-				class="bg-background relative grid grid-cols-[minmax(60%,1fr)_auto] overflow-hidden rounded-lg"
-			>
-				<div class="flex flex-col justify-center px-4 py-8 md:p-10">
-					<h2 class="mt-2 mr-8 mb-2 text-2xl font-bold text-pretty">
-						3. {m.clear_warm_panda_glow()}
-					</h2>
-					<p class="text-muted-foreground mb-6 text-pretty">
-						{m.bright_calm_tiger_leap()}
+	<div class="customize-card border-rainbow relative mb-6 rounded-lg p-0.5">
+		<div
+			class="bg-background relative grid grid-cols-[minmax(60%,1fr)_auto] overflow-hidden rounded-lg"
+		>
+			<div class="flex flex-col justify-center px-4 py-8 md:p-10">
+				<h2 class="mt-2 mr-8 mb-2 text-2xl font-bold text-pretty">
+					3. {m.clear_warm_panda_glow()}
+				</h2>
+				<p class="text-muted-foreground mb-6 text-pretty">
+					{m.bright_calm_tiger_leap()}
+				</p>
+				{#if !hasWhiteLabelPlan}
+					<p class="text-muted-foreground mb-4 text-sm text-pretty">
+						{m.white_label_publish_locked_hint()}
 					</p>
-					<div>
-						<Button href={localizeHref(`/account/white-label/edit/${data.whiteLabelDomain}`)}>
-							<Palette class="me-2 h-5 w-5" />
-							{m.home_witty_piranha_peek()}
+				{/if}
+				<div class="flex flex-wrap gap-3">
+					<Button href={localizeHref(`/account/white-label/edit/${data.whiteLabelDomain}`)}>
+						<Palette class="me-2 h-5 w-5" />
+						{m.home_witty_piranha_peek()}
+					</Button>
+					{#if !hasWhiteLabelPlan}
+						<Button variant="outline" href={localizeHref('/pricing') + '?tab=business'}>
+							<SparklesIcon class="me-2 h-5 w-5" />
+							{m.teaser_white_label_cta()}
 						</Button>
-					</div>
+					{/if}
 				</div>
+			</div>
 
-				<div class="relative min-h-48 w-56 overflow-hidden lg:w-56">
-					<div class="pointer-events-none absolute top-10 -right-12 left-0 h-75 origin-top">
-						<AndroidFrame>
-							<iframe
-								title="Preview"
-								src={`/white-label/${data.whiteLabelDomain}`}
-								frameborder="0"
-								class="iframe-zoomed"
-							></iframe>
-						</AndroidFrame>
-					</div>
+			<div class="relative min-h-48 w-56 overflow-hidden lg:w-56">
+				<div class="pointer-events-none absolute top-10 -right-12 left-0 h-75 origin-top">
+					<AndroidFrame>
+						<iframe
+							title="Preview"
+							src={`/white-label/${data.whiteLabelDomain}`}
+							frameborder="0"
+							class="iframe-zoomed"
+						></iframe>
+					</AndroidFrame>
 				</div>
 			</div>
 		</div>
-	{/if}
+	</div>
 {/if}
 
 <style>

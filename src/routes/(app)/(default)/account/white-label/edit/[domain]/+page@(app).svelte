@@ -5,6 +5,7 @@
 		ChevronLeft,
 		ChevronUp,
 		CircleAlert,
+		SparklesIcon,
 		SquareArrowUpRight
 	} from '@lucide/svelte';
 	import { mode } from 'mode-watcher';
@@ -37,7 +38,7 @@
 	import Toggle from '$lib/components/ui/toggle/toggle.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
-	import { whiteLabelSiteSchema } from '$lib/validators/formSchemas';
+	import { whiteLabelPublishSchema, whiteLabelSiteSchema } from '$lib/validators/formSchemas';
 
 	import type { PageServerData } from './$types';
 
@@ -86,6 +87,13 @@
 		submit
 	} = form;
 
+	// Publishing is a separate, plan-gated form. Drafting above is always free.
+	const publishForm = superForm(data.publishForm, {
+		validators: zod4Client(whiteLabelPublishSchema()),
+		invalidateAll: 'force'
+	});
+	const { form: publishData, enhance: enhancePublish, submit: submitPublish } = publishForm;
+
 	$effect(() => {
 		if ($message) {
 			showSpinner = true;
@@ -102,61 +110,75 @@
 	});
 </script>
 
-<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite">
-	<!-- Header -->
-	<div class="h-16">
-		<div
-			class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b shadow-[0_0_10px_0_rgba(0,0,0,0.05)]"
-		>
-			<Container variant="wide" class="flex h-full items-center justify-between">
-				<Button href={localizeHref('/account/white-label')} variant="ghost" class="ps-2">
-					<ChevronLeft class="me-2 h-5 w-5" />
-					{m.solid_clean_insect_stir()}
-				</Button>
+<!-- Header (outside the content form so publishing is its own gated form) -->
+<div class="h-16">
+	<div
+		class="bg-background border-border fixed top-0 left-0 z-10 h-16 w-full border-b shadow-[0_0_10px_0_rgba(0,0,0,0.05)]"
+	>
+		<Container variant="wide" class="flex h-full items-center justify-between">
+			<Button href={localizeHref('/account/white-label')} variant="ghost" class="ps-2">
+				<ChevronLeft class="me-2 h-5 w-5" />
+				{m.solid_clean_insect_stir()}
+			</Button>
 
-				<div class="ms-auto flex items-center">
-					<Form.Field {form} name="published" class="py-4">
-						<Switch
-							bind:checked={$formData.published}
-							label={m.shy_sharp_seahorse_catch()}
-							onCheckedChange={async () => {
-								await tick();
-								submit();
-							}}
-						/>
-					</Form.Field>
-
-					<div class="flex min-w-8 justify-center">
-						{#if $delayed}
-							<Spinner class="h-5 w-5" />
-						{/if}
-
-						{#if showSuccess}
-							<div in:scale={{ easing: elasticOut, duration: 1000 }}>
-								{#if $message?.status === 'success'}
-									<CheckCircle2 class="text-success h-6 w-6" />
-								{/if}
-								{#if $message?.status === 'error'}
-									<CircleAlert class="text-destructive h-6 w-6" />
-								{/if}
-							</div>
-						{/if}
-					</div>
-
+			<div class="ms-auto flex items-center">
+				{#if data.canPublish}
+					<form method="POST" use:enhancePublish action="?/setWhiteLabelPublished">
+						<Form.Field form={publishForm} name="published" class="py-4">
+							<Switch
+								bind:checked={$publishData.published}
+								label={m.shy_sharp_seahorse_catch()}
+								onCheckedChange={async () => {
+									await tick();
+									submitPublish();
+								}}
+							/>
+						</Form.Field>
+					</form>
+				{:else}
 					<Button
-						class="min-w-0 shrink"
-						variant="ghost"
-						href={`https://${data.domain}`}
-						target="_blank"
+						variant="outline"
+						size="sm"
+						href={localizeHref('/pricing') + '?tab=business'}
+						title={m.white_label_publish_locked_hint()}
 					>
-						<span class="block truncate">{data.domain}</span>
-						<SquareArrowUpRight class="ms-2 h-5 w-5" />
+						<SparklesIcon class="me-2 h-4 w-4" />
+						{m.teaser_white_label_cta()}
 					</Button>
-				</div>
-			</Container>
-		</div>
-	</div>
+				{/if}
 
+				<div class="flex min-w-8 justify-center">
+					{#if $delayed}
+						<Spinner class="h-5 w-5" />
+					{/if}
+
+					{#if showSuccess}
+						<div in:scale={{ easing: elasticOut, duration: 1000 }}>
+							{#if $message?.status === 'success'}
+								<CheckCircle2 class="text-success h-6 w-6" />
+							{/if}
+							{#if $message?.status === 'error'}
+								<CircleAlert class="text-destructive h-6 w-6" />
+							{/if}
+						</div>
+					{/if}
+				</div>
+
+				<Button
+					class="min-w-0 shrink"
+					variant="ghost"
+					href={`https://${data.domain}`}
+					target="_blank"
+				>
+					<span class="block truncate">{data.domain}</span>
+					<SquareArrowUpRight class="ms-2 h-5 w-5" />
+				</Button>
+			</div>
+		</Container>
+	</div>
+</div>
+
+<form method="POST" use:enhanceWhiteLabel action="?/saveWhiteLabelSite">
 	<Container variant="wide" class=" grid items-start gap-12 pt-8 pb-16 md:grid-cols-[1fr_360px]">
 		<!-- Left -->
 		<div class="pt-16">

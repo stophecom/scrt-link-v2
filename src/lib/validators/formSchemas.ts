@@ -224,8 +224,13 @@ export const whiteLabelSiteSchema = () =>
 		logo: z.string().nullable().optional(),
 		logoDarkMode: z.string().nullable().optional(),
 		appIcon: z.string().nullable().optional(),
-		ogImage: z.string().nullable().optional(),
-		published: z.boolean().optional().default(false)
+		ogImage: z.string().nullable().optional()
+	});
+
+// Publishing is a separate, plan-gated action (see setWhiteLabelPublished).
+export const whiteLabelPublishSchema = () =>
+	z.object({
+		published: z.boolean().default(false)
 	});
 
 export const settingsFormSchema = () =>
@@ -385,6 +390,7 @@ export type ApiTokenFormSchema = ReturnType<typeof apiKeyFormSchema>;
 export type WhiteLabelDomainSchema = z.infer<ReturnType<typeof whiteLabelDomainSchema>>;
 export type WhiteLabelMetaSchema = z.infer<ReturnType<typeof whiteLabelMetaSchema>>;
 export type WhiteLabelSiteSchema = z.infer<ReturnType<typeof whiteLabelSiteSchema>>;
+export type WhiteLabelPublishSchema = z.infer<ReturnType<typeof whiteLabelPublishSchema>>;
 export type EncryptionSetupFormSchema = z.infer<ReturnType<typeof encryptionSetupFormSchema>>;
 export type RecoverySetupFormSchema = z.infer<ReturnType<typeof recoverySetupFormSchema>>;
 export type RecoveryVerifyFormSchema = z.infer<ReturnType<typeof recoveryVerifyFormSchema>>;
