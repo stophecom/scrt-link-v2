@@ -3,7 +3,6 @@
 
 	import { page } from '$app/state';
 	import { PUBLIC_ENV } from '$env/static/public';
-	import { initGtag } from '$lib/client/gtag';
 	import { plausible } from '$lib/client/plausible';
 	import Progress from '$lib/components/blocks/progress.svelte';
 	import { appName } from '$lib/data/app';
@@ -11,18 +10,13 @@
 
 	import type { LayoutData } from './$types';
 
-	let { data, children }: { data: LayoutData; children: Snippet } = $props();
+	let { children }: { data: LayoutData; children: Snippet } = $props();
 
 	onMount(async () => {
 		if (plausible) {
 			const { enableAutoPageviews } = plausible;
 
 			enableAutoPageviews();
-		}
-
-		// Ads experiment: excluded for users created before the experiment launch.
-		if (data.showAdsTracking) {
-			initGtag();
 		}
 
 		console.info(

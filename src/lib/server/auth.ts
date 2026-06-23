@@ -61,7 +61,6 @@ export async function validateSessionToken(token: string) {
 				picture: table.user.picture,
 				preferences: table.user.preferences,
 				encryptionEnabled: table.user.encryptionEnabled,
-				createdAt: table.user.createdAt,
 				hasPassword: sql<boolean>`${table.user.passwordHash} IS NOT NULL`.as('has_password')
 			},
 			session: table.session
