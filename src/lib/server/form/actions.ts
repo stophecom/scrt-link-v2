@@ -63,6 +63,7 @@ import {
 	RECOVERY_VERIFIED_COOKIE,
 	setEmailVerificationCookie,
 	setNeedsRecoveryCookie,
+	setSignupTrackingCookie,
 	setVerificationCookie
 } from '../cookies';
 import {
@@ -1060,13 +1061,16 @@ export const verifyEmailVerificationCode: Action = async (event) => {
 		// All check passed. We create or update user and session.
 
 		// Create or update user
-		const { userId, name } = await createOrUpdateUser({
+		const { userId, name, isNewUser } = await createOrUpdateUser({
 			email: email,
 			emailVerified: true
 		});
 
+		// Signal the client to fire a one-off Plausible "Signup" event after redirect.
+		if (isNewUser) setSignupTrackingCookie(event, 'email');
+
 		// This is only triggered, if new user
-		await welcomeNewUser({ email, name });
+		await welcomeNewUser({ email, name, isNewUser });
 
 		// Create session
 		await auth.createSession(event, userId);

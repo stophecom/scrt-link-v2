@@ -85,6 +85,9 @@ export const createOrUpdateUser = async ({
 	name,
 	picture
 }: PartialExcept<User, 'email'>) => {
+	// Determine newness before the upsert — afterwards the row always exists.
+	const isNewUser = !(await checkIfUserExists(email));
+
 	// Only include explicitly provided fields in the update set,
 	// so we don't overwrite existing values (e.g. name) with null.
 	const updateSet: Partial<Pick<User, 'emailVerified' | 'googleId' | 'name' | 'picture'>> = {
@@ -127,30 +130,34 @@ export const createOrUpdateUser = async ({
 			}
 		});
 
-	return { userId: userResult.id, ...userResult };
+	return { userId: userResult.id, isNewUser, ...userResult };
 };
 
-export const welcomeNewUser = async ({ email, name }: Pick<User, 'email' | 'name'>) => {
-	const isNewUser = !(await checkIfUserExists(email));
+// `isNewUser` must come from createOrUpdateUser (computed before the upsert).
+// We can't re-derive it here: the user row already exists by the time this runs.
+export const welcomeNewUser = async ({
+	email,
+	name,
+	isNewUser
+}: Pick<User, 'email' | 'name'> & { isNewUser: boolean }) => {
+	if (!isNewUser) return;
 
-	if (isNewUser) {
-		// We add user to MQL list on Resend
-		try {
-			const result = await addContactToAudience({ email });
+	// We add user to MQL list on Resend
+	try {
+		const result = await addContactToAudience({ email });
 
-			if (result.error) {
-				throw Error(result.error.message);
-			}
-		} catch (error) {
-			console.error(`Failed to add contact to Resend.`, JSON.stringify(error));
+		if (result.error) {
+			throw Error(result.error.message);
 		}
+	} catch (error) {
+		console.error(`Failed to add contact to Resend.`, JSON.stringify(error));
+	}
 
-		// Send welcome email
-		try {
-			await sendWelcomeEmail(email, name || '');
-		} catch (error) {
-			console.error(`Failed to send welcome email.`, JSON.stringify(error));
-		}
+	// Send welcome email
+	try {
+		await sendWelcomeEmail(email, name || '');
+	} catch (error) {
+		console.error(`Failed to send welcome email.`, JSON.stringify(error));
 	}
 };
 

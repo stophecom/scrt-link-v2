@@ -4,15 +4,6 @@ import { hasNeedsRecoveryCookie } from '$lib/server/cookies';
 
 import type { LayoutServerLoad } from './$types';
 
-// Ads experiment: only load gtag for visitors who are not pre-existing users.
-// Anonymous visitors and users created on/after this date are included; users
-// created before it are excluded. Fixed launch date (not a rolling "today") so a
-// user's eligibility doesn't change over time.
-const ADS_EXPERIMENT_START = new Date('2026-06-14T00:00:00Z');
-
-const showAdsTracking = (user: App.Locals['user']) =>
-	!user || user.createdAt >= ADS_EXPERIMENT_START;
-
 // Routes excluded from the mandatory encryption guard
 const ENCRYPTION_GUARD_EXCLUDED = [
 	'/encryption',
@@ -39,7 +30,7 @@ export const load: LayoutServerLoad = async (event) => {
 	const user = event.locals.user;
 
 	if (!user) {
-		return { user, baseUrl: getBaseUrl(), showAdsTracking: showAdsTracking(user) };
+		return { user, baseUrl: getBaseUrl() };
 	}
 
 	// Strip locale prefix if present (e.g. /en, /de, /zh-CN)
@@ -73,7 +64,6 @@ export const load: LayoutServerLoad = async (event) => {
 	return {
 		user,
 		effectiveTier: event.locals.effectiveTier,
-		baseUrl: getBaseUrl(),
-		showAdsTracking: showAdsTracking(user)
+		baseUrl: getBaseUrl()
 	};
 };
