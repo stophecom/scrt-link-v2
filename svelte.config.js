@@ -31,7 +31,6 @@ const config = {
 					'self',
 					'https://js.stripe.com',
 					'https://vercel.live',
-					'https://www.googletagmanager.com',
 					'https://www.google.com',
 					'https://www.gstatic.com'
 				],
@@ -42,23 +41,10 @@ const config = {
 					'blob:',
 					'https://*.os.zrh1.flow.swiss',
 					'https://scrt-link.imgix.net',
-					'https://lh3.googleusercontent.com',
-					'https://www.googletagmanager.com',
-					'https://www.google.com',
-					'https://googleads.g.doubleclick.net'
+					'https://lh3.googleusercontent.com'
 				],
 				'media-src': ['self'],
-				'connect-src': [
-					'self',
-					'data:',
-					'https://*.os.zrh1.flow.swiss',
-					'https://plausible.io',
-					'https://www.googletagmanager.com',
-					'https://*.google-analytics.com',
-					'https://*.analytics.google.com',
-					'https://googleads.g.doubleclick.net',
-					'https://www.googleadservices.com'
-				],
+				'connect-src': ['self', 'data:', 'https://*.os.zrh1.flow.swiss', 'https://plausible.io'],
 				'frame-src': [
 					'self',
 					'https://js.stripe.com',
