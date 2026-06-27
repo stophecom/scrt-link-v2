@@ -80,16 +80,28 @@
 				// Generate a random AES key for this response
 				const aesKey = await generateAESKey();
 
-				// Wrap the AES key with the RSA public key
-				$formData.wrappedResponseKey = await wrapAESKeyWithRSA(aesKey, rsaPublicKey);
+				// Build the payload as a plain object. We must NOT mutate $formData
+				// field-by-field across awaits: superForm re-syncs the proxy on each
+				// await boundary, which drops some writes (browser-dependent, e.g. the
+				// file/meta fields go missing in Firefox). See secret-form.svelte.
+				const payload: SecretResponseFormSchema = {
+					requestIdHash,
+					// Wrap the AES key with the RSA public key
+					wrappedResponseKey: await wrapAESKeyWithRSA(aesKey, rsaPublicKey),
+					// Encrypt metadata with the same AES key
+					encryptedResponseMeta: await encryptResponseContent(
+						JSON.stringify({ type: hasFile ? 'file' : 'text' }),
+						aesKey
+					)
+				};
 
 				if (hasText) {
-					$formData.encryptedResponseContent = await encryptResponseContent(responseText, aesKey);
+					payload.encryptedResponseContent = await encryptResponseContent(responseText, aesKey);
 				}
 
 				if (hasFile && signingKeyPair) {
 					// Pack the file password + reference + meta into the E2E envelope
-					$formData.encryptedResponseFile = await encryptResponseContent(
+					payload.encryptedResponseFile = await encryptResponseContent(
 						JSON.stringify({
 							fileKey,
 							fileReference: JSON.parse(fileContent),
@@ -97,16 +109,13 @@
 						}),
 						aesKey
 					);
-					$formData.responseFilePublicKey = await exportPublicKey(signingKeyPair.publicKey);
+					payload.responseFilePublicKey = await exportPublicKey(signingKeyPair.publicKey);
 				}
 
-				// Encrypt metadata with the same AES key
-				$formData.encryptedResponseMeta = await encryptResponseContent(
-					JSON.stringify({ type: hasFile ? 'file' : 'text' }),
-					aesKey
-				);
-
-				jsonData($formData);
+				// Single synchronous assignment so client-side validation sees the full
+				// payload, then post it.
+				$formData = payload;
+				jsonData(payload);
 			} catch {
 				$message = {
 					status: 'error',
