@@ -67,17 +67,10 @@
 		</div>
 	</Section>
 
-	<Section
-		wide
-		variant="neutral"
-		title={m.tense_pretty_finch_spur()}
-		lead={m.fuzzy_patchy_flamingo_hike()}
-	>
+	<Section wide variant="neutral" title={m.business_trust_title()} lead={m.business_trust_lead()}>
 		<IntersectionObserver top={-50} once={true}>
 			{#snippet children(intersecting: boolean)}
-				<div
-					class="grid grid-rows-6 gap-4 sm:grid-cols-2 sm:grid-rows-3 md:grid-cols-3 md:grid-rows-2"
-				>
+				<div class="grid gap-4 sm:grid-cols-3">
 					{#each businessFeatures() as step, i (i)}
 						<div
 							style="transition-delay: {i * 100}ms;"

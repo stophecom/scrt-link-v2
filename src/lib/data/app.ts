@@ -1,13 +1,10 @@
 import {
 	Clock4,
-	Code,
 	Flame,
-	Globe,
 	Handshake,
 	Infinity as InfinityIcon,
 	Lock,
 	LockKeyhole,
-	Palette,
 	ShieldCheck,
 	ShieldEllipsisIcon,
 	ShieldPlus,
@@ -62,21 +59,6 @@ export const subscriptionFeatures = () => [
 ];
 
 export const businessFeatures = () => [
-	{
-		title: m.red_noisy_beaver_roar(),
-		icon: Globe,
-		description: m.teary_broad_vole_feel({ domain: 'example.com', subdomain: 'share.example.com' })
-	},
-	{
-		title: m.free_less_trout_peel(),
-		icon: Palette,
-		description: m.sweet_topical_gull_strive()
-	},
-	{
-		title: m.few_away_tadpole_hope(),
-		icon: Code,
-		description: m.these_moving_fireant_pull()
-	},
 	{
 		title: m.wide_zany_piranha_flow(),
 		icon: Zap,
