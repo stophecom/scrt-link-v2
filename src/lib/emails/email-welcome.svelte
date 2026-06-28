@@ -42,12 +42,6 @@
 			>
 
 			<Button
-				class="bg-primary text-primary-foreground inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium whitespace-nowrap "
-				href={`${getBaseUrl()}?utm_source=email&utm_medium=welcome&utm_campaign=new_signup`}
-				>{m.royal_lofty_ocelot_cuddle()}</Button
-			>
-
-			<Button
 				class="bg-background text-foreground border-foreground inline-flex items-center justify-center rounded-md border  px-4 py-2 text-sm font-medium whitespace-nowrap "
 				href={`${getBaseUrl()}/pricing?utm_source=email&utm_medium=welcome&utm_campaign=new_signup`}
 				>{m.antsy_moving_hare_bloom()}</Button
