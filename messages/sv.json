@@ -753,7 +753,7 @@
 	"keen_bright_fox_peek": "Visa svar",
 	"swift_slim_deer_turn": "Tillbaka till förfrågningar",
 	"safe_deep_wolf_read": "Hemligt svar",
-	"glad_true_lark_note": "Svar mottaget den {dateTime}",
+	"glad_true_lark_note": "Svar mottaget den {receivedAt}. Försvinner den {destructionDate}.",
 	"red_sharp_viper_fail": "Dekryptering misslyckades",
 	"slow_calm_newt_spin": "Dekrypterar svar...",
 	"brave_kind_lamb_give": "Secret Request",

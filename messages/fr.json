@@ -753,7 +753,7 @@
 	"keen_bright_fox_peek": "Afficher la réponse",
 	"swift_slim_deer_turn": "Retour aux demandes",
 	"safe_deep_wolf_read": "Réponse secrète",
-	"glad_true_lark_note": "Réponse reçue le {dateTime}",
+	"glad_true_lark_note": "Réponse reçue le {receivedAt}. Disparaît le {destructionDate}.",
 	"red_sharp_viper_fail": "Échec du déchiffrement",
 	"slow_calm_newt_spin": "Déchiffrement de la réponse...",
 	"brave_kind_lamb_give": "Soumettre un secret",
