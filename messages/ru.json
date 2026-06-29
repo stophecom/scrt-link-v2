@@ -753,7 +753,7 @@
 	"keen_bright_fox_peek": "Просмотреть ответ",
 	"swift_slim_deer_turn": "Назад к запросам",
 	"safe_deep_wolf_read": "Секретный ответ",
-	"glad_true_lark_note": "Ответ получен {dateTime}",
+	"glad_true_lark_note": "Ответ получен {receivedAt}. Исчезнет {destructionDate}.",
 	"red_sharp_viper_fail": "Ошибка дешифрования",
 	"slow_calm_newt_spin": "Дешифровка ответа...",
 	"brave_kind_lamb_give": "Отправить секрет",

@@ -753,7 +753,7 @@
 	"keen_bright_fox_peek": "Antwort ansehen",
 	"swift_slim_deer_turn": "Zurück zu den Anfragen",
 	"safe_deep_wolf_read": "Geheimnisantwort",
-	"glad_true_lark_note": "Antwort erhalten am {dateTime}",
+	"glad_true_lark_note": "Antwort erhalten am {receivedAt}. Verschwindet am {destructionDate}.",
 	"red_sharp_viper_fail": "Entschlüsselung fehlgeschlagen",
 	"slow_calm_newt_spin": "Antwort wird entschlüsselt...",
 	"brave_kind_lamb_give": "Geheimnis übermitteln",
