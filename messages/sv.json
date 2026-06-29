@@ -972,6 +972,10 @@
 	"white_label_theme_info": "Info",
 	"swift_calm_owl_reveal": "Visa lösenord",
 	"swift_calm_owl_conceal": "Dölj lösenord",
+	"gold_tidy_crane_subject": "Ett svar har skickats",
+	"gold_tidy_crane_heading": "Ett svar har skickats",
+	"gold_tidy_crane_body": "Du har fått ett svar på följande förfrågan:",
+	"gold_tidy_crane_expiry": "Du har {retentionPeriod} dagar på dig att se svaret. Därefter är det borta för gott.",
 	"polite_bad_parrot_scold": "Försvinner",
 	"calm_brave_otter_read": "Läs vår integritetspolicy"
 }

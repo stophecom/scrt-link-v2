@@ -972,6 +972,10 @@
 	"white_label_theme_info": "Info",
 	"swift_calm_owl_reveal": "Passwort anzeigen",
 	"swift_calm_owl_conceal": "Passwort verbergen",
+	"gold_tidy_crane_subject": "Eine Antwort wurde eingereicht",
+	"gold_tidy_crane_heading": "Eine Antwort wurde eingereicht",
+	"gold_tidy_crane_body": "Du hast eine Antwort auf die folgende Anfrage erhalten:",
+	"gold_tidy_crane_expiry": "Du hast {retentionPeriod} Tage Zeit, die Antwort anzusehen. Danach ist sie für immer verschwunden.",
 	"polite_bad_parrot_scold": "Verschwindet",
 	"calm_brave_otter_read": "Lies unsere Datenschutzerklärung"
 }
