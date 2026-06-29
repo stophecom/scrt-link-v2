@@ -972,6 +972,10 @@
 	"white_label_theme_info": "Info",
 	"swift_calm_owl_reveal": "Mostrar contraseña",
 	"swift_calm_owl_conceal": "Ocultar contraseña",
+	"gold_tidy_crane_subject": "Se ha enviado una respuesta",
+	"gold_tidy_crane_heading": "Se ha enviado una respuesta",
+	"gold_tidy_crane_body": "Has recibido una respuesta a la siguiente solicitud:",
+	"gold_tidy_crane_expiry": "Tienes {retentionPeriod} días para ver la respuesta. Después, desaparecerá para siempre.",
 	"polite_bad_parrot_scold": "Desaparece",
 	"calm_brave_otter_read": "Lee nuestra política de privacidad"
 }
