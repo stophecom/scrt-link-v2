@@ -29,6 +29,11 @@ const config = {
 				'default-src': ['none'],
 				'script-src': [
 					'self',
+					// Hash of mode-watcher's inline anti-FOUC `setInitialMode` script in <head>.
+					// SvelteKit doesn't nonce library-injected head scripts, so it must be
+					// allowlisted by hash. Re-check this if mode-watcher is upgraded or its
+					// <ModeWatcher> props change (the inline script content would change).
+					'sha256-cIZByCqcmZEwY5l704mu2OYBzfdBwMjhGZvxBc2yUeE=',
 					'https://js.stripe.com',
 					'https://vercel.live',
 					'https://www.google.com',
