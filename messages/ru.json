@@ -753,7 +753,7 @@
 	"keen_bright_fox_peek": "Просмотреть ответ",
 	"swift_slim_deer_turn": "Назад к запросам",
 	"safe_deep_wolf_read": "Секретный ответ",
-	"glad_true_lark_note": "Ответ получен {dateTime}",
+	"glad_true_lark_note": "Ответ получен {receivedAt}. Исчезнет {destructionDate}.",
 	"red_sharp_viper_fail": "Ошибка дешифрования",
 	"slow_calm_newt_spin": "Дешифровка ответа...",
 	"brave_kind_lamb_give": "Отправить секрет",
@@ -970,6 +970,12 @@
 	"white_label_theme_destructive": "Опасное действие",
 	"white_label_theme_success": "Успех",
 	"white_label_theme_info": "Информация",
+	"swift_calm_owl_reveal": "Показать пароль",
+	"swift_calm_owl_conceal": "Скрыть пароль",
+	"gold_tidy_crane_subject": "Ответ отправлен",
+	"gold_tidy_crane_heading": "Ответ отправлен",
+	"gold_tidy_crane_body": "Вы получили ответ на следующий запрос:",
+	"gold_tidy_crane_expiry": "У вас есть {retentionPeriod} дней, чтобы просмотреть ответ. После этого он исчезнет навсегда.",
 	"polite_bad_parrot_scold": "Исчезает",
 	"calm_brave_otter_read": "Читать нашу политику конфиденциальности"
 }
