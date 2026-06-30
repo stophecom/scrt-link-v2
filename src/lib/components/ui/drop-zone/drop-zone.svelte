@@ -1,7 +1,6 @@
 <script lang="ts">
 	import ArrowUpFromLine from '@lucide/svelte/icons/arrow-up-from-line';
 
-	import gif from '$lib/assets/images/snoop.webp';
 	import { GB } from '$lib/data/units';
 	import { formatBytes } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
@@ -130,19 +129,6 @@
 		<span class="dz:hidden text-center text-lg">{labelButton}</span>
 	</div>
 
-	<div
-		id="overlay"
-		class="pointer-events-none fixed top-0 left-0 z-50 flex h-full w-full items-end justify-center rounded-lg bg-[#000000] {isOver
-			? 'flex'
-			: 'hidden'}"
-	>
-		<img class="absolute h-full w-full object-cover" alt="Snoop Dogg" src={gif} />
-		<div
-			class="absolute w-full bg-linear-to-b from-transparent to-black p-12 pb-16 text-center text-6xl font-bold text-[#ffffff] uppercase md:text-8xl"
-		>
-			Drop it like it's hot
-		</div>
-	</div>
 	<label class="sr-only" for="dropzone">{m.gross_nice_gecko_compose()}</label>
 	<input
 		id="dropzone"
