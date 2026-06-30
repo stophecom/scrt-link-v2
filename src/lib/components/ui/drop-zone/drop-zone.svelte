@@ -38,6 +38,10 @@
 	}: Props = $props();
 
 	const validateFiles = (files: File[]) => {
+		// Clear any previous error before re-validating, so a stale message
+		// (e.g. "Maximum file size…") doesn't persist after a valid selection.
+		onError('');
+
 		if (!multiple) {
 			if (files.length > 1) {
 				handleError(m.grand_level_herring_sail());
