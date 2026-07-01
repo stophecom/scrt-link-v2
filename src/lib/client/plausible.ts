@@ -33,3 +33,16 @@ export const consumeSignupTracking = () => {
 		props: { method, whiteLabelDomain: window.location.host }
 	});
 };
+
+/**
+ * Fire a Plausible "Subscription" event tagged with the subscribed tier. Call on
+ * mount of the post-checkout landing page (upgrade-success), which only renders
+ * after a resolvable Stripe checkout.
+ */
+export const trackSubscription = (subscriptionTier: string) => {
+	if (!plausible) return;
+
+	plausible.trackEvent('Subscription', {
+		props: { subscriptionTier, whiteLabelDomain: window.location.host }
+	});
+};
