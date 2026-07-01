@@ -1,5 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import { TRIAL_PERIOD_DAYS } from '$lib/client/constants';
+	import { trackSubscription } from '$lib/client/plausible';
 	import Page from '$lib/components/page/default-page.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import Container from '$lib/components/ui/container/container.svelte';
@@ -12,6 +15,8 @@
 	const plan = $derived(getPlanContents(data.planName));
 	const PlanIcon = $derived(plan.icon);
 	const ctaHref = $derived(localizeHref(plan.isOrgPlan ? '/account/organization' : '/account'));
+
+	onMount(() => trackSubscription(data.planName));
 </script>
 
 <Page
