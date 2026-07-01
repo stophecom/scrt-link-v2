@@ -184,6 +184,10 @@
 			<span class="text-muted-foreground">Expired:</span>
 			<span class="font-medium">{data.secretRequestStats.expired}</span>
 		</div>
+		<div>
+			<span class="text-muted-foreground">Total (all-time):</span>
+			<span class="font-medium">{data.globalStats?.totalSecretRequests ?? 0}</span>
+		</div>
 		{#if data.secretRequestStats.total > 0}
 			<div>
 				<span class="text-muted-foreground">Response rate:</span>
@@ -219,6 +223,30 @@
 
 <!-- Organizations Section -->
 <Card title="Organizations" class="mb-6">
+	<h3 class="mb-2 text-lg font-semibold">Subscription Tiers</h3>
+	<Table.Root>
+		<Table.Header>
+			<Table.Row>
+				<Table.Head>Tier</Table.Head>
+				<Table.Head class="text-right">Organizations</Table.Head>
+				<Table.Head class="text-right">%</Table.Head>
+			</Table.Row>
+		</Table.Header>
+		<Table.Body>
+			{#each data.organizationsByTier as tier, i (i)}
+				<Table.Row>
+					<Table.Cell>{tier.tier}</Table.Cell>
+					<Table.Cell class="text-right">{tier.count}</Table.Cell>
+					<Table.Cell class="text-right"
+						>{formatPercent(tier.count / data.totalOrganizations)}</Table.Cell
+					>
+				</Table.Row>
+			{/each}
+		</Table.Body>
+	</Table.Root>
+
+	<Separator class="my-6" />
+
 	{#if data.organizationSizes.length === 0}
 		<p class="text-muted-foreground">No organizations yet.</p>
 	{:else}
@@ -228,6 +256,7 @@
 					<Table.Head>Name</Table.Head>
 					<Table.Head class="text-right">Members</Table.Head>
 					<Table.Head class="text-right">Secrets</Table.Head>
+					<Table.Head class="text-right">Secret Requests</Table.Head>
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
@@ -236,6 +265,7 @@
 						<Table.Cell>{org.name}</Table.Cell>
 						<Table.Cell class="text-right">{org.memberCount}</Table.Cell>
 						<Table.Cell class="text-right">{org.totalSecrets}</Table.Cell>
+						<Table.Cell class="text-right">{org.totalSecretRequests}</Table.Cell>
 					</Table.Row>
 				{/each}
 			</Table.Body>

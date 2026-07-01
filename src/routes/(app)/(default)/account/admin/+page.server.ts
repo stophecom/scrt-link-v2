@@ -3,6 +3,7 @@ import {
 	getAdoptionRates,
 	getApiKeyStats,
 	getGlobalStats,
+	getOrganizationsByTier,
 	getOrganizationSizes,
 	getRecentSignups,
 	getSecretCounts,
@@ -30,6 +31,7 @@ export const load: PageServerLoad = async () => {
 		secretRequestStats,
 		totalOrganizations,
 		organizationSizes,
+		organizationsByTier,
 		activeSubscriptions,
 		apiKeyStats,
 		whiteLabelStats
@@ -45,6 +47,7 @@ export const load: PageServerLoad = async () => {
 		getSecretRequestStats(),
 		getTotalOrganizations(),
 		getOrganizationSizes(),
+		getOrganizationsByTier(),
 		getActiveSubscriptions(),
 		getApiKeyStats(),
 		getWhiteLabelStats()
@@ -63,6 +66,7 @@ export const load: PageServerLoad = async () => {
 		secretRequestStats,
 		totalOrganizations,
 		organizationSizes,
+		organizationsByTier,
 		activeSubscriptions,
 		apiKeyStats,
 		whiteLabelStats
