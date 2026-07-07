@@ -1,0 +1,280 @@
+/* Colors + type mirror the scrt.link brand from the main app (src/app.css and
+   the shadcn Button): cream background, dark-navy primary, red accent. We match
+   the site's *default* (light) theme so the popup looks identical to the site. */
+:root {
+	--bg: hsl(38 37% 97%); /* cream */
+	--surface: hsl(38 40% 99.5%); /* inputs/cards */
+	--border: hsl(38 22% 85%);
+	--text: hsl(218 50% 12%); /* deep navy */
+	--muted: hsl(218 16% 42%);
+	--primary: rgb(26, 41, 66); /* --theme-color-navy */
+	--primary-foreground: hsl(38 37% 98%);
+	--accent: hsl(0 69% 52%); /* brand red */
+	--danger: hsl(0 68% 42%); /* --destructive */
+	--radius: 6px; /* Tailwind rounded-md */
+	--font-sans:
+		ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+		'Noto Color Emoji';
+	color-scheme: light;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+}
+
+body {
+	width: 360px;
+	font-family: var(--font-sans);
+	font-size: 14px;
+	line-height: 1.5;
+	background: var(--bg);
+	color: var(--text);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+main {
+	padding: 16px;
+}
+
+.screen {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.center {
+	align-items: center;
+	justify-content: center;
+	min-height: 120px;
+}
+
+/* Header */
+header {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.brand {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.brand > svg {
+	width: 34px;
+	height: 34px;
+	flex-shrink: 0;
+}
+
+header h1 {
+	font-size: 15px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	margin: 0;
+}
+
+.row {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* Text helpers */
+.muted {
+	color: var(--muted);
+	margin: 4px 0 0;
+}
+
+.small {
+	font-size: 12px;
+}
+
+.error {
+	color: var(--danger);
+	font-size: 13px;
+	margin: 0;
+}
+
+.error a,
+.muted a {
+	color: var(--accent);
+	font-weight: 500;
+}
+
+code {
+	font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+	font-size: 12px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	padding: 1px 5px;
+}
+
+/* Fields */
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.field > span {
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--muted);
+}
+
+input,
+textarea,
+select {
+	width: 100%;
+	padding: 10px 12px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	color: var(--text);
+	font: inherit;
+	line-height: 1.4;
+	resize: vertical;
+	transition:
+		border-color 0.12s ease,
+		box-shadow 0.12s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+	outline: none;
+	border-color: var(--primary);
+	box-shadow: 0 0 0 3px hsl(214 43% 29% / 0.15);
+}
+
+.options {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 14px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+}
+
+.options-grid {
+	display: grid;
+	grid-template-columns: 60% 11fr;
+	grid-gap: 10px;
+}
+
+.actions {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+}
+
+/* Buttons — match the site's Button (h-12 / px-4, text-sm, font-medium) */
+button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	height: 40px;
+	padding: 0 16px;
+	font: inherit;
+	font-weight: 500;
+	white-space: nowrap;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-radius: var(--radius);
+	transition:
+		background-color 0.12s ease,
+		border-color 0.12s ease,
+		opacity 0.12s ease;
+}
+
+button:disabled {
+	opacity: 0.5;
+	cursor: default;
+}
+
+.primary {
+	background: var(--primary);
+	color: var(--primary-foreground);
+}
+
+.primary:hover:not(:disabled) {
+	/* Site uses hover:bg-primary/90 (90% over the cream background). */
+	background: color-mix(in srgb, var(--primary) 90%, var(--bg));
+}
+
+.block {
+	width: 100%;
+	height: 48px; /* h-12, the site's default button height */
+}
+
+.ghost {
+	background: transparent;
+	color: var(--text);
+	border-color: var(--border);
+}
+
+.ghost:hover:not(:disabled) {
+	background: color-mix(in srgb, var(--text) 8%, transparent);
+}
+
+.danger {
+	background: transparent;
+	color: var(--danger);
+	border-color: var(--border);
+}
+
+.danger:hover:not(:disabled) {
+	background: color-mix(in srgb, var(--danger) 8%, transparent);
+}
+
+.icon {
+	height: 32px;
+	width: 32px;
+	padding: 0;
+	background: transparent;
+	border: none;
+	color: var(--muted);
+	font-size: 16px;
+	border-radius: var(--radius);
+}
+
+.icon:hover {
+	background: color-mix(in srgb, var(--text) 8%, transparent);
+	color: var(--text);
+}
+
+.link-button {
+	height: auto;
+	background: none;
+	border: none;
+	color: var(--accent);
+	padding: 0;
+	align-self: flex-start;
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.link-box {
+	display: flex;
+	gap: 8px;
+}
+
+.link-box input {
+	flex: 1;
+}
+
+.result {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}

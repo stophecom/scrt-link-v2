@@ -1,8 +1,28 @@
 packages:
   - 'packages/*'
+  - 'apps/*'
 
 allowBuilds:
   esbuild: false
+  spawn-sync: false
+
+minimumReleaseAgeExclude:
+  - '@aws-sdk/checksums@3.1000.14'
+  - '@aws-sdk/client-s3@3.1081.0'
+  - '@aws-sdk/core@3.974.29'
+  - '@aws-sdk/credential-provider-env@3.972.55'
+  - '@aws-sdk/credential-provider-http@3.972.57'
+  - '@aws-sdk/credential-provider-ini@3.972.62'
+  - '@aws-sdk/credential-provider-login@3.972.61'
+  - '@aws-sdk/credential-provider-node@3.972.64'
+  - '@aws-sdk/credential-provider-process@3.972.55'
+  - '@aws-sdk/credential-provider-sso@3.972.61'
+  - '@aws-sdk/credential-provider-web-identity@3.972.61'
+  - '@aws-sdk/middleware-sdk-s3@3.972.60'
+  - '@aws-sdk/nested-clients@3.997.29'
+  - '@aws-sdk/s3-presigned-post@3.1081.0'
+  - '@aws-sdk/s3-request-presigner@3.1081.0'
+  - '@aws-sdk/token-providers@3.1081.0'
 
 overrides:
   shell-quote: ^1.8.4
