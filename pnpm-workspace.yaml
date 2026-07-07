@@ -1,8 +1,10 @@
 packages:
   - 'packages/*'
+  - 'apps/*'
 
 allowBuilds:
   esbuild: false
+  spawn-sync: false
 
 overrides:
   shell-quote: ^1.8.4

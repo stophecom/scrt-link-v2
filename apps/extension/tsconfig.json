@@ -1,0 +1,7 @@
+{
+	// Extends the auto-generated config produced by `wxt prepare`.
+	"extends": "./.wxt/tsconfig.json",
+	"compilerOptions": {
+		"strict": true
+	}
+}
