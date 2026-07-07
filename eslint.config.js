@@ -12,6 +12,8 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default ts.config(
 	includeIgnoreFile(gitignorePath),
+	// WXT-generated output for apps/extension (only the root .gitignore is read above).
+	{ ignores: ['**/.wxt/**', '**/.output/**'] },
 	js.configs.recommended,
 	...ts.configs.recommended,
 	...svelte.configs['flat/recommended'],

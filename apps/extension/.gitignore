@@ -1,0 +1,6 @@
+# WXT
+.output
+.wxt
+stats.html
+node_modules
+*SPEC.MD
