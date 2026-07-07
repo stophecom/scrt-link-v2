@@ -38,9 +38,3 @@ pnpm --filter @scrt-link/extension build:firefox  # → .output/firefox-mv2
 pnpm --filter @scrt-link/extension zip            # store-ready .zip
 pnpm --filter @scrt-link/extension check          # svelte-check / types
 ```
-
-## TODO before store submission
-
-- Add extension icons (`public/icon/{16,32,48,128}.png`) — currently unset.
-- Store listing copy, screenshots, privacy policy.
-- Chrome Web Store + AMO accounts and review.
