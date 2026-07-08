@@ -26,6 +26,29 @@ export const passwordFormSchema = () =>
 			.max(255)
 	});
 
+// Step 1 of changing the account email: prove identity with the current password
+// and name the new address. The client swaps `currentPassword` for the
+// email-salted auth verifier before submit, so the plaintext never leaves the browser.
+export const changeEmailRequestFormSchema = () =>
+	z.object({
+		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
+		currentPassword: z
+			.string()
+			.min(6, m.aloof_careful_trout_dine({ number: 6 }))
+			.max(512)
+	});
+
+// Step 2: confirm ownership of the new address with the emailed OTP. The client
+// sends two auth verifiers (both hex): `currentPassword` re-proves identity, and
+// `newPasswordVerifier` (derived with the NEW email salt) becomes the stored credential.
+export const changeEmailConfirmFormSchema = () =>
+	z.object({
+		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
+		code: z.string().length(6, { message: m.arable_such_jay_swim({ number: 6 }) }),
+		currentPassword: z.string().max(512).optional(),
+		newPasswordVerifier: z.string().max(512).optional()
+	});
+
 export const updateBillingOwnerSchema = () =>
 	z.object({
 		organizationId: z.string(),
@@ -365,6 +388,8 @@ export type SignInFormSchema = ReturnType<typeof signInFormSchema>;
 export type EmailFormSchema = z.infer<ReturnType<typeof emailFormSchema>>;
 export type EmailVerificationCodeFormSchema = ReturnType<typeof emailVerificationCodeFormSchema>;
 export type PasswordFormSchema = ReturnType<typeof passwordFormSchema>;
+export type ChangeEmailRequestFormSchema = z.infer<ReturnType<typeof changeEmailRequestFormSchema>>;
+export type ChangeEmailConfirmFormSchema = z.infer<ReturnType<typeof changeEmailConfirmFormSchema>>;
 export type UpdateBillingOwnerSchema = z.infer<ReturnType<typeof updateBillingOwnerSchema>>;
 export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
 export type DeleteOrganizationSchema = ReturnType<typeof deleteOrganizationSchema>;

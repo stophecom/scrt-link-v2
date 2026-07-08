@@ -3,6 +3,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 
 	import { wait } from '$lib/client/utils';
+	import ChangeEmailForm from '$lib/components/forms/change-email-form.svelte';
 	import UserForm from '$lib/components/forms/user-form.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import Card from '$lib/components/ui/card/card.svelte';
@@ -12,20 +13,36 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import type { User as AuthUser } from '$lib/server/db/schema';
-	import type { UserFormSchema } from '$lib/validators/formSchemas';
+	import type {
+		ChangeEmailConfirmFormSchema,
+		ChangeEmailRequestFormSchema,
+		UserFormSchema
+	} from '$lib/validators/formSchemas';
 
 	let {
 		user,
-		form
+		form,
+		changeEmailRequestForm,
+		changeEmailConfirmForm
 	}: {
-		user: Pick<AuthUser, 'id' | 'name' | 'email' | 'role' | 'subscriptionTier' | 'picture'> & {
+		user: Pick<
+			AuthUser,
+			'id' | 'name' | 'email' | 'role' | 'subscriptionTier' | 'picture' | 'googleId'
+		> & {
+			hasPassword?: boolean;
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			preferences: any;
 		};
 		form: SuperValidated<UserFormSchema>;
+		changeEmailRequestForm: SuperValidated<ChangeEmailRequestFormSchema>;
+		changeEmailConfirmForm: SuperValidated<ChangeEmailConfirmFormSchema>;
 	} = $props();
 
 	let open = $state(false);
+	let emailOpen = $state(false);
+
+	// Only password accounts without a linked Google login can self-serve an email change.
+	const canChangeEmail = $derived(Boolean(user.hasPassword) && !user.googleId);
 </script>
 
 {#snippet renderLabel(label: string)}
@@ -54,19 +71,46 @@
 		</Dialog.Root>
 	</div>
 
-	<Tooltip.Root>
-		<Tooltip.Trigger>
-			<div class="flex py-1">
-				{@render renderLabel(m.mild_noble_orangutan_compose())}
-				<span class="inline-flex cursor-not-allowed items-center p-1"
-					>{user?.email} <BadgeCheck class="text-muted-foreground ms-2 h-4 w-4" /></span
-				>
-			</div>
-		</Tooltip.Trigger>
-		<Tooltip.Content>
-			<p>{m.dizzy_light_pigeon_animate()}</p>
-		</Tooltip.Content>
-	</Tooltip.Root>
+	{#if canChangeEmail}
+		<div class="flex items-center py-1">
+			{@render renderLabel(m.mild_noble_orangutan_compose())}
+			<span class="inline-flex items-center p-1"
+				>{user?.email} <BadgeCheck class="text-muted-foreground ms-2 h-4 w-4" /></span
+			>
+			<Dialog.Root bind:open={emailOpen}>
+				(<Dialog.Trigger class="inline-block underline">{m.aloof_such_mare_dance()}</Dialog.Trigger
+				>)
+				<Dialog.Content class="sm:max-w-[425px]">
+					<Dialog.Header>
+						<Dialog.Title>{m.change_email_dialog_title()}</Dialog.Title>
+					</Dialog.Header>
+					<ChangeEmailForm
+						requestForm={changeEmailRequestForm}
+						confirmForm={changeEmailConfirmForm}
+						onSuccess={() => {
+							wait(1500).then(() => {
+								emailOpen = false;
+							});
+						}}
+					/>
+				</Dialog.Content>
+			</Dialog.Root>
+		</div>
+	{:else}
+		<Tooltip.Root>
+			<Tooltip.Trigger>
+				<div class="flex py-1">
+					{@render renderLabel(m.mild_noble_orangutan_compose())}
+					<span class="inline-flex cursor-not-allowed items-center p-1"
+						>{user?.email} <BadgeCheck class="text-muted-foreground ms-2 h-4 w-4" /></span
+					>
+				</div>
+			</Tooltip.Trigger>
+			<Tooltip.Content>
+				<p>{m.dizzy_light_pigeon_animate()}</p>
+			</Tooltip.Content>
+		</Tooltip.Root>
+	{/if}
 
 	<Separator class="my-6" />
 	<div class="flex flex-wrap">

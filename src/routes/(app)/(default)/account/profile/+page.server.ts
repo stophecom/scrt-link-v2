@@ -3,7 +3,13 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 
 import { getAbsoluteLocalizedUrl, redirectLocalized } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
-import { saveUser, setupRecoveryKey, verifyCurrentPassword } from '$lib/server/form/actions';
+import {
+	confirmEmailChange,
+	requestEmailChange,
+	saveUser,
+	setupRecoveryKey,
+	verifyCurrentPassword
+} from '$lib/server/form/actions';
 import { userFormValidator } from '$lib/server/form/validators';
 import stripeInstance, {
 	getActiveSubscription,
@@ -11,7 +17,12 @@ import stripeInstance, {
 	getStripePortalUrl
 } from '$lib/server/stripe';
 import { getUserEncryptionKeyStore } from '$lib/server/user';
-import { passwordFormSchema, recoverySetupFormSchema } from '$lib/validators/formSchemas';
+import {
+	changeEmailConfirmFormSchema,
+	changeEmailRequestFormSchema,
+	passwordFormSchema,
+	recoverySetupFormSchema
+} from '$lib/validators/formSchemas';
 
 import type { Actions, PageServerLoad } from './$types';
 
@@ -71,6 +82,12 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		recoveryForm: await superValidate(zod4(recoverySetupFormSchema()), {
 			id: 'recovery-setup-form'
 		}),
+		changeEmailRequestForm: await superValidate(zod4(changeEmailRequestFormSchema()), {
+			id: 'change-email-request-form'
+		}),
+		changeEmailConfirmForm: await superValidate(zod4(changeEmailConfirmFormSchema()), {
+			id: 'change-email-confirm-form'
+		}),
 		subscription,
 		invoices,
 		stripePortalUrl,
@@ -81,5 +98,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 export const actions: Actions = {
 	saveUser,
 	verifyCurrentPassword,
-	setupRecoveryKey
+	setupRecoveryKey,
+	requestEmailChange,
+	confirmEmailChange
 };
