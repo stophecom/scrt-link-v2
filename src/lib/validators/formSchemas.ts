@@ -43,7 +43,11 @@ export const changeEmailRequestFormSchema = () =>
 // `newPasswordVerifier` (derived with the NEW email salt) becomes the stored credential.
 export const changeEmailConfirmFormSchema = () =>
 	z.object({
-		email: z.email(m.every_chunky_osprey_zip()).toLowerCase(),
+		// The only user-entered field is `code`. `email` and the verifiers are attached by the
+		// client in onSubmit (from in-memory state), so they are optional for client-side
+		// validation — the server enforces their presence. Keeping `email` required here would
+		// let an unrendered, programmatically-set field silently block submission.
+		email: z.email(m.every_chunky_osprey_zip()).toLowerCase().optional(),
 		code: z.string().length(6, { message: m.arable_such_jay_swim({ number: 6 }) }),
 		currentPassword: z.string().max(512).optional(),
 		newPasswordVerifier: z.string().max(512).optional()

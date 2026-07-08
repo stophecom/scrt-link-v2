@@ -1350,7 +1350,7 @@ export const confirmEmailChange: Action = async (event) => {
 
 	const { email, code, currentPassword, newPasswordVerifier } = form.data;
 
-	if (!currentPassword || !newPasswordVerifier) {
+	if (!email || !currentPassword || !newPasswordVerifier) {
 		return message(
 			form,
 			{ status: 'error', title: 'Error', description: 'Missing credentials.' },

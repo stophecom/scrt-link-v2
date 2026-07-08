@@ -8,6 +8,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { m } from '$lib/paraglide/messages.js';
+	import { stripPattern } from '$lib/utils';
 	import {
 		type ChangeEmailConfirmFormSchema,
 		changeEmailConfirmFormSchema,
@@ -43,6 +44,9 @@
 		dataType: 'json',
 		applyAction: false,
 		resetForm: false,
+		// Don't reload page data after step 1 — it would reset the confirm form's store
+		// (wiping the email we set below) and cancel step 2's submit on an invisible field.
+		invalidateAll: false,
 		onSubmit: async ({ jsonData, cancel }) => {
 			try {
 				const currentEmail = page.data.user?.email ?? '';
@@ -93,6 +97,9 @@
 		dataType: 'json',
 		applyAction: false,
 		resetForm: false,
+		// Reload only on success (done manually in onResult) — avoids clearing the code
+		// field on a wrong-code error and resetting state mid-flow.
+		invalidateAll: false,
 		onSubmit: async ({ jsonData, cancel }) => {
 			if (!heldPassword) {
 				// Password was lost (e.g. page reload) — restart the flow.
@@ -165,7 +172,7 @@
 						type="email"
 						autocomplete="email"
 						bind:value={$requestData.email}
-						{...$requestConstraints.email}
+						{...stripPattern($requestConstraints.email)}
 						{...attrs}
 					/>
 				</Form.Control>
