@@ -3,7 +3,6 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/state';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
@@ -50,10 +49,12 @@
 		onSubmit: async ({ jsonData, cancel }) => {
 			try {
 				const currentEmail = page.data.user?.email ?? '';
-				const verifier = await deriveAuthVerifier($requestData.currentPassword, currentEmail);
+				// Capture the plaintext before jsonData() overwrites the store field with the
+				// verifier; onUpdated restores it so a failed attempt doesn't show a hash.
 				heldPassword = $requestData.currentPassword;
 				newEmail = $requestData.email;
-				jsonData({ email: $requestData.email, currentPassword: verifier });
+				const verifier = await deriveAuthVerifier(heldPassword, currentEmail);
+				jsonData({ email: newEmail, currentPassword: verifier });
 			} catch (e) {
 				console.error('Failed to derive auth verifier:', e);
 				$requestMessage = {
@@ -74,7 +75,13 @@
 				}
 			}
 		},
+		onUpdated() {
+			// The server echoes the submitted form (currentPassword = verifier). Restore the
+			// plaintext so a wrong-password error shows the user's input, not the hash.
+			$requestData.currentPassword = heldPassword;
+		},
 		onError({ result }) {
+			$requestData.currentPassword = heldPassword;
 			$requestMessage = {
 				status: 'error',
 				title: `${result.status}`,
@@ -138,7 +145,8 @@
 				$confirmMessage = formResult.message;
 				if (formResult.message.status === 'success') {
 					heldPassword = '';
-					await invalidateAll();
+					// Refresh (to show the new email) is deferred to onSuccess, after the dialog
+					// closes — calling invalidateAll() here re-syncs the form and fires a 2nd toast.
 					onSuccess();
 				}
 			}

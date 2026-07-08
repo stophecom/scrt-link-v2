@@ -2,6 +2,7 @@
 	import BadgeCheck from '@lucide/svelte/icons/badge-check';
 	import type { SuperValidated } from 'sveltekit-superforms';
 
+	import { invalidateAll } from '$app/navigation';
 	import { wait } from '$lib/client/utils';
 	import ChangeEmailForm from '$lib/components/forms/change-email-form.svelte';
 	import UserForm from '$lib/components/forms/user-form.svelte';
@@ -88,8 +89,11 @@
 						requestForm={changeEmailRequestForm}
 						confirmForm={changeEmailConfirmForm}
 						onSuccess={() => {
-							wait(1500).then(() => {
+							wait(1500).then(async () => {
 								emailOpen = false;
+								// Refresh once the dialog (and its form) is gone, so the reload
+								// can't re-trigger the success toast.
+								await invalidateAll();
 							});
 						}}
 					/>
