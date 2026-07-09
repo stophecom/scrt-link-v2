@@ -9,7 +9,12 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<AccountCard user={data.user} form={data.userForm} />
+<AccountCard
+	user={data.user}
+	form={data.userForm}
+	changeEmailRequestForm={data.changeEmailRequestForm}
+	changeEmailConfirmForm={data.changeEmailConfirmForm}
+/>
 
 <BillingPlanCard
 	subscription={data.subscription}
