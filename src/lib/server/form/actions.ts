@@ -31,6 +31,8 @@ import type { LocalizedWhiteLabelMessage, Theme } from '$lib/types';
 import { dropUndefinedValuesFromObject } from '$lib/utils';
 import {
 	apiKeyFormSchema,
+	changeEmailConfirmFormSchema,
+	changeEmailRequestFormSchema,
 	deleteOrganizationSchema,
 	emailFormSchema,
 	emailVerificationCodeFormSchema,
@@ -78,6 +80,7 @@ import {
 	syncOrgSeatCount
 } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
+import { addContactToAudience, removeContactFromAudience } from '../resend';
 import {
 	getSecretRequestByHash,
 	saveSecretRequest,
@@ -1248,6 +1251,191 @@ export const setPassword: Action = async (event) => {
 		status: 'success',
 		title: m.flat_moving_finch_assure(),
 		description: m.male_ornate_mantis_feel()
+	});
+};
+
+// Only self-serve email changes for accounts that authenticate with a password and
+// are not linked to Google. A Google-linked account re-matches on Google's email on
+// the next OAuth login, which would fork into a second account — so we block it here
+// and the UI keeps the field read-only for those users.
+const canChangeEmail = (user: { hasPassword?: boolean; googleId?: string | null }) =>
+	Boolean(user.hasPassword) && !user.googleId;
+
+// Step 1: verify the current password and email a verification code to the new address.
+export const requestEmailChange: Action = async (event) => {
+	const user = event.locals.user;
+	if (!user) {
+		return redirectLocalized(307, '/login');
+	}
+
+	const form = await superValidate(event.request, zod4(changeEmailRequestFormSchema()));
+
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!canChangeEmail(user)) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.change_email_not_available_title(),
+				description: m.change_email_not_available_description()
+			},
+			{ status: 403 }
+		);
+	}
+
+	const { email, currentPassword } = form.data;
+
+	// Re-authenticate. The client sends the auth verifier derived from the *current* email.
+	if (!(await verifyUserPassword(user.id, currentPassword))) {
+		return message(form, { status: 'error', title: m.petty_flaky_lynx_boil() }, { status: 400 });
+	}
+
+	if (email === user.email) {
+		return message(
+			form,
+			{ status: 'error', title: m.change_email_same_as_current() },
+			{ status: 400 }
+		);
+	}
+
+	if (await checkIfUserExists(email)) {
+		return message(form, { status: 'error', title: m.agent_same_puma_achieve() }, { status: 400 });
+	}
+
+	try {
+		await createEmailVerificationRequest(email);
+	} catch (e) {
+		console.error(e);
+		error(500, `Something went wrong. Couldn't send email verification code.`);
+	}
+
+	return message(form, {
+		status: 'success',
+		title: m.change_email_request_sent_title(),
+		description: m.change_email_request_sent_description()
+	});
+};
+
+// Step 2: verify the OTP for the new address, re-check the password, then commit the
+// new email and the re-derived credential (verifier salted with the new email).
+export const confirmEmailChange: Action = async (event) => {
+	const user = event.locals.user;
+	if (!user) {
+		return redirectLocalized(307, '/login');
+	}
+
+	const form = await superValidate(event.request, zod4(changeEmailConfirmFormSchema()));
+
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	if (!canChangeEmail(user)) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.change_email_not_available_title(),
+				description: m.change_email_not_available_description()
+			},
+			{ status: 403 }
+		);
+	}
+
+	const { email, code, currentPassword, newPasswordVerifier } = form.data;
+
+	if (!email || !currentPassword || !newPasswordVerifier) {
+		return message(
+			form,
+			{ status: 'error', title: 'Error', description: 'Missing credentials.' },
+			{ status: 400 }
+		);
+	}
+
+	// Re-authenticate to keep step 2 from bypassing the password check in step 1.
+	if (!(await verifyUserPassword(user.id, currentPassword))) {
+		return message(form, { status: 'error', title: m.petty_flaky_lynx_boil() }, { status: 400 });
+	}
+
+	// Verify the OTP for the new email (mirrors verifyEmailVerificationCode).
+	const [request] = await db
+		.select()
+		.from(emailVerificationRequest)
+		.where(eq(emailVerificationRequest.email, email))
+		.orderBy(desc(emailVerificationRequest.expiresAt));
+
+	if (!request || !(await verifyPassword(code, request.codeHash))) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.every_tired_canary_express(),
+				description: m.stout_front_pug_pout()
+			},
+			{ status: 401 }
+		);
+	}
+
+	if (request.expiresAt < new Date()) {
+		return message(
+			form,
+			{ status: 'error', title: m.upper_simple_sheep_grip(), description: m.flat_plane_frog_tap() },
+			{ status: 401 }
+		);
+	}
+
+	// Guard against the address being claimed between step 1 and step 2.
+	if (await checkIfUserExists(email)) {
+		return message(form, { status: 'error', title: m.agent_same_puma_achieve() }, { status: 409 });
+	}
+
+	const oldEmail = user.email;
+	const hashedVerifier = await scryptHash(newPasswordVerifier);
+
+	try {
+		await db.transaction(async (tx) => {
+			await tx
+				.update(userSchema)
+				.set({ email, emailVerified: true, passwordHash: hashedVerifier, authVersion: 2 })
+				.where(eq(userSchema.id, user.id));
+
+			await tx.update(userSettings).set({ email }).where(eq(userSettings.userId, user.id));
+		});
+	} catch (e) {
+		// Safety net for the unique-email constraint (lost race).
+		console.error(e);
+		return message(form, { status: 'error', title: m.agent_same_puma_achieve() }, { status: 409 });
+	}
+
+	await deleteEmailVerificationRequests(email);
+
+	// Best-effort sync of external systems that cache the email at creation time.
+	if (user.stripeCustomerId) {
+		try {
+			await stripeInstance.customers.update(user.stripeCustomerId, { email });
+		} catch (e) {
+			console.error('Failed to sync Stripe customer email.', e);
+		}
+	}
+
+	try {
+		await removeContactFromAudience({ email: oldEmail });
+		await addContactToAudience({ email });
+	} catch (e) {
+		console.error('Failed to sync Resend audience.', e);
+	}
+
+	return message(form, {
+		status: 'success',
+		title: m.change_email_success_title(),
+		description: m.change_email_success_description()
 	});
 };
 
