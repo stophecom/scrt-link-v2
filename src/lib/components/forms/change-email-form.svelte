@@ -66,13 +66,12 @@
 			}
 		},
 		onResult: async ({ result }) => {
+			// superforms applies the server message to $requestMessage itself — don't set it
+			// again here or FormWrapper toasts it twice. We only react to success.
 			const formResult = (result as MessageResult).data?.form;
-			if (formResult?.message) {
-				$requestMessage = formResult.message;
-				if (formResult.message.status === 'success') {
-					$confirmData.email = newEmail;
-					step = 'confirm';
-				}
+			if (formResult?.message?.status === 'success') {
+				$confirmData.email = newEmail;
+				step = 'confirm';
 			}
 		},
 		onUpdated() {
@@ -140,15 +139,13 @@
 			}
 		},
 		onResult: async ({ result }) => {
+			// superforms applies the server message to $confirmMessage itself — don't set it
+			// again here or FormWrapper toasts it twice. We only react to success. The refresh
+			// (to show the new email) is deferred to onSuccess, after the dialog closes.
 			const formResult = (result as MessageResult).data?.form;
-			if (formResult?.message) {
-				$confirmMessage = formResult.message;
-				if (formResult.message.status === 'success') {
-					heldPassword = '';
-					// Refresh (to show the new email) is deferred to onSuccess, after the dialog
-					// closes — calling invalidateAll() here re-syncs the form and fires a 2nd toast.
-					onSuccess();
-				}
+			if (formResult?.message?.status === 'success') {
+				heldPassword = '';
+				onSuccess();
 			}
 		},
 		onError({ result }) {

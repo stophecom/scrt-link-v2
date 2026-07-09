@@ -1292,18 +1292,19 @@ export const requestEmailChange: Action = async (event) => {
 
 	// Re-authenticate. The client sends the auth verifier derived from the *current* email.
 	if (!(await verifyUserPassword(user.id, currentPassword))) {
-		setError(form, 'currentPassword', m.petty_flaky_lynx_boil());
-		return fail(400, { form });
+		return message(form, { status: 'error', title: m.petty_flaky_lynx_boil() }, { status: 400 });
 	}
 
 	if (email === user.email) {
-		setError(form, 'email', m.change_email_same_as_current());
-		return fail(400, { form });
+		return message(
+			form,
+			{ status: 'error', title: m.change_email_same_as_current() },
+			{ status: 400 }
+		);
 	}
 
 	if (await checkIfUserExists(email)) {
-		setError(form, 'email', m.agent_same_puma_achieve());
-		return fail(400, { form });
+		return message(form, { status: 'error', title: m.agent_same_puma_achieve() }, { status: 400 });
 	}
 
 	try {
@@ -1360,8 +1361,7 @@ export const confirmEmailChange: Action = async (event) => {
 
 	// Re-authenticate to keep step 2 from bypassing the password check in step 1.
 	if (!(await verifyUserPassword(user.id, currentPassword))) {
-		setError(form, 'code', m.petty_flaky_lynx_boil());
-		return fail(400, { form });
+		return message(form, { status: 'error', title: m.petty_flaky_lynx_boil() }, { status: 400 });
 	}
 
 	// Verify the OTP for the new email (mirrors verifyEmailVerificationCode).
