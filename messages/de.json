@@ -993,5 +993,9 @@
 	"gold_tidy_crane_body": "Du hast eine Antwort auf die folgende Anfrage erhalten:",
 	"gold_tidy_crane_expiry": "Du hast {retentionPeriod} Tage Zeit, die Antwort anzusehen. Danach ist sie für immer verschwunden.",
 	"polite_bad_parrot_scold": "Verschwindet",
-	"calm_brave_otter_read": "Lies unsere Datenschutzerklärung"
+	"calm_brave_otter_read": "Lies unsere Datenschutzerklärung",
+	"browser_extension_label": "Browser-Erweiterung",
+	"browser_extension_tooltip": "Teile ein Geheimnis direkt aus deinem Browser. Erfordert einen API-Schlüssel.",
+	"browser_extension_faq_heading": "Gibt es eine Browser-Erweiterung?",
+	"browser_extension_faq_body": "Ja! Installiere die [scrt.link Browser-Erweiterung](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) für Chrome, um Geheimlinks zu erstellen, ohne deinen aktuellen Tab zu verlassen. Die Erweiterung kommuniziert mit unserer öffentlichen API, daher ist ein **[Top Secret](/pricing)**-Tarif mit einem API-Schlüssel erforderlich."
 }

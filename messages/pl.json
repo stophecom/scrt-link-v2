@@ -993,5 +993,9 @@
 	"gold_tidy_crane_body": "Otrzymałeś odpowiedź na następujące żądanie:",
 	"gold_tidy_crane_expiry": "Masz {retentionPeriod} dni na wyświetlenie odpowiedzi. Po tym czasie zostanie ona trwale usunięta.",
 	"polite_bad_parrot_scold": "Znika",
-	"calm_brave_otter_read": "Przeczytaj naszą politykę prywatności"
+	"calm_brave_otter_read": "Przeczytaj naszą politykę prywatności",
+	"browser_extension_label": "Rozszerzenie przeglądarki",
+	"browser_extension_tooltip": "Udostępniaj sekret bezpośrednio z przeglądarki. Wymaga klucza API.",
+	"browser_extension_faq_heading": "Czy jest dostępne rozszerzenie przeglądarki?",
+	"browser_extension_faq_body": "Tak! Zainstaluj [rozszerzenie przeglądarki scrt.link](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) dla Chrome, aby tworzyć sekretne linki bez opuszczania bieżącej karty. Rozszerzenie komunikuje się z naszym publicznym API, dlatego wymagany jest plan **[Top Secret](/pricing)** z kluczem API."
 }

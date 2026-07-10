@@ -94,6 +94,7 @@ export const plans = () => [
 			{ label: m.new_still_dingo_create({ limit: formatBytes(100 * GB) }) },
 			{ label: m.active_mellow_swan_list({ amount: 30 }) },
 			{ label: m.blue_jumpy_shell_climb(), tooltip: m.keen_rose_ant_zoom() },
+			{ label: m.browser_extension_label(), tooltip: m.browser_extension_tooltip() },
 			{ label: m.still_busy_starfish_dare() }
 		],
 		limits: {

@@ -22,6 +22,8 @@ export const emailSupport = 'support@scrt.link';
 export const emailNoReply = 'no-reply@scrt.link';
 export const uptimerobotUrl = 'https://stats.uptimerobot.com/v5yqDuEr5z';
 export const githubUrl = 'https://github.com/stophecom/scrt-link-v2';
+export const browserExtensionUrl =
+	'https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh';
 export const blueskyUrl = 'https://bsky.app/profile/scrt.link';
 export const linkedinUrl = 'https://www.linkedin.com/company/santihans';
 

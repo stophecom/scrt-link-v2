@@ -13,6 +13,12 @@ const product = () => [
 		category: 'product',
 		heading: m.dry_fun_ant_sail(),
 		body: m.crazy_dark_tuna_stop()
+	},
+	{
+		id: 'browser-extension',
+		category: 'product',
+		heading: m.browser_extension_faq_heading(),
+		body: m.browser_extension_faq_body()
 	}
 ];
 
