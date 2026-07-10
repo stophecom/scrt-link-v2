@@ -993,5 +993,9 @@
 	"gold_tidy_crane_body": "Du har modtaget et svar på følgende anmodning:",
 	"gold_tidy_crane_expiry": "Du har {retentionPeriod} dage til at se svaret. Derefter er det væk for altid.",
 	"polite_bad_parrot_scold": "Forsvinder",
-	"calm_brave_otter_read": "Læs vores privatlivspolitik"
+	"calm_brave_otter_read": "Læs vores privatlivspolitik",
+	"browser_extension_label": "Browserudvidelse",
+	"browser_extension_tooltip": "Del en hemmelighed direkte fra din browser. Kræver en API-nøgle.",
+	"browser_extension_faq_heading": "Findes der en browserudvidelse?",
+	"browser_extension_faq_body": "Ja! Installer [scrt.link-browserudvidelsen](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) til Chrome for at oprette hemmelige links uden at forlade din nuværende fane. Udvidelsen kommunikerer med vores offentlige API, så en **[Top Secret](/pricing)**-plan med en API-nøgle er påkrævet."
 }

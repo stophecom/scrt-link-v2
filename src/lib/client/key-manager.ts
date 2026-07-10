@@ -18,13 +18,31 @@ const MK_KEY = 'master-key';
 
 // --- IndexedDB helpers ---
 
+function ensureStore(db: IDBDatabase): void {
+	if (!db.objectStoreNames.contains(STORE_NAME)) {
+		db.createObjectStore(STORE_NAME);
+	}
+}
+
 function openDB(): Promise<IDBDatabase> {
 	return new Promise((resolve, reject) => {
 		const request = indexedDB.open(DB_NAME, 1);
-		request.onupgradeneeded = () => {
-			request.result.createObjectStore(STORE_NAME);
+		request.onupgradeneeded = () => ensureStore(request.result);
+		request.onsuccess = () => {
+			const db = request.result;
+			if (db.objectStoreNames.contains(STORE_NAME)) {
+				resolve(db);
+				return;
+			}
+			// DB exists but is missing our store (created store-less by an interrupted
+			// upgrade or a prior bug). Reopen at a higher version to add the store.
+			const nextVersion = db.version + 1;
+			db.close();
+			const upgrade = indexedDB.open(DB_NAME, nextVersion);
+			upgrade.onupgradeneeded = () => ensureStore(upgrade.result);
+			upgrade.onsuccess = () => resolve(upgrade.result);
+			upgrade.onerror = () => reject(upgrade.error);
 		};
-		request.onsuccess = () => resolve(request.result);
 		request.onerror = () => reject(request.error);
 	});
 }
@@ -43,19 +61,24 @@ async function persistKey(entry: StoredKey): Promise<void> {
 async function loadPersistedKey(): Promise<StoredKey | null> {
 	try {
 		const db = await openDB();
-		return new Promise((resolve) => {
-			const tx = db.transaction(STORE_NAME, 'readonly');
-			const request = tx.objectStore(STORE_NAME).get(MK_KEY);
-			request.onsuccess = () => {
-				const value = request.result;
-				if (value && typeof value === 'object' && 'userId' in value && 'key' in value) {
-					resolve(value as StoredKey);
-				} else {
-					resolve(null);
-				}
-			};
-			request.onerror = () => resolve(null);
-			tx.oncomplete = () => db.close();
+		return await new Promise((resolve) => {
+			try {
+				const tx = db.transaction(STORE_NAME, 'readonly');
+				const request = tx.objectStore(STORE_NAME).get(MK_KEY);
+				request.onsuccess = () => {
+					const value = request.result;
+					if (value && typeof value === 'object' && 'userId' in value && 'key' in value) {
+						resolve(value as StoredKey);
+					} else {
+						resolve(null);
+					}
+				};
+				request.onerror = () => resolve(null);
+				tx.oncomplete = () => db.close();
+			} catch {
+				db.close();
+				resolve(null);
+			}
 		});
 	} catch {
 		return null;
@@ -81,14 +104,23 @@ if (browser) {
 	window.addEventListener('pagehide', (e) => {
 		if (!e.persisted) {
 			// Tab is being closed (not bfcache), clear IndexedDB
-			// Use sync approach since async isn't reliable in pagehide
 			try {
 				const request = indexedDB.open(DB_NAME, 1);
+				// Guard against creating a store-less DB if it doesn't exist yet.
+				request.onupgradeneeded = () => ensureStore(request.result);
 				request.onsuccess = () => {
 					const db = request.result;
-					const tx = db.transaction(STORE_NAME, 'readwrite');
-					tx.objectStore(STORE_NAME).delete(MK_KEY);
-					db.close();
+					if (!db.objectStoreNames.contains(STORE_NAME)) {
+						db.close();
+						return;
+					}
+					try {
+						const tx = db.transaction(STORE_NAME, 'readwrite');
+						tx.objectStore(STORE_NAME).delete(MK_KEY);
+						tx.oncomplete = () => db.close();
+					} catch {
+						db.close();
+					}
 				};
 			} catch {
 				// Best effort

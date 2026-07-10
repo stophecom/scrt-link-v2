@@ -993,5 +993,9 @@
 	"gold_tidy_crane_body": "You have received a response to the following request:",
 	"gold_tidy_crane_expiry": "You have {retentionPeriod} days to view the response. After that, it's gone for good.",
 	"polite_bad_parrot_scold": "Vanishes",
-	"calm_brave_otter_read": "Read our privacy policy"
+	"calm_brave_otter_read": "Read our privacy policy",
+	"browser_extension_label": "Browser Extension",
+	"browser_extension_tooltip": "Share a secret straight from your browser. Requires an API key.",
+	"browser_extension_faq_heading": "Is there a browser extension?",
+	"browser_extension_faq_body": "Yes! Install the [scrt.link browser extension](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) for Chrome to create secret links without leaving your current tab. The extension talks to our public API, so a **[Top Secret](/pricing)** plan with an API key is required."
 }

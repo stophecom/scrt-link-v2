@@ -993,5 +993,9 @@
 	"gold_tidy_crane_body": "Je hebt een reactie ontvangen op het volgende verzoek:",
 	"gold_tidy_crane_expiry": "Je hebt {retentionPeriod} dagen om de reactie te bekijken. Daarna is hij voorgoed weg.",
 	"polite_bad_parrot_scold": "Verdwijnt",
-	"calm_brave_otter_read": "Lees ons privacybeleid"
+	"calm_brave_otter_read": "Lees ons privacybeleid",
+	"browser_extension_label": "Browserextensie",
+	"browser_extension_tooltip": "Deel een geheim rechtstreeks vanuit je browser. Vereist een API-sleutel.",
+	"browser_extension_faq_heading": "Is er een browserextensie?",
+	"browser_extension_faq_body": "Ja! Installeer de [scrt.link-browserextensie](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) voor Chrome om geheime links te maken zonder je huidige tabblad te verlaten. De extensie communiceert met onze openbare API, dus een **[Top Secret](/pricing)**-abonnement met een API-sleutel is vereist."
 }

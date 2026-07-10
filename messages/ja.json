@@ -993,5 +993,9 @@
 	"gold_tidy_crane_body": "以下のリクエストへの回答を受け取りました：",
 	"gold_tidy_crane_expiry": "回答を確認できる期間は{retentionPeriod}日間です。それ以降は完全に削除されます。",
 	"polite_bad_parrot_scold": "消える",
-	"calm_brave_otter_read": "プライバシーポリシーを読む"
+	"calm_brave_otter_read": "プライバシーポリシーを読む",
+	"browser_extension_label": "ブラウザ拡張機能",
+	"browser_extension_tooltip": "ブラウザから直接シークレットを共有できます。API キーが必要です。",
+	"browser_extension_faq_heading": "ブラウザ拡張機能はありますか？",
+	"browser_extension_faq_body": "はい！Chrome 用の [scrt.link ブラウザ拡張機能](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) をインストールすると、現在のタブを離れることなくシークレットリンクを作成できます。この拡張機能は当社の公開 API と連携するため、API キー付きの **[Top Secret](/pricing)** プランが必要です。"
 }

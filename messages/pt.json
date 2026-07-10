@@ -993,5 +993,9 @@
 	"gold_tidy_crane_body": "Você recebeu uma resposta para a seguinte solicitação:",
 	"gold_tidy_crane_expiry": "Você tem {retentionPeriod} dias para visualizar a resposta. Depois disso, ela será apagada para sempre.",
 	"polite_bad_parrot_scold": "Desaparece",
-	"calm_brave_otter_read": "Leia a nossa política de privacidade"
+	"calm_brave_otter_read": "Leia a nossa política de privacidade",
+	"browser_extension_label": "Extensão do navegador",
+	"browser_extension_tooltip": "Partilhe um segredo diretamente do seu navegador. Requer uma chave API.",
+	"browser_extension_faq_heading": "Existe uma extensão do navegador?",
+	"browser_extension_faq_body": "Sim! Instale a [extensão de navegador scrt.link](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) para o Chrome para criar links secretos sem sair do seu separador atual. A extensão comunica com a nossa API pública, por isso é necessário um plano **[Top Secret](/pricing)** com uma chave API."
 }
