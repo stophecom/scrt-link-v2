@@ -997,5 +997,5 @@
 	"browser_extension_label": "浏览器扩展",
 	"browser_extension_tooltip": "直接从浏览器分享秘密。需要 API 密钥。",
 	"browser_extension_faq_heading": "有浏览器扩展吗？",
-	"browser_extension_faq_body": "有！为 Chrome 安装 [scrt.link 浏览器扩展](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh)，即可在不离开当前标签页的情况下创建秘密链接。该扩展通过我们的公共 API 通信，因此需要带有 API 密钥的 **[Top Secret](/pricing)** 套餐。"
+	"browser_extension_faq_body": "有！为 [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) 或 [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) 安装 scrt.link 浏览器扩展，即可在不离开当前标签页的情况下创建秘密链接。该扩展通过我们的公共 API 通信，因此需要带有 API 密钥的 **[Top Secret](/pricing)** 套餐。"
 }

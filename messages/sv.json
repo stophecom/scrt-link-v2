@@ -997,5 +997,5 @@
 	"browser_extension_label": "Webbläsartillägg",
 	"browser_extension_tooltip": "Dela en hemlighet direkt från din webbläsare. Kräver en API-nyckel.",
 	"browser_extension_faq_heading": "Finns det ett webbläsartillägg?",
-	"browser_extension_faq_body": "Ja! Installera [scrt.link-webbläsartillägget](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) för Chrome för att skapa hemliga länkar utan att lämna din aktuella flik. Tillägget kommunicerar med vårt publika API, så en **[Top Secret](/pricing)**-plan med en API-nyckel krävs."
+	"browser_extension_faq_body": "Ja! Installera scrt.link-webbläsartillägget för [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) eller [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) för att skapa hemliga länkar utan att lämna din aktuella flik. Tillägget kommunicerar med vårt publika API, så en **[Top Secret](/pricing)**-plan med en API-nyckel krävs."
 }

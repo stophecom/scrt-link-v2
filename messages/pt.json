@@ -997,5 +997,5 @@
 	"browser_extension_label": "Extensão do navegador",
 	"browser_extension_tooltip": "Partilhe um segredo diretamente do seu navegador. Requer uma chave API.",
 	"browser_extension_faq_heading": "Existe uma extensão do navegador?",
-	"browser_extension_faq_body": "Sim! Instale a [extensão de navegador scrt.link](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) para o Chrome para criar links secretos sem sair do seu separador atual. A extensão comunica com a nossa API pública, por isso é necessário um plano **[Top Secret](/pricing)** com uma chave API."
+	"browser_extension_faq_body": "Sim! Instale a extensão de navegador scrt.link para [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) ou [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) para criar links secretos sem sair do seu separador atual. A extensão comunica com a nossa API pública, por isso é necessário um plano **[Top Secret](/pricing)** com uma chave API."
 }

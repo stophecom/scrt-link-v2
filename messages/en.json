@@ -997,5 +997,5 @@
 	"browser_extension_label": "Browser Extension",
 	"browser_extension_tooltip": "Share a secret straight from your browser. Requires an API key.",
 	"browser_extension_faq_heading": "Is there a browser extension?",
-	"browser_extension_faq_body": "Yes! Install the [scrt.link browser extension](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) for Chrome to create secret links without leaving your current tab. The extension talks to our public API, so a **[Top Secret](/pricing)** plan with an API key is required."
+	"browser_extension_faq_body": "Yes! Install the scrt.link browser extension for [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) to create secret links without leaving your current tab. The extension talks to our public API, so a **[Top Secret](/pricing)** plan with an API key is required."
 }
