@@ -63,9 +63,11 @@
 				keyRestoreAttempted = true;
 				return;
 			}
-			tryRestoreKey(userId).then(() => {
-				keyRestoreAttempted = true;
-			});
+			tryRestoreKey(userId)
+				.catch(() => false)
+				.then(() => {
+					keyRestoreAttempted = true;
+				});
 		}
 	});
 
