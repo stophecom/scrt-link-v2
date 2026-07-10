@@ -993,5 +993,9 @@
 	"gold_tidy_crane_body": "Du har fått ett svar på följande förfrågan:",
 	"gold_tidy_crane_expiry": "Du har {retentionPeriod} dagar på dig att se svaret. Därefter är det borta för gott.",
 	"polite_bad_parrot_scold": "Försvinner",
-	"calm_brave_otter_read": "Läs vår integritetspolicy"
+	"calm_brave_otter_read": "Läs vår integritetspolicy",
+	"browser_extension_label": "Webbläsartillägg",
+	"browser_extension_tooltip": "Dela en hemlighet direkt från din webbläsare. Kräver en API-nyckel.",
+	"browser_extension_faq_heading": "Finns det ett webbläsartillägg?",
+	"browser_extension_faq_body": "Ja! Installera [scrt.link-webbläsartillägget](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) för Chrome för att skapa hemliga länkar utan att lämna din aktuella flik. Tillägget kommunicerar med vårt publika API, så en **[Top Secret](/pricing)**-plan med en API-nyckel krävs."
 }
