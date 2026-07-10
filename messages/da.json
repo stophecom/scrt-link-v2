@@ -997,5 +997,5 @@
 	"browser_extension_label": "Browserudvidelse",
 	"browser_extension_tooltip": "Del en hemmelighed direkte fra din browser. Kræver en API-nøgle.",
 	"browser_extension_faq_heading": "Findes der en browserudvidelse?",
-	"browser_extension_faq_body": "Ja! Installer [scrt.link-browserudvidelsen](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) til Chrome for at oprette hemmelige links uden at forlade din nuværende fane. Udvidelsen kommunikerer med vores offentlige API, så en **[Top Secret](/pricing)**-plan med en API-nøgle er påkrævet."
+	"browser_extension_faq_body": "Ja! Installer scrt.link-browserudvidelsen til [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) eller [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) for at oprette hemmelige links uden at forlade din nuværende fane. Udvidelsen kommunikerer med vores offentlige API, så en **[Top Secret](/pricing)**-plan med en API-nøgle er påkrævet."
 }

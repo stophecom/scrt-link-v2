@@ -997,5 +997,5 @@
 	"browser_extension_label": "ブラウザ拡張機能",
 	"browser_extension_tooltip": "ブラウザから直接シークレットを共有できます。API キーが必要です。",
 	"browser_extension_faq_heading": "ブラウザ拡張機能はありますか？",
-	"browser_extension_faq_body": "はい！Chrome 用の [scrt.link ブラウザ拡張機能](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) をインストールすると、現在のタブを離れることなくシークレットリンクを作成できます。この拡張機能は当社の公開 API と連携するため、API キー付きの **[Top Secret](/pricing)** プランが必要です。"
+	"browser_extension_faq_body": "はい！[Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) または [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) 用の scrt.link ブラウザ拡張機能をインストールすると、現在のタブを離れることなくシークレットリンクを作成できます。この拡張機能は当社の公開 API と連携するため、API キー付きの **[Top Secret](/pricing)** プランが必要です。"
 }

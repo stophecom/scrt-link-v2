@@ -997,5 +997,5 @@
 	"browser_extension_label": "Estensione del browser",
 	"browser_extension_tooltip": "Condividi un segreto direttamente dal tuo browser. Richiede una chiave API.",
 	"browser_extension_faq_heading": "Esiste un'estensione del browser?",
-	"browser_extension_faq_body": "Sì! Installa l'[estensione per browser scrt.link](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) per Chrome per creare link segreti senza lasciare la scheda corrente. L'estensione comunica con la nostra API pubblica, quindi è necessario un piano **[Top Secret](/pricing)** con una chiave API."
+	"browser_extension_faq_body": "Sì! Installa l'estensione per browser scrt.link per [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) o [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) per creare link segreti senza lasciare la scheda corrente. L'estensione comunica con la nostra API pubblica, quindi è necessario un piano **[Top Secret](/pricing)** con una chiave API."
 }

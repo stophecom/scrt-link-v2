@@ -9,7 +9,7 @@ import {
 
 import { m } from '$lib/paraglide/messages.js';
 
-import { browserExtensionUrl, githubUrl } from './app';
+import { chromeExtensionUrl, firefoxExtensionUrl, githubUrl } from './app';
 
 export const secretMenu = () => [
 	{
@@ -63,9 +63,14 @@ export const productMenu = () => [
 		label: 'CLI'
 	},
 	{
-		href: browserExtensionUrl,
+		href: chromeExtensionUrl,
 		externalLink: true,
 		label: 'Chrome Extension'
+	},
+	{
+		href: firefoxExtensionUrl,
+		externalLink: true,
+		label: 'Firefox Extension'
 	},
 	{
 		href: 'https://deepwiki.com/stophecom/scrt-link-v2',

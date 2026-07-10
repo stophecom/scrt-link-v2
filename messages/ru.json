@@ -997,5 +997,5 @@
 	"browser_extension_label": "Расширение для браузера",
 	"browser_extension_tooltip": "Делитесь секретом прямо из браузера. Требуется ключ API.",
 	"browser_extension_faq_heading": "Есть ли расширение для браузера?",
-	"browser_extension_faq_body": "Да! Установите [расширение scrt.link для браузера](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) в Chrome, чтобы создавать секретные ссылки, не покидая текущую вкладку. Расширение работает через наш публичный API, поэтому требуется тариф **[Top Secret](/pricing)** с ключом API."
+	"browser_extension_faq_body": "Да! Установите расширение scrt.link для браузера [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) или [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/), чтобы создавать секретные ссылки, не покидая текущую вкладку. Расширение работает через наш публичный API, поэтому требуется тариф **[Top Secret](/pricing)** с ключом API."
 }
