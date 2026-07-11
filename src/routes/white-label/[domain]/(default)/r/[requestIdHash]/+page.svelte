@@ -9,9 +9,9 @@
 </script>
 
 <WhiteLabelPage
-	metaTitle={m.brave_kind_lamb_give()}
-	title={m.brave_kind_lamb_give()}
-	lead={m.warm_safe_dove_tell()}
+	metaTitle={data.title || m.brave_kind_lamb_give()}
+	title={data.title || m.brave_kind_lamb_give()}
+	lead={data.lead || m.warm_safe_dove_tell()}
 >
 	<SecretResponse {data} bind:successMessage />
 </WhiteLabelPage>
