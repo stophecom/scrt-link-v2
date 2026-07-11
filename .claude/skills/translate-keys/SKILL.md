@@ -55,7 +55,12 @@ Target locales to update:
 ## Translation style
 
 - Match the tone of existing translations already in the same locale file. Before translating, scan a few existing entries to calibrate formality (French `tu` vs. `vous`, Spanish `tú` vs. `usted`). Default to the register already used in that file.
-- **German**: always use informal address — `du`/`dich`/`dein` (never `Sie`/`Ihnen`/`Ihr`).
+- **German**: prefer address-neutral phrasing that avoids `du` **and** `Sie` entirely. White-label customers may run the same UI in a formal-tone context, so neither register should be baked in. Use infinitive, passive, or nominal constructions instead of addressing the reader:
+  - Imperatives → infinitive: "Gib das Passwort ein" → "Passwort eingeben"; "Erstelle ein Geheimnis" → "Ein Geheimnis erstellen".
+  - Statements → passive/nominal: "Du hast ein Geheimnis erhalten" → "Ein Geheimnis wurde übermittelt"; "Du kannst den Tab schließen" → "Der Tab kann geschlossen werden".
+  - Possessives → article: "Dein geheimer Link" → "Der geheime Link"; "Deine Antwort" → "Die Antwort".
+  - Reflexive infinitives stay neutral and are fine: "…um sich daran zu erinnern".
+  - If a string genuinely cannot avoid addressing the reader, flag it rather than silently picking `du` or `Sie`. Verbatim quotes/easter eggs (e.g. "Wach auf, Neo…") are exempt.
 - Prefer concise, UI-natural phrasings over literal translations. UI strings should read like the product speaks the user's language natively.
 - Keep punctuation consistent with the target language (French thin-space before `:`/`!`/`?`, Spanish inverted `¿¡`, German `ß` where appropriate, CJK full-width punctuation).
 
