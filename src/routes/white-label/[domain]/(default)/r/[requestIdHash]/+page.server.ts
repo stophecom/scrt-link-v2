@@ -3,6 +3,7 @@ import { error } from '@sveltejs/kit';
 import { postSecretResponse } from '$lib/server/form/actions';
 import { secretResponseFormValidator } from '$lib/server/form/validators';
 import { loadSecretResponsePageData } from '$lib/server/secret-requests';
+import { getWhiteLabelPageTexts } from '$lib/server/whiteLabelSite';
 
 import type { Actions, PageServerLoad, RequestEvent } from './$types';
 
@@ -16,6 +17,7 @@ export const load: PageServerLoad = async (event) => {
 	assertFeatureEnabled(event);
 	return {
 		form: await secretResponseFormValidator(),
+		...getWhiteLabelPageTexts(event.locals.whiteLabelSite, 'request'),
 		...(await loadSecretResponsePageData(event.params.requestIdHash))
 	};
 };
