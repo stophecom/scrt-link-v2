@@ -1721,6 +1721,10 @@ export const saveWhiteLabelSite: Action = async (event) => {
 		lead,
 		description,
 		imprint,
+		receptionTitle,
+		receptionLead,
+		requestTitle,
+		requestLead,
 		lightBackground,
 		lightForeground,
 		lightPrimary,
@@ -1804,6 +1808,30 @@ export const saveWhiteLabelSite: Action = async (event) => {
 			messagesJson[locale],
 			dropUndefinedValuesFromObject({ title, lead, description, imprint })
 		);
+
+		// Secret reception (/s) and request (/r) page texts are stored as nested objects
+		// so they don't collide with the home page's title/lead.
+		const receptionMessages = dropUndefinedValuesFromObject({
+			title: receptionTitle,
+			lead: receptionLead
+		});
+		if (Object.keys(receptionMessages).length) {
+			messagesJson[locale].reception = {
+				...messagesJson[locale].reception,
+				...receptionMessages
+			};
+		}
+
+		const requestMessages = dropUndefinedValuesFromObject({
+			title: requestTitle,
+			lead: requestLead
+		});
+		if (Object.keys(requestMessages).length) {
+			messagesJson[locale].request = {
+				...messagesJson[locale].request,
+				...requestMessages
+			};
+		}
 
 		const updateSet = {
 			...dropUndefinedValuesFromObject({ logo, logoDarkMode, appIcon, ogImage }),

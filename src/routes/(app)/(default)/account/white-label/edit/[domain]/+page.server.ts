@@ -47,6 +47,11 @@ async function buildWhiteLabelSiteForm(domain: string, locale: ReturnType<typeof
 			lead: (site.messages as LocalizedWhiteLabelMessage)?.[locale]?.lead || '',
 			description: (site.messages as LocalizedWhiteLabelMessage)?.[locale]?.description || '',
 			imprint: (site.messages as LocalizedWhiteLabelMessage)?.[locale]?.imprint || '',
+			receptionTitle:
+				(site.messages as LocalizedWhiteLabelMessage)?.[locale]?.reception?.title || '',
+			receptionLead: (site.messages as LocalizedWhiteLabelMessage)?.[locale]?.reception?.lead || '',
+			requestTitle: (site.messages as LocalizedWhiteLabelMessage)?.[locale]?.request?.title || '',
+			requestLead: (site.messages as LocalizedWhiteLabelMessage)?.[locale]?.request?.lead || '',
 			logo: site.logo,
 			logoDarkMode: site.logoDarkMode,
 			appIcon: site.appIcon,
