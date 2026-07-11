@@ -88,7 +88,7 @@
 				{/if}
 			</p>
 			{#if decryptedNote}
-				<p data-testid="decrypted-note">{decryptedNote}</p>
+				<p data-testid="decrypted-note" class="whitespace-pre-wrap">{decryptedNote}</p>
 			{/if}
 		</div>
 
