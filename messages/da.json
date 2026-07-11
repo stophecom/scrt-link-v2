@@ -976,6 +976,11 @@
 	"flat_warm_resp_download_attachment": "Download",
 	"flat_warm_resp_download_again": "Download igen",
 	"flat_warm_resp_attachment_heading": "Vedhæftning",
+	"white_label_preview_reception": "Modtagelse",
+	"white_label_request_preview_placeholder": "En modtager åbner denne side via et Secret Request-link for at sende dig et fortroligt svar.",
+	"white_label_reception_preview_placeholder": "En modtager åbner denne side via et hemmeligt link for at se den hemmelighed, der er delt med dem.",
+	"white_label_reception_texts_description": "Tilpas teksterne, der vises på siden, hvor modtagere åbner en hemmelighed.",
+	"white_label_request_texts_description": "Tilpas teksterne, der vises på siden, hvor modtagere svarer på en Secret Request.",
 	"white_label_theme_background": "Baggrund",
 	"white_label_theme_foreground": "Forgrund",
 	"white_label_theme_primary": "Primær",
@@ -997,5 +1002,5 @@
 	"browser_extension_label": "Browserudvidelse",
 	"browser_extension_tooltip": "Del en hemmelighed direkte fra din browser. Kræver en API-nøgle.",
 	"browser_extension_faq_heading": "Findes der en browserudvidelse?",
-	"browser_extension_faq_body": "Ja! Installer [scrt.link-browserudvidelsen](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) til Chrome for at oprette hemmelige links uden at forlade din nuværende fane. Udvidelsen kommunikerer med vores offentlige API, så en **[Top Secret](/pricing)**-plan med en API-nøgle er påkrævet."
+	"browser_extension_faq_body": "Ja! Installer scrt.link-browserudvidelsen til [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) eller [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) for at oprette hemmelige links uden at forlade din nuværende fane. Udvidelsen kommunikerer med vores offentlige API, så en **[Top Secret](/pricing)**-plan med en API-nøgle er påkrævet."
 }

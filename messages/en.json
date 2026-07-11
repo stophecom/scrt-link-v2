@@ -976,6 +976,11 @@
 	"flat_warm_resp_download_attachment": "Download",
 	"flat_warm_resp_download_again": "Download again",
 	"flat_warm_resp_attachment_heading": "Attachment",
+	"white_label_preview_reception": "Reception",
+	"white_label_request_preview_placeholder": "A recipient opens this page from a secret request link to send you a confidential reply.",
+	"white_label_reception_preview_placeholder": "A recipient opens this page from a secret link to view the secret shared with them.",
+	"white_label_reception_texts_description": "Customize the texts shown on the page where recipients open a secret.",
+	"white_label_request_texts_description": "Customize the texts shown on the page where recipients reply to a secret request.",
 	"white_label_theme_background": "Background",
 	"white_label_theme_foreground": "Foreground",
 	"white_label_theme_primary": "Primary",
@@ -997,5 +1002,5 @@
 	"browser_extension_label": "Browser Extension",
 	"browser_extension_tooltip": "Share a secret straight from your browser. Requires an API key.",
 	"browser_extension_faq_heading": "Is there a browser extension?",
-	"browser_extension_faq_body": "Yes! Install the [scrt.link browser extension](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) for Chrome to create secret links without leaving your current tab. The extension talks to our public API, so a **[Top Secret](/pricing)** plan with an API key is required."
+	"browser_extension_faq_body": "Yes! Install the scrt.link browser extension for [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) to create secret links without leaving your current tab. The extension talks to our public API, so a **[Top Secret](/pricing)** plan with an API key is required."
 }

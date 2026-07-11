@@ -53,7 +53,7 @@
 		{ label: m.kind_sharp_owl_record(), values: [true, true] },
 		{ label: m.warm_dark_owl_gaze(), values: ['7 days', '30 days'] },
 		{ label: m.few_away_tadpole_hope(), values: [true, true] },
-		{ label: m.browser_extension_label(), values: [true, true] },
+		{ label: m.browser_extension_label(), values: [false, true] },
 		{ label: m.bold_slim_ram_roam(), values: [true, true] },
 		{ label: m.wild_inner_fox_honor(), values: [true, true] },
 		{ label: m.bold_stat_log_feat(), values: [false, true] },

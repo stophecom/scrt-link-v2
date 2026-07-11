@@ -976,6 +976,11 @@
 	"flat_warm_resp_download_attachment": "Télécharger",
 	"flat_warm_resp_download_again": "Télécharger à nouveau",
 	"flat_warm_resp_attachment_heading": "Pièce jointe",
+	"white_label_preview_reception": "Réception",
+	"white_label_request_preview_placeholder": "Un destinataire ouvre cette page depuis un lien Secret Request pour vous envoyer une réponse confidentielle.",
+	"white_label_reception_preview_placeholder": "Un destinataire ouvre cette page depuis un lien secret pour consulter le secret qui lui a été partagé.",
+	"white_label_reception_texts_description": "Personnalisez les textes affichés sur la page où les destinataires ouvrent un secret.",
+	"white_label_request_texts_description": "Personnalisez les textes affichés sur la page où les destinataires répondent à un Secret Request.",
 	"white_label_theme_background": "Arrière-plan",
 	"white_label_theme_foreground": "Premier plan",
 	"white_label_theme_primary": "Primaire",
@@ -997,5 +1002,5 @@
 	"browser_extension_label": "Extension de navigateur",
 	"browser_extension_tooltip": "Partagez un secret directement depuis votre navigateur. Nécessite une clé API.",
 	"browser_extension_faq_heading": "Existe-t-il une extension de navigateur ?",
-	"browser_extension_faq_body": "Oui ! Installez l'[extension de navigateur scrt.link](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) pour Chrome afin de créer des liens secrets sans quitter votre onglet actuel. L'extension communique avec notre API publique, une offre **[Top Secret](/pricing)** avec une clé API est donc requise."
+	"browser_extension_faq_body": "Oui ! Installez l'extension de navigateur scrt.link pour [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) ou [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) afin de créer des liens secrets sans quitter votre onglet actuel. L'extension communique avec notre API publique, une offre **[Top Secret](/pricing)** avec une clé API est donc requise."
 }

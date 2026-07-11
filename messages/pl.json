@@ -976,6 +976,11 @@
 	"flat_warm_resp_download_attachment": "Pobierz",
 	"flat_warm_resp_download_again": "Pobierz ponownie",
 	"flat_warm_resp_attachment_heading": "Załącznik",
+	"white_label_preview_reception": "Odbiór",
+	"white_label_request_preview_placeholder": "Odbiorca otwiera tę stronę za pomocą linku Secret Request, aby wysłać Ci poufną odpowiedź.",
+	"white_label_reception_preview_placeholder": "Odbiorca otwiera tę stronę za pomocą linku do sekretu, aby wyświetlić udostępniony mu sekret.",
+	"white_label_reception_texts_description": "Dostosuj teksty wyświetlane na stronie, na której odbiorcy otwierają sekret.",
+	"white_label_request_texts_description": "Dostosuj teksty wyświetlane na stronie, na której odbiorcy odpowiadają na Secret Request.",
 	"white_label_theme_background": "Tło",
 	"white_label_theme_foreground": "Pierwszy plan",
 	"white_label_theme_primary": "Podstawowy",
@@ -997,5 +1002,5 @@
 	"browser_extension_label": "Rozszerzenie przeglądarki",
 	"browser_extension_tooltip": "Udostępniaj sekret bezpośrednio z przeglądarki. Wymaga klucza API.",
 	"browser_extension_faq_heading": "Czy jest dostępne rozszerzenie przeglądarki?",
-	"browser_extension_faq_body": "Tak! Zainstaluj [rozszerzenie przeglądarki scrt.link](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) dla Chrome, aby tworzyć sekretne linki bez opuszczania bieżącej karty. Rozszerzenie komunikuje się z naszym publicznym API, dlatego wymagany jest plan **[Top Secret](/pricing)** z kluczem API."
+	"browser_extension_faq_body": "Tak! Zainstaluj rozszerzenie przeglądarki scrt.link dla [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) lub [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/), aby tworzyć sekretne linki bez opuszczania bieżącej karty. Rozszerzenie komunikuje się z naszym publicznym API, dlatego wymagany jest plan **[Top Secret](/pricing)** z kluczem API."
 }

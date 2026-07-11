@@ -976,6 +976,11 @@
 	"flat_warm_resp_download_attachment": "Baixar",
 	"flat_warm_resp_download_again": "Baixar novamente",
 	"flat_warm_resp_attachment_heading": "Anexo",
+	"white_label_preview_reception": "Receção",
+	"white_label_request_preview_placeholder": "Um destinatário abre esta página a partir de um link Secret Request para lhe enviar uma resposta confidencial.",
+	"white_label_reception_preview_placeholder": "Um destinatário abre esta página a partir de um link secreto para ver o segredo partilhado com ele.",
+	"white_label_reception_texts_description": "Personalize os textos apresentados na página onde os destinatários abrem um segredo.",
+	"white_label_request_texts_description": "Personalize os textos apresentados na página onde os destinatários respondem a um Secret Request.",
 	"white_label_theme_background": "Fundo",
 	"white_label_theme_foreground": "Primeiro plano",
 	"white_label_theme_primary": "Primário",
@@ -997,5 +1002,5 @@
 	"browser_extension_label": "Extensão do navegador",
 	"browser_extension_tooltip": "Partilhe um segredo diretamente do seu navegador. Requer uma chave API.",
 	"browser_extension_faq_heading": "Existe uma extensão do navegador?",
-	"browser_extension_faq_body": "Sim! Instale a [extensão de navegador scrt.link](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) para o Chrome para criar links secretos sem sair do seu separador atual. A extensão comunica com a nossa API pública, por isso é necessário um plano **[Top Secret](/pricing)** com uma chave API."
+	"browser_extension_faq_body": "Sim! Instale a extensão de navegador scrt.link para [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) ou [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) para criar links secretos sem sair do seu separador atual. A extensão comunica com a nossa API pública, por isso é necessário um plano **[Top Secret](/pricing)** com uma chave API."
 }

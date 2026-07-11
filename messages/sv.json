@@ -976,6 +976,11 @@
 	"flat_warm_resp_download_attachment": "Ladda ner",
 	"flat_warm_resp_download_again": "Ladda ner igen",
 	"flat_warm_resp_attachment_heading": "Bilaga",
+	"white_label_preview_reception": "Mottagning",
+	"white_label_request_preview_placeholder": "En mottagare öppnar den här sidan via en Secret Request-länk för att skicka ett konfidentiellt svar till dig.",
+	"white_label_reception_preview_placeholder": "En mottagare öppnar den här sidan via en hemlig länk för att se hemligheten som delats med dem.",
+	"white_label_reception_texts_description": "Anpassa texterna som visas på sidan där mottagare öppnar en hemlighet.",
+	"white_label_request_texts_description": "Anpassa texterna som visas på sidan där mottagare svarar på en Secret Request.",
 	"white_label_theme_background": "Bakgrund",
 	"white_label_theme_foreground": "Förgrund",
 	"white_label_theme_primary": "Primär",
@@ -997,5 +1002,5 @@
 	"browser_extension_label": "Webbläsartillägg",
 	"browser_extension_tooltip": "Dela en hemlighet direkt från din webbläsare. Kräver en API-nyckel.",
 	"browser_extension_faq_heading": "Finns det ett webbläsartillägg?",
-	"browser_extension_faq_body": "Ja! Installera [scrt.link-webbläsartillägget](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) för Chrome för att skapa hemliga länkar utan att lämna din aktuella flik. Tillägget kommunicerar med vårt publika API, så en **[Top Secret](/pricing)**-plan med en API-nyckel krävs."
+	"browser_extension_faq_body": "Ja! Installera scrt.link-webbläsartillägget för [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) eller [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) för att skapa hemliga länkar utan att lämna din aktuella flik. Tillägget kommunicerar med vårt publika API, så en **[Top Secret](/pricing)**-plan med en API-nyckel krävs."
 }

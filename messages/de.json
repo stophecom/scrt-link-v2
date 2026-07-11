@@ -976,6 +976,11 @@
 	"flat_warm_resp_download_attachment": "Herunterladen",
 	"flat_warm_resp_download_again": "Erneut herunterladen",
 	"flat_warm_resp_attachment_heading": "Anhang",
+	"white_label_preview_reception": "Empfang",
+	"white_label_request_preview_placeholder": "Ein Empfänger öffnet diese Seite über einen Secret-Request-Link, um dir eine vertrauliche Antwort zu senden.",
+	"white_label_reception_preview_placeholder": "Ein Empfänger öffnet diese Seite über einen Secret-Link, um das mit ihm geteilte Secret anzusehen.",
+	"white_label_reception_texts_description": "Passe die Texte auf der Seite an, auf der Empfänger ein Secret öffnen.",
+	"white_label_request_texts_description": "Passe die Texte auf der Seite an, auf der Empfänger auf einen Secret Request antworten.",
 	"white_label_theme_background": "Hintergrund",
 	"white_label_theme_foreground": "Vordergrund",
 	"white_label_theme_primary": "Primärfarbe",
@@ -997,5 +1002,5 @@
 	"browser_extension_label": "Browser-Erweiterung",
 	"browser_extension_tooltip": "Teile ein Geheimnis direkt aus deinem Browser. Erfordert einen API-Schlüssel.",
 	"browser_extension_faq_heading": "Gibt es eine Browser-Erweiterung?",
-	"browser_extension_faq_body": "Ja! Installiere die [scrt.link Browser-Erweiterung](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) für Chrome, um Geheimlinks zu erstellen, ohne deinen aktuellen Tab zu verlassen. Die Erweiterung kommuniziert mit unserer öffentlichen API, daher ist ein **[Top Secret](/pricing)**-Tarif mit einem API-Schlüssel erforderlich."
+	"browser_extension_faq_body": "Ja! Installiere die scrt.link Browser-Erweiterung für [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) oder [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/), um Geheimlinks zu erstellen, ohne deinen aktuellen Tab zu verlassen. Die Erweiterung kommuniziert mit unserer öffentlichen API, daher ist ein **[Top Secret](/pricing)**-Tarif mit einem API-Schlüssel erforderlich."
 }

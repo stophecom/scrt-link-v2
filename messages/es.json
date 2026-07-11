@@ -976,6 +976,11 @@
 	"flat_warm_resp_download_attachment": "Descargar",
 	"flat_warm_resp_download_again": "Descargar de nuevo",
 	"flat_warm_resp_attachment_heading": "Adjunto",
+	"white_label_preview_reception": "Recepción",
+	"white_label_request_preview_placeholder": "Un destinatario abre esta página desde un enlace de Secret Request para enviarte una respuesta confidencial.",
+	"white_label_reception_preview_placeholder": "Un destinatario abre esta página desde un enlace secreto para ver el secreto que se ha compartido con él.",
+	"white_label_reception_texts_description": "Personaliza los textos que se muestran en la página donde los destinatarios abren un secreto.",
+	"white_label_request_texts_description": "Personaliza los textos que se muestran en la página donde los destinatarios responden a un Secret Request.",
 	"white_label_theme_background": "Fondo",
 	"white_label_theme_foreground": "Primer plano",
 	"white_label_theme_primary": "Primario",
@@ -997,5 +1002,5 @@
 	"browser_extension_label": "Extensión del navegador",
 	"browser_extension_tooltip": "Comparte un secreto directamente desde tu navegador. Requiere una clave API.",
 	"browser_extension_faq_heading": "¿Hay una extensión del navegador?",
-	"browser_extension_faq_body": "¡Sí! Instala la [extensión de navegador de scrt.link](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) para Chrome para crear enlaces secretos sin salir de tu pestaña actual. La extensión se comunica con nuestra API pública, por lo que se requiere un plan **[Top Secret](/pricing)** con una clave API."
+	"browser_extension_faq_body": "¡Sí! Instala la extensión de navegador de scrt.link para [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) o [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) para crear enlaces secretos sin salir de tu pestaña actual. La extensión se comunica con nuestra API pública, por lo que se requiere un plan **[Top Secret](/pricing)** con una clave API."
 }

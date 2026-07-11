@@ -191,6 +191,12 @@ export const whiteLabelSiteSchema = () =>
 		lead: z.string().max(150).nullable().optional(),
 		description: z.string().max(5000).nullable().optional(),
 		imprint: z.string().nullable().optional(),
+		// Secret reception page (/s) texts
+		receptionTitle: z.string().max(50).nullable().optional(),
+		receptionLead: z.string().max(150).nullable().optional(),
+		// Secret request page (/r) texts
+		requestTitle: z.string().max(50).nullable().optional(),
+		requestLead: z.string().max(150).nullable().optional(),
 		primaryColor: z.string().optional(),
 		lightBackground: z
 			.string()
