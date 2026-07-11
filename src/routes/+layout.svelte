@@ -53,7 +53,7 @@
 		--color-1: var(--_color-1-from);
 		--color-2: var(--_color-2-from);
 
-		animation: color-change 10s linear 1;
+		animation: color-change 4s linear 1;
 
 		background: linear-gradient(to right var(--_space), var(--color-1), var(--color-2));
 
@@ -64,5 +64,14 @@
 		/* modern browser version */
 		background-clip: text;
 		color: transparent;
+	}
+
+	/* Stagger consecutive gradient sentences so they animate one after another */
+	:global(.gradient-text:nth-of-type(2)) {
+		animation-delay: 1.6s;
+	}
+
+	:global(.gradient-text:nth-of-type(3)) {
+		animation-delay: 3.2s;
 	}
 </style>
