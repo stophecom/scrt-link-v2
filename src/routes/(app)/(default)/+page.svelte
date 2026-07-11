@@ -4,6 +4,7 @@
 	import UrlExplained from '$lib/assets/images/illustrations/url-explained.svg?component';
 	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
+	import WhiteLabelTeaser from '$lib/components/blocks/white-label-teaser.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
 	import Page from '$lib/components/page/default-page.svelte';
 	import Accordion from '$lib/components/ui/accordion';
@@ -53,4 +54,8 @@
 
 		<Button href={localizeHref('/faq')}>{m.white_top_warbler_buzz()}</Button>
 	</Section>
+
+	<Container>
+		<WhiteLabelTeaser />
+	</Container>
 </Page>

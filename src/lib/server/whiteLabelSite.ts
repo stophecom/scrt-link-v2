@@ -2,10 +2,30 @@ import { eq } from 'drizzle-orm';
 
 import { isOriginalHostname } from '$lib/app-routing';
 import { TierOptions } from '$lib/data/enums';
+import { getLocale } from '$lib/paraglide/runtime';
+import type { LocalizedWhiteLabelMessage } from '$lib/types';
 
 import { db } from './db';
 import { organization, user, whiteLabelSite } from './db/schema';
 import { getMembersByOrganizationId } from './organization';
+
+// Resolves the editable title/lead for a white-label page section (the secret
+// request `/r` flow or the secret reception `/s` reveal flow) from the site's
+// stored messages, in the active locale. Returns empty strings when unset so
+// callers can fall back to the default i18n copy.
+export const getWhiteLabelPageTexts = (
+	site: { messages?: unknown } | null | undefined,
+	section: 'request' | 'reception'
+): { title: string; lead: string } => {
+	const locale = getLocale();
+	const messages = site?.messages as LocalizedWhiteLabelMessage | undefined;
+	const sectionMessages = messages?.[locale]?.[section];
+
+	return {
+		title: sectionMessages?.title || '',
+		lead: sectionMessages?.lead || ''
+	};
+};
 
 export const getWhiteLabelSiteByHost = async (host: string) => {
 	const [whiteLabelResult] = await db

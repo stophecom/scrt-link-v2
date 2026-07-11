@@ -20,8 +20,8 @@
 	import { plausible } from '$lib/client/plausible';
 	import Number from '$lib/components/forms/form-fields/number.svelte';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
-	import RadioGroup from '$lib/components/forms/form-fields/radio-group.svelte';
 	import FileUpload from '$lib/components/forms/form-fields/secret-file-upload.svelte';
+	import Select from '$lib/components/forms/form-fields/select.svelte';
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import Textarea from '$lib/components/forms/form-fields/textarea.svelte';
 	import * as Form from '$lib/components/ui/form';
@@ -263,25 +263,28 @@
 				/>
 			</Form.Field>
 
-			<Form.Fieldset {form} name="expiresIn">
-				<RadioGroup
-					options={expiresInOptions}
-					bind:value={$expiresInProxy}
-					label={m.noble_whole_hornet_evoke()}
-				/>
-			</Form.Fieldset>
+			<div class="xs:grid-cols-[60%_1fr] grid grid-cols-1 gap-4">
+				<Form.Field {form} name="expiresIn">
+					<Select
+						options={expiresInOptions}
+						bind:value={$expiresInProxy}
+						label={m.noble_whole_hornet_evoke()}
+						class="w-full"
+					/>
+				</Form.Field>
 
-			<Form.Field {form} name="viewLimit">
-				<Number
-					label={m.loud_clean_crow_count()}
-					description={m.bright_tidy_crow_describe()}
-					class="w-44"
-					min="1"
-					max={planLimits.maxViewLimit}
-					disabled={planLimits.maxViewLimit <= 1}
-					bind:value={$formData.viewLimit}
-				/>
-			</Form.Field>
+				<Form.Field {form} name="viewLimit">
+					<Number
+						label={m.loud_clean_crow_count()}
+						description={m.bright_tidy_crow_describe()}
+						class="w-full"
+						min="1"
+						max={planLimits.maxViewLimit}
+						disabled={planLimits.maxViewLimit <= 1}
+						bind:value={$formData.viewLimit}
+					/>
+				</Form.Field>
+			</div>
 
 			{#if isLoggedIn}
 				<Form.Field {form} name="publicNote">
