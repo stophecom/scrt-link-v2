@@ -101,6 +101,16 @@ export type WhiteLabelMessage = {
 	lead?: string | null;
 	description?: string | null;
 	imprint?: string | null;
+	// Secret reception page (/s)
+	reception?: {
+		title?: string | null;
+		lead?: string | null;
+	};
+	// Secret request page (/r)
+	request?: {
+		title?: string | null;
+		lead?: string | null;
+	};
 };
 
 export type LocalizedWhiteLabelMessage = Record<Locale, WhiteLabelMessage>;

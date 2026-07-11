@@ -15,6 +15,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
+	import { cn } from '$lib/client/utils';
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
 	import DarkModeSwitcher from '$lib/components/blocks/dark-mode-switcher.svelte';
 	import PageLead from '$lib/components/blocks/page-lead.svelte';
@@ -46,6 +47,24 @@
 	let showSuccess = $state(false);
 	let showSpinner = $state(false);
 	let showAdvancedColors = $state(false);
+
+	// Which white-label page the preview + custom texts target.
+	type PreviewPage = 'home' | 'reception' | 'request';
+	let previewPage = $state<PreviewPage>('home');
+
+	const previewPages: { value: PreviewPage; label: string }[] = [
+		{ value: 'home', label: m.red_trite_turkey_flip() },
+		{ value: 'reception', label: m.white_label_preview_reception() },
+		{ value: 'request', label: m.keen_swift_heron_ask() }
+	];
+
+	const previewSrc = $derived(
+		{
+			home: `/white-label/${data.domain}`,
+			reception: `/white-label/${data.domain}/s`,
+			request: `/white-label/${data.domain}/r`
+		}[previewPage]
+	);
 
 	const submitDebounced = useDebounce(() => {
 		submit();
@@ -292,41 +311,83 @@
 			<Card
 				class="mb-6"
 				title={m.honest_direct_tiger_surge()}
-				description={m.zany_wide_cheetah_pause()}
+				description={previewPage === 'reception'
+					? m.white_label_reception_texts_description()
+					: previewPage === 'request'
+						? m.white_label_request_texts_description()
+						: m.zany_wide_cheetah_pause()}
 			>
-				<Form.Field {form} name="title">
-					<Text
-						bind:value={$formData.title}
-						label={m.lower_inner_dog_bubble()}
-						placeholder={m.lucky_warm_mayfly_engage()}
-						{...$constraints.title}
-					/>
-				</Form.Field>
-
-				<Form.Field {form} name="lead">
-					<Text
-						bind:value={$formData.lead}
-						label={m.nimble_away_marmot_nurture()}
-						placeholder={m.bland_spicy_penguin_fade()}
-						{...$constraints.lead}
-					/>
-				</Form.Field>
-
-				<Form.Field {form} name="description">
-					<Textarea
-						bind:value={$formData.description}
-						label={m.caring_topical_ray_commend()}
-						placeholder="Markdown"
-						{...$constraints.description}
-					/>
-					<Form.Description>
-						<Markdown
-							markdown={m.true_mushy_ray_treat({
-								markdown: '[markdown](https://www.markdownguide.org/basic-syntax/)'
-							})}
+				{#if previewPage === 'home'}
+					<Form.Field {form} name="title">
+						<Text
+							bind:value={$formData.title}
+							label={m.lower_inner_dog_bubble()}
+							placeholder={m.lucky_warm_mayfly_engage()}
+							{...$constraints.title}
 						/>
-					</Form.Description>
-				</Form.Field>
+					</Form.Field>
+
+					<Form.Field {form} name="lead">
+						<Text
+							bind:value={$formData.lead}
+							label={m.nimble_away_marmot_nurture()}
+							placeholder={m.bland_spicy_penguin_fade()}
+							{...$constraints.lead}
+						/>
+					</Form.Field>
+
+					<Form.Field {form} name="description">
+						<Textarea
+							bind:value={$formData.description}
+							label={m.caring_topical_ray_commend()}
+							placeholder="Markdown"
+							{...$constraints.description}
+						/>
+						<Form.Description>
+							<Markdown
+								markdown={m.true_mushy_ray_treat({
+									markdown: '[markdown](https://www.markdownguide.org/basic-syntax/)'
+								})}
+							/>
+						</Form.Description>
+					</Form.Field>
+				{:else if previewPage === 'reception'}
+					<Form.Field {form} name="receptionTitle">
+						<Text
+							bind:value={$formData.receptionTitle}
+							label={m.lower_inner_dog_bubble()}
+							placeholder={m.each_light_mare_bump()}
+							{...$constraints.receptionTitle}
+						/>
+					</Form.Field>
+
+					<Form.Field {form} name="receptionLead">
+						<Text
+							bind:value={$formData.receptionLead}
+							label={m.nimble_away_marmot_nurture()}
+							placeholder={m.warm_clean_horse_seek()}
+							{...$constraints.receptionLead}
+						/>
+					</Form.Field>
+				{:else if previewPage === 'request'}
+					<Form.Field {form} name="requestTitle">
+						<Text
+							bind:value={$formData.requestTitle}
+							label={m.lower_inner_dog_bubble()}
+							placeholder={m.brave_kind_lamb_give()}
+							{...$constraints.requestTitle}
+						/>
+					</Form.Field>
+
+					<Form.Field {form} name="requestLead">
+						<Text
+							bind:value={$formData.requestLead}
+							label={m.nimble_away_marmot_nurture()}
+							placeholder={m.warm_safe_dove_tell()}
+							{...$constraints.requestLead}
+						/>
+					</Form.Field>
+				{/if}
 
 				<Separator class="my-4" />
 				<LanguageSwitcher showDropdownIndicator />
@@ -365,7 +426,7 @@
 
 		<!-- Right -->
 		<div class="top-0 max-sm:hidden md:sticky md:pt-34">
-			<h5 class="ms-4 mb-2 font-bold">{m.teal_white_mongoose_urge()}</h5>
+			<h5 class="mb-2 font-bold">{m.teal_white_mongoose_urge()}</h5>
 			<div>
 				{@render renderFrame()}
 			</div>
@@ -388,11 +449,28 @@
 </Dialog.Root>
 
 {#snippet renderFrame()}
+	<div class="bg-input mb-5 flex rounded-full p-1">
+		{#each previewPages as { value, label } (value)}
+			<button
+				type="button"
+				onclick={() => (previewPage = value)}
+				class={cn(
+					'flex-1 rounded-full px-1 py-1 text-sm font-medium transition-colors',
+					previewPage === value
+						? 'bg-background text-foreground shadow-xs'
+						: 'text-muted-foreground hover:text-foreground'
+				)}
+			>
+				{label}
+			</button>
+		{/each}
+	</div>
+
 	<AndroidFrame>
 		<iframe
 			id="iframe-preview"
 			title="Preview"
-			src={`/white-label/${data.domain}`}
+			src={previewSrc}
 			frameborder="0"
 			width="100%"
 			height="100%"
