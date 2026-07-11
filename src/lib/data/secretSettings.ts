@@ -17,15 +17,15 @@ export const getExpiresInOptions = (availableOptions?: number[]) => {
 		},
 		{
 			value: DAY,
-			label: m.raw_stout_felix_empower({ amount: 24 })
+			label: m.secret_expiration_one_day()
 		},
 		{
 			value: 7 * DAY,
-			label: m.curly_few_parrot_savor({ amount: 7 })
+			label: m.secret_expiration_one_week()
 		},
 		{
 			value: 30 * DAY,
-			label: m.curly_few_parrot_savor({ amount: 30 })
+			label: m.secret_expiration_one_month()
 		}
 	].map((item) => ({
 		...item,
