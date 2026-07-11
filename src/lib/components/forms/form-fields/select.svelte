@@ -14,6 +14,7 @@
 		options: Option[];
 		value?: string;
 		placeholder?: string;
+		class?: string;
 		contentProps?: WithoutChildren<SelectBitsUI.ContentProps>;
 	};
 
@@ -22,6 +23,7 @@
 		options,
 		label,
 		contentProps,
+		class: className = 'min-w-60',
 		placeholder = 'Please select…',
 		...restProps
 	}: Props = $props();
@@ -32,7 +34,7 @@
 <Form.Control let:attrs>
 	<Form.Label>{label}</Form.Label>
 	<Select.Root type="single" bind:value={value as never} {...restProps}>
-		<Select.Trigger aria-label={placeholder} class="min-w-60">
+		<Select.Trigger aria-label={placeholder} class={className}>
 			<span class="truncate">{selectedLabel ?? placeholder}</span>
 		</Select.Trigger>
 		<Select.Content {...contentProps}>
