@@ -93,6 +93,22 @@ export const getActiveSubscription = async (stripeCustomerId: string) => {
 	return activeSubscriptions || null;
 };
 
+/** Maps a subscription to a TierOptions by finding the first item whose product
+ *  name matches a known tier (skips companion "...Base fee" products).
+ *  Falls back to CONFIDENTIAL when nothing maps. */
+export const deriveTierFromSubscription = async (
+	subscription: Stripe.Subscription
+): Promise<TierOptions> => {
+	for (const item of subscription.items.data) {
+		const productId = item.plan.product;
+		if (typeof productId !== 'string') continue;
+		const product = await stripeInstance.products.retrieve(productId);
+		const tier = getEnumFromString(TierOptions, product.name);
+		if (tier) return tier;
+	}
+	return TierOptions.CONFIDENTIAL;
+};
+
 /** Retrieves a completed checkout session with its subscription expanded. */
 export const getCheckoutSession = async (sessionId: string) =>
 	(await stripeInstance.checkout.sessions.retrieve(sessionId, {
