@@ -3,7 +3,7 @@ import type { Component } from 'svelte';
 import { render } from 'svelte/server';
 
 import { wrapEmailDocument } from '$lib/emails/document';
-import sendTransactionalEmail from '$lib/server/resend';
+import sendTransactionalEmail from '$lib/server/email';
 
 // Auto-discover every transactional email template. Each renders with its own
 // built-in default props (see the templates in $lib/emails).

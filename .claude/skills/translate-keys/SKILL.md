@@ -49,7 +49,7 @@ Target locales to update:
 - **Markdown syntax**: preserve `**bold**`, `[link-text](/url)`, `` `inline` ``. Translate the visible text inside brackets; keep URLs, bold markers, and backticks exact.
 - **HTML**: preserve tags like `<span class="gradient-text">…</span>`. Translate the text between the tags only; never alter attributes or tag names.
 - **Escape sequences**: `\n`, `\t`, `\"` — keep exact, same positions.
-- **Brand names and technical terms**: keep as-is — `scrt.link`, `scrt`, `Secret Request` / `Secret Requests` (product name), `AES-256`, `AES-256-GCM`, `RSA-2048`, `RSA-OAEP`, `PBKDF2`, `Stripe`, `Google`, `Resend`, `Paraglide`, `Vercel`, `GDPR`, `CCPA`.
+- **Brand names and technical terms**: keep as-is — `scrt.link`, `scrt`, `Secret Request` / `Secret Requests` (product name), `AES-256`, `AES-256-GCM`, `RSA-2048`, `RSA-OAEP`, `PBKDF2`, `Stripe`, `Google`, `Brevo`, `Paraglide`, `Vercel`, `GDPR`, `CCPA`.
 - **Currency codes / ISO codes**: `USD`, `EUR`, `CHF`, etc.
 
 ## Translation style

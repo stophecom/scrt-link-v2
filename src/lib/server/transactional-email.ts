@@ -11,7 +11,7 @@ import EmailSubscriptionTrialStart from '$lib/emails/email-subscription-trial-st
 import EmailWelcome from '$lib/emails/email-welcome.svelte';
 import { m } from '$lib/paraglide/messages.js';
 
-import sendTransactionalEmail from './resend';
+import sendTransactionalEmail from './email';
 
 export const sendVerificationEmail = async (email: string, code: string) => {
 	const { head, body } = render(EmailOtpVerification, { props: { code } });

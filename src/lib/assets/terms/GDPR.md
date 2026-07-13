@@ -42,16 +42,16 @@ Data shared:
 
 ---
 
-### **Resend**
+### **Brevo**
 
-Used for transactional and authentication emails.
+Used for transactional and authentication emails, and to manage our marketing contact list. Brevo is an EU-based provider and stores data within the European Union.
 
 Data shared:
 
 - Email address
 - Name (if available)
 
-[Resend GDPR Compliance](https://www.resend.com/security/gdpr)
+[Brevo GDPR Compliance](https://www.brevo.com/gdpr/)
 
 ---
 

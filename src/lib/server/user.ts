@@ -11,7 +11,7 @@ import {
 	userEncryptionKey,
 	userSettings
 } from './db/schema';
-import { addContactToAudience } from './resend';
+import { addContactToAudience } from './email';
 import { sendWelcomeEmail } from './transactional-email';
 
 // --- Encryption Key Management Actions ---
@@ -145,15 +145,11 @@ export const welcomeNewUser = async ({
 }: Pick<User, 'email' | 'name'> & { isNewUser: boolean }) => {
 	if (!isNewUser) return;
 
-	// We add user to MQL list on Resend
+	// We add user to MQL list on Brevo
 	try {
-		const result = await addContactToAudience({ email });
-
-		if (result.error) {
-			throw Error(result.error.message);
-		}
+		await addContactToAudience({ email });
 	} catch (error) {
-		console.error(`Failed to add contact to Resend.`, JSON.stringify(error));
+		console.error(`Failed to add contact to Brevo.`, JSON.stringify(error));
 	}
 
 	// Send welcome email

@@ -6,7 +6,7 @@ import { STRIPE_WEBHOOK_SECRET } from '$env/static/private';
 import { TierOptions } from '$lib/data/enums';
 import { db } from '$lib/server/db';
 import { organization, user, whiteLabelSite } from '$lib/server/db/schema';
-import { removeContactFromAudience } from '$lib/server/resend';
+import { removeContactFromAudience } from '$lib/server/email';
 import stripeInstance from '$lib/server/stripe';
 import { sendSubscriptionTrialStartEmail } from '$lib/server/transactional-email';
 import { getEnumFromString } from '$lib/typescript-helpers';
@@ -138,8 +138,7 @@ export const POST: RequestHandler = async ({ request }) => {
 					}
 
 					try {
-						const result = await removeContactFromAudience({ email: userResult.email });
-						if (result.error) throw Error(result.error.message);
+						await removeContactFromAudience({ email: userResult.email });
 					} catch (error) {
 						console.error(error);
 					}

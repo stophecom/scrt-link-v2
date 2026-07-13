@@ -126,7 +126,7 @@ stripe trigger payment_intent.succeeded
 
 ## Transactional Emails
 
-- Delivered via [resend](https://resend.com/)
+- Delivered via [Brevo](https://www.brevo.com/)
 - Email templates with [svelte-email-tailwind](https://github.com/steveninety/svelte-email-tailwind)
 - Structure:
 
@@ -371,13 +371,13 @@ Expected errors are returned with `error(404, 'Some message')` and might be show
 - PostgreSQL (Database)
 - Drizzle (ORM)
 - Inlang/Paraglide (i18n)
-- Resend (Email)
+- Brevo (Email)
 
 ## Infrastructure
 
 - Website and Postgres on [Vercel](https://vercel.com)
 - S3 Object Storage with [flow.swiss](https://flow.swiss)
-- Emails with [Resend](https://resend.com)
+- Emails with [Brevo](https://www.brevo.com)
 
 ## License
 
