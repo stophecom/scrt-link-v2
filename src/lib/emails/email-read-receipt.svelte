@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { Body, Container, Head, Heading, Hr, Html, Img, Link, Text } from 'svelte-email-tailwind';
-
-	import { getBaseUrl } from '$lib/constants';
-	import { appName } from '$lib/data/app';
+	import EmailLayout from '$lib/components/emails/email-layout.svelte';
 	import { m } from '$lib/paraglide/messages.js';
-	import { getLocale } from '$lib/paraglide/runtime.js';
+
+	import { styles } from './styles';
 
 	type Props = {
 		receiptId: string;
@@ -16,32 +14,15 @@
 	let { receiptId = 'ABC123', viewCount = 1, viewLimit = 1, isLastView = true }: Props = $props();
 </script>
 
-<Html lang={getLocale()} class="font-sans">
-	<Head />
-	<Body class="bg-background ">
-		<Container class="py-12">
-			<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />
+<EmailLayout>
+	<h1 style={styles.heading}>{m.slimy_broad_dachshund_lock()} 🔥</h1>
 
-			<Heading class="text-primary text-4xl ">{m.slimy_broad_dachshund_lock()} 🔥</Heading>
+	<p style={styles.lead}>{m.soft_frail_wolf_fear()}</p>
+	<p style={styles.code}>{receiptId}</p>
 
-			<Text class="mb-4 text-xl leading-snug ">{m.soft_frail_wolf_fear()}</Text>
-			<Text class="mb-10 text-xl leading-snug"><code>{receiptId}</code></Text>
-
-			{#if isLastView}
-				<Text class="text-muted">{m.ideal_aloof_mayfly_thrive()}</Text>
-			{:else}
-				<Text class="text-muted">{m.aware_neat_moth_count({ viewCount, viewLimit })}</Text>
-			{/if}
-
-			<Hr class="border-border mt-8" />
-
-			<Text class="text-muted text-xs">
-				©{new Date().getFullYear()}
-				{appName} -
-				<Link class="text-muted" href="{getBaseUrl()}/privacy-policy"
-					>{m.crazy_jumpy_mouse_hush()}</Link
-				>
-			</Text>
-		</Container>
-	</Body>
-</Html>
+	{#if isLastView}
+		<p style={styles.muted}>{m.ideal_aloof_mayfly_thrive()}</p>
+	{:else}
+		<p style={styles.muted}>{m.aware_neat_moth_count({ viewCount, viewLimit })}</p>
+	{/if}
+</EmailLayout>

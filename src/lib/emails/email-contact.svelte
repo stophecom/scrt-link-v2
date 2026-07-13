@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { Body, Container, Head, Heading, Html, Img, Text } from 'svelte-email-tailwind';
+	import EmailLayout from '$lib/components/emails/email-layout.svelte';
 
-	import { getBaseUrl } from '$lib/constants';
-	import { getLocale } from '$lib/paraglide/runtime.js';
+	import { styles } from './styles';
 
 	type Props = {
 		message: string;
@@ -12,16 +11,9 @@
 	let { message = 'Empty', email }: Props = $props();
 </script>
 
-<Html lang={getLocale()} class="font-sans">
-	<Head />
-	<Body class="bg-background ">
-		<Container class="py-12">
-			<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />
+<EmailLayout footer={false}>
+	<h1 style={styles.heading}>Contact</h1>
 
-			<Heading class="text-primary text-4xl ">Contact</Heading>
-
-			<Text class="mb-10 leading-snug">Message from: {email}</Text>
-			<Text class="mb-10 leading-snug">{message}</Text>
-		</Container>
-	</Body>
-</Html>
+	<p style={styles.lead}>Message from: {email}</p>
+	<p style={styles.lead}>{message}</p>
+</EmailLayout>
