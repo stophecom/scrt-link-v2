@@ -22,6 +22,9 @@
 	};
 
 	let { name = '' }: Props = $props();
+
+	// Same promo code offered in the in-app welcome wizard.
+	const PROMO_CODE = 'WELCOMEPROMOTION';
 </script>
 
 <Html lang={getLocale()} class="font-sans">
@@ -30,15 +33,17 @@
 		<Container class="py-12">
 			<Img src={`${getBaseUrl()}/logo.png`} alt="Logo" width="140" height="140" />
 
-			<Heading class="text-primary text-4xl ">{name ? 'Hi {name}' : 'Hi there'}</Heading>
+			<Heading class="text-primary text-4xl ">{name ? `Hi ${name}` : 'Hi there'}</Heading>
 
 			<Text class="mb-4 text-xl leading-snug"
 				>{m.royal_watery_lionfish_glow()}
 				<strong>{m.stock_round_finch_support()}</strong>
 			</Text>
 
-			<Text class="mb-10 text-lg">
-				{m.curly_aqua_carp_arrive()}</Text
+			<Text class="mb-2 text-lg">{m.welcome_email_promo()}</Text>
+			<Text
+				class="border-border text-foreground mb-10 inline-block rounded-md border px-4 py-2 text-lg font-bold tracking-widest"
+				>{PROMO_CODE}</Text
 			>
 
 			<Button
