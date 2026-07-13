@@ -288,6 +288,33 @@ export const apiKey = pgTable('api_key', {
 	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
 });
 
+export const stripeWebhookEventStatus = pgEnum('stripe_webhook_event_status', [
+	'received',
+	'processed',
+	'failed'
+]);
+
+// Durable audit trail + idempotency guard for incoming Stripe webhooks.
+// eventId is Stripe's `evt_...` id and doubles as the idempotency key.
+export const stripeWebhookEvent = pgTable(
+	'stripe_webhook_event',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		eventId: text('event_id').notNull().unique(),
+		type: text('type').notNull(),
+		customerId: text('customer_id'),
+		payload: jsonb('payload').notNull(),
+		status: stripeWebhookEventStatus('status').notNull().default('received'),
+		error: text('error'),
+		createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+		processedAt: timestamp('processed_at', { withTimezone: true, mode: 'date' })
+	},
+	(table) => [
+		index('stripe_webhook_event_customer_id_idx').on(table.customerId),
+		index('stripe_webhook_event_type_idx').on(table.type)
+	]
+);
+
 export const scope = pgEnum('scope', ['global', 'user', 'whiteLabel']);
 export const stats = pgTable('stats', {
 	id: serial('id').primaryKey(),
@@ -319,3 +346,4 @@ export type Secret = typeof secret.$inferSelect;
 export type APIKey = typeof apiKey.$inferSelect;
 export type SecretRequest = typeof secretRequest.$inferSelect;
 export type Stats = typeof stats.$inferSelect;
+export type StripeWebhookEvent = typeof stripeWebhookEvent.$inferSelect;
