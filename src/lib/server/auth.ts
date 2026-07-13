@@ -16,9 +16,12 @@ const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
 const preferencesSchema = z
 	.object({
-		themeColor: z.nativeEnum(ThemeOptions).default(ThemeOptions.NAVY)
+		themeColor: z.nativeEnum(ThemeOptions).default(ThemeOptions.NAVY),
+		// Set true on account creation, consumed the first time the account page shows
+		// the welcome wizard. Existing accounts default to false, so they never see it.
+		showWelcomeWizard: z.boolean().default(false)
 	})
-	.default({ themeColor: ThemeOptions.NAVY });
+	.default({ themeColor: ThemeOptions.NAVY, showWelcomeWizard: false });
 
 // Bumped to `-v2` to force every existing session to re-authenticate after the
 // zero-knowledge auth-verifier change. On the next request the old `auth-session`
