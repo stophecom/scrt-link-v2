@@ -13,9 +13,7 @@ We collect and store the following personal information when you sign up for or 
 - Email address
 - Name (optional)
 
-Additionally, for security and operational monitoring, we collect:
-
-- IP addresses of users visiting scrt.link
+We do not store IP addresses. For security and abuse prevention (e.g. rate limiting), IP addresses may be processed transiently and appear in our hosting provider's server logs, where they are retained only briefly before being discarded.
 
 ---
 
@@ -37,6 +35,8 @@ Used for processing payments. Card data is never stored on our systems.
 Data shared:
 
 - Email address
+- Name (optional — only if provided)
+- Organization (optional — only if provided)
 
 [Stripe GDPR Compliance](https://stripe.com/guides/general-data-protection-regulation)
 
@@ -52,6 +52,19 @@ Data shared:
 - Name (if available)
 
 [Brevo GDPR Compliance](https://www.brevo.com/gdpr/)
+
+---
+
+### **Google**
+
+Used for authentication only if you choose to sign in with Google as your identity provider. In that case, Google provides us with your email address and name to create or access your account, and processes the sign-in on their systems. If you sign up with an email and password instead, no data is exchanged with Google.
+
+Data involved:
+
+- Email address
+- Name
+
+[Google Privacy Policy](https://policies.google.com/privacy)
 
 ---
 
@@ -83,7 +96,7 @@ We use your data to:
 
 We store your data only for as long as your account is active.
 
-If you delete your account, all personal data is automatically and permanently erased within **30 days**, except where legal obligations (e.g., invoicing) require longer retention.
+When you delete your account, your personal data is erased from our active systems immediately. Any residual copies in encrypted backups are purged within **30 days**. We retain limited records (e.g., invoices) only where legal obligations require it.
 
 ---
 
