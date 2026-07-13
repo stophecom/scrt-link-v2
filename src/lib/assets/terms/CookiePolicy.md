@@ -1,4 +1,4 @@
-Last Updated April 29, 2025
+Last Updated 13 July 2026
 
 We use cookies to help improve your experience of our website at [https://scrt.link](https://scrt.link). This cookie policy is part of SANTiHANS GmbH's privacy policy. It covers the use of cookies between your device and our site.
 
@@ -34,7 +34,10 @@ We do not use this type of cookie on our site.
 
 Functionality cookies are used to collect information about your device and any settings you may configure on the website you’re visiting (like language and time zone settings). With this information, websites can provide you with customized, enhanced, or optimized content and services. These cookies may be set by the website you’re visiting (first-party) or by third-party services.
 
-We do not use this type of cookie on our site.
+We use functionality cookies to:
+
+- Remember your language preference (first-party).
+- Enable secure payment processing and fraud prevention through Stripe, our payment provider, on pages that offer payment functionality (third-party). See [Stripe's cookie policy](https://stripe.com/legal/cookies-policy) for details.
 
 ### Targeting/advertising cookies
 

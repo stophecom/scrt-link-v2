@@ -6,7 +6,7 @@ In the event our site contains links to third-party sites and services, please b
 
 This policy is effective as of 31 May 2021.
 
-Last updated: 31 May 2021
+Last updated: 13 July 2026
 
 ## Information We Collect
 
@@ -30,13 +30,10 @@ We may ask for personal information — for example, when you register an accoun
 
 - Name
 - Email
-- Phone/mobile number
 
 ### User-Generated Content
 
-We consider “user-generated content” to be materials (text, image and/or video content) voluntarily supplied to us by our users for the purpose of publication, processing, or usage on our platform. All user-generated content is associated with the account or email address used to submit the materials.
-
-Please be aware that any content you submit for the purpose of publication will be public after posting (and subsequent review or vetting process). Once published, it may be accessible to third parties not covered under this privacy policy.
+We consider “user-generated content” to be the secrets and files you create and share through our service. This content is end-to-end encrypted on your device before it reaches us: we cannot read or access its contents, and it is never published or made publicly available. Encrypted content is stored only until it is retrieved by the intended recipient or until it expires, after which it is permanently deleted.
 
 ### Transaction Data
 
@@ -100,6 +97,7 @@ Third parties we currently use include:
 - Plausible - https://plausible.io/
 - Stripe - https://stripe.com/
 - Brevo - https://www.brevo.com/
+- Google (authentication, only if you sign in with Google) - https://policies.google.com/privacy
 
 ## Your Rights and Controlling Your Personal Information
 
@@ -123,7 +121,7 @@ Third parties we currently use include:
 
 ## Use of Cookies
 
-We use “cookies” to collect information about you and your activity across our site. A cookie is a small piece of data that our website stores on your computer, and accesses each time you visit, so we can understand how you use our site. This helps us serve you content based on preferences you have specified.
+A cookie is a small piece of data that our website stores on your device. We only use cookies that are strictly necessary to operate our service — for example, to keep you signed in, to secure your session, and to protect against abuse. We do not use advertising or cross-site tracking cookies, and our analytics are privacy-friendly and do not rely on cookies.
 
 Please refer to our Cookie Policy for more information.
 
@@ -189,7 +187,7 @@ We will ensure that any transfer of personal information from countries in the E
 
 **Data portability:** You may have the right to request a copy of the personal information we hold about you. Where possible, we will provide this information in CSV format or other easily readable machine format. You may also have the right to request that we transfer this personal information to a third party.
 
-**Deletion:** You may have a right to request that we delete the personal information we hold about you at any time, and we will take reasonable steps to delete your personal information from our current records. If you ask us to delete your personal information, we will let you know how the deletion affects your use of our website or products and services. There may be exceptions to this right for specific legal reasons which, if applicable, we will set out for you in response to your request. If you terminate or delete your account, we will delete your personal information within 3 days of the deletion of your account. Please be aware that search engines and similar third parties may still retain copies of your personal information that has been made public at least once, like certain profile information and public comments, even after you have deleted the information from our services or deactivated your account.
+**Deletion:** You may have a right to request that we delete the personal information we hold about you at any time, and we will take reasonable steps to delete your personal information from our current records. If you ask us to delete your personal information, we will let you know how the deletion affects your use of our website or products and services. There may be exceptions to this right for specific legal reasons which, if applicable, we will set out for you in response to your request. If you terminate or delete your account, your personal information is erased from our active systems immediately, and any residual copies in encrypted backups are purged within 30 days. We may retain limited records (for example, invoices) where required by law, or for accounting or reporting obligations.
 
 ## Additional Disclosures for California Compliance (US)
 
