@@ -1,6 +1,7 @@
 import { render } from 'svelte/server';
 
 import { emailSupport } from '$lib/data/app';
+import { wrapEmailDocument } from '$lib/emails/document';
 import EmailContact from '$lib/emails/email-contact.svelte';
 import EmailOrganizationInvitation from '$lib/emails/email-organization-invitation.svelte';
 import EmailOtpVerification from '$lib/emails/email-otp-verification.svelte';
@@ -13,30 +14,30 @@ import { m } from '$lib/paraglide/messages.js';
 import sendTransactionalEmail from './resend';
 
 export const sendVerificationEmail = async (email: string, code: string) => {
-	const { html } = render(EmailOtpVerification, { props: { code } });
+	const { head, body } = render(EmailOtpVerification, { props: { code } });
 	await sendTransactionalEmail({
 		subject: m.sunny_this_falcon_coax(),
 		to: email,
-		html: html
+		html: wrapEmailDocument(head, body)
 	});
 	console.log(`To ${email}: Your verification code is ${code}`);
 };
 
 export const sendWelcomeEmail = async (email: string, name?: string) => {
-	const { html } = render(EmailWelcome, { props: { name } });
+	const { head, body } = render(EmailWelcome, { props: { name } });
 	await sendTransactionalEmail({
 		subject: m.pink_crisp_snail_flow(),
 		to: email,
-		html: html
+		html: wrapEmailDocument(head, body)
 	});
 };
 
 export const sendContactEmail = async (email: string, content: string) => {
-	const { html } = render(EmailContact, { props: { message: content, email } });
+	const { head, body } = render(EmailContact, { props: { message: content, email } });
 	await sendTransactionalEmail({
 		subject: `New message from ${email}`,
 		to: emailSupport,
-		html: html
+		html: wrapEmailDocument(head, body)
 	});
 };
 
@@ -47,13 +48,13 @@ export const sendReadReceiptEmail = async (
 	viewLimit: number,
 	isLastView: boolean
 ) => {
-	const { html } = render(EmailReadReceipt, {
+	const { head, body } = render(EmailReadReceipt, {
 		props: { receiptId, viewCount, viewLimit, isLastView }
 	});
 	await sendTransactionalEmail({
 		subject: m.slimy_broad_dachshund_lock(),
 		to: email,
-		html: html
+		html: wrapEmailDocument(head, body)
 	});
 	console.log(`Send read receipt to ${email}.`);
 };
@@ -63,20 +64,20 @@ export const sendSubscriptionTrialStartEmail = async (
 	planName: string,
 	name?: string
 ) => {
-	const { html } = render(EmailSubscriptionTrialStart, { props: { planName, name } });
+	const { head, body } = render(EmailSubscriptionTrialStart, { props: { planName, name } });
 	await sendTransactionalEmail({
 		subject: m.level_every_chicken_fall(),
 		to: email,
-		html
+		html: wrapEmailDocument(head, body)
 	});
 };
 
 export const sendSecretRequestResponseReceiptEmail = async (email: string, receiptId: string) => {
-	const { html } = render(EmailSecretRequestResponse, { props: { receiptId } });
+	const { head, body } = render(EmailSecretRequestResponse, { props: { receiptId } });
 	await sendTransactionalEmail({
 		subject: m.gold_tidy_crane_subject(),
 		to: email,
-		html
+		html: wrapEmailDocument(head, body)
 	});
 	console.log(`Send secret request response notification to ${email}.`);
 };
@@ -86,13 +87,13 @@ export const sendOrganisationInvitationEmail = async (
 	token: string,
 	organizationName: string
 ) => {
-	const { html } = render(EmailOrganizationInvitation, {
+	const { head, body } = render(EmailOrganizationInvitation, {
 		props: { token, name: organizationName }
 	});
 	await sendTransactionalEmail({
 		subject: m.formal_each_zebra_pull({ name: organizationName }),
 		to: email,
-		html: html
+		html: wrapEmailDocument(head, body)
 	});
 	console.log(`To ${email}:  Invitation OTP-token is ${token}`);
 };
