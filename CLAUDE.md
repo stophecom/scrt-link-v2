@@ -12,7 +12,7 @@
 - **Forms**: sveltekit-superforms + Zod 4 + formsnap
 - **Auth**: Custom session-based (Lucia pattern) + Google OAuth (Arctic)
 - **i18n**: Paraglide.js (7 locales: en, de, fr, es, pt, ru, zh-CN)
-- **Email**: Resend + svelte-email-tailwind templates
+- **Email**: Brevo (@getbrevo/brevo) + vanilla inline-CSS templates
 - **Payments**: Stripe subscriptions
 - **Storage**: AWS S3 + Imgix CDN
 - **Testing**: Vitest (unit/browser) + Playwright (e2e)
@@ -114,6 +114,6 @@ Schema changes: edit `schema.ts` then `pnpm run db:push`
 
 ## Environment
 
-Key env vars: `POSTGRES_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `RESEND_API`, `PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`, `PUBLIC_S3_ENDPOINT`, `S3_ACCESS_KEY`
+Key env vars: `POSTGRES_URL`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `BREVO_API`, `BREVO_MQL_LIST_ID`, `PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`, `PUBLIC_S3_ENDPOINT`, `S3_ACCESS_KEY`
 
 Adapters: Vercel (default) or Node (`ADAPTER=node` for Docker)

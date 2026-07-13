@@ -99,7 +99,7 @@ Third parties we currently use include:
 
 - Plausible - https://plausible.io/
 - Stripe - https://stripe.com/
-- Resend - https://resend.com/
+- Brevo - https://www.brevo.com/
 
 ## Your Rights and Controlling Your Personal Information
 

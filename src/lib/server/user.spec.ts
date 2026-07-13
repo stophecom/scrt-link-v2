@@ -5,7 +5,7 @@ import { describe, expect, test } from 'vitest';
  * that undefined fields are NOT included in the conflict update set
  * (which would overwrite existing values with null).
  *
- * The actual function hits DB/Stripe/Resend, so we test the logic in isolation.
+ * The actual function hits DB/Stripe/Brevo, so we test the logic in isolation.
  */
 function buildUpdateSet({
 	emailVerified,
