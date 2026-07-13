@@ -68,6 +68,7 @@ import {
 	setSignupTrackingCookie,
 	setVerificationCookie
 } from '../cookies';
+import { addContactToAudience, removeContactFromAudience } from '../email';
 import {
 	createEmailVerificationRequest,
 	createEmailVerificationRequestAndRedirect,
@@ -80,7 +81,6 @@ import {
 	syncOrgSeatCount
 } from '../organization';
 import { isRateLimited, rateLimitErrorMessage } from '../rate-limit';
-import { addContactToAudience, removeContactFromAudience } from '../resend';
 import {
 	getSecretRequestByHash,
 	saveSecretRequest,
@@ -1448,7 +1448,7 @@ export const confirmEmailChange: Action = async (event) => {
 		await removeContactFromAudience({ email: oldEmail });
 		await addContactToAudience({ email });
 	} catch (e) {
-		console.error('Failed to sync Resend audience.', e);
+		console.error('Failed to sync Brevo audience.', e);
 	}
 
 	return message(form, {
