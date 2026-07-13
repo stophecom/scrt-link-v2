@@ -104,7 +104,10 @@ export const createOrUpdateUser = async ({
 			emailVerified,
 			googleId: googleId ?? null,
 			name: name ?? null,
-			picture: picture ?? null
+			picture: picture ?? null,
+			// Only new accounts get the welcome wizard. On conflict we use `updateSet`
+			// (which omits preferences), so existing users' preferences are untouched.
+			preferences: { showWelcomeWizard: true }
 		})
 		.onConflictDoUpdate({
 			target: userSchema.email,

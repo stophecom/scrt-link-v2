@@ -169,12 +169,31 @@ export const saveTheme: Action = async (event) => {
 	await db
 		.update(userSchema)
 		.set({
-			preferences: { themeColor: themeOption }
+			// Merge so we don't clobber other preference keys (e.g. showWelcomeWizard).
+			preferences: { ...user.preferences, themeColor: themeOption }
 		})
 
 		.where(eq(userSchema.id, user.id));
 
 	return { form };
+};
+
+// Consumed the first time the account page renders the welcome wizard ("show once").
+export const dismissWelcomeWizard: Action = async (event) => {
+	const user = event.locals.user;
+
+	if (!user) {
+		return redirectLocalized(307, '/signup');
+	}
+
+	await db
+		.update(userSchema)
+		.set({
+			preferences: { ...user.preferences, showWelcomeWizard: false }
+		})
+		.where(eq(userSchema.id, user.id));
+
+	return { success: true };
 };
 
 export const saveSettings: Action = async (event) => {

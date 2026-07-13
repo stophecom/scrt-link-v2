@@ -18,6 +18,7 @@
 	import { clearMasterKey, isKeyUnlocked, tryRestoreKey } from '$lib/client/key-manager';
 	import PageTitle from '$lib/components/blocks/page-title.svelte';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
+	import WelcomeWizard from '$lib/components/blocks/welcome-wizard.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Container from '$lib/components/ui/container/container.svelte';
@@ -38,6 +39,14 @@
 	});
 
 	let { children }: { children: Snippet } = $props();
+
+	// Captured once at mount (NOT reactive): the wizard persists its own "seen" flag on
+	// display, which flips page.data.showWelcomeWizard to false on the next load. Reading
+	// it reactively would unmount the overlay mid-flow, so we snapshot the initial value.
+	const showWelcomeWizard = page.data.showWelcomeWizard === true;
+	const welcomeUserForm = page.data.welcomeUserForm;
+	const welcomeOrganizationForm = page.data.welcomeOrganizationForm;
+	const welcomeInviteForm = page.data.welcomeInviteForm;
 
 	let pageTitle = $derived(page.data.pageTitle);
 
@@ -318,4 +327,12 @@
 			</div>
 		</Container>
 	</PageWrapper>
+
+	{#if showWelcomeWizard && welcomeUserForm && welcomeOrganizationForm && welcomeInviteForm}
+		<WelcomeWizard
+			userForm={welcomeUserForm}
+			organizationForm={welcomeOrganizationForm}
+			inviteForm={welcomeInviteForm}
+		/>
+	{/if}
 </QueryClientProvider>
