@@ -28,6 +28,7 @@ export const firefoxExtensionUrl =
 	'https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/';
 export const blueskyUrl = 'https://bsky.app/profile/scrt.link';
 export const linkedinUrl = 'https://www.linkedin.com/company/santihans';
+export const santihansUrl = 'https://www.santihans.com';
 
 export const privacyFeatures = () => [
 	{
