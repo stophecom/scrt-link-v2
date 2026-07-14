@@ -128,15 +128,19 @@ In the event of a conflict between this Agreement and the Principal Agreement in
 
 13.2 The Processor shall process Personal Data only in a manner that the Company itself would be permitted to process it, and shall not be subject to any statutory or contractual duty of confidentiality that would prohibit the processing, in accordance with Article 9 revFADP.
 
-## 14. General
+## 14. Additional U.S. Privacy Laws
 
-14.1 **Liability.** Each Party's liability under this Agreement is subject to the limitations and exclusions of liability set out in the Principal Agreement.
+14.1 To the extent applicable, the Processor shall comply with contractual processor obligations under applicable U.S. state privacy laws, including the California Consumer Privacy Act (CCPA), as amended by the California Privacy Rights Act (CPRA), and substantially similar state privacy laws.
 
-14.2 **Term.** This Agreement takes effect on the Effective Date and continues for as long as the Processor processes Personal Data on behalf of the Company under the Principal Agreement.
+## 15. General
 
-14.3 **Governing law and jurisdiction.** This Agreement is governed by the substantive laws of Switzerland. The courts of Basel, Switzerland, shall have exclusive jurisdiction, without prejudice to any mandatory jurisdiction under Data Protection Laws.
+15.1 **Liability.** Each Party's liability under this Agreement is subject to the limitations and exclusions of liability set out in the Principal Agreement.
 
-14.4 **Severability.** If any provision of this Agreement is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.
+15.2 **Term.** This Agreement takes effect on the Effective Date and continues for as long as the Processor processes Personal Data on behalf of the Company under the Principal Agreement.
+
+15.3 **Governing law and jurisdiction.** This Agreement is governed by the substantive laws of Switzerland. The courts of Basel, Switzerland, shall have exclusive jurisdiction, without prejudice to any mandatory jurisdiction under Data Protection Laws.
+
+15.4 **Severability.** If any provision of this Agreement is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.
 
 ## Signatures
 
