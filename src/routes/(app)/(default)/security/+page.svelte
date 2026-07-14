@@ -111,12 +111,11 @@
 	wide
 >
 	<Container variant="wide">
-		<Markdown markdown={m.actual_patient_giraffe_rest()} format={true} />
-	</Container>
-
-	<Section wide>
+		<div class="mb-12">
+			<Markdown markdown={m.actual_patient_giraffe_rest()} format={true} />
+		</div>
 		<h3 class="mb-2 font-semibold">{m.clean_live_bear_verify()}</h3>
-		<div class="mb-8 grid max-w-200 grid-cols-2 gap-3 sm:grid-cols-3">
+		<div class="mb-8 grid max-w-200 gap-3 sm:grid-cols-2 md:grid-cols-3">
 			{#each badges as badge, i (i)}
 				<a
 					href={badge.href}
@@ -128,13 +127,13 @@
 						<ShieldCheck class="text-success h-5 w-5 shrink-0" />
 						<span class="inline-flex items-center text-sm font-medium">{badge.label}</span>
 					</div>
-					<SquareArrowOutUpRight class="text-muted-foreground ms-2 h-4 w-4" />
+					<SquareArrowOutUpRight class="text-muted-foreground h-4 w-4" />
 					<div class="bg-success/20 text-success rounded p-2 text-xl font-bold">{badge.grade}</div>
 				</a>
 			{/each}
 		</div>
 		<h3 class="mb-2 font-semibold">{m.early_mad_mole_assess()}</h3>
-		<div class="grid max-w-200 grid-cols-2 gap-3 sm:grid-cols-3">
+		<div class="grid max-w-200 gap-3 sm:grid-cols-2 md:grid-cols-3">
 			{#each riskScans as scan, i (i)}
 				<a
 					href={scan.href}
@@ -154,7 +153,16 @@
 			{/each}
 		</div>
 		<p class="text-muted-foreground mt-3 text-sm">{m.tired_just_wolf_audit()}</p>
-	</Section>
+
+		<img
+			src="/images/safe.svg"
+			alt=""
+			aria-hidden="true"
+			width="1700"
+			height="450"
+			class="mt-12 h-auto w-full"
+		/>
+	</Container>
 
 	<Section variant="card" wide title={m.keen_safe_hawk_guard()}>
 		<div class="grid gap-6 pt-8 md:grid-cols-2 md:gap-12 lg:grid-cols-3">
