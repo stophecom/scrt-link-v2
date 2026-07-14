@@ -153,6 +153,11 @@ const gdpr = () => ({
 	label: 'GDPR'
 });
 
+const dpa = (short?: boolean) => ({
+	href: '/dpa',
+	label: short ? m.dpa_title_short() : m.dpa_title()
+});
+
 export const useCasesMenu = () => [
 	{
 		href: '/business',
@@ -202,6 +207,7 @@ export const legalMenu = () => [
 	privacyPolicy(),
 	acceptableUsePolicy(),
 	sla(),
-	gdpr()
+	gdpr(),
+	dpa()
 ];
-export const imprintMenu = () => [imprint(), gdpr(), privacyPolicy(), cookiePolicy()];
+export const imprintMenu = () => [imprint(), gdpr(), dpa(true), privacyPolicy(), cookiePolicy()];
