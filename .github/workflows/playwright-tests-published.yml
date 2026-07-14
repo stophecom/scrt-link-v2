@@ -12,7 +12,7 @@ jobs:
     # squats on the runner until GitHub's 6h max-job-time kills it.
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 24
