@@ -56,10 +56,10 @@
 
 	const processors = () => [
 		{
-			name: 'Vercel',
-			href: 'https://vercel.com/legal/privacy-policy',
-			purpose: m.real_safe_crow_host(),
-			region: 'Global',
+			name: 'Flow Swiss',
+			href: 'https://flow.swiss',
+			purpose: m.real_safe_crow_storage(),
+			region: 'CH',
 			gdpr: true
 		},
 		{
@@ -70,10 +70,10 @@
 			gdpr: true
 		},
 		{
-			name: 'Flow Swiss',
-			href: 'https://flow.swiss',
-			purpose: m.real_safe_crow_storage(),
-			region: 'CH',
+			name: 'Brevo',
+			href: 'https://www.brevo.com/legal/privacypolicy/',
+			purpose: m.privacy_processor_brevo(),
+			region: 'EU',
 			gdpr: true
 		},
 		{
@@ -84,19 +84,20 @@
 			gdpr: true
 		},
 		{
+			name: 'Vercel',
+			href: 'https://vercel.com/legal/privacy-policy',
+			purpose: m.real_safe_crow_host(),
+			region: 'Global',
+			gdpr: true
+		},
+		{
 			name: 'Stripe',
 			href: 'https://stripe.com/privacy',
 			purpose: m.privacy_processor_stripe(),
 			region: 'Global',
 			gdpr: true
 		},
-		{
-			name: 'Brevo',
-			href: 'https://www.brevo.com/legal/privacypolicy/',
-			purpose: m.privacy_processor_brevo(),
-			region: 'EU',
-			gdpr: true
-		},
+
 		{
 			name: 'Google',
 			href: 'https://policies.google.com/privacy',
@@ -121,8 +122,8 @@
 			src="/images/alps.svg"
 			alt=""
 			aria-hidden="true"
-			width="1500"
-			height="500"
+			width="1700"
+			height="450"
 			class="mt-12 h-auto w-full"
 		/>
 	</Container>
