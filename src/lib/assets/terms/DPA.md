@@ -1,7 +1,4 @@
 <!--
-  ⚠️ DRAFT — NOT LEGAL ADVICE. Must be reviewed and approved by a Swiss
-  data-protection lawyer before being published or offered to customers.
-
   This is a TEMPLATE for the /dpa generator. Tokens in {{double braces}} are
   merge fields filled from the form:
     {{companyName}}     — Controller's legal company name
