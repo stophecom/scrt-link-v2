@@ -1,19 +1,20 @@
 <script lang="ts">
 	import { SquareArrowOutUpRight } from '@lucide/svelte';
 
-	import SocialLinks from '$lib/components/blocks/social-links.svelte';
+	import ContactCta from '$lib/components/blocks/contact-cta.svelte';
 	import Page from '$lib/components/page/default-page.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 	import { Section } from '$lib/components/ui/section';
-	import { linkedinUrl, santihansUrl } from '$lib/data/app';
+	import { blueskyUrl, linkedinUrl, santihansUrl } from '$lib/data/app';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	const companyLinks = [
 		{ label: 'santihans.com', href: santihansUrl },
-		{ label: 'LinkedIn', href: linkedinUrl }
+		{ label: 'LinkedIn', href: linkedinUrl },
+		{ label: 'Bluesky', href: blueskyUrl }
 	];
 </script>
 
@@ -47,7 +48,7 @@
 	<Section wide title={m.about_company_title()}>
 		<Markdown markdown={m.about_company_body()} format={true} />
 
-		<div class="mt-6 mb-12 flex flex-wrap gap-x-6 gap-y-2">
+		<div class="mt-6 flex flex-wrap gap-x-6 gap-y-2">
 			{#each companyLinks as link, i (i)}
 				<a
 					href={link.href}
@@ -60,8 +61,7 @@
 				</a>
 			{/each}
 		</div>
-
-		<h5 class="text-primary mb-1 font-semibold">{m.social_follow_heading()}</h5>
-		<SocialLinks class="-ms-2" />
 	</Section>
+
+	<ContactCta />
 </Page>
