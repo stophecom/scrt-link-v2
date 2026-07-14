@@ -116,7 +116,7 @@
 
 	<Section wide>
 		<h3 class="mb-2 font-semibold">{m.clean_live_bear_verify()}</h3>
-		<div class="mb-8 grid max-w-200 grid-cols-2 gap-3 sm:grid-cols-3">
+		<div class="mb-8 grid max-w-200 gap-3 sm:grid-cols-2 md:grid-cols-3">
 			{#each badges as badge, i (i)}
 				<a
 					href={badge.href}
@@ -128,13 +128,13 @@
 						<ShieldCheck class="text-success h-5 w-5 shrink-0" />
 						<span class="inline-flex items-center text-sm font-medium">{badge.label}</span>
 					</div>
-					<SquareArrowOutUpRight class="text-muted-foreground ms-2 h-4 w-4" />
+					<SquareArrowOutUpRight class="text-muted-foreground h-4 w-4" />
 					<div class="bg-success/20 text-success rounded p-2 text-xl font-bold">{badge.grade}</div>
 				</a>
 			{/each}
 		</div>
 		<h3 class="mb-2 font-semibold">{m.early_mad_mole_assess()}</h3>
-		<div class="grid max-w-200 grid-cols-2 gap-3 sm:grid-cols-3">
+		<div class="grid max-w-200 gap-3 sm:grid-cols-2 md:grid-cols-3">
 			{#each riskScans as scan, i (i)}
 				<a
 					href={scan.href}
