@@ -55,6 +55,10 @@ export const productMenu = () => [
 		label: m.moving_quaint_buzzard_trip()
 	},
 	{
+		href: '/alternatives',
+		label: m.alternatives_nav_label()
+	},
+	{
 		href: '/api-documentation',
 		label: 'API Docs'
 	},
@@ -188,7 +192,9 @@ export const mainNav = () => [
 	},
 	{
 		title: m.tiny_suave_nils_accept(),
-		items: productMenu().filter((item) => ['/pricing', '/api-documentation'].includes(item.href))
+		items: productMenu().filter((item) =>
+			['/pricing', '/alternatives', '/api-documentation'].includes(item.href)
+		)
 	},
 	{
 		title: m.chunky_raw_osprey_dial(),

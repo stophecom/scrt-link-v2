@@ -42,6 +42,7 @@
 	metaTitle={metaTitle || title}
 	{metaDescription}
 	{metaKeywords}
+	englishOnly={markNotTranslated}
 	{...rest}
 	class={cn('pb-16', rest.class)}
 >

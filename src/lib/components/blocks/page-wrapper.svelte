@@ -11,6 +11,7 @@
 		metaTitle: string;
 		metaDescription?: string;
 		metaKeywords?: string;
+		englishOnly?: boolean;
 		children: Snippet;
 	};
 
@@ -18,12 +19,13 @@
 		metaTitle,
 		metaDescription = m.elegant_muddy_wren_value(),
 		metaKeywords = m.wise_honest_otter_jump(),
+		englishOnly,
 		children,
 		...rest
 	}: Props & SvelteHTMLElements['div'] = $props();
 </script>
 
-<Head title={metaTitle} {metaDescription} {metaKeywords} />
+<Head title={metaTitle} {metaDescription} {metaKeywords} {englishOnly} />
 <div {...rest} class={cn('min-h-[calc(100vh-var(--header-height))] pt-8', rest.class)}>
 	{@render children?.()}
 </div>
