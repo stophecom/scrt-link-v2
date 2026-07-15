@@ -5,7 +5,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-	--theme-color-navy: hsl(214 43% 29%);
+	--theme-color-navy: #172941;
 	/* Legacy theme color options */
 	--theme-color-pink: #e60077;
 	--theme-color-purple: #8645b5;
@@ -34,7 +34,7 @@
 
 		/* Interface colors */
 		--background: hsl(38 37% 97%); /* cream */
-		--foreground: hsl(218 50% 12%); /* deep navy */
+		--foreground: hsl(217, 51%, 12%); /* deep navy */
 
 		--muted: oklch(from var(--background) calc(l - 0.05) c h);
 		--muted-foreground: oklch(from var(--foreground) calc(l + 0.2) c h);
@@ -46,6 +46,14 @@
 		--destructive: hsl(0 68% 42%);
 		--success: hsl(142 60% 32%);
 		--info: hsl(199 92% 36%);
+
+		/* Illustration colors — original palette of the SVG illustrations
+		   (alps/home/safe). Red reuses --accent. */
+
+		--illustration-navy: var(--theme-color-navy);
+		--illustration-navy-deep: hsl(217, 51%, 12%); /* ≈ foreground */
+		--illustration-cream: #eeebe3;
+		--illustration-slate: #5b8392;
 	}
 
 	.dark {
@@ -66,6 +74,9 @@
 		--destructive: hsl(0 72% 68%);
 		--success: hsl(142 50% 55%);
 		--info: hsl(199 85% 58%);
+
+		/* Illustration colors*/
+		--illustration-cream: #0f1b2e;
 	}
 
 	button:not(:disabled),
@@ -156,6 +167,12 @@
 	/* Additional theming options where we use defaults from existing variables */
 	--color-muted: var(--muted);
 	--color-muted-foreground: var(--muted-foreground);
+
+	/* Illustration colors */
+	--color-illustration-navy: var(--illustration-navy);
+	--color-illustration-navy-deep: var(--illustration-navy-deep);
+	--color-illustration-cream: var(--illustration-cream);
+	--color-illustration-slate: var(--illustration-slate);
 
 	--color-input: var(--color-border);
 	--color-ring: var(--color-primary);
