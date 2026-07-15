@@ -10,6 +10,7 @@
 		VenetianMask
 	} from '@lucide/svelte';
 
+	import Alps from '$lib/assets/images/alps.svg?component';
 	import FaqSection from '$lib/components/blocks/faq-section.svelte';
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Page from '$lib/components/page/default-page.svelte';
@@ -118,14 +119,7 @@
 >
 	<Container variant="wide">
 		<Markdown markdown={m.privacy_intro()} format={true} />
-		<img
-			src="/images/alps.svg"
-			alt=""
-			aria-hidden="true"
-			width="1700"
-			height="450"
-			class="mt-12 h-auto w-full"
-		/>
+		<Alps aria-hidden="true" class="mt-12 h-auto w-full" />
 	</Container>
 
 	<Section variant="card" wide title={m.privacy_principles_title()}>

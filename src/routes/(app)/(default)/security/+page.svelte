@@ -13,6 +13,7 @@
 		SquareArrowOutUpRight
 	} from '@lucide/svelte';
 
+	import Safe from '$lib/assets/images/safe.svg?component';
 	import FaqSection from '$lib/components/blocks/faq-section.svelte';
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Page from '$lib/components/page/default-page.svelte';
@@ -154,14 +155,7 @@
 		</div>
 		<p class="text-muted-foreground mt-3 text-sm">{m.tired_just_wolf_audit()}</p>
 
-		<img
-			src="/images/safe.svg"
-			alt=""
-			aria-hidden="true"
-			width="1700"
-			height="450"
-			class="mt-12 h-auto w-full"
-		/>
+		<Safe aria-hidden="true" class="mt-12 h-auto w-full" />
 	</Container>
 
 	<Section variant="card" wide title={m.keen_safe_hawk_guard()}>
