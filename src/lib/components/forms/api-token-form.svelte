@@ -4,24 +4,18 @@
 
 	import Text from '$lib/components/forms/form-fields/text.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import { TierOptions } from '$lib/data/enums';
-	import { getUserPlanLimits } from '$lib/data/plans';
 	import { m } from '$lib/paraglide/messages.js';
 	import { apiKeyFormSchema, type ApiTokenFormSchema } from '$lib/validators/formSchemas';
 
 	import FormWrapper from './form-wrapper.svelte';
 
+	// Callers are responsible for gating on plan access; the organization this key belongs to
+	// (if any) travels with the form data, preloaded server-side by apiKeyFormValidator.
 	type Props = {
 		form: SuperValidated<Infer<ApiTokenFormSchema>>;
-		user: App.Locals['user'];
-		effectiveTier?: TierOptions;
 	};
 
-	let { user, form: formProp, effectiveTier }: Props = $props();
-
-	const planLimits = $derived(
-		getUserPlanLimits(effectiveTier ?? user?.subscriptionTier ?? TierOptions.CONFIDENTIAL)
-	);
+	let { form: formProp }: Props = $props();
 
 	const form = superForm(formProp, {
 		validators: zod4Client(apiKeyFormSchema()),
@@ -54,7 +48,6 @@
 					bind:value={$formData.description}
 					{...$constraints.description}
 					description={m.fluffy_even_fox_greet()}
-					disabled={!planLimits.apiAccess}
 				/>
 			</Form.Field>
 			<Form.Button delayed={$delayed} class="my-2">{m.actual_keen_rooster_find()}</Form.Button>

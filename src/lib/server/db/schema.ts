@@ -285,7 +285,14 @@ export const apiKey = pgTable('api_key', {
 	description: text('description'),
 	createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
 	revoked: boolean('revoked').default(false),
-	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' })
+	// The user who created the key. Set for both personal and organization keys —
+	// secrets created via an organization key are attributed to the creator.
+	userId: uuid('user_id').references(() => user.id, { onDelete: 'cascade' }),
+	// Set only for organization keys. Such keys are restricted to the
+	// organization's white-label domain.
+	organizationId: uuid('organization_id').references(() => organization.id, {
+		onDelete: 'cascade'
+	})
 });
 
 export const stripeWebhookEventStatus = pgEnum('stripe_webhook_event_status', [

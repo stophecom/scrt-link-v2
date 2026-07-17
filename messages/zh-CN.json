@@ -1,7 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"dpa_title_short": "DPA",
 	"dpa_title": "数据处理协议（DPA）",
+	"dpa_title_short": "DPA",
 	"dpa_lead": "为 scrt.link 生成可直接签署的数据处理协议（DPA）。符合 GDPR 和瑞士 FADP。",
 	"dpa_your_details": "公司信息",
 	"dpa_field_company_name": "公司法定名称",
@@ -1088,5 +1088,16 @@
 	"privacy_faq_anonymous_q": "我可以匿名使用 scrt.link 吗？",
 	"privacy_faq_anonymous_a": "可以。创建和分享秘密无需账户，也无需任何个人信息。账户是可选的，只会解锁额外功能。",
 	"privacy_policy_cta_title": "完整的法律版本",
-	"privacy_policy_cta_lead": "想了解每个细节？请阅读我们完整的隐私政策。"
+	"privacy_policy_cta_lead": "想了解每个细节？请阅读我们完整的隐私政策。",
+	"teaser_org_api_title": "为您的组织自动化私密分享",
+	"teaser_org_api_description": "升级至 Top Secret Service，即可创建组织级 API 密钥，并从您自己的应用程序中以编程方式生成秘密。",
+	"org_api_keys_card_description": "为您的组织创建 API 密钥。任何所有者或管理员都可以创建和撤销这些密钥。",
+	"org_api_keys_domain_title": "密钥仅限于您的域名",
+	"org_api_keys_domain_description": "组织 API 密钥仅适用于在 {domain} 上创建的秘密。请在客户端模块中通过 host 选项设置该域名，或在直接调用 API 时使用 X-Host 标头。",
+	"org_api_keys_no_domain_title": "尚未配置白标域名",
+	"org_api_keys_no_domain_description": "组织 API 密钥仅限于您组织的白标域名。请先设置自定义域名——在此之前，这里创建的密钥无法创建秘密。",
+	"org_api_keys_no_domain_cta": "设置白标域名",
+	"org_api_keys_plan_required_title": "需要升级方案",
+	"org_api_keys_plan_required_description": "组织 API 密钥需要 Top Secret Service 方案。",
+	"org_api_keys_limit_description": "每个组织最多允许 {amount} 个 API 密钥。如需创建新密钥，请先撤销已有密钥。"
 }

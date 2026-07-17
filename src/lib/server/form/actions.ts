@@ -1,11 +1,15 @@
 import { type Action, error, fail, isRedirect } from '@sveltejs/kit';
 import { timingSafeEqual } from 'crypto';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, isNull } from 'drizzle-orm';
 import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 
-import { MAX_API_KEYS_PER_USER, MAX_ORGANIZATIONS_PER_USER } from '$lib/constants';
+import {
+	MAX_API_KEYS_PER_ORGANIZATION,
+	MAX_API_KEYS_PER_USER,
+	MAX_ORGANIZATIONS_PER_USER
+} from '$lib/constants';
 import { generateBase64Token, scryptHash, verifyPassword } from '$lib/crypto';
 import { InviteStatus, MembershipRole } from '$lib/data/enums';
 import { getUserPlanLimits } from '$lib/data/plans';
@@ -75,6 +79,8 @@ import {
 	deleteEmailVerificationRequests
 } from '../email-verification';
 import {
+	getActiveApiKeysByOrgId,
+	getOrganizationById,
 	getOrganizationsByUserId,
 	inviteUserToOrganization,
 	isUserOrgOwnerOrAdmin,
@@ -1473,8 +1479,6 @@ export const createAPIToken: Action = async (event) => {
 
 	const user = event.locals.user;
 
-	const { description } = form.data;
-
 	if (!form.valid) {
 		return fail(400, { form });
 	}
@@ -1483,25 +1487,62 @@ export const createAPIToken: Action = async (event) => {
 		return redirectLocalized(307, '/signup');
 	}
 
-	const activeApiKeys = await getActiveApiKeys(user.id);
+	const { description, organizationId } = form.data;
 
-	// Too many API keys
-	if (activeApiKeys.length >= MAX_API_KEYS_PER_USER) {
-		return message(
-			form,
-			{
-				status: 'error',
-				title: m.neat_less_jurgen_trip(),
-				description: m.such_safe_leopard_lend({ amount: MAX_API_KEYS_PER_USER })
-			},
-			{
-				status: 401
-			}
-		);
+	if (organizationId) {
+		if (!(await isUserOrgOwnerOrAdmin(user.id, organizationId))) {
+			return fail(403, { form });
+		}
+
+		const org = await getOrganizationById({ organizationId });
+
+		if (!getUserPlanLimits(org?.subscriptionTier).apiAccess) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.org_api_keys_plan_required_title(),
+					description: m.org_api_keys_plan_required_description()
+				},
+				{ status: 403 }
+			);
+		}
+
+		const activeOrgApiKeys = await getActiveApiKeysByOrgId(organizationId);
+
+		if (activeOrgApiKeys.length >= MAX_API_KEYS_PER_ORGANIZATION) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.neat_less_jurgen_trip(),
+					description: m.org_api_keys_limit_description({ amount: MAX_API_KEYS_PER_ORGANIZATION })
+				},
+				{ status: 403 }
+			);
+		}
+	} else {
+		const activeApiKeys = await getActiveApiKeys(user.id);
+
+		// Too many API keys
+		if (activeApiKeys.length >= MAX_API_KEYS_PER_USER) {
+			return message(
+				form,
+				{
+					status: 'error',
+					title: m.neat_less_jurgen_trip(),
+					description: m.such_safe_leopard_lend({ amount: MAX_API_KEYS_PER_USER })
+				},
+				{
+					status: 401
+				}
+			);
+		}
 	}
 
 	await db.insert(apiKey).values({
 		userId: user.id,
+		organizationId: organizationId || null,
 		description: description || m.real_fluffy_clownfish_fetch(),
 		key: `ak_${generateBase64Token()}`
 	});
@@ -1516,17 +1557,29 @@ export const revokeAPIToken: Action = async (event) => {
 	const apiKeyForm = await superValidate(event.request, zod4(apiKeyFormSchema()), {
 		id: 'api-token-form'
 	});
-	const { keyId } = apiKeyForm.data;
+	const { keyId, organizationId } = apiKeyForm.data;
 	const user = event.locals.user;
 
 	if (!user || !keyId) {
 		return fail(401);
 	}
 
-	await db
-		.update(apiKey)
-		.set({ revoked: true })
-		.where(and(eq(apiKey.id, keyId), eq(apiKey.userId, user.id)));
+	if (organizationId) {
+		// Any owner or admin may revoke an organization key, regardless of who created it.
+		if (!(await isUserOrgOwnerOrAdmin(user.id, organizationId))) {
+			return fail(403, { form: apiKeyForm });
+		}
+
+		await db
+			.update(apiKey)
+			.set({ revoked: true })
+			.where(and(eq(apiKey.id, keyId), eq(apiKey.organizationId, organizationId)));
+	} else {
+		await db
+			.update(apiKey)
+			.set({ revoked: true })
+			.where(and(eq(apiKey.id, keyId), eq(apiKey.userId, user.id), isNull(apiKey.organizationId)));
+	}
 
 	return message(apiKeyForm, {
 		status: 'success',
