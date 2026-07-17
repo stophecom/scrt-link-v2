@@ -62,11 +62,12 @@
 		exact ? currentPath === href : currentPath.startsWith(href);
 </script>
 
-<div class="mb-4 flex gap-1">
+<!-- Scrolls horizontally rather than widening the page: the tabs don't all fit on a phone. -->
+<div class="mb-4 flex gap-1 overflow-x-auto">
 	{#each subNavItems as item (item.href)}
 		<a
 			href={item.href}
-			class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-colors
+			class="flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-sm whitespace-nowrap transition-colors
 				{isActive(item.href, item.exact)
 				? 'bg-muted font-medium'
 				: 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}"
