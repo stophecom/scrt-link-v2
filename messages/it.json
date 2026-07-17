@@ -1,7 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"dpa_title_short": "DPA",
 	"dpa_title": "Accordo sul Trattamento dei Dati (DPA)",
+	"dpa_title_short": "DPA",
 	"dpa_lead": "Generare un Accordo sul Trattamento dei Dati (DPA) per scrt.link, pronto da firmare. Conforme al GDPR e alla FADP svizzera.",
 	"dpa_your_details": "Dati dell’azienda",
 	"dpa_field_company_name": "Ragione sociale",
@@ -1088,5 +1088,16 @@
 	"privacy_faq_anonymous_q": "Posso usare scrt.link in modo anonimo?",
 	"privacy_faq_anonymous_a": "Sì. Creare e condividere un segreto non richiede alcun account né informazioni personali. Un account è facoltativo e sblocca solo funzionalità aggiuntive.",
 	"privacy_policy_cta_title": "La versione legale completa",
-	"privacy_policy_cta_lead": "Vuoi ogni dettaglio? Leggi la nostra informativa sulla privacy completa."
+	"privacy_policy_cta_lead": "Vuoi ogni dettaglio? Leggi la nostra informativa sulla privacy completa.",
+	"teaser_org_api_title": "Automatizza la condivisione di segreti per la tua organizzazione",
+	"teaser_org_api_description": "Passa a Top Secret Service per creare chiavi API a livello di organizzazione e generare segreti in modo programmatico dalle tue applicazioni.",
+	"org_api_keys_card_description": "Crea chiavi API per la tua organizzazione. Qualsiasi proprietario o amministratore può crearle e revocarle.",
+	"org_api_keys_domain_title": "Le chiavi sono limitate al tuo dominio",
+	"org_api_keys_domain_description": "Le chiavi API dell'organizzazione funzionano solo per i segreti creati su {domain}. Impostalo come opzione host nel modulo client — o come header X-Host se chiami l'API direttamente.",
+	"org_api_keys_no_domain_title": "Nessun dominio white-label configurato",
+	"org_api_keys_no_domain_description": "Le chiavi API dell'organizzazione sono limitate al dominio white-label della tua organizzazione. Configura prima un dominio personalizzato: fino ad allora, le chiavi create qui non potranno creare segreti.",
+	"org_api_keys_no_domain_cta": "Configura dominio white-label",
+	"org_api_keys_plan_required_title": "È necessario aggiornare il piano",
+	"org_api_keys_plan_required_description": "Le chiavi API dell'organizzazione richiedono il piano Top Secret Service.",
+	"org_api_keys_limit_description": "È consentito un massimo di {amount} chiavi API per organizzazione. Per creare una nuova chiave, revoca una di quelle esistenti."
 }

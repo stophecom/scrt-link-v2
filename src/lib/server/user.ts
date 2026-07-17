@@ -1,4 +1,4 @@
-import { and, eq } from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 
 import { verifyPassword } from '$lib/crypto';
 import type { PartialExcept } from '$lib/typescript-helpers';
@@ -164,4 +164,6 @@ export const getActiveApiKeys = async (userId: User['id']) =>
 	await db
 		.select()
 		.from(apiKey)
-		.where(and(eq(apiKey.userId, userId), eq(apiKey.revoked, false)));
+		.where(
+			and(eq(apiKey.userId, userId), eq(apiKey.revoked, false), isNull(apiKey.organizationId))
+		);

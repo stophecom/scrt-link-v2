@@ -1,7 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"dpa_title_short": "DPA",
 	"dpa_title": "Acordo de Tratamento de Dados (DPA)",
+	"dpa_title_short": "DPA",
 	"dpa_lead": "Gerar um Acordo de Tratamento de Dados (DPA) para scrt.link, pronto para assinar. Em conformidade com o GDPR e a FADP suíça.",
 	"dpa_your_details": "Dados da empresa",
 	"dpa_field_company_name": "Nome legal da empresa",
@@ -1088,5 +1088,16 @@
 	"privacy_faq_anonymous_q": "Posso usar o scrt.link de forma anónima?",
 	"privacy_faq_anonymous_a": "Sim. Criar e partilhar um segredo não requer conta nem informações pessoais. Uma conta é opcional e apenas desbloqueia funcionalidades adicionais.",
 	"privacy_policy_cta_title": "A versão legal completa",
-	"privacy_policy_cta_lead": "Quer todos os detalhes? Leia a nossa política de privacidade completa."
+	"privacy_policy_cta_lead": "Quer todos os detalhes? Leia a nossa política de privacidade completa.",
+	"teaser_org_api_title": "Automatize o compartilhamento de segredos da sua organização",
+	"teaser_org_api_description": "Faça upgrade para Top Secret Service para criar chaves API para toda a organização e gerar segredos programaticamente a partir das suas próprias aplicações.",
+	"org_api_keys_card_description": "Crie chaves API para a sua organização. Qualquer proprietário ou administrador pode criá-las e revogá-las.",
+	"org_api_keys_domain_title": "As chaves estão restritas ao seu domínio",
+	"org_api_keys_domain_description": "As chaves API da organização só funcionam para segredos criados em {domain}. Defina-o como opção host no módulo cliente — ou como cabeçalho X-Host ao chamar a API diretamente.",
+	"org_api_keys_no_domain_title": "Nenhum domínio white-label configurado",
+	"org_api_keys_no_domain_description": "As chaves API da organização estão restritas ao domínio white-label da sua organização. Configure primeiro um domínio próprio — até lá, as chaves criadas aqui não conseguirão criar segredos.",
+	"org_api_keys_no_domain_cta": "Configurar domínio white-label",
+	"org_api_keys_plan_required_title": "É necessário atualizar o plano",
+	"org_api_keys_plan_required_description": "As chaves API de organização requerem o plano Top Secret Service.",
+	"org_api_keys_limit_description": "É permitido um máximo de {amount} chaves API por organização. Para criar uma nova chave, revogue uma existente."
 }

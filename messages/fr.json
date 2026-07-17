@@ -1,7 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"dpa_title_short": "DPA",
 	"dpa_title": "Accord de traitement des données (DPA)",
+	"dpa_title_short": "DPA",
 	"dpa_lead": "Générer un accord de traitement des données (DPA) pour scrt.link, prêt à signer. Conforme au GDPR et à la FADP suisse.",
 	"dpa_your_details": "Coordonnées de l’entreprise",
 	"dpa_field_company_name": "Raison sociale",
@@ -1088,5 +1088,16 @@
 	"privacy_faq_anonymous_q": "Puis-je utiliser scrt.link de manière anonyme ?",
 	"privacy_faq_anonymous_a": "Oui. Créer et partager un secret ne nécessite ni compte ni informations personnelles. Un compte est facultatif et ne débloque que des fonctionnalités supplémentaires.",
 	"privacy_policy_cta_title": "La version juridique complète",
-	"privacy_policy_cta_lead": "Vous voulez tous les détails ? Consultez notre politique de confidentialité complète."
+	"privacy_policy_cta_lead": "Vous voulez tous les détails ? Consultez notre politique de confidentialité complète.",
+	"teaser_org_api_title": "Automatisez le partage de secrets pour votre organisation",
+	"teaser_org_api_description": "Passez à Top Secret Service pour créer des clés API à l'échelle de l'organisation et générer des secrets de manière programmatique depuis vos propres applications.",
+	"org_api_keys_card_description": "Créez des clés API pour votre organisation. Tout propriétaire ou administrateur peut les créer et les révoquer.",
+	"org_api_keys_domain_title": "Les clés sont limitées à votre domaine",
+	"org_api_keys_domain_description": "Les clés API de l'organisation ne fonctionnent que pour les secrets créés sur {domain}. Indiquez-le via l'option host du module client — ou via l'en-tête X-Host si vous appelez l'API directement.",
+	"org_api_keys_no_domain_title": "Aucun domaine en marque blanche configuré",
+	"org_api_keys_no_domain_description": "Les clés API de l'organisation sont limitées au domaine en marque blanche de votre organisation. Configurez d'abord un domaine personnalisé — d'ici là, les clés créées ici ne pourront pas créer de secrets.",
+	"org_api_keys_no_domain_cta": "Configurer le domaine en marque blanche",
+	"org_api_keys_plan_required_title": "Mise à niveau du forfait requise",
+	"org_api_keys_plan_required_description": "Les clés API d'organisation nécessitent le forfait Top Secret Service.",
+	"org_api_keys_limit_description": "Un maximum de {amount} clés API est autorisé par organisation. Pour créer une nouvelle clé, veuillez révoquer une clé existante."
 }

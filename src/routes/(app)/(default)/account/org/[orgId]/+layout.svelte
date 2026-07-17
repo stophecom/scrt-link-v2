@@ -2,6 +2,7 @@
 	import Activity from '@lucide/svelte/icons/activity';
 	import CreditCard from '@lucide/svelte/icons/credit-card';
 	import Globe from '@lucide/svelte/icons/globe';
+	import KeyRound from '@lucide/svelte/icons/key-round';
 	import Users from '@lucide/svelte/icons/users';
 	import type { Snippet } from 'svelte';
 
@@ -29,6 +30,12 @@
 						href: localizeHref(`/account/org/${orgId}/white-label`),
 						label: m.bold_slim_ram_roam(),
 						icon: Globe,
+						exact: false
+					},
+					{
+						href: localizeHref(`/account/org/${orgId}/api`),
+						label: m.super_funny_jackal_pause(),
+						icon: KeyRound,
 						exact: false
 					}
 				]
