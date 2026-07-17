@@ -83,9 +83,10 @@ export const userFormValidator = async (user: App.Locals['user']) => {
 	);
 };
 
-export const apiKeyFormValidator = async () =>
-	await superValidate(zod4(apiKeyFormSchema()), {
-		id: 'api-token-form'
+export const apiKeyFormValidator = async (organizationId?: string) =>
+	await superValidate({ organizationId }, zod4(apiKeyFormSchema()), {
+		id: 'api-token-form',
+		errors: false
 	});
 
 // Secret Requests

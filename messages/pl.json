@@ -1,7 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"dpa_title_short": "DPA",
 	"dpa_title": "Umowa powierzenia przetwarzania danych (DPA)",
+	"dpa_title_short": "DPA",
 	"dpa_lead": "Wygeneruj umowę powierzenia przetwarzania danych (DPA) dla scrt.link, gotową do podpisu. Zgodną z GDPR i szwajcarską FADP.",
 	"dpa_your_details": "Dane firmy",
 	"dpa_field_company_name": "Nazwa prawna firmy",
@@ -1088,5 +1088,16 @@
 	"privacy_faq_anonymous_q": "Czy mogę korzystać ze scrt.link anonimowo?",
 	"privacy_faq_anonymous_a": "Tak. Tworzenie i udostępnianie sekretu nie wymaga konta ani żadnych danych osobowych. Konto jest opcjonalne i odblokowuje jedynie dodatkowe funkcje.",
 	"privacy_policy_cta_title": "Pełna wersja prawna",
-	"privacy_policy_cta_lead": "Chcesz poznać każdy szczegół? Przeczytaj naszą pełną politykę prywatności."
+	"privacy_policy_cta_lead": "Chcesz poznać każdy szczegół? Przeczytaj naszą pełną politykę prywatności.",
+	"teaser_org_api_title": "Zautomatyzuj udostępnianie sekretów w Twojej organizacji",
+	"teaser_org_api_description": "Przejdź na Top Secret Service, aby tworzyć klucze API dla całej organizacji i programowo generować sekrety z własnych aplikacji.",
+	"org_api_keys_card_description": "Twórz klucze API dla swojej organizacji. Każdy właściciel lub administrator może je tworzyć i cofać.",
+	"org_api_keys_domain_title": "Klucze są ograniczone do Twojej domeny",
+	"org_api_keys_domain_description": "Klucze API organizacji działają tylko dla sekretów tworzonych w domenie {domain}. Ustaw ją jako opcję host w module klienta — lub jako nagłówek X-Host przy bezpośrednim wywołaniu API.",
+	"org_api_keys_no_domain_title": "Nie skonfigurowano domeny white-label",
+	"org_api_keys_no_domain_description": "Klucze API organizacji są ograniczone do domeny white-label Twojej organizacji. Najpierw skonfiguruj własną domenę — do tego czasu klucze utworzone tutaj nie będą mogły tworzyć sekretów.",
+	"org_api_keys_no_domain_cta": "Skonfiguruj domenę white-label",
+	"org_api_keys_plan_required_title": "Wymagane ulepszenie planu",
+	"org_api_keys_plan_required_description": "Klucze API organizacji wymagają planu Top Secret Service.",
+	"org_api_keys_limit_description": "Na organizację dozwolone jest maksymalnie {amount} kluczy API. Aby utworzyć nowy klucz, cofnij istniejący."
 }

@@ -6,7 +6,15 @@ import { InviteStatus, MembershipRole, TierOptions } from '$lib/data/enums';
 import { DAY } from '$lib/data/units';
 
 import { db } from './db';
-import { invite, membership, type Organization, organization, type User, user } from './db/schema';
+import {
+	apiKey,
+	invite,
+	membership,
+	type Organization,
+	organization,
+	type User,
+	user
+} from './db/schema';
 import stripeInstance, { getActiveSubscription } from './stripe';
 import { sendOrganisationInvitationEmail } from './transactional-email';
 
@@ -84,6 +92,12 @@ export const isMemberOfOrganization = async (
 
 	return !!result;
 };
+
+export const getActiveApiKeysByOrgId = async (organizationId: Organization['id']) =>
+	await db
+		.select()
+		.from(apiKey)
+		.where(and(eq(apiKey.organizationId, organizationId), eq(apiKey.revoked, false)));
 
 export const isUserOrgOwnerOrAdmin = async (
 	userId: string,
