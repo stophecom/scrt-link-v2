@@ -10,7 +10,8 @@
 
 	const categories: { key: ComparisonCategory; title: string }[] = [
 		{ key: 'secret-sharing', title: m.alternatives_category_secret_sharing() },
-		{ key: 'file-transfer', title: m.alternatives_category_file_transfer() }
+		{ key: 'file-transfer', title: m.alternatives_category_file_transfer() },
+		{ key: 'secure-email', title: m.alternatives_category_secure_email() }
 	];
 </script>
 

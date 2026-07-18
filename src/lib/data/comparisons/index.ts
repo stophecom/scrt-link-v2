@@ -1,4 +1,5 @@
 import { firefoxSend } from './firefox-send';
+import { incamail } from './incamail';
 import { onetimesecret } from './onetimesecret';
 import { passwordPusher } from './password-pusher';
 import { privatebin } from './privatebin';
@@ -20,7 +21,8 @@ const comparisons: Comparison[] = [
 	wetransfer,
 	firefoxSend,
 	wormhole,
-	tresoritSend
+	tresoritSend,
+	incamail
 ];
 
 export const getComparisons = () =>

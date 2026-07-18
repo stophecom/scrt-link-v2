@@ -1,4 +1,4 @@
-export type ComparisonCategory = 'secret-sharing' | 'file-transfer';
+export type ComparisonCategory = 'secret-sharing' | 'file-transfer' | 'secure-email';
 
 // `true`/`false` render as icons, strings render as text (e.g. "Up to 30 days").
 export type FeatureValue = boolean | string;
