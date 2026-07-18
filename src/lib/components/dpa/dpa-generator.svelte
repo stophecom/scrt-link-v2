@@ -115,10 +115,10 @@
 	</div>
 
 	<!-- Live preview -->
-	<div class="flex flex-col gap-2">
+	<div class="flex min-w-0 flex-col gap-2">
 		<span class="text-muted-foreground text-sm font-medium">{m.dpa_preview_label()}</span>
 		<div class=" bg-card max-h-[70vh] overflow-y-auto rounded-lg border p-8 text-black shadow-sm">
-			<div bind:this={documentEl}>
+			<div class="dpa-document" bind:this={documentEl}>
 				<header class="dpa-brand mb-6 flex items-baseline gap-2 border-b-2 border-black pb-2.5">
 					<span class="dpa-brand__mark text-lg font-bold tracking-tight">scrt.link</span>
 					<span class="dpa-brand__tag text-xs text-neutral-500">Share a Secret</span>
@@ -128,3 +128,13 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	/* On-screen preview: keep body text reflowing, but let wide tables scroll
+	   inside the preview instead of pushing the page wider on small screens. */
+	.dpa-document :global(table) {
+		display: block;
+		max-width: 100%;
+		overflow-x: auto;
+	}
+</style>

@@ -1,7 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"dpa_title_short": "DPA",
 	"dpa_title": "Соглашение об обработке данных (DPA)",
+	"dpa_title_short": "DPA",
 	"dpa_lead": "Создание соглашения об обработке данных (DPA) для scrt.link, готового к подписанию. Соответствует GDPR и швейцарскому FADP.",
 	"dpa_your_details": "Данные компании",
 	"dpa_field_company_name": "Юридическое название компании",
@@ -1097,5 +1097,16 @@
 	"privacy_faq_anonymous_q": "Могу ли я использовать scrt.link анонимно?",
 	"privacy_faq_anonymous_a": "Да. Создание секрета и обмен им не требуют аккаунта и персональной информации. Аккаунт необязателен и лишь открывает доступ к дополнительным возможностям.",
 	"privacy_policy_cta_title": "Полная юридическая версия",
-	"privacy_policy_cta_lead": "Хотите все подробности? Прочитайте нашу полную политику приватности."
+	"privacy_policy_cta_lead": "Хотите все подробности? Прочитайте нашу полную политику приватности.",
+	"teaser_org_api_title": "Автоматизируйте обмен секретами в вашей организации",
+	"teaser_org_api_description": "Перейдите на Top Secret Service, чтобы создавать API-ключи для всей организации и генерировать секреты программно из ваших приложений.",
+	"org_api_keys_card_description": "Создавайте API-ключи для вашей организации. Любой владелец или администратор может создавать и отзывать их.",
+	"org_api_keys_domain_title": "Ключи ограничены вашим доменом",
+	"org_api_keys_domain_description": "API-ключи организации работают только для секретов, создаваемых на {domain}. Укажите его в параметре host клиентского модуля — или в заголовке X-Host при прямом обращении к API.",
+	"org_api_keys_no_domain_title": "White-label домен не настроен",
+	"org_api_keys_no_domain_description": "API-ключи организации ограничены white-label доменом вашей организации. Сначала настройте собственный домен — до этого созданные здесь ключи не смогут создавать секреты.",
+	"org_api_keys_no_domain_cta": "Настроить white-label домен",
+	"org_api_keys_plan_required_title": "Требуется обновление тарифа",
+	"org_api_keys_plan_required_description": "Для API-ключей организации требуется тариф Top Secret Service.",
+	"org_api_keys_limit_description": "Максимум {amount} API-ключей разрешено на организацию. Чтобы создать новый ключ, отзовите один из существующих."
 }

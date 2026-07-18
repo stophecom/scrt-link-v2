@@ -1097,5 +1097,16 @@
 	"privacy_faq_anonymous_q": "Can I use scrt.link anonymously?",
 	"privacy_faq_anonymous_a": "Yes. Creating and sharing a secret requires no account and no personal information. An account is optional and only unlocks additional features.",
 	"privacy_policy_cta_title": "The full legal version",
-	"privacy_policy_cta_lead": "Want every detail? Read our complete privacy policy."
+	"privacy_policy_cta_lead": "Want every detail? Read our complete privacy policy.",
+	"teaser_org_api_title": "Automate Secret Sharing for Your Organization",
+	"teaser_org_api_description": "Upgrade to Top Secret Service to create organization-wide API keys and generate secrets programmatically from your own applications.",
+	"org_api_keys_card_description": "Create API keys for your organization. Any owner or admin can create and revoke them.",
+	"org_api_keys_domain_title": "Keys are restricted to your domain",
+	"org_api_keys_domain_description": "Organization API keys only work for secrets created on {domain}. Set it as the host option in the client module — or as the X-Host header when calling the API directly.",
+	"org_api_keys_no_domain_title": "No white-label domain configured",
+	"org_api_keys_no_domain_description": "Organization API keys are restricted to your organization's white-label domain. Set up a custom domain first — until then, keys you create here won't be able to create secrets.",
+	"org_api_keys_no_domain_cta": "Set up white-label domain",
+	"org_api_keys_plan_required_title": "Plan upgrade required",
+	"org_api_keys_plan_required_description": "Organization API keys require the Top Secret Service plan.",
+	"org_api_keys_limit_description": "A maximum of {amount} API keys is allowed per organization. To create a new key, please revoke an existing one."
 }

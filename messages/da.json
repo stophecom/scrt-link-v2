@@ -1,7 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"dpa_title_short": "DPA",
 	"dpa_title": "Databehandleraftale (DPA)",
+	"dpa_title_short": "DPA",
 	"dpa_lead": "Generér en databehandleraftale (DPA) til scrt.link, klar til underskrift. I overensstemmelse med GDPR og schweiziske FADP.",
 	"dpa_your_details": "Virksomhedsoplysninger",
 	"dpa_field_company_name": "Juridisk virksomhedsnavn",
@@ -1097,5 +1097,16 @@
 	"privacy_faq_anonymous_q": "Kan jeg bruge scrt.link anonymt?",
 	"privacy_faq_anonymous_a": "Ja. At oprette og dele en hemmelighed kræver hverken konto eller personoplysninger. En konto er valgfri og låser kun op for yderligere funktioner.",
 	"privacy_policy_cta_title": "Den fulde juridiske version",
-	"privacy_policy_cta_lead": "Vil du have alle detaljer? Læs vores komplette privatlivspolitik."
+	"privacy_policy_cta_lead": "Vil du have alle detaljer? Læs vores komplette privatlivspolitik.",
+	"teaser_org_api_title": "Automatiser deling af hemmeligheder for din organisation",
+	"teaser_org_api_description": "Opgrader til Top Secret Service for at oprette API-nøgler for hele organisationen og generere hemmeligheder programmatisk fra dine egne applikationer.",
+	"org_api_keys_card_description": "Opret API-nøgler til din organisation. Alle ejere og administratorer kan oprette og tilbagekalde dem.",
+	"org_api_keys_domain_title": "Nøglerne er begrænset til dit domæne",
+	"org_api_keys_domain_description": "Organisationens API-nøgler virker kun for hemmeligheder, der oprettes på {domain}. Angiv det som host-indstillingen i klientmodulet – eller som X-Host-header ved direkte API-kald.",
+	"org_api_keys_no_domain_title": "Intet white-label-domæne konfigureret",
+	"org_api_keys_no_domain_description": "Organisationens API-nøgler er begrænset til organisationens white-label-domæne. Opsæt et eget domæne først – indtil da kan nøgler, du opretter her, ikke oprette hemmeligheder.",
+	"org_api_keys_no_domain_cta": "Opsæt white-label-domæne",
+	"org_api_keys_plan_required_title": "Opgradering af plan påkrævet",
+	"org_api_keys_plan_required_description": "API-nøgler til organisationer kræver Top Secret Service-planen.",
+	"org_api_keys_limit_description": "Der er tilladt maksimalt {amount} API-nøgler pr. organisation. For at oprette en ny nøgle skal du tilbagekalde en eksisterende."
 }

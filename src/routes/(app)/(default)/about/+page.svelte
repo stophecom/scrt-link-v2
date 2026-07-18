@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { SquareArrowOutUpRight } from '@lucide/svelte';
 
+	import Home from '$lib/assets/images/home.svg?component';
 	import ContactCta from '$lib/components/blocks/contact-cta.svelte';
 	import Page from '$lib/components/page/default-page.svelte';
 	import { Button } from '$lib/components/ui/button';
@@ -28,14 +29,7 @@
 >
 	<Container variant="wide">
 		<Markdown markdown={m.about_intro_body()} format={true} />
-		<img
-			src="/images/home.svg"
-			alt=""
-			aria-hidden="true"
-			width="1700"
-			height="450"
-			class="mt-12 h-auto w-full"
-		/>
+		<Home aria-hidden="true" class="mt-12 h-auto w-full" />
 	</Container>
 
 	<Section variant="card" wide title={m.about_philosophy_title()}>

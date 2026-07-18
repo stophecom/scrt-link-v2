@@ -1,7 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"dpa_title_short": "DPA",
 	"dpa_title": "Verwerkersovereenkomst (DPA)",
+	"dpa_title_short": "DPA",
 	"dpa_lead": "Genereer een verwerkersovereenkomst (DPA) voor scrt.link, klaar om te ondertekenen. Conform de GDPR en de Zwitserse FADP.",
 	"dpa_your_details": "Bedrijfsgegevens",
 	"dpa_field_company_name": "Juridische bedrijfsnaam",
@@ -1097,5 +1097,16 @@
 	"privacy_faq_anonymous_q": "Kan ik scrt.link anoniem gebruiken?",
 	"privacy_faq_anonymous_a": "Ja. Voor het aanmaken en delen van een geheim is geen account en geen persoonlijke informatie nodig. Een account is optioneel en ontgrendelt alleen extra functies.",
 	"privacy_policy_cta_title": "De volledige juridische versie",
-	"privacy_policy_cta_lead": "Wil je elk detail? Lees ons volledige privacybeleid."
+	"privacy_policy_cta_lead": "Wil je elk detail? Lees ons volledige privacybeleid.",
+	"teaser_org_api_title": "Automatiseer het delen van geheimen voor je organisatie",
+	"teaser_org_api_description": "Upgrade naar Top Secret Service om API-sleutels voor de hele organisatie te maken en programmatisch geheimen te genereren vanuit je eigen applicaties.",
+	"org_api_keys_card_description": "Maak API-sleutels voor je organisatie. Elke eigenaar of beheerder kan ze aanmaken en intrekken.",
+	"org_api_keys_domain_title": "Sleutels zijn beperkt tot je domein",
+	"org_api_keys_domain_description": "API-sleutels van de organisatie werken alleen voor geheimen die op {domain} worden aangemaakt. Stel dit in als host-optie in de clientmodule — of als X-Host-header bij directe API-aanroepen.",
+	"org_api_keys_no_domain_title": "Geen white-label domein geconfigureerd",
+	"org_api_keys_no_domain_description": "API-sleutels van de organisatie zijn beperkt tot het white-label domein van je organisatie. Stel eerst een eigen domein in — tot die tijd kunnen sleutels die je hier maakt geen geheimen aanmaken.",
+	"org_api_keys_no_domain_cta": "White-label domein instellen",
+	"org_api_keys_plan_required_title": "Planupgrade vereist",
+	"org_api_keys_plan_required_description": "API-sleutels voor organisaties vereisen het Top Secret Service-plan.",
+	"org_api_keys_limit_description": "Er zijn maximaal {amount} API-sleutels per organisatie toegestaan. Trek een bestaande sleutel in om een nieuwe te maken."
 }

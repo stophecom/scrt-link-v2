@@ -1,6 +1,6 @@
 import { sha256Hash } from '@scrt-link/core';
 import { json, type RequestHandler } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 import { isOriginalHostname } from '$lib/app-routing';
 import { TierOptions } from '$lib/data/enums';
@@ -8,7 +8,11 @@ import { getUserPlanLimits } from '$lib/data/plans';
 import { db } from '$lib/server/db';
 import { apiKey } from '$lib/server/db/schema';
 import { user } from '$lib/server/db/schema';
-import { getEffectiveTierForUser, isMemberOfOrganization } from '$lib/server/organization';
+import {
+	getEffectiveTierForUser,
+	getOrganizationById,
+	isMemberOfOrganization
+} from '$lib/server/organization';
 import { saveSecret } from '$lib/server/secrets';
 import { getWhiteLabelSiteByHost } from '$lib/server/whiteLabelSite';
 import { secretFormSchema } from '$lib/validators/formSchemas';
@@ -48,7 +52,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		.select()
 		.from(apiKey)
 		.leftJoin(user, eq(user.id, apiKey.userId))
-		.where(eq(apiKey.key, token));
+		.where(and(eq(apiKey.key, token), eq(apiKey.revoked, false)));
 
 	if (!userWithApiKey || !userWithApiKey.api_key) {
 		return jsonWithCors({ error: 'Invalid API key.' }, { status: 403 });
@@ -56,9 +60,19 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	const userId = userWithApiKey.user?.id;
 	const userTier = userWithApiKey.user?.subscriptionTier ?? undefined;
-	const effectiveTier = userId
-		? await getEffectiveTierForUser(userId, userTier ?? TierOptions.CONFIDENTIAL)
-		: userTier;
+	const keyOrganizationId = userWithApiKey.api_key.organizationId;
+
+	// Organization keys derive their limits from the organization's own plan, so the key keeps
+	// working as configured even if the member who created it changes plan or leaves the org.
+	let effectiveTier: TierOptions | undefined;
+	if (keyOrganizationId) {
+		const org = await getOrganizationById({ organizationId: keyOrganizationId });
+		effectiveTier = org?.subscriptionTier ?? undefined;
+	} else {
+		effectiveTier = userId
+			? await getEffectiveTierForUser(userId, userTier ?? TierOptions.CONFIDENTIAL)
+			: userTier;
+	}
 
 	const planLimits = getUserPlanLimits(effectiveTier);
 
@@ -92,8 +106,37 @@ export const POST: RequestHandler = async ({ request }) => {
 	}
 
 	let whiteLabelSiteId;
-	if (host && !isOriginalHostname(host)) {
+	if (keyOrganizationId) {
+		// Organization keys are usable only on the organization's own white-label domain.
+		if (!host || isOriginalHostname(host)) {
+			return jsonWithCors(
+				{
+					error: `Organization API keys require the X-Host header to be set to the organization's white-label domain.`
+				},
+				{ status: 400 }
+			);
+		}
+
 		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
+
+		if (!whiteLabelSiteResult || whiteLabelSiteResult.organizationId !== keyOrganizationId) {
+			return jsonWithCors(
+				{ error: `Not allowed to create secret for host ${host}` },
+				{ status: 400 }
+			);
+		}
+
+		whiteLabelSiteId = whiteLabelSiteResult.id;
+	} else if (host && !isOriginalHostname(host)) {
+		const whiteLabelSiteResult = await getWhiteLabelSiteByHost(host);
+
+		if (!whiteLabelSiteResult) {
+			return jsonWithCors(
+				{ error: `Not allowed to create secret for host ${host}` },
+				{ status: 400 }
+			);
+		}
+
 		whiteLabelSiteId = whiteLabelSiteResult.id;
 
 		const organizationId = whiteLabelSiteResult?.organizationId;

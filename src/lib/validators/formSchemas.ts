@@ -311,7 +311,9 @@ export const contactFormSchema = () =>
 export const apiKeyFormSchema = () =>
 	z.object({
 		keyId: z.string().optional(),
-		description: z.string().max(50).optional()
+		description: z.string().max(50).optional(),
+		// When set, the key belongs to the organization rather than the user.
+		organizationId: z.string().optional()
 	});
 
 export const encryptionSetupFormSchema = () =>

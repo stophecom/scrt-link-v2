@@ -1,7 +1,7 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"dpa_title_short": "DPA",
 	"dpa_title": "Acuerdo de Tratamiento de Datos (DPA)",
+	"dpa_title_short": "DPA",
 	"dpa_lead": "Generar un Acuerdo de Tratamiento de Datos (DPA) para scrt.link, listo para firmar. Conforme con el GDPR y la FADP suiza.",
 	"dpa_your_details": "Datos de la empresa",
 	"dpa_field_company_name": "Nombre legal de la empresa",
@@ -1097,5 +1097,16 @@
 	"privacy_faq_anonymous_q": "¿Puedo usar scrt.link de forma anónima?",
 	"privacy_faq_anonymous_a": "Sí. Crear y compartir un secreto no requiere ninguna cuenta ni información personal. La cuenta es opcional y solo desbloquea funciones adicionales.",
 	"privacy_policy_cta_title": "La versión legal completa",
-	"privacy_policy_cta_lead": "¿Quieres todos los detalles? Lee nuestra política de privacidad completa."
+	"privacy_policy_cta_lead": "¿Quieres todos los detalles? Lee nuestra política de privacidad completa.",
+	"teaser_org_api_title": "Automatiza el intercambio de secretos de tu organización",
+	"teaser_org_api_description": "Pasa a Top Secret Service para crear claves API para toda la organización y generar secretos de forma programática desde tus propias aplicaciones.",
+	"org_api_keys_card_description": "Crea claves API para tu organización. Cualquier propietario o administrador puede crearlas y revocarlas.",
+	"org_api_keys_domain_title": "Las claves están restringidas a tu dominio",
+	"org_api_keys_domain_description": "Las claves API de la organización solo funcionan para secretos creados en {domain}. Indícalo como opción host en el módulo cliente, o como cabecera X-Host si llamas a la API directamente.",
+	"org_api_keys_no_domain_title": "No hay dominio white-label configurado",
+	"org_api_keys_no_domain_description": "Las claves API de la organización están restringidas al dominio white-label de tu organización. Configura primero un dominio propio; hasta entonces, las claves que crees aquí no podrán crear secretos.",
+	"org_api_keys_no_domain_cta": "Configurar dominio white-label",
+	"org_api_keys_plan_required_title": "Se requiere una mejora de plan",
+	"org_api_keys_plan_required_description": "Las claves API de organización requieren el plan Top Secret Service.",
+	"org_api_keys_limit_description": "Se permite un máximo de {amount} claves API por organización. Para crear una nueva clave, revoca una existente."
 }
