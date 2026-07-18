@@ -9,9 +9,9 @@
 		companyMenu,
 		helpMenu,
 		imprintMenu,
+		integrationsMenu,
 		productMenu,
-		secretMenu,
-		useCasesMenu
+		secretMenu
 	} from '../../data/menu';
 	import Container from '../ui/container/container.svelte';
 	import LanguageSwitcher from '../ui/language-switcher';
@@ -32,11 +32,8 @@
 
 			<div class="mb-4 grid w-full grid-cols-2 items-start gap-4 pt-1 md:flex md:gap-14">
 				<FooterMenu title={m.funny_swift_jay_promise()} menu={secretMenu()} />
-				<FooterMenu title={m.quick_proud_lion_guide()} menu={useCasesMenu()} />
-				<FooterMenu
-					title={m.tiny_suave_nils_accept()}
-					menu={productMenu().filter((item) => item.href !== '/business')}
-				/>
+				<FooterMenu title={m.integrations_nav_label()} menu={integrationsMenu()} />
+				<FooterMenu title={m.tiny_suave_nils_accept()} menu={productMenu()} />
 				<FooterMenu title={m.chunky_raw_osprey_dial()} menu={companyMenu()} />
 				<FooterMenu title={m.equal_away_frog_aim()} menu={helpMenu()} />
 			</div>

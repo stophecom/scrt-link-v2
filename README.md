@@ -1,4 +1,5 @@
 [![GitGem](https://gitgem.org/api/badge/github/stophecom/scrt-link-v2.svg)](https://gitgem.org/github/stophecom/scrt-link-v2)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/stophecom/scrt-link-v2)
 
 # scrt-link-v2
 
