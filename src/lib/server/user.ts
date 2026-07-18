@@ -83,8 +83,11 @@ export const createOrUpdateUser = async ({
 	emailVerified,
 	googleId,
 	name,
-	picture
-}: PartialExcept<User, 'email'>) => {
+	picture,
+	// Whether a brand-new account should see the welcome wizard. Invited members
+	// skip it (they're onboarded into an existing organization instead).
+	showWelcomeWizard = true
+}: PartialExcept<User, 'email'> & { showWelcomeWizard?: boolean }) => {
 	// Determine newness before the upsert — afterwards the row always exists.
 	const isNewUser = !(await checkIfUserExists(email));
 
@@ -105,9 +108,10 @@ export const createOrUpdateUser = async ({
 			googleId: googleId ?? null,
 			name: name ?? null,
 			picture: picture ?? null,
-			// Only new accounts get the welcome wizard. On conflict we use `updateSet`
+			// Only new accounts get the welcome wizard (and invited members opt out
+			// via `showWelcomeWizard: false`). On conflict we use `updateSet`
 			// (which omits preferences), so existing users' preferences are untouched.
-			preferences: { showWelcomeWizard: true }
+			preferences: { showWelcomeWizard }
 		})
 		.onConflictDoUpdate({
 			target: userSchema.email,
