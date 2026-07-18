@@ -1,4 +1,5 @@
 import { getBaseUrl } from '$lib/constants';
+import { getComparisons } from '$lib/data/comparisons';
 import { baseLocale, locales, localizeHref } from '$lib/paraglide/runtime';
 import { getBlogPosts } from '$lib/server/blog';
 
@@ -19,6 +20,7 @@ const STATIC_PATHS = [
 	'/privacy',
 	'/farewell',
 	'/blog',
+	'/alternatives',
 	'/acceptable-use-policy',
 	'/cookie-policy',
 	'/gdpr',
@@ -36,21 +38,31 @@ const escapeXml = (value: string) =>
 		.replace(/"/g, '&quot;')
 		.replace(/'/g, '&apos;');
 
-const buildUrlEntry = (baseUrl: string, path: string, lastmod?: string) => {
+// `localized: false` for English-only content (blog posts, comparisons). Those pages
+// exist under every locale prefix but are never translated, so advertising hreflang
+// alternates for them would be a false signal to search engines.
+const buildUrlEntry = (
+	baseUrl: string,
+	path: string,
+	{ lastmod, localized = true }: { lastmod?: string; localized?: boolean } = {}
+) => {
 	const canonical = `${baseUrl}${localizeHref(path, { locale: baseLocale })}`;
-	const alternates = [
-		...locales.map(
-			(locale) =>
-				`    <xhtml:link rel="alternate" hreflang="${locale}" href="${escapeXml(
-					`${baseUrl}${localizeHref(path, { locale })}`
-				)}"/>`
-		),
-		`    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(canonical)}"/>`
-	].join('\n');
+	const alternates = localized
+		? [
+				...locales.map(
+					(locale) =>
+						`    <xhtml:link rel="alternate" hreflang="${locale}" href="${escapeXml(
+							`${baseUrl}${localizeHref(path, { locale })}`
+						)}"/>`
+				),
+				`    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(canonical)}"/>`
+			].join('\n')
+		: '';
 
 	return `  <url>
-    <loc>${escapeXml(canonical)}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}
-${alternates}
+    <loc>${escapeXml(canonical)}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}${
+			alternates ? `\n${alternates}` : ''
+		}
   </url>`;
 };
 
@@ -61,7 +73,16 @@ export const GET: RequestHandler = async () => {
 	const entries = [
 		...STATIC_PATHS.map((path) => buildUrlEntry(baseUrl, path)),
 		...posts.map((post) =>
-			buildUrlEntry(baseUrl, `/blog/${post.slug}`, new Date(post.date).toISOString())
+			buildUrlEntry(baseUrl, `/blog/${post.slug}`, {
+				lastmod: new Date(post.date).toISOString(),
+				localized: false
+			})
+		),
+		...getComparisons().map((comparison) =>
+			buildUrlEntry(baseUrl, `/alternatives/${comparison.slug}`, {
+				lastmod: new Date(comparison.lastVerified).toISOString(),
+				localized: false
+			})
 		)
 	];
 

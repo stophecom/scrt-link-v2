@@ -72,7 +72,10 @@ export const actions: Actions = {
 			const result = await createOrUpdateUser({
 				email: existingInvite.email,
 				name: existingInvite.name,
-				emailVerified: true
+				emailVerified: true,
+				// Invited members are onboarded into an existing organization,
+				// so they skip the welcome wizard.
+				showWelcomeWizard: false
 			});
 
 			if (result.userId && existingInvite.organizationId) {

@@ -10,6 +10,8 @@ categories:
 published: true
 ---
 
+_This post is from 2021. For an up-to-date, side-by-side feature comparison, see [scrt.link vs OneTimeSecret](/alternatives/onetimesecret)._
+
 When it comes to sharing sensitive information online, you’ll likely come across [Onetime Secret](https://onetimesecret.com) sooner or later. In fact, it ranks #1 on Google for many searches related to secure secret sharing. According to their website, over 50000 secrets are shared through the platform each month. For context, the site has been **running for over a decade**.
 
 ![comparison-one-time-secret-screenshot.png](/images/blog/comparison-one-time-secret-screenshot.png)

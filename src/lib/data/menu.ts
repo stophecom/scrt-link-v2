@@ -47,13 +47,25 @@ export const secretMenu = () => [
 
 export const productMenu = () => [
 	{
-		href: '/business',
-		label: m.great_funny_beaver_gleam()
-	},
-	{
 		href: '/pricing',
 		label: m.moving_quaint_buzzard_trip()
 	},
+	{
+		href: '/business',
+		label: m.business_whitelabel_nav_label()
+	},
+	{
+		href: '/alternatives',
+		label: m.alternatives_nav_label()
+	},
+	{
+		href: githubUrl,
+		externalLink: true,
+		label: 'Github'
+	}
+];
+
+export const integrationsMenu = () => [
 	{
 		href: '/api-documentation',
 		label: 'API Docs'
@@ -71,16 +83,6 @@ export const productMenu = () => [
 		href: firefoxExtensionUrl,
 		externalLink: true,
 		label: 'Firefox Extension'
-	},
-	{
-		href: 'https://deepwiki.com/stophecom/scrt-link-v2',
-		externalLink: true,
-		label: 'Wiki'
-	},
-	{
-		href: githubUrl,
-		externalLink: true,
-		label: 'Github'
 	}
 ];
 
@@ -115,6 +117,11 @@ export const helpMenu = () => [
 	{
 		href: '/imprint',
 		label: m.civil_dizzy_gopher_glow()
+	},
+	{
+		href: 'https://deepwiki.com/stophecom/scrt-link-v2',
+		externalLink: true,
+		label: 'Wiki'
 	}
 ];
 
@@ -158,37 +165,14 @@ const dpa = (short?: boolean) => ({
 	label: short ? m.dpa_title_short() : m.dpa_title()
 });
 
-export const useCasesMenu = () => [
-	{
-		href: '/business',
-		label: m.great_funny_beaver_gleam()
-	},
-	{
-		href: '/use-cases/it-security',
-		label: m.warm_calm_hawk_defend()
-	},
-	{
-		href: '/use-cases/legal-compliance',
-		label: m.clear_pure_owl_advise()
-	},
-	{
-		href: '/use-cases/journalists',
-		label: m.brave_sharp_fox_report()
-	},
-	{
-		href: '/use-cases/customer-support',
-		label: m.kind_warm_bear_assist()
-	}
-];
-
 export const mainNav = () => [
 	{
-		title: m.quick_proud_lion_guide(),
-		items: useCasesMenu()
+		title: m.integrations_nav_label(),
+		items: integrationsMenu()
 	},
 	{
 		title: m.tiny_suave_nils_accept(),
-		items: productMenu().filter((item) => ['/pricing', '/api-documentation'].includes(item.href))
+		items: productMenu()
 	},
 	{
 		title: m.chunky_raw_osprey_dial(),
