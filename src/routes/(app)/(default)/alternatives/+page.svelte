@@ -21,6 +21,7 @@
 	metaTitle={m.alternatives_meta_title()}
 	metaDescription={m.alternatives_meta_description()}
 	metaKeywords={m.alternatives_meta_keywords()}
+	markNotTranslated
 >
 	<Container>
 		{#each categories as category (category.key)}

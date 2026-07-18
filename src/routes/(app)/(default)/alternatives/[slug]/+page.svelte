@@ -26,8 +26,9 @@
 	metaKeywords={comparison.metaKeywords}
 	markNotTranslated
 	wide
+	class="pb-0"
 >
-	<Container variant="wide">
+	<Container variant="wide" class="pb-12">
 		<div class="prose max-w-none">
 			<Markdown markdown={comparison.summary} format />
 		</div>
@@ -40,8 +41,14 @@
 		</div>
 	</Container>
 
-	<Section wide variant="contrast" title="Feature comparison">
+	<Section wide variant="card" title="Feature comparison">
 		<ComparisonTable competitorName={comparison.name} rows={comparison.features} />
+		<p class="text-muted-foreground pt-6 text-sm">
+			Facts about {comparison.name} last verified on {formatDate(
+				new Date(comparison.lastVerified)
+			)}. Products change — if something here is out of date,
+			<a class="underline" href={localizeHref('/contact')}>let us know</a> and we'll fix it.
+		</p>
 	</Section>
 
 	<Section wide title="Key differences">
@@ -90,8 +97,10 @@
 		<Accordion items={comparison.faq} jsonLd />
 	</Section>
 
+	<ContactCta />
+
 	{#if data.otherComparisons.length}
-		<Section wide variant="muted" title="Other comparisons">
+		<Section wide title="Other comparisons">
 			<ul class="flex flex-wrap gap-2">
 				{#each data.otherComparisons as other (other.slug)}
 					<li>
@@ -103,15 +112,4 @@
 			</ul>
 		</Section>
 	{/if}
-
-	<ContactCta />
-
-	<Container variant="wide">
-		<p class="text-muted-foreground text-sm">
-			Facts about {comparison.name} last verified on {formatDate(
-				new Date(comparison.lastVerified)
-			)}. Products change — if something here is out of date,
-			<a class="underline" href={localizeHref('/contact')}>let us know</a> and we'll fix it.
-		</p>
-	</Container>
 </Page>
