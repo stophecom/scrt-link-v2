@@ -1,6 +1,6 @@
 import { type Action, error, fail, isRedirect } from '@sveltejs/kit';
 import { timingSafeEqual } from 'crypto';
-import { and, desc, eq, isNull } from 'drizzle-orm';
+import { and, desc, eq, isNotNull, isNull } from 'drizzle-orm';
 import type { PostgresError } from 'postgres';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
@@ -1448,6 +1448,23 @@ export const confirmEmailChange: Action = async (event) => {
 		} catch (e) {
 			console.error('Failed to sync Stripe customer email.', e);
 		}
+	}
+
+	// Also sync any org Stripe customers where this user is the billing owner —
+	// otherwise the org customer keeps caching the stale personal email.
+	try {
+		const billedOrgs = await db
+			.select({ stripeCustomerId: organization.stripeCustomerId })
+			.from(organization)
+			.where(
+				and(eq(organization.billingOwnerId, user.id), isNotNull(organization.stripeCustomerId))
+			);
+		for (const org of billedOrgs) {
+			if (!org.stripeCustomerId) continue;
+			await stripeInstance.customers.update(org.stripeCustomerId, { email });
+		}
+	} catch (e) {
+		console.error('Failed to sync org Stripe customer emails.', e);
 	}
 
 	try {
