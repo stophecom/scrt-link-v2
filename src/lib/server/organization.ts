@@ -69,6 +69,54 @@ export const getOrganizationsByUserId = async (userId: User['id']) =>
 		.innerJoin(organization, eq(membership.organizationId, organization.id))
 		.where(eq(membership.userId, userId));
 
+/**
+ * Resolves the email that should be used for an org's Stripe customer / billing.
+ * Preference order: the designated billing owner (if still a member) → the
+ * provided fallback (typically the acting user) → any org owner.
+ * Stripe stores the only persisted copy of the billing email, so this is the
+ * single source of truth for seeding and re-syncing it.
+ */
+export const getOrgBillingEmail = async (
+	organizationId: Organization['id'],
+	fallbackEmail?: string
+): Promise<string | undefined> => {
+	const [org] = await db
+		.select({ billingOwnerId: organization.billingOwnerId })
+		.from(organization)
+		.where(eq(organization.id, organizationId))
+		.limit(1);
+
+	// Prefer the designated billing owner, but only if they are still a member.
+	if (org?.billingOwnerId) {
+		const [row] = await db
+			.select({ email: user.email })
+			.from(membership)
+			.innerJoin(user, eq(membership.userId, user.id))
+			.where(
+				and(
+					eq(membership.userId, org.billingOwnerId),
+					eq(membership.organizationId, organizationId)
+				)
+			)
+			.limit(1);
+		if (row?.email) return row.email;
+	}
+
+	if (fallbackEmail) return fallbackEmail;
+
+	// Last resort: any owner of the org.
+	const [owner] = await db
+		.select({ email: user.email })
+		.from(membership)
+		.innerJoin(user, eq(membership.userId, user.id))
+		.where(
+			and(eq(membership.organizationId, organizationId), eq(membership.role, MembershipRole.OWNER))
+		)
+		.limit(1);
+
+	return owner?.email;
+};
+
 export const getMembersByOrganizationId = async (organizationId: Organization['id']) =>
 	await db
 		.select({

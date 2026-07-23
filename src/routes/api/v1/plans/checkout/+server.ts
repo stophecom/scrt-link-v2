@@ -9,7 +9,11 @@ import { getAbsoluteLocalizedUrl } from '$lib/i18n';
 import { m } from '$lib/paraglide/messages.js';
 import { db } from '$lib/server/db';
 import { organization, user } from '$lib/server/db/schema';
-import { getMembersByOrganizationId, getOrganizationsByUserId } from '$lib/server/organization';
+import {
+	getMembersByOrganizationId,
+	getOrganizationsByUserId,
+	getOrgBillingEmail
+} from '$lib/server/organization';
 import stripeInstance from '$lib/server/stripe';
 
 import type { RequestEvent } from '../$types';
@@ -35,9 +39,12 @@ export const POST = async ({ locals, request }: RequestEvent) => {
 		// Get or create Stripe customer for the org
 		let stripeCustomerId = org.stripeCustomerId;
 		if (!stripeCustomerId) {
+			// Seed the customer email from the org's billing owner (not just whoever
+			// runs checkout), falling back to the acting user.
+			const billingEmail = await getOrgBillingEmail(org.id, locals.user.email);
 			const customer = await stripeInstance.customers.create({
 				name: org.name,
-				email: locals.user.email,
+				email: billingEmail,
 				metadata: { organizationId: org.id }
 			});
 			stripeCustomerId = customer.id;
