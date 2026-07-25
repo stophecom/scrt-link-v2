@@ -11,11 +11,13 @@
 	type Props = {
 		title: string;
 		lead?: string | Snippet;
+		overline?: string;
 		cta: Snippet;
 		children: Snippet;
 	};
 
-	let { title, lead, children, cta, ...rest }: Props & SvelteHTMLElements['div'] = $props();
+	let { title, lead, overline, children, cta, ...rest }: Props & SvelteHTMLElements['div'] =
+		$props();
 </script>
 
 <Container variant="wide">
@@ -27,6 +29,9 @@
 		)}
 	>
 		<div class="self-center">
+			{#if overline}
+				<div class="mb-1 text-lg font-medium">{overline}</div>
+			{/if}
 			<PageTitle {title} />
 
 			{#if lead}
