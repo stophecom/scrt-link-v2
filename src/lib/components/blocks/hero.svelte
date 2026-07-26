@@ -24,7 +24,7 @@
 	<div
 		{...rest}
 		class={cn(
-			'grid grid-rows-[min-content_250px] gap-6 overflow-hidden pt-20 pb-16 sm:grid-cols-[65%_1fr]  sm:grid-rows-none',
+			' grid grid-rows-[min-content_250px_min-content] gap-1 overflow-hidden pt-20 pb-16 sm:grid-cols-[65%_1fr] sm:grid-rows-none  sm:gap-6',
 			rest.class
 		)}
 	>
@@ -38,10 +38,15 @@
 				<PageLead {lead} renderAsHtml />
 			{/if}
 
-			{@render cta?.()}
+			<div class="hidden sm:block">
+				{@render cta?.()}
+			</div>
 		</div>
-		<div>
+		<div class="overflow-clip">
 			{@render children?.()}
+		</div>
+		<div class=" sm:hidden">
+			{@render cta?.()}
 		</div>
 	</div>
 </Container>

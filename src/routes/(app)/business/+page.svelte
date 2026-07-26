@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { Lock, MessageCircleQuestion, Sparkles } from '@lucide/svelte';
+	import { MessageCircleQuestion, Sparkles } from '@lucide/svelte';
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
-	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import FaqSection from '$lib/components/blocks/faq-section.svelte';
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Hero from '$lib/components/blocks/hero.svelte';
@@ -11,16 +10,11 @@
 	import UseCasesSection from '$lib/components/blocks/use-cases-section.svelte';
 	import WhiteLabelShowcase from '$lib/components/blocks/white-label-showcase.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import { Button, buttonVariants } from '$lib/components/ui/button';
-	import * as Dialog from '$lib/components/ui/dialog';
+	import { Button } from '$lib/components/ui/button';
 	import { Section } from '$lib/components/ui/section';
 	import { businessTrustFeatures, whiteLabelDemoWebsite } from '$lib/data/app';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
-
-	import type { PageData } from './$types';
-
-	let { data }: { data: PageData } = $props();
 
 	const pricingHref = localizeHref('/pricing') + '?tab=business';
 </script>
@@ -54,7 +48,7 @@
 		class="pt-12"
 		{cta}
 	>
-		<AndroidFrame class="origin-top max-sm:scale-50">
+		<AndroidFrame class="origin-top max-sm:scale-40">
 			<video autoplay loop muted>
 				<source src="/videos/br3f-demo.mp4" type="video/mp4" />
 			</video>
@@ -74,12 +68,21 @@
 		</div>
 	</Section>
 
-	<UseCasesSection />
+	<Section variant="muted" wide title={m.business_setup_title()} lead={m.business_setup_lead()}>
+		<SetupSteps />
+
+		<div class="mt-8 flex flex-wrap items-center gap-2">
+			<Button size="lg" variant="default" href={pricingHref}>
+				<Sparkles class="me-2 h-4 w-4" />
+				{m.early_keen_eagle_trial()}
+			</Button>
+		</div>
+	</Section>
 
 	<Section wide title={m.business_security_title()} lead={m.business_security_lead()}>
 		<IntersectionObserver top={-50} once={true}>
 			{#snippet children(intersecting)}
-				<div class="mb-8 grid grid-rows-4 gap-4 sm:grid-cols-2 sm:grid-rows-2">
+				<div class="grid grid-rows-4 gap-4 sm:grid-cols-2 sm:grid-rows-2">
 					{#each businessTrustFeatures() as step, i (i)}
 						<div
 							style="transition-delay: {i * 100}ms;"
@@ -93,37 +96,9 @@
 				</div>
 			{/snippet}
 		</IntersectionObserver>
-
-		<Button variant="outline" href={localizeHref('/security')}
-			><Lock class="me-2 h-4 w-4" /> {m.mellow_ago_falcon_thrive()}</Button
-		>
 	</Section>
 
-	<Section variant="muted" wide title={m.business_setup_title()} lead={m.business_setup_lead()}>
-		<SetupSteps />
-
-		<div class="mt-8 flex flex-wrap items-center gap-2">
-			<Button size="lg" variant="default" href={pricingHref}>
-				<Sparkles class="me-2 h-4 w-4" />
-				{m.early_keen_eagle_trial()}
-			</Button>
-			<Dialog.Root>
-				<Dialog.Trigger class={buttonVariants({ variant: 'outline', size: 'lg' })}
-					>{m.vexed_brief_mouse_dream()}</Dialog.Trigger
-				>
-				<Dialog.Content class="">
-					<Dialog.Header>
-						<Dialog.Title>{m.arable_proof_ladybug_drip()}</Dialog.Title>
-					</Dialog.Header>
-					<CreateSecret
-						form={data.secretForm}
-						effectiveTier={data.effectiveTier}
-						hidePrimaryFeatureList
-					/>
-				</Dialog.Content>
-			</Dialog.Root>
-		</div>
-	</Section>
+	<UseCasesSection />
 
 	<FaqSection />
 

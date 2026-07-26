@@ -34,7 +34,12 @@
 	];
 </script>
 
-<Section wide title={m.business_use_cases_title()} lead={m.business_use_cases_lead()}>
+<Section
+	variant="card"
+	wide
+	title={m.business_use_cases_title()}
+	lead={m.business_use_cases_lead()}
+>
 	<IntersectionObserver top={-50} once={true}>
 		{#snippet children(intersecting: boolean)}
 			<div class="grid gap-4 sm:grid-cols-2">

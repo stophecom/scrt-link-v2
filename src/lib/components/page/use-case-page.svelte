@@ -25,7 +25,7 @@
 		{#snippet cta()}
 			<Button size="lg" href={localizeHref('/pricing')}>{m.early_keen_eagle_trial()}</Button>
 		{/snippet}
-		<AndroidFrame class="origin-top max-sm:scale-50">
+		<AndroidFrame class="origin-top max-sm:scale-40">
 			<video autoplay loop muted playsinline>
 				<source src="/videos/br3f-demo.mp4" type="video/mp4" />
 			</video>
