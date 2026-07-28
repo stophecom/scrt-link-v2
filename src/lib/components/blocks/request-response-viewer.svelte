@@ -6,16 +6,20 @@
 
 	import { enhance } from '$app/forms';
 	import { SECRET_REQUEST_RETENTION_PERIOD_IN_DAYS } from '$lib/client/constants';
+	import { FileDownloader } from '$lib/client/file-download.svelte';
 	import { getMasterKey, isKeyUnlocked } from '$lib/client/key-manager';
-	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
-	import FileRevelation from '$lib/components/blocks/file-revelation.svelte';
+	import FileRevelationList from '$lib/components/blocks/file-revelation-list.svelte';
 	import { buttonVariants } from '$lib/components/ui/button';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import CopyButton from '$lib/components/ui/copy-button';
 	import * as Dialog from '$lib/components/ui/dialog';
-	import type { FileMeta, FileReference } from '$lib/file-transfer';
-	import { handleFileChunksDownload } from '$lib/file-transfer';
+	import {
+		type FileMeta,
+		type FileReference,
+		type FilesEnvelope,
+		normalizeFileEnvelope
+	} from '$lib/file-transfer';
 	import { formatDateTime } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
@@ -42,11 +46,7 @@
 	let decryptionError = $state('');
 	let isDecrypting = $state(false);
 	let isConfirmationDialogOpen = $state(false);
-	let fileKey = $state('');
-	let fileMeta = $state<FileMeta | undefined>(undefined);
-	let fileReference = $state<FileReference | undefined>(undefined);
-	let downloadProgress = $state(0);
-	let downloadError = $state('');
+	let downloader = $state<FileDownloader | undefined>(undefined);
 
 	let destructionDate = $derived(
 		data.request.respondedAt
@@ -78,75 +78,25 @@
 			if (data.request.encryptedResponseFile) {
 				const envelope = JSON.parse(
 					await decryptResponseContent(data.request.encryptedResponseFile, aesKey)
-				);
-				fileKey = envelope.fileKey;
-				fileReference = envelope.fileReference;
-				fileMeta = envelope.fileMeta;
+				) as {
+					fileKey: string;
+					fileReference: FilesEnvelope | FileReference;
+					fileMeta?: Partial<FileMeta>;
+				};
+
+				downloader = new FileDownloader({
+					envelope: normalizeFileEnvelope(envelope.fileReference, envelope.fileMeta),
+					// Chunks are authorized against the secret request, not a secret.
+					secretIdHash: data.request.requestIdHash,
+					requestIdHash: data.request.requestIdHash,
+					decryptionKey: envelope.fileKey
+				});
 			}
 		} catch (e) {
 			console.error('Decryption failed:', e);
 			decryptionError = 'Failed to decrypt the response. Your encryption keys may have changed.';
 		} finally {
 			isDecrypting = false;
-		}
-	};
-
-	const handleProgress = (getProgress: () => Promise<number>): (() => void) => {
-		const id = setInterval(async () => {
-			downloadProgress = await getProgress();
-			if (downloadProgress >= 1) {
-				downloadProgress = 1;
-				clearInterval(id);
-			}
-		}, 500);
-		return () => clearInterval(id);
-	};
-
-	const downloadAttachment = async () => {
-		if (!fileMeta || !fileReference) return;
-		downloadError = '';
-		let cancelProgress: (() => void) | undefined;
-		try {
-			// Single chunk — download and decrypt directly.
-			if (fileMeta.isSingleChunk && fileReference.chunks.length === 1) {
-				const file = {
-					secretIdHash: data.request.requestIdHash,
-					requestIdHash: data.request.requestIdHash,
-					decryptionKey: fileKey,
-					...fileReference,
-					...fileMeta,
-					progress: 0
-				};
-				const res = new Response(handleFileChunksDownload(file));
-				cancelProgress = handleProgress(() => Promise.resolve(file.progress));
-				const blob = await res.blob();
-				const decryptedFile = new File([blob], fileMeta.name);
-				const url = window.URL.createObjectURL(decryptedFile);
-				createDownloadLinkAndClick(url, fileMeta.name);
-				return;
-			}
-
-			// Multi chunk — stream via the service worker.
-			const fileInfo = {
-				secretIdHash: data.request.requestIdHash,
-				requestIdHash: data.request.requestIdHash,
-				...fileMeta,
-				...fileReference,
-				decryptionKey: fileKey,
-				url: `/service-worker-file-download#${data.request.requestIdHash}`
-			};
-			const sanitizedMessage = JSON.parse(JSON.stringify(fileInfo));
-			await sendMessageToServiceWorker({ request: 'file_info', data: sanitizedMessage });
-			createDownloadLinkAndClick(fileInfo.url);
-			cancelProgress = handleProgress(() =>
-				sendMessageToServiceWorker<number>({
-					request: 'progress',
-					data: { secretIdHash: data.request.requestIdHash }
-				})
-			);
-		} catch (e) {
-			cancelProgress?.();
-			downloadError = e instanceof Error ? e.message : String(e);
 		}
 	};
 
@@ -197,22 +147,14 @@
 			</div>
 		{/if}
 
-		{#if fileMeta}
+		{#if downloader}
 			<div class="mt-6" data-testid="decrypted-attachment">
 				<h3 class="mb-1 text-lg font-semibold">{m.flat_warm_resp_attachment_heading()}</h3>
-				<FileRevelation
-					progress={downloadProgress}
-					{fileMeta}
-					handleDownload={downloadAttachment}
-				/>
-
-				{#if downloadError}
-					<p class="text-destructive mt-2 text-sm">{downloadError}</p>
-				{/if}
+				<FileRevelationList {downloader} />
 			</div>
 		{/if}
 
-		{#if decryptedResponse || fileMeta}
+		{#if decryptedResponse || downloader}
 			<div class="mt-4 flex justify-start gap-2">
 				<Button
 					variant="outline"

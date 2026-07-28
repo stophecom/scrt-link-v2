@@ -1,7 +1,16 @@
+import { fileURLToPath } from 'node:url';
+
 import { defineWorkspace } from 'vitest/config';
 
 export default defineWorkspace([
 	{
+		// The unit project doesn't run the SvelteKit plugin, so `$lib` imports
+		// (e.g. file-transfer.ts -> $lib/api) need resolving by hand.
+		resolve: {
+			alias: {
+				$lib: fileURLToPath(new URL('./src/lib', import.meta.url))
+			}
+		},
 		test: {
 			// an example of file based convention,
 			// you don't have to follow it

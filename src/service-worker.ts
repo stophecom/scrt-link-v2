@@ -6,11 +6,13 @@
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
 import type { SecretFile } from './lib/file-transfer';
-import { handleFileChunksDownload } from './lib/file-transfer';
+import { fileDownloadKey, handleFileChunksDownload } from './lib/file-transfer';
 
 // Request URL we intercept to initiate stream
 const DOWNLOAD_URL = /service-worker-file-download/;
-const map = new Map();
+// Keyed per file (`${secretIdHash}:${fileId}`), since one response streams one file
+// and a secret may hold several.
+const map = new Map<string, SecretFile>();
 
 sw.addEventListener('install', (event) => {
 	event.waitUntil(sw.skipWaiting());
@@ -20,8 +22,8 @@ sw.addEventListener('activate', (event) => {
 	event.waitUntil(sw.clients.claim()); // Become available to all pages
 });
 
-async function decryptStream(uuid: string) {
-	const file: SecretFile = map.get(uuid);
+async function decryptStream(downloadKey: string) {
+	const file = map.get(downloadKey);
 
 	if (!file) {
 		return new Response(null, { status: 400 });
@@ -64,28 +66,29 @@ sw.onfetch = (event: FetchEvent) => {
 
 	const url = new URL(req.url);
 	const fileNameMatch = DOWNLOAD_URL.exec(url.pathname);
-	const fileUuid = url.hash.substring(1);
+	const downloadKey = decodeURIComponent(url.hash.substring(1));
 
-	if (fileNameMatch && fileUuid) {
-		event.respondWith(decryptStream(fileUuid));
+	if (fileNameMatch && downloadKey) {
+		event.respondWith(decryptStream(downloadKey));
 	}
 	return;
 };
 
-type MessageData = SecretFile;
+type FileHandle = Pick<SecretFile, 'secretIdHash' | 'id'>;
 
 sw.onmessage = async (event: ExtendableMessageEvent) => {
 	const request = event.data.request;
-	const data = event.data.data as MessageData;
 
 	switch (request) {
 		case 'file_info': {
-			map.set(data.secretIdHash, data);
+			const data = event.data.data as SecretFile;
+			map.set(fileDownloadKey(data.secretIdHash, data.id), data);
 			event.ports[0].postMessage('File info received.');
 			break;
 		}
 		case 'progress': {
-			const file = map.get(data?.secretIdHash);
+			const data = event.data.data as FileHandle;
+			const file = data && map.get(fileDownloadKey(data.secretIdHash, data.id));
 
 			if (!file?.progress) {
 				event.ports[0].postMessage(0);

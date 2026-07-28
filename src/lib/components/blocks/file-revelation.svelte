@@ -3,8 +3,8 @@
 	import FileLock from '@lucide/svelte/icons/file-lock';
 	import { fade } from 'svelte/transition';
 
+	import type { DownloadableFile } from '$lib/client/file-download.svelte';
 	import Typewriter from '$lib/components/helpers/typewriter.svelte';
-	import type { FileMeta } from '$lib/file-transfer';
 	import { formatBytes } from '$lib/i18n';
 	import { m } from '$lib/paraglide/messages.js';
 
@@ -12,12 +12,13 @@
 	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
 	import UploadSpinner from '../ui/spinner/upload-spinner.svelte';
 
-	type Props = { progress: number; fileMeta: FileMeta; handleDownload?: () => void };
+	type Props = { file: DownloadableFile; handleDownload?: () => void };
 
-	let { progress, fileMeta, handleDownload }: Props = $props();
+	let { file, handleDownload }: Props = $props();
 
-	let isDownloading = $derived(progress > 0 && progress < 1);
-	let isDownloadComplete = $derived(progress === 1);
+	let progress = $derived(file.progress);
+	let isDownloading = $derived(file.status === 'downloading' && progress < 1);
+	let isDownloadComplete = $derived(file.status === 'done');
 </script>
 
 <div class="border-foreground bg-background relative min-h-24 rounded border p-4">
@@ -51,7 +52,7 @@
 			<div class="overflow-hidden">
 				<div class="flex truncate">
 					<strong class="mr-1">{m.suave_level_squirrel_hope()}</strong>
-					<Typewriter mode="scramble" scrambleDuration={900} message={fileMeta?.name} />
+					<Typewriter mode="scramble" scrambleDuration={900} message={file.name} />
 				</div>
 
 				<div class="flex truncate">
@@ -59,12 +60,12 @@
 					<Typewriter
 						mode="scramble"
 						scrambleDuration={900}
-						message={formatBytes(fileMeta?.size || 0)}
+						message={formatBytes(file.size || 0)}
 					/>
 				</div>
 				<div class="flex truncate">
 					<strong class="mr-1">{m.slow_free_lynx_spur()}</strong>
-					<Typewriter mode="scramble" scrambleDuration={900} message={fileMeta?.mimeType} />
+					<Typewriter mode="scramble" scrambleDuration={900} message={file.mimeType} />
 				</div>
 			</div>
 		</div>

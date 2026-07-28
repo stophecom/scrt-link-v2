@@ -35,7 +35,7 @@ export const POST = async ({ params, request }: RequestEvent) => {
 	if (!publicKey) {
 		error(400, `Public key missing or invalid.`);
 	}
-	const isSignatureValid = verifyMessageSignature(params.key, signature, publicKey);
+	const isSignatureValid = await verifyMessageSignature(params.key, signature, publicKey);
 	if (!isSignatureValid) {
 		error(400, `Invalid signature`);
 	}

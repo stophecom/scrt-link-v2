@@ -1,7 +1,9 @@
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
+import type { Conditions as PresignedPostConditions } from '@aws-sdk/s3-presigned-post/dist-types/types';
 import { error, json } from '@sveltejs/kit';
 
 import { PUBLIC_S3_BUCKET } from '$env/static/public';
+import { MAX_ENCRYPTED_CHUNK_SIZE } from '$lib/client/constants';
 import { s3Client } from '$lib/s3';
 
 import type { RequestEvent } from './$types';
@@ -14,7 +16,12 @@ export const POST = async ({ url }: RequestEvent) => {
 		return error(400, 'File parameter missing.');
 	}
 
-	const Conditions = [{ 'Content-Type': 'application/octet-stream' }];
+	const Conditions: PresignedPostConditions[] = [
+		{ 'Content-Type': 'application/octet-stream' },
+		// The endpoint is unauthenticated, so bound what a single presigned POST can
+		// write. Uploads are chunked client-side; nothing legitimate exceeds this.
+		['content-length-range', 1, MAX_ENCRYPTED_CHUNK_SIZE]
+	];
 
 	try {
 		const post = await createPresignedPost(s3Client, {
