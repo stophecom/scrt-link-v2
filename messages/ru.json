@@ -1036,7 +1036,7 @@
 	"browser_extension_label": "Расширение для браузера",
 	"browser_extension_tooltip": "Делитесь секретом прямо из браузера. Требуется ключ API.",
 	"browser_extension_faq_heading": "Есть ли расширение для браузера?",
-	"browser_extension_faq_body": "Да! Установите расширение scrt.link для браузера [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) или [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/), чтобы создавать секретные ссылки, не покидая текущую вкладку. Расширение работает через наш публичный API, поэтому требуется тариф **[Top Secret](/pricing)** с ключом API.",
+	"browser_extension_faq_body": "Да! Установите расширение scrt.link для браузера [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) или [Edge](https://microsoftedge.microsoft.com/addons/detail/scrtlink-%E2%80%94-share-a-secre/eaehlboohgmeoflgdnkeigdogefihlbj), чтобы создавать секретные ссылки, не покидая текущую вкладку. Расширение работает через наш публичный API, поэтому требуется тариф **[Top Secret](/pricing)** с ключом API.",
 	"welcome_wizard_step_label": "Шаг {current} из {total}",
 	"welcome_wizard_welcome_title": "Добро пожаловать в scrt.link",
 	"welcome_wizard_welcome_intro": "Настроим аккаунт за несколько шагов. Для начала — как к вам обращаться?",
