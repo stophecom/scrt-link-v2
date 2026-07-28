@@ -1,33 +1,29 @@
 <script lang="ts">
-	import { Lock, MessageCircleQuestion, Palette, Sparkles } from '@lucide/svelte';
+	import { MessageCircleQuestion, Sparkles } from '@lucide/svelte';
 
 	import AndroidFrame from '$lib/components/blocks/android-frame.svelte';
-	import CreateSecret from '$lib/components/blocks/create-secret.svelte';
 	import FaqSection from '$lib/components/blocks/faq-section.svelte';
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import Hero from '$lib/components/blocks/hero.svelte';
-	import HowItWorks from '$lib/components/blocks/how-it-works.svelte';
-	import IntegrationSection from '$lib/components/blocks/integration-section.svelte';
 	import PageWrapper from '$lib/components/blocks/page-wrapper.svelte';
+	import SetupSteps from '$lib/components/blocks/setup-steps.svelte';
+	import UseCasesSection from '$lib/components/blocks/use-cases-section.svelte';
 	import WhiteLabelShowcase from '$lib/components/blocks/white-label-showcase.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
-	import { Button, buttonVariants } from '$lib/components/ui/button';
-	import * as Dialog from '$lib/components/ui/dialog';
+	import { Button } from '$lib/components/ui/button';
 	import { Section } from '$lib/components/ui/section';
-	import { businessFeatures, securityFeatures, whiteLabelDemoWebsite } from '$lib/data/app';
+	import { businessTrustFeatures, whiteLabelDemoWebsite } from '$lib/data/app';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
-	import type { PageData } from './$types';
-
-	let { data }: { data: PageData } = $props();
+	const pricingHref = localizeHref('/pricing') + '?tab=business';
 </script>
 
-{#snippet cta()}
+{#snippet ctaButtons()}
 	<div class="sm:grid-cols-auto grid grid-rows-2 gap-2 sm:flex sm:grid-rows-none">
-		<Button size="lg" variant="default" href={localizeHref('/pricing') + '?tab=business'}>
+		<Button size="lg" variant="default" href={pricingHref}>
 			<Sparkles class="me-2 h-4 w-4" />
-			{m.business_cta_make_it_yours()}
+			{m.early_keen_eagle_trial()}
 		</Button>
 		<Button size="lg" variant="outline" target="_blank" href={whiteLabelDemoWebsite}>
 			{m.business_cta_live_example()}
@@ -35,13 +31,24 @@
 	</div>
 {/snippet}
 
+{#snippet cta()}
+	{@render ctaButtons()}
+	<p class="text-muted-foreground mt-3 text-sm">{m.business_cta_start_trial_note()}</p>
+{/snippet}
+
 <PageWrapper
 	metaTitle={m.day_maroon_poodle_slurp()}
 	metaDescription={m.basic_gaudy_cat_thrive()}
 	metaKeywords={m.odd_fuzzy_bulldog_flip()}
 >
-	<Hero title={m.business_hero_title()} lead={m.business_hero_lead()} class="pt-12" {cta}>
-		<AndroidFrame class="origin-top max-sm:scale-50">
+	<Hero
+		overline={m.business_hero_overline()}
+		title={m.business_hero_title()}
+		lead={m.business_hero_pitch()}
+		class="pt-12"
+		{cta}
+	>
+		<AndroidFrame class="origin-top max-sm:scale-40">
 			<video autoplay loop muted>
 				<source src="/videos/br3f-demo.mp4" type="video/mp4" />
 			</video>
@@ -56,43 +63,27 @@
 	>
 		<WhiteLabelShowcase />
 
-		<div class="mt-8 flex flex-wrap gap-2">
-			<Button size="lg" variant="default" href={localizeHref('/pricing') + '?tab=business'}>
-				<Palette class="me-2 h-4 w-4" />
-				{m.business_cta_make_it_yours()}
-			</Button>
-			<Button size="lg" variant="outline" target="_blank" href={whiteLabelDemoWebsite}>
-				{m.business_cta_live_example()}
+		<div class="mt-8">
+			{@render ctaButtons()}
+		</div>
+	</Section>
+
+	<Section variant="muted" wide title={m.business_setup_title()} lead={m.business_setup_lead()}>
+		<SetupSteps />
+
+		<div class="mt-8 flex flex-wrap items-center gap-2">
+			<Button size="lg" variant="default" href={pricingHref}>
+				<Sparkles class="me-2 h-4 w-4" />
+				{m.early_keen_eagle_trial()}
 			</Button>
 		</div>
 	</Section>
 
-	<Section wide variant="neutral" title={m.business_trust_title()} lead={m.business_trust_lead()}>
-		<IntersectionObserver top={-50} once={true}>
-			{#snippet children(intersecting: boolean)}
-				<div class="grid gap-4 sm:grid-cols-3">
-					{#each businessFeatures() as step, i (i)}
-						<div
-							style="transition-delay: {i * 100}ms;"
-							class="flex transition-all {intersecting
-								? 'translate-y-0 scale-100 opacity-100 duration-700'
-								: 'translate-y-20 scale-90 opacity-0'}"
-						>
-							<FeatureCard Icon={step.icon} title={step.title} description={step.description} />
-						</div>
-					{/each}
-				</div>
-			{/snippet}
-		</IntersectionObserver>
-	</Section>
-
-	<IntegrationSection />
-
-	<Section wide title={m.gaudy_ago_firefox_tickle()} lead={m.bright_steep_racoon_accept()}>
+	<Section wide title={m.business_security_title()} lead={m.business_security_lead()}>
 		<IntersectionObserver top={-50} once={true}>
 			{#snippet children(intersecting)}
 				<div class="grid grid-rows-4 gap-4 sm:grid-cols-2 sm:grid-rows-2">
-					{#each securityFeatures() as step, i (i)}
+					{#each businessTrustFeatures() as step, i (i)}
 						<div
 							style="transition-delay: {i * 100}ms;"
 							class="flex transition-all {intersecting
@@ -105,39 +96,9 @@
 				</div>
 			{/snippet}
 		</IntersectionObserver>
-
-		<Button variant="outline" href={localizeHref('/security')}
-			><Lock class="me-2 h-4 w-4" /> {m.mellow_ago_falcon_thrive()}</Button
-		>
 	</Section>
 
-	<Section
-		variant="muted"
-		wide
-		title={m.helpful_teary_earthworm_grasp()}
-		lead={m.dirty_bright_robin_earn()}
-	>
-		<div class="mb-6 max-w-3xl">
-			<HowItWorks />
-		</div>
-		<div class="flex">
-			<Dialog.Root>
-				<Dialog.Trigger class={buttonVariants({ variant: 'outline', size: 'lg' })}
-					>{m.vexed_brief_mouse_dream()}</Dialog.Trigger
-				>
-				<Dialog.Content class="">
-					<Dialog.Header>
-						<Dialog.Title>{m.arable_proof_ladybug_drip()}</Dialog.Title>
-					</Dialog.Header>
-					<CreateSecret
-						form={data.secretForm}
-						effectiveTier={data.effectiveTier}
-						hidePrimaryFeatureList
-					/>
-				</Dialog.Content>
-			</Dialog.Root>
-		</div>
-	</Section>
+	<UseCasesSection />
 
 	<FaqSection />
 
@@ -148,6 +109,18 @@
 		title={m.same_tidy_macaw_sail()}
 		lead={m.least_gross_midge_thrive()}
 	>
-		<Button size="lg" href={localizeHref('/contact')}>{m.acidic_extra_vulture_enchant()}</Button>
+		<div class="flex flex-wrap gap-2">
+			<Button
+				size="lg"
+				href={pricingHref}
+				class="bg-background text-foreground hover:bg-background/90"
+			>
+				<Sparkles class="me-2 h-4 w-4" />
+				{m.early_keen_eagle_trial()}
+			</Button>
+			<Button size="lg" variant="outline" href={localizeHref('/contact')}>
+				{m.acidic_extra_vulture_enchant()}
+			</Button>
+		</div>
 	</Section>
 </PageWrapper>

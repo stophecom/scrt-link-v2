@@ -1,14 +1,5 @@
 <script lang="ts">
-	import {
-		Building2,
-		Globe,
-		Image,
-		Languages,
-		Palette,
-		SlidersHorizontal,
-		Type,
-		Users
-	} from '@lucide/svelte';
+	import { Globe, Image, Languages, Palette, SlidersHorizontal, Type } from '@lucide/svelte';
 
 	import FeatureCard from '$lib/components/blocks/feature-card.svelte';
 	import IntersectionObserver from '$lib/components/helpers/intersection-observer.svelte';
@@ -46,19 +37,6 @@
 			description: m.business_customize_language_description()
 		}
 	];
-
-	const audiences = [
-		{
-			icon: Users,
-			title: m.business_audience_employees_title(),
-			description: m.business_audience_employees_description()
-		},
-		{
-			icon: Building2,
-			title: m.business_audience_customers_title(),
-			description: m.business_audience_customers_description()
-		}
-	];
 </script>
 
 <IntersectionObserver top={-50} once={true}>
@@ -79,13 +57,3 @@
 		</div>
 	{/snippet}
 </IntersectionObserver>
-
-<div class="grid gap-4 sm:grid-cols-2">
-	{#each audiences as audience (audience.title)}
-		<div class="border-border bg-card flex flex-col gap-3 rounded-lg border p-6">
-			<audience.icon class="h-8 w-8" strokeWidth="1.5px" />
-			<h3 class="text-xl font-bold">{audience.title}</h3>
-			<p class="text-muted-foreground text-pretty">{audience.description}</p>
-		</div>
-	{/each}
-</div>
