@@ -26,6 +26,8 @@ export const chromeExtensionUrl =
 	'https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh';
 export const firefoxExtensionUrl =
 	'https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/';
+export const edgeExtensionUrl =
+	'https://microsoftedge.microsoft.com/addons/detail/scrtlink-%E2%80%94-share-a-secre/eaehlboohgmeoflgdnkeigdogefihlbj';
 export const blueskyUrl = 'https://bsky.app/profile/scrt.link';
 export const linkedinUrl = 'https://www.linkedin.com/company/santihans';
 export const santihansUrl = 'https://www.santihans.com';

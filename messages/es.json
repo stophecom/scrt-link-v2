@@ -1036,7 +1036,7 @@
 	"browser_extension_label": "Extensión del navegador",
 	"browser_extension_tooltip": "Comparte un secreto directamente desde tu navegador. Requiere una clave API.",
 	"browser_extension_faq_heading": "¿Hay una extensión del navegador?",
-	"browser_extension_faq_body": "¡Sí! Instala la extensión de navegador de scrt.link para [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh) o [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) para crear enlaces secretos sin salir de tu pestaña actual. La extensión se comunica con nuestra API pública, por lo que se requiere un plan **[Top Secret](/pricing)** con una clave API.",
+	"browser_extension_faq_body": "¡Sí! Instala la extensión de navegador de scrt.link para [Chrome](https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/) o [Edge](https://microsoftedge.microsoft.com/addons/detail/scrtlink-%E2%80%94-share-a-secre/eaehlboohgmeoflgdnkeigdogefihlbj) para crear enlaces secretos sin salir de tu pestaña actual. La extensión se comunica con nuestra API pública, por lo que se requiere un plan **[Top Secret](/pricing)** con una clave API.",
 	"welcome_wizard_step_label": "Paso {current} de {total}",
 	"welcome_wizard_welcome_title": "Te damos la bienvenida a scrt.link",
 	"welcome_wizard_welcome_intro": "Vamos a configurar tu cuenta en unos pasos. Primero, ¿cómo te llamas?",
