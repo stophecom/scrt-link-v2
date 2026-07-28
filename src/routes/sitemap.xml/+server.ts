@@ -8,26 +8,37 @@ import type { RequestHandler } from './$types';
 // Public, crawlable marketing and info pages. Excludes auth flows,
 // account pages, secret retrieval links (/s, /r, /l), the API, and
 // white-label routes (those live on their own custom domains).
-const STATIC_PATHS = [
-	'/',
-	'/about',
-	'/pricing',
-	'/faq',
-	'/contact',
-	'/developers',
-	'/api-documentation',
-	'/security',
-	'/privacy',
-	'/farewell',
-	'/blog',
-	'/alternatives',
-	'/acceptable-use-policy',
-	'/cookie-policy',
-	'/gdpr',
-	'/imprint',
-	'/privacy-policy',
-	'/sla',
-	'/terms-of-service'
+//
+// `localized: false` mirrors `markNotTranslated` on the page itself. Those pages
+// emit an English-only canonical and no hreflang, so advertising alternates here
+// would contradict the markup and leave the locale variants without a canonical
+// Google accepts. Keep the two in sync when a page gains or loses translations.
+const STATIC_PATHS: { path: string; localized?: boolean }[] = [
+	{ path: '/' },
+	{ path: '/about' },
+	{ path: '/pricing' },
+	{ path: '/business' },
+	{ path: '/faq' },
+	{ path: '/contact' },
+	{ path: '/security' },
+	{ path: '/privacy' },
+	{ path: '/farewell' },
+	{ path: '/imprint' },
+	{ path: '/use-cases/customer-support' },
+	{ path: '/use-cases/it-security' },
+	{ path: '/use-cases/journalists' },
+	{ path: '/use-cases/legal-compliance' },
+	{ path: '/api-documentation', localized: false },
+	{ path: '/cli', localized: false },
+	{ path: '/blog', localized: false },
+	{ path: '/alternatives', localized: false },
+	{ path: '/acceptable-use-policy', localized: false },
+	{ path: '/cookie-policy', localized: false },
+	{ path: '/dpa', localized: false },
+	{ path: '/gdpr', localized: false },
+	{ path: '/privacy-policy', localized: false },
+	{ path: '/sla', localized: false },
+	{ path: '/terms-of-service', localized: false }
 ];
 
 const escapeXml = (value: string) =>
@@ -71,7 +82,7 @@ export const GET: RequestHandler = async () => {
 	const posts = await getBlogPosts();
 
 	const entries = [
-		...STATIC_PATHS.map((path) => buildUrlEntry(baseUrl, path)),
+		...STATIC_PATHS.map(({ path, localized }) => buildUrlEntry(baseUrl, path, { localized })),
 		...posts.map((post) =>
 			buildUrlEntry(baseUrl, `/blog/${post.slug}`, {
 				lastmod: new Date(post.date).toISOString(),
