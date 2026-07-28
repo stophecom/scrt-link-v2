@@ -8,8 +8,6 @@ import {
 	ShieldCheck,
 	ShieldEllipsisIcon,
 	ShieldPlus,
-	Timer,
-	Trash2,
 	Zap
 } from '@lucide/svelte';
 
@@ -26,6 +24,8 @@ export const chromeExtensionUrl =
 	'https://chromewebstore.google.com/detail/scrtlink-%E2%80%94-share-a-secret/ljcmmhacpghmooiojfdiekokhefopmmh';
 export const firefoxExtensionUrl =
 	'https://addons.mozilla.org/en-US/firefox/addon/scrt-link-share-a-secret/';
+export const edgeExtensionUrl =
+	'https://microsoftedge.microsoft.com/addons/detail/scrtlink-%E2%80%94-share-a-secre/eaehlboohgmeoflgdnkeigdogefihlbj';
 export const blueskyUrl = 'https://bsky.app/profile/scrt.link';
 export const linkedinUrl = 'https://www.linkedin.com/company/santihans';
 export const santihansUrl = 'https://www.santihans.com';
@@ -63,34 +63,18 @@ export const subscriptionFeatures = () => [
 	}
 ];
 
-export const businessFeatures = () => [
-	{
-		title: m.wide_zany_piranha_flow(),
-		icon: Zap,
-		description: m.loved_awful_okapi_revive({ SLA: `[SLA](${localizeHref('/sla')})` })
-	},
-	{
-		title: m.icy_topical_hare_peel(),
-		icon: ShieldCheck,
-		description: m.proof_seemly_eagle_cry()
-	},
-	{
-		title: m.dull_round_javelina_cheer(),
-		icon: Timer,
-		description: m.spare_grand_dove_fry()
-	}
-];
-
-export const securityFeatures = () => [
+export const businessTrustFeatures = () => [
 	{
 		title: m.flat_zany_baboon_adapt(),
 		icon: Lock,
 		description: m.misty_giant_snake_swim()
 	},
 	{
-		title: m.grand_vivid_newt_dash(),
-		icon: Trash2,
-		description: m.true_whole_quail_dust()
+		title: m.icy_topical_hare_peel(),
+		icon: ShieldCheck,
+		description: m.business_compliance_description({
+			DPA: `[${m.dpa_title()}](${localizeHref('/dpa')})`
+		})
 	},
 	{
 		title: m.basic_sound_rabbit_believe(),
@@ -98,8 +82,8 @@ export const securityFeatures = () => [
 		description: m.proof_every_gadfly_edit()
 	},
 	{
-		title: m.minor_top_reindeer_cherish(),
+		title: m.wide_zany_piranha_flow(),
 		icon: Zap,
-		description: m.cozy_top_ocelot_work()
+		description: m.loved_awful_okapi_revive({ SLA: `[SLA](${localizeHref('/sla')})` })
 	}
 ];

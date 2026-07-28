@@ -30,6 +30,12 @@ const business = () => [
 		category: 'business',
 		heading: m.minor_topical_bat_pet(),
 		body: m.lime_alert_gibbon_ascend()
+	},
+	{
+		id: 'business-custom-domain',
+		category: 'business',
+		heading: m.business_faq_domain_heading(),
+		body: m.business_faq_domain_body()
 	}
 ];
 

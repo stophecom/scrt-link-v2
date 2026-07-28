@@ -9,7 +9,7 @@ import {
 
 import { m } from '$lib/paraglide/messages.js';
 
-import { chromeExtensionUrl, firefoxExtensionUrl, githubUrl } from './app';
+import { chromeExtensionUrl, edgeExtensionUrl, firefoxExtensionUrl, githubUrl } from './app';
 
 export const secretMenu = () => [
 	{
@@ -83,6 +83,11 @@ export const integrationsMenu = () => [
 		href: firefoxExtensionUrl,
 		externalLink: true,
 		label: 'Firefox Extension'
+	},
+	{
+		href: edgeExtensionUrl,
+		externalLink: true,
+		label: 'Edge Extension'
 	}
 ];
 
