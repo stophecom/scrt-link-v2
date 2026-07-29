@@ -80,7 +80,7 @@ export const getSecretTypes = () => [
 	},
 	{
 		value: SecretType.FILE,
-		label: m.formal_aware_platypus_charm()
+		label: m.flat_warm_file_tab_label()
 	},
 	{
 		value: SecretType.REDIRECT,

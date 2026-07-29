@@ -48,6 +48,8 @@
 		metaParsed?.secretType === SecretType.FILE || metaParsed?.secretType === SecretType.SNAP
 	);
 	let isSnap = $derived(metaParsed?.secretType === SecretType.SNAP);
+	// Defaults to singular until the downloader has parsed the file envelope.
+	let isSingleFile = $derived((downloader?.files.length ?? 1) === 1);
 	let isNeogram = $derived(metaParsed?.secretType === SecretType.NEOGRAM);
 	let isSecretRedirect = $derived(metaParsed?.secretType === SecretType.REDIRECT);
 
@@ -161,9 +163,13 @@
 					<SnapRevelation {imageUrl} destructionTimer={metaParsed?.destructionTimer} />
 				{:else}
 					<!-- Secret Type: File -->
-					<h3 class="mb-2 pt-4 text-2xl font-semibold">{m.house_warm_fox_transform()}</h3>
+					<h3 class="mb-2 pt-4 text-2xl font-semibold">
+						{isSingleFile
+							? m.house_warm_fox_transform()
+							: m.flat_warm_file_reveal_heading_multiple()}
+					</h3>
 					<p class="mb-3">
-						{m.helpful_mean_salmon_slurp()}
+						{isSingleFile ? m.helpful_mean_salmon_slurp() : m.flat_warm_file_reveal_note_multiple()}
 					</p>
 					{#if downloader}
 						<FileRevelationList {downloader} />

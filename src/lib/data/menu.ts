@@ -20,7 +20,7 @@ export const secretMenu = () => [
 	{
 		icon: Paperclip,
 		href: '/file',
-		label: m.formal_aware_platypus_charm()
+		label: m.flat_warm_file_tab_label()
 	},
 	{
 		icon: Redo2,
