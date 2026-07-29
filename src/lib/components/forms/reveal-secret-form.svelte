@@ -6,15 +6,19 @@
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 
-	import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/client/utils';
+	import { FileDownloader } from '$lib/client/file-download.svelte';
 	import Password from '$lib/components/forms/form-fields/password.svelte';
 	import * as Form from '$lib/components/ui/form';
-	import { type FileMeta, type FileReference, handleFileChunksDownload } from '$lib/file-transfer';
+	import {
+		type FileReference,
+		type FilesEnvelope,
+		normalizeFileEnvelope
+	} from '$lib/file-transfer';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { type RevealSecretFormSchema, revealSecretFormSchema } from '$lib/validators/formSchemas';
 
-	import FileRevelation from '../blocks/file-revelation.svelte';
+	import FileRevelationList from '../blocks/file-revelation-list.svelte';
 	import NeogramRevelation from '../blocks/neogram-revelation.svelte';
 	import SnapRevelation from '../blocks/snap-revelation.svelte';
 	import Alert from '../ui/alert/alert.svelte';
@@ -36,9 +40,8 @@
 	let metaParsed: Meta | undefined = $state();
 	let content = $state('');
 	let imageUrl: string | undefined = $state();
-	let contentParsed: FileReference | undefined = $state();
+	let downloader: FileDownloader | undefined = $state();
 
-	let progress = $state(0);
 	let error: string = $state('');
 
 	let isSecretFileOrSnap = $derived(
@@ -47,8 +50,6 @@
 	let isSnap = $derived(metaParsed?.secretType === SecretType.SNAP);
 	let isNeogram = $derived(metaParsed?.secretType === SecretType.NEOGRAM);
 	let isSecretRedirect = $derived(metaParsed?.secretType === SecretType.REDIRECT);
-	let fileMeta = $derived(isSecretFileOrSnap ? metaParsed : undefined) as FileMeta;
-	let fileReference = $derived(isSecretFileOrSnap ? contentParsed : undefined) as FileReference;
 
 	const partialSchema = revealSecretFormSchema().omit({ password: true });
 
@@ -82,14 +83,24 @@
 				}
 
 				if (isSecretFileOrSnap) {
-					// We saved fileReference as content
-					contentParsed = JSON.parse(content);
+					// We saved the file envelope as content
+					const envelope = normalizeFileEnvelope(
+						JSON.parse(content) as FilesEnvelope | FileReference,
+						metaParsed
+					);
 
-					if (!('serviceWorker' in navigator) && metaParsed && !metaParsed.isSingleChunk) {
+					downloader = new FileDownloader({
+						envelope,
+						secretIdHash,
+						decryptionKey: masterKey
+					});
+
+					if (!('serviceWorker' in navigator) && downloader.requiresServiceWorker) {
 						throw Error(
 							'Your browser is not supported: Service worker not available. Try a different device or browser.'
 						);
 					}
+
 					imageUrl = await fetchSecretFile(isSnap);
 				}
 
@@ -108,79 +119,24 @@
 
 	const { form: formData, message, delayed, constraints, enhance } = revealSecretForm;
 
-	const handleProgress = async (getProgress: () => Promise<number>) => {
-		const progressInterval = setInterval(async () => {
-			progress = await getProgress();
-
-			if (progress >= 1) {
-				// Sometimes progress is above 1 for some reason
-				progress = 1;
-
-				clearInterval(progressInterval);
-				return Promise.resolve('File saved!');
-			}
-		}, 500);
-	};
-
-	const downloadFileAsStream = async (
-		secretIdHash: string,
-		fileMeta: FileMeta,
-		fileReference: FileReference,
-		decryptionKey: string
-	) => {
-		const fileInfo = {
-			secretIdHash,
-			...fileMeta,
-			...fileReference,
-			decryptionKey,
-			url: `/service-worker-file-download#${secretIdHash}`
-		};
-
-		// Ensure that you're not passing anything that could be non-clonable
-		const sanitizedMessage = JSON.parse(JSON.stringify(fileInfo));
-
-		await sendMessageToServiceWorker({
-			request: 'file_info',
-			data: sanitizedMessage
-		});
-
-		createDownloadLinkAndClick(fileInfo.url);
-	};
-
 	const fetchSecretFile = async (skipDownload: boolean) => {
 		try {
-			if (fileMeta && fileReference) {
-				// If only one chunk, we download immediately.
-				if (fileMeta.isSingleChunk && fileReference.chunks.length === 1) {
-					const file = {
-						secretIdHash,
-						decryptionKey: masterKey,
-						...fileReference,
-						...fileMeta,
-						progress: 0
-					};
-					const res = new Response(handleFileChunksDownload(file));
+			const files = downloader?.files ?? [];
 
-					await handleProgress(() => Promise.resolve(file.progress));
-					const blob = await res.blob();
-					const decryptedFile = new File([blob], fileMeta.name);
-					const url = window.URL.createObjectURL(decryptedFile);
+			if (!downloader || !files.length) {
+				return;
+			}
 
-					if (skipDownload) {
-						return Promise.resolve(url);
-					}
+			// Snap shows the image inline instead of downloading it.
+			if (skipDownload) {
+				return await downloader.toObjectUrl(files[0]);
+			}
 
-					createDownloadLinkAndClick(url, fileMeta.name);
-				}
-
-				await downloadFileAsStream(secretIdHash, fileMeta, fileReference, masterKey);
-
-				await handleProgress(() =>
-					sendMessageToServiceWorker<number>({
-						request: 'progress',
-						data: { secretIdHash: secretIdHash }
-					})
-				);
+			// A single file downloads on reveal, as it always has. With several files
+			// we'd trigger a burst of downloads the recipient never asked for, so they
+			// pick from the list instead.
+			if (files.length === 1) {
+				await downloader.download(files[0]);
 			}
 		} catch (e) {
 			if (e instanceof Error) {
@@ -209,7 +165,9 @@
 					<p class="mb-3">
 						{m.helpful_mean_salmon_slurp()}
 					</p>
-					<FileRevelation {progress} {fileMeta} />
+					{#if downloader}
+						<FileRevelationList {downloader} />
+					{/if}
 				{/if}
 			{:else if isNeogram}
 				<NeogramRevelation neogram={content} destructionTimer={metaParsed?.destructionTimer} />

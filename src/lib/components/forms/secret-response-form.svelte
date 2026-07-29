@@ -50,8 +50,8 @@
 	// is sent in plaintext so the server can authorize chunk downloads.
 	const fileKey = generateRandomUrlSafeString(MASTER_PASSWORD_LENGTH);
 	let signingKeyPair: CryptoKeyPair | undefined = $state();
-	let fileContent = $state(''); // JSON { bucket, chunks }
-	let fileMeta = $state(''); // JSON { name, size, mimeType, isSingleChunk }
+	let fileContent = $state(''); // JSON { bucket, files: [{ id, name, size, mimeType, chunks }] }
+	let fileMeta = $state(''); // JSON { fileCount, totalSize }
 	let isFileUploading = $state(false);
 
 	const sForm = superForm(formProp, {
@@ -184,6 +184,7 @@
 						privateKey={signingKeyPair.privateKey}
 						maxFileSize={maxAttachmentSize}
 						bind:loading={isFileUploading}
+						multiple
 					/>
 				</div>
 			</div>
