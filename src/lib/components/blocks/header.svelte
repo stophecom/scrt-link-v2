@@ -42,7 +42,7 @@
 
 	// Set to `true` to re-enable the header announcement/promo banner.
 	const announcementEnabled = true;
-	const showAnnouncement = new PersistedState<boolean>('showAnnouncement:secret-requests-ga', true);
+	const showAnnouncement = new PersistedState<boolean>('showAnnouncement:multiple-files', true);
 	const announcementVisible = $derived(
 		announcementEnabled && showAnnouncement.current && !isMinimal
 	);
@@ -66,8 +66,8 @@
 							<span>{m.fresh_calm_heron_note()}</span>
 							<a
 								class="after:bg-primary-foreground before:bg-primary-foreground relative inline-block before:absolute before:bottom-0 before:left-0 before:h-px before:w-full before:opacity-50 after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-bottom-right after:scale-x-0 after:transition-transform after:duration-300 after:ease-in-out hover:after:origin-bottom-left hover:after:scale-x-100"
-								href={localizeHref('/blog/product-updates-june-2026')}
-								>{m.keen_proud_otter_news()}</a
+								href={localizeHref('/blog/product-updates-july-2026')}
+								>{m.brisk_glad_marten_news()}</a
 							>
 							<button
 								type="button"
