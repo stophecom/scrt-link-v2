@@ -63,7 +63,7 @@
 </script>
 
 <!-- Scrolls horizontally rather than widening the page: the tabs don't all fit on a phone. -->
-<div class="mb-4 flex gap-1 overflow-x-auto">
+<div class="scrollbar-none mb-4 flex gap-1 overflow-x-auto">
 	{#each subNavItems as item (item.href)}
 		<a
 			href={item.href}

@@ -98,7 +98,7 @@
 				/>
 			{:else}
 				<Tabs.Root bind:value={currentTab}>
-					<Tabs.List class="max-w-full overflow-scroll">
+					<Tabs.List class="scrollbar-none max-w-full overflow-x-auto">
 						{#each enabledSecretTypes as secretTypeItem (secretTypeItem.value)}
 							<Tabs.Trigger value={secretTypeItem.value}>{secretTypeItem.label}</Tabs.Trigger>
 						{/each}
