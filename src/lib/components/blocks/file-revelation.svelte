@@ -42,14 +42,14 @@
 			<span aria-hidden="true">·</span>
 			{#if isDownloadComplete}
 				<span class="text-success inline-flex shrink-0 items-center gap-1">
-					{m.hour_tense_gecko_succeed()}
+					<span class="hidden sm:inline">{m.hour_tense_gecko_succeed()}</span>
 					<Check class="h-4 w-4" />
 				</span>
 			{:else if file.status === 'error'}
 				<span class="text-destructive truncate">{file.error}</span>
 			{:else if isDownloading}
 				<span class="inline-flex shrink-0 items-center gap-1">
-					{m.every_awful_guppy_fear()}
+					<span class="hidden sm:inline">{m.every_awful_guppy_fear()}</span>
 					<UploadSpinner class="rotate-180" />
 				</span>
 			{:else}
