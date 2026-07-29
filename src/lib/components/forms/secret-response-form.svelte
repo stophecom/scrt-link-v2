@@ -173,7 +173,7 @@
 		{#if allowAttachment && signingKeyPair}
 			<div>
 				<div class="mb-1 text-sm leading-none font-medium">
-					{m.flat_warm_resp_attachment_label()}
+					{m.flat_warm_resp_attachments_label()}
 				</div>
 				<div class="min-h-32 py-2">
 					<SecretFileUpload

@@ -41,11 +41,24 @@
 		maxFileSize = 1 * GB,
 		disabled,
 		accept,
-		labelButton = m.gray_free_manatee_buy(),
-		labelDropzone = m.ideal_jumpy_lionfish_scold(),
+		labelButton,
+		labelDropzone,
 		variant = 'zone',
 		validate
 	}: Props = $props();
+
+	// Defaults follow `multiple`, so single-file consumers (Snap, white-label
+	// logos) keep the singular wording.
+	const buttonLabel = $derived(
+		labelButton ?? (multiple ? m.flat_warm_file_button_multiple() : m.gray_free_manatee_buy())
+	);
+	const dropzoneLabel = $derived(
+		labelDropzone ??
+			(multiple ? m.flat_warm_file_dropzone_multiple() : m.ideal_jumpy_lionfish_scold())
+	);
+	const inputLabel = $derived(
+		multiple ? m.flat_warm_file_input_label_multiple() : m.gross_nice_gecko_compose()
+	);
 
 	const inputId = $props.id();
 
@@ -55,7 +68,7 @@
 		onError('');
 
 		if (!multiple && files.length > 1) {
-			handleError(m.grand_level_herring_sail());
+			handleError(m.flat_warm_file_single_only());
 			return false;
 		}
 
@@ -153,13 +166,13 @@
 				<ArrowUpFromLine class="h-5 w-5" />
 			</div>
 			<!-- We show a simple button on smaller screens, and a drag/onDrop area on larger screens. -->
-			<span class="dz:inline hidden text-center">{labelDropzone}</span>
-			<span class="dz:hidden text-center text-lg">{labelButton}</span>
+			<span class="dz:inline hidden text-center">{dropzoneLabel}</span>
+			<span class="dz:hidden text-center text-lg">{buttonLabel}</span>
 		</div>
 	{/if}
 
 	<label class="sr-only" for={inputId}>
-		{variant === 'compact' ? m.flat_warm_file_add() : m.gross_nice_gecko_compose()}
+		{variant === 'compact' ? m.flat_warm_file_add() : inputLabel}
 	</label>
 	<input
 		id={inputId}

@@ -174,7 +174,7 @@
 		<Form.Field form={sForm} name="allowAttachment" class="mb-4 pb-2">
 			<Checkbox
 				bind:checked={$formData.allowAttachment}
-				label={m.flat_warm_req_allow_attachment()}
+				label={m.flat_warm_req_allow_attachments()}
 				data-testid="input-allow-attachment"
 			/>
 		</Form.Field>

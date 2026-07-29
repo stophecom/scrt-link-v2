@@ -149,7 +149,7 @@
 
 		{#if downloader}
 			<div class="mt-6" data-testid="decrypted-attachment">
-				<h3 class="mb-1 text-lg font-semibold">{m.flat_warm_resp_attachment_heading()}</h3>
+				<h3 class="mb-1 text-lg font-semibold">{m.flat_warm_resp_attachments_heading()}</h3>
 				<FileRevelationList {downloader} />
 			</div>
 		{/if}
