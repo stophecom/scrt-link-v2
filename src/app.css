@@ -138,6 +138,17 @@
 	}
 }
 
+/* Scrollable without a visible scrollbar. Needed for horizontal tab strips:
+   on Windows/Linux scrollbars are not overlays and would take up space. */
+@utility scrollbar-none {
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* Legacy Edge/IE */
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
 /* Detect touch device. Used for dropzone vs button */
 @custom-variant dz (@media (hover: hover) and (pointer: fine));
 
