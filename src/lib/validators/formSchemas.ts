@@ -385,8 +385,10 @@ export const secretResponseFormSchema = () =>
 			encryptedResponseContent: z.string().max(1_000_000).optional(),
 			wrappedResponseKey: z.string().min(1).max(512), // RSA-2048 OAEP wrapped AES key is ~344 base64 chars
 			encryptedResponseMeta: z.string().max(1_000).optional(),
-			// AES-GCM(JSON { fileKey, fileReference, fileMeta }) — same AES key as content
-			encryptedResponseFile: z.string().max(200_000).optional(),
+			// AES-GCM(JSON { fileKey, fileReference, fileMeta }) — same AES key as content.
+			// fileReference holds a chunk list per attached file, so this grows with
+			// both the number and the size of the attachments.
+			encryptedResponseFile: z.string().max(1_000_000).optional(),
 			// ECDSA public key (PEM) used to authorize attachment chunk downloads
 			responseFilePublicKey: z.string().max(500).optional()
 		})

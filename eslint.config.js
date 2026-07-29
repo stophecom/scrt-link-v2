@@ -30,7 +30,8 @@ export default ts.config(
 		}
 	},
 	{
-		files: ['**/*.svelte'],
+		// `.svelte.ts` modules hold runes outside components and need the same parser.
+		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
 		languageOptions: {
 			parserOptions: {
 				parser: ts.parser

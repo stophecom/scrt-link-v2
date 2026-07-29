@@ -38,9 +38,14 @@
 	import Toggle from '../ui/toggle/toggle.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
+	// `Partial<FileMeta>` covers legacy single-file secrets, which carried the file's
+	// name/size/mimeType here. New file secrets keep that inside `content` and only
+	// record aggregates in meta.
 	export type Meta = Partial<FileMeta> & {
 		secretType: SecretType;
 		destructionTimer?: number;
+		fileCount?: number;
+		totalSize?: number;
 	};
 
 	export type SecretFormProps = {
@@ -213,6 +218,7 @@
 							{privateKey}
 							maxFileSize={planLimits.file}
 							bind:loading={isFileUploading}
+							multiple={secretType === SecretType.FILE}
 							accept={secretType === SecretType.SNAP ? 'image/*' : undefined}
 						/>
 

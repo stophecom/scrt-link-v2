@@ -2,7 +2,7 @@ import { decryptData, encryptFile, sha256Hash, signMessage } from '@scrt-link/co
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
-import { api, asyncPool } from '$lib/api';
+import { api } from '$lib/api';
 
 // If the request fails, we retry
 axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
@@ -12,7 +12,7 @@ type SignedUrlGetResponse = {
 };
 export type PresignedPostResponse = { url: string; fields: Record<string, string> };
 
-type Chunk = {
+export type Chunk = {
 	key: string;
 	signature: string;
 	size: number;
@@ -24,12 +24,32 @@ export type FileMeta = {
 	mimeType: string;
 	isSingleChunk: boolean;
 };
+
+/**
+ * Legacy single-file envelope. Secrets created before multi-file support stored
+ * `content` as `{ bucket, chunks }` with the file's name/size/mimeType living in
+ * the (separately encrypted) `meta`. Secrets live up to FILE_RETENTION_PERIOD_IN_DAYS,
+ * so this shape must stay readable. Only `FilesEnvelope` is ever written.
+ */
 export type FileReference = {
 	bucket: string;
 	chunks: Chunk[];
 };
 
-export interface SecretFile extends FileMeta, FileReference {
+/** One file inside a multi-file secret: its meta and its chunk list, kept together. */
+export type SecretFileEntry = FileMeta & {
+	id: string;
+	chunks: Chunk[];
+};
+
+/** Current shape of a file secret's decrypted `content`. */
+export type FilesEnvelope = {
+	bucket: string;
+	files: SecretFileEntry[];
+};
+
+export interface SecretFile extends SecretFileEntry {
+	bucket: string;
 	secretIdHash: string;
 	// When set, chunk downloads are authorized against a secret request
 	// (ECDSA signature verified vs. secret_request.responseFilePublicKey)
@@ -39,25 +59,101 @@ export interface SecretFile extends FileMeta, FileReference {
 	progress: number;
 }
 
+const isFilesEnvelope = (envelope: FilesEnvelope | FileReference): envelope is FilesEnvelope =>
+	Array.isArray((envelope as FilesEnvelope).files);
+
+/**
+ * Accepts either envelope shape and always returns the multi-file one, so callers
+ * never branch on format. For the legacy shape the per-file meta is recovered from
+ * the secret's `meta` object, which is where it used to live.
+ */
+export const normalizeFileEnvelope = (
+	envelope: FilesEnvelope | FileReference,
+	legacyMeta?: Partial<FileMeta>
+): FilesEnvelope => {
+	if (isFilesEnvelope(envelope)) {
+		return envelope;
+	}
+
+	const { bucket, chunks } = envelope;
+
+	return {
+		bucket,
+		files: [
+			{
+				// Chunk keys are random UUIDs, unique per upload — a stable id for legacy secrets.
+				id: chunks[0]?.key ?? 'legacy-file',
+				name: legacyMeta?.name ?? 'secret-file.bin',
+				size: legacyMeta?.size ?? totalChunkSize(chunks),
+				mimeType: legacyMeta?.mimeType ?? 'application/octet-stream',
+				isSingleChunk: legacyMeta?.isSingleChunk ?? chunks.length === 1,
+				chunks
+			}
+		]
+	};
+};
+
+export const totalChunkSize = (chunks: Chunk[]): number =>
+	chunks.reduce((total, chunk) => total + chunk.size, 0);
+
+/**
+ * Service worker map key. One download response carries one file, so a secret with
+ * several files needs one entry per file rather than one per secret.
+ */
+export const fileDownloadKey = (secretIdHash: string, fileId: string) =>
+	`${secretIdHash}:${fileId}`;
+
+/**
+ * Number of chunk uploads in flight at once. Shared across all files of a secret —
+ * without a shared limiter, uploading N files would open 3×N connections.
+ */
+export const UPLOAD_CONCURRENCY = 3;
+
+export type UploadSemaphore = { acquire: () => Promise<() => void> };
+
+export const createUploadSemaphore = (limit: number): UploadSemaphore => {
+	let active = 0;
+	const waiting: (() => void)[] = [];
+
+	const release = () => {
+		active--;
+		waiting.shift()?.();
+	};
+
+	return {
+		acquire: async () => {
+			if (active >= limit) {
+				await new Promise<void>((resolve) => waiting.push(resolve));
+			}
+			active++;
+			return release;
+		}
+	};
+};
+
 type HandleFileEncryptionAndUpload = {
-	controllers: Map<number, AbortController>;
+	// Keyed by `${uploadId}:${chunkIndex}` so concurrent files don't clobber each other.
+	controllers: Map<string, AbortController>;
+	uploadId: string;
 	file: File;
 	masterKey: string;
 	privateKey: CryptoKey;
 	chunkSize: number;
+	semaphore?: UploadSemaphore;
 	progressCallback: (progress: number) => void;
 };
 export const handleFileEncryptionAndUpload = async ({
 	controllers,
+	uploadId,
 	file,
 	masterKey,
 	privateKey,
 	chunkSize,
+	semaphore,
 	progressCallback
 }: HandleFileEncryptionAndUpload): Promise<Chunk[]> => {
 	const fileSize = file.size;
-	const numberOfChunks = typeof chunkSize === 'number' ? Math.ceil(fileSize / chunkSize) : 1;
-	const concurrentUploads = Math.min(3, numberOfChunks);
+	const numberOfChunks = Math.ceil(fileSize / chunkSize);
 	const progressOfEachChunk: number[] = [];
 	progressCallback(0);
 
@@ -65,47 +161,58 @@ export const handleFileEncryptionAndUpload = async ({
 		throw new Error('Empty file (zero bytes). Please select another file.');
 	}
 
-	return asyncPool(concurrentUploads, [...new Array(numberOfChunks).keys()], async (i: number) => {
-		const controller = new AbortController();
-		const signal = controller.signal;
-		controllers.set(i, controller); // Store the controller
+	const slots =
+		semaphore ?? createUploadSemaphore(Math.min(UPLOAD_CONCURRENCY, numberOfChunks || 1));
 
-		const start = i * chunkSize;
-		const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize;
-		const chunk = file.slice(start, end);
+	return Promise.all(
+		[...new Array(numberOfChunks).keys()].map(async (i): Promise<Chunk> => {
+			const releaseSlot = await slots.acquire();
 
-		const encryptedFile = await encryptFile(chunk, masterKey);
+			const controllerKey = `${uploadId}:${i}`;
+			const controller = new AbortController();
+			const signal = controller.signal;
+			controllers.set(controllerKey, controller); // Store the controller
 
-		const chunkFileSize = encryptedFile.size;
-		const fileName = crypto.randomUUID();
-		const signature = await signMessage(fileName, privateKey);
+			try {
+				const start = i * chunkSize;
+				const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize;
+				const chunk = file.slice(start, end);
 
-		const fileNameHashed = await sha256Hash(fileName);
-		const { url, fields } = await api<PresignedPostResponse>(
-			`/secrets/files?file=${fileNameHashed}`
-		);
+				const encryptedFile = await encryptFile(chunk, masterKey);
 
-		await uploadFileToS3({
-			signal,
-			url,
-			fields,
-			blob: encryptedFile,
-			size: chunkFileSize,
-			progressCallback: (p) => {
-				progressOfEachChunk[i] = p;
-				const sum = (progressOfEachChunk.reduce((a, b) => a + b, 0) / numberOfChunks) * 100;
-				progressCallback(sum);
+				const chunkFileSize = encryptedFile.size;
+				const fileName = crypto.randomUUID();
+				const signature = await signMessage(fileName, privateKey);
+
+				const fileNameHashed = await sha256Hash(fileName);
+				const { url, fields } = await api<PresignedPostResponse>(
+					`/secrets/files?file=${fileNameHashed}`
+				);
+
+				await uploadFileToS3({
+					signal,
+					url,
+					fields,
+					blob: encryptedFile,
+					size: chunkFileSize,
+					progressCallback: (p) => {
+						progressOfEachChunk[i] = p;
+						const sum = (progressOfEachChunk.reduce((a, b) => a + b, 0) / numberOfChunks) * 100;
+						progressCallback(sum);
+					}
+				});
+
+				return {
+					key: fileName,
+					signature,
+					size: chunk.size
+				};
+			} finally {
+				controllers.delete(controllerKey); // Remove controller after completion
+				releaseSlot();
 			}
-		}).then(() => {
-			controllers.delete(i); // Remove controller after completion
-		});
-
-		return {
-			key: fileName,
-			signature,
-			size: chunk.size
-		};
-	});
+		})
+	);
 };
 
 type UploadFileToS3Params = {
@@ -182,7 +289,7 @@ export const handleFileChunksDownload = (file: SecretFile) => {
 	const { secretIdHash, requestIdHash, chunks, bucket, decryptionKey } = file;
 
 	let loaded = 0;
-	const totalSize = chunks.map((o) => o['size']).reduce((a, b) => a + b);
+	const totalSize = totalChunkSize(chunks);
 
 	const decryptionStream = new ReadableStream({
 		async start(controller) {

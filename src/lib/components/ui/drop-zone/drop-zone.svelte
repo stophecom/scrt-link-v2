@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ArrowUpFromLine from '@lucide/svelte/icons/arrow-up-from-line';
+	import Plus from '@lucide/svelte/icons/plus';
 
 	import { GB } from '$lib/data/units';
 	import { formatBytes } from '$lib/i18n';
@@ -23,6 +24,13 @@
 		accept?: string; // image/*, .gif etc.
 		labelButton?: string;
 		labelDropzone?: string;
+		// 'zone' is the full drag-and-drop area shown when nothing is selected yet.
+		// 'compact' is the round "add more" button shown alongside a file list —
+		// body-level drag and drop keeps working in both.
+		variant?: 'zone' | 'compact';
+		// Extra check owned by the parent (e.g. the remaining size budget across
+		// all already-selected files). Return an error message to reject.
+		validate?: (files: File[]) => string | null;
 	};
 	let {
 		onError,
@@ -34,26 +42,34 @@
 		disabled,
 		accept,
 		labelButton = m.gray_free_manatee_buy(),
-		labelDropzone = m.ideal_jumpy_lionfish_scold()
+		labelDropzone = m.ideal_jumpy_lionfish_scold(),
+		variant = 'zone',
+		validate
 	}: Props = $props();
+
+	const inputId = $props.id();
 
 	const validateFiles = (files: File[]) => {
 		// Clear any previous error before re-validating, so a stale message
 		// (e.g. "Maximum file size…") doesn't persist after a valid selection.
 		onError('');
 
-		if (!multiple) {
-			if (files.length > 1) {
-				handleError(m.grand_level_herring_sail());
-				return false;
-			}
+		if (!multiple && files.length > 1) {
+			handleError(m.grand_level_herring_sail());
+			return false;
 		}
 
-		// Since we only allow one file, checking first file only
-		if (files[0].size > maxFileSize) {
+		if (files.some((file) => file.size > maxFileSize)) {
 			handleError(m.slimy_royal_lamb_roar({ amount: formatBytes(maxFileSize) }));
 			return false;
 		}
+
+		const validationError = validate?.(files);
+		if (validationError) {
+			handleError(validationError);
+			return false;
+		}
+
 		return true;
 	};
 
@@ -111,6 +127,9 @@
 		if (validateFiles(files)) {
 			onDrop(files);
 		}
+
+		// Allow picking the same file again after it was removed from the list.
+		input.value = '';
 	};
 </script>
 
@@ -122,20 +141,28 @@
 />
 
 <div
-	class="hover:shadow-black-200/50 border-foreground bg-background/70 text-foreground dz:rounded-lg dz:border-dashed dz:text-foreground dz:shadow-none dz:hover:shadow-lg relative rounded-2xl border transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-hidden hover:border-solid"
+	class={variant === 'compact'
+		? 'bg-primary text-primary-foreground relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition focus-within:outline-hidden hover:opacity-90'
+		: 'hover:shadow-black-200/50 border-foreground bg-background/70 text-foreground dz:rounded-lg dz:border-dashed dz:text-foreground dz:shadow-none dz:hover:shadow-lg relative rounded-2xl border transition focus-within:border-solid focus-within:shadow-lg focus-within:outline-hidden hover:border-solid'}
 >
-	<div class="flex h-full flex-col items-center justify-center p-2 sm:p-4">
-		<div class="mb-1 flex pt-1">
-			<ArrowUpFromLine class="h-5 w-5" />
+	{#if variant === 'compact'}
+		<Plus class="h-5 w-5" />
+	{:else}
+		<div class="flex h-full flex-col items-center justify-center p-2 sm:p-4">
+			<div class="mb-1 flex pt-1">
+				<ArrowUpFromLine class="h-5 w-5" />
+			</div>
+			<!-- We show a simple button on smaller screens, and a drag/onDrop area on larger screens. -->
+			<span class="dz:inline hidden text-center">{labelDropzone}</span>
+			<span class="dz:hidden text-center text-lg">{labelButton}</span>
 		</div>
-		<!-- We show a simple button on smaller screens, and a drag/onDrop area on larger screens. -->
-		<span class="dz:inline hidden text-center">{labelDropzone}</span>
-		<span class="dz:hidden text-center text-lg">{labelButton}</span>
-	</div>
+	{/if}
 
-	<label class="sr-only" for="dropzone">{m.gross_nice_gecko_compose()}</label>
+	<label class="sr-only" for={inputId}>
+		{variant === 'compact' ? m.flat_warm_file_add() : m.gross_nice_gecko_compose()}
+	</label>
 	<input
-		id="dropzone"
+		id={inputId}
 		class="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0"
 		type="file"
 		{multiple}
