@@ -13,7 +13,8 @@
 	let { downloader }: Props = $props();
 </script>
 
-<div class="border-foreground bg-background rounded border">
+<!-- overflow-hidden so each row's progress fill is clipped to the rounded corners. -->
+<div class="border-foreground bg-background overflow-hidden rounded border">
 	<ul class="divide-border max-h-72 divide-y overflow-y-auto">
 		{#each downloader.files as file (file.id)}
 			<FileRevelation {file} handleDownload={() => downloader.download(file)} />

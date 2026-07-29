@@ -220,7 +220,8 @@
 </script>
 
 {#if items.length}
-	<div class="border-foreground bg-background rounded border">
+	<!-- overflow-hidden so each row's progress fill is clipped to the rounded corners. -->
+	<div class="border-foreground bg-background overflow-hidden rounded border">
 		<ul class="divide-border max-h-72 divide-y overflow-y-auto">
 			{#each items as item (item.id)}
 				<li class="relative flex items-center gap-3 p-3">

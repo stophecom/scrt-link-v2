@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="relative min-w-0 grow">
-		<div class="truncate" title={file.name}>
+		<div class="truncate text-sm" title={file.name}>
 			<Typewriter mode="scramble" scrambleDuration={900} message={file.name} />
 		</div>
 		<div class="text-muted-foreground flex items-center gap-2 text-sm">
