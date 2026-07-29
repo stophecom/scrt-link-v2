@@ -13,8 +13,16 @@
 	let { downloader }: Props = $props();
 </script>
 
+<div class="border-foreground bg-background rounded border">
+	<ul class="divide-border max-h-72 divide-y overflow-y-auto">
+		{#each downloader.files as file (file.id)}
+			<FileRevelation {file} handleDownload={() => downloader.download(file)} />
+		{/each}
+	</ul>
+</div>
+
 {#if downloader.files.length > 1}
-	<div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+	<div class="flex flex-wrap items-center gap-3 pt-3">
 		<div class="text-muted-foreground text-sm">
 			{m.flat_warm_file_summary({
 				count: downloader.files.length,
@@ -23,6 +31,7 @@
 		</div>
 		<Button
 			size="sm"
+			class="ms-auto"
 			onclick={() => downloader.downloadAll()}
 			disabled={downloader.isDownloading}
 			data-testid="download-all-files"
@@ -32,14 +41,3 @@
 		</Button>
 	</div>
 {/if}
-
-<div class="space-y-3">
-	{#each downloader.files as file (file.id)}
-		<div>
-			<FileRevelation {file} handleDownload={() => downloader.download(file)} />
-			{#if file.error}
-				<div class="text-destructive p-1 text-sm">{file.error}</div>
-			{/if}
-		</div>
-	{/each}
-</div>

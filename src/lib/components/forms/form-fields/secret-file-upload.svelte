@@ -5,7 +5,6 @@
 	import IconX from '@lucide/svelte/icons/x';
 	import { onDestroy } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
-	import { fade } from 'svelte/transition';
 
 	import { PUBLIC_S3_BUCKET } from '$env/static/public';
 	import { CHUNK_SIZE } from '$lib/client/constants';
@@ -253,7 +252,7 @@
 							{:else if item.status === 'error'}
 								<span class="text-destructive truncate">{item.error}</span>
 							{:else}
-								<span transition:fade class="inline-flex items-center gap-1">
+								<span class="inline-flex items-center gap-1">
 									{m.due_lazy_bat_dance()}
 									<UploadSpinner />
 								</span>

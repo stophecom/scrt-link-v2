@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Check, Download } from '@lucide/svelte';
+	import Check from '@lucide/svelte/icons/check';
+	import Download from '@lucide/svelte/icons/download';
 	import FileLock from '@lucide/svelte/icons/file-lock';
-	import { fade } from 'svelte/transition';
 
 	import type { DownloadableFile } from '$lib/client/file-download.svelte';
 	import Typewriter from '$lib/components/helpers/typewriter.svelte';
@@ -9,89 +9,70 @@
 	import { m } from '$lib/paraglide/messages.js';
 
 	import Button from '../ui/button/button.svelte';
-	import ProgressBar from '../ui/drop-zone/progress-bar/progress-bar.svelte';
 	import UploadSpinner from '../ui/spinner/upload-spinner.svelte';
 
 	type Props = { file: DownloadableFile; handleDownload?: () => void };
 
 	let { file, handleDownload }: Props = $props();
 
-	let progress = $derived(file.progress);
-	let isDownloading = $derived(file.status === 'downloading' && progress < 1);
+	let isDownloading = $derived(file.status === 'downloading' && file.progress < 1);
 	let isDownloadComplete = $derived(file.status === 'done');
+	// The row fills up behind the content as the file downloads.
+	let fillWidth = $derived(isDownloadComplete ? 100 : file.progress * 100);
 </script>
 
-<div class="border-foreground bg-background relative min-h-24 rounded border p-4">
+<li class="relative flex items-center gap-3 p-3">
 	<div
-		class="bg-muted absolute top-0 left-0 h-full rounded"
-		style="min-width: 0%; width: {progress * 100}%"
+		class="bg-muted absolute top-0 left-0 h-full opacity-70"
+		style="min-width: 0%; width: {fillWidth}%"
 	></div>
 
-	<div class="relative flex flex-wrap items-center gap-4">
-		<div class="grid grid-cols-[min-content_1fr] gap-4">
-			<div class="flex min-w-12 items-center justify-center">
-				{#if isDownloading}
-					<div
-						transition:fade
-						class="border-foreground bg-background text-muted-foreground rounded-full border p-2"
-					>
-						<UploadSpinner class="rotate-180" />
-					</div>
-				{:else if isDownloadComplete}
-					<div
-						transition:fade
-						class="border-foreground bg-background text-muted-foreground rounded-full border p-2"
-					>
-						<Check class="text-success" />
-					</div>
-				{:else}
-					<FileLock class="text-primary h-10 w-10 stroke-1" />
-				{/if}
-			</div>
+	<div
+		class="bg-muted relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded"
+	>
+		<FileLock class="text-muted-foreground h-5 w-5" />
+	</div>
 
-			<div class="overflow-hidden">
-				<div class="flex truncate">
-					<strong class="mr-1">{m.suave_level_squirrel_hope()}</strong>
-					<Typewriter mode="scramble" scrambleDuration={900} message={file.name} />
-				</div>
-
-				<div class="flex truncate">
-					<strong class="mr-1">{m.smug_smart_giraffe_borrow()}</strong>
-					<Typewriter
-						mode="scramble"
-						scrambleDuration={900}
-						message={formatBytes(file.size || 0)}
-					/>
-				</div>
-				<div class="flex truncate">
-					<strong class="mr-1">{m.slow_free_lynx_spur()}</strong>
-					<Typewriter mode="scramble" scrambleDuration={900} message={file.mimeType} />
-				</div>
-			</div>
+	<div class="relative min-w-0 grow">
+		<div class="truncate" title={file.name}>
+			<Typewriter mode="scramble" scrambleDuration={900} message={file.name} />
 		</div>
-		{#if handleDownload}
-			<Button
-				class="xs:w-auto ms-auto w-full"
-				onclick={handleDownload}
-				disabled={isDownloading}
-				data-testid="download-attachment"
-			>
-				<Download class="mr-2 h-4 w-4" />
-				{#if isDownloadComplete}
-					{m.flat_warm_resp_download_again()}
-				{:else}
-					{m.flat_warm_resp_download_attachment()}
-				{/if}
-			</Button>
-		{/if}
+		<div class="text-muted-foreground flex items-center gap-2 text-sm">
+			<span class="shrink-0">{formatBytes(file.size)}</span>
+			<span aria-hidden="true">·</span>
+			{#if isDownloadComplete}
+				<span class="text-success inline-flex shrink-0 items-center gap-1">
+					{m.hour_tense_gecko_succeed()}
+					<Check class="h-4 w-4" />
+				</span>
+			{:else if file.status === 'error'}
+				<span class="text-destructive truncate">{file.error}</span>
+			{:else if isDownloading}
+				<span class="inline-flex shrink-0 items-center gap-1">
+					{m.every_awful_guppy_fear()}
+					<UploadSpinner class="rotate-180" />
+				</span>
+			{:else}
+				<span class="truncate" title={file.mimeType}>{file.mimeType}</span>
+			{/if}
+		</div>
 	</div>
-</div>
-{#if isDownloading || isDownloadComplete}
-	<div class="text-muted-foreground h-5 pt-1">
-		<ProgressBar
-			labelInProgress={m.every_awful_guppy_fear()}
-			labelComplete={m.hour_tense_gecko_succeed()}
-			progress={progress * 100}
-		/>
-	</div>
-{/if}
+
+	{#if handleDownload}
+		{@const label = isDownloadComplete
+			? m.flat_warm_resp_download_again()
+			: m.flat_warm_resp_download_attachment()}
+		<Button
+			size="icon"
+			class="border-foreground relative shrink-0"
+			variant="ghost"
+			title={label}
+			aria-label={label}
+			onclick={handleDownload}
+			disabled={isDownloading}
+			data-testid="download-attachment"
+		>
+			<Download class="h-5 w-5" />
+		</Button>
+	{/if}
+</li>
