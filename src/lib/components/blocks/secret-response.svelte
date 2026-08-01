@@ -15,6 +15,7 @@
 	type Props = {
 		data: {
 			encryptedNote: string | null;
+			allowText: boolean;
 			allowAttachment: boolean;
 			maxAttachmentSize: number;
 			alreadyResponded: boolean;
@@ -96,6 +97,7 @@
 			form={data.form}
 			publicKeyJWK={data.publicKey}
 			requestIdHash={data.requestIdHash}
+			allowText={data.allowText}
 			allowAttachment={data.allowAttachment}
 			maxAttachmentSize={data.maxAttachmentSize}
 			bind:successMessage

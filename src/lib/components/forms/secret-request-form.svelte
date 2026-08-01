@@ -1,5 +1,8 @@
 <script lang="ts">
+	import AlignLeft from '@lucide/svelte/icons/align-left';
 	import ChevronDown from '@lucide/svelte/icons/chevron-down';
+	import Files from '@lucide/svelte/icons/files';
+	import Paperclip from '@lucide/svelte/icons/paperclip';
 	import {
 		encryptRequestNote,
 		encryptResponseContent,
@@ -28,8 +31,8 @@
 	import { getExpiresInOptions } from '../../data/secretSettings';
 	import UpgradeNotice from '../blocks/upgrade-notice.svelte';
 	import Toggle from '../ui/toggle/toggle.svelte';
-	import Checkbox from './form-fields/checkbox.svelte';
 	import RadioGroup from './form-fields/radio-group.svelte';
+	import SegmentedControl from './form-fields/segmented-control.svelte';
 	import FormWrapper from './form-wrapper.svelte';
 
 	type Props = {
@@ -53,6 +56,16 @@
 	let isOptionsVisible = $state(false);
 	let keysReady = $state(false);
 
+	// UI-only selection ('text' | 'files' | 'both'); maps onto the `allowText` /
+	// `allowAttachment` booleans in onSubmit.
+	let responseType = $state('text');
+
+	const responseTypeOptions = [
+		{ value: 'text', label: m.flat_warm_req_response_type_text(), icon: AlignLeft },
+		{ value: 'files', label: m.flat_warm_req_response_type_files(), icon: Paperclip },
+		{ value: 'both', label: m.flat_warm_req_response_type_both(), icon: Files }
+	];
+
 	const sForm = superForm(formProp, {
 		validators: zod4(secretRequestFormSchema()),
 		dataType: 'json',
@@ -75,6 +88,8 @@
 
 			$formData.encryptedNote = encryptedNote;
 			$formData.encryptedNoteForOwner = encryptedNoteForOwner;
+			$formData.allowText = responseType !== 'files';
+			$formData.allowAttachment = responseType !== 'text';
 
 			// Build the request link. `.` delimits requestId from noteKey; both are now
 			// base64url so the whole fragment stays URL-safe (no `|`, `+`, `/`, `=`).
@@ -161,21 +176,20 @@
 
 <FormWrapper message={$message}>
 	<form method="POST" action="?/postSecretRequest" use:enhance>
-		<Form.Field form={sForm} name="encryptedNote">
+		<SegmentedControl
+			bind:value={responseType}
+			label={m.flat_warm_req_response_type_label()}
+			options={responseTypeOptions}
+			class="mb-5"
+		/>
+
+		<Form.Field form={sForm} name="encryptedNote" class="mb-4 pb-2">
 			<Textarea
 				bind:value={noteText}
 				data-testid="input-request-note"
 				label={m.soft_kind_swan_write()}
 				placeholder={m.pale_quick_finch_hint()}
 				rows={4}
-			/>
-		</Form.Field>
-
-		<Form.Field form={sForm} name="allowAttachment" class="mb-4 pb-2">
-			<Checkbox
-				bind:checked={$formData.allowAttachment}
-				label={m.flat_warm_req_allow_attachments()}
-				data-testid="input-allow-attachment"
 			/>
 		</Form.Field>
 
