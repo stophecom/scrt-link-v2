@@ -29,6 +29,7 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 		encryptedPrivateKey,
 		encryptedNote,
 		encryptedNoteForOwner,
+		allowText,
 		allowAttachment,
 		expiresIn
 	} = data;
@@ -44,6 +45,7 @@ export const saveSecretRequest = async ({ userId, data }: SaveSecretRequest) => 
 				encryptedPrivateKey,
 				encryptedNote,
 				encryptedNoteForOwner,
+				allowText,
 				allowAttachment,
 				receiptId,
 				expiresAt: new Date(Date.now() + expiresIn),
@@ -96,6 +98,7 @@ export const loadSecretResponsePageData = async (requestIdHash: string) => {
 	return {
 		publicKey: request.publicKey,
 		encryptedNote: request.encryptedNote,
+		allowText: request.allowText,
 		allowAttachment: request.allowAttachment,
 		maxAttachmentSize,
 		requestIdHash,
@@ -114,6 +117,7 @@ export const getSecretRequestByHash = async (requestIdHash: string) => {
 			publicKey: secretRequest.publicKey,
 			encryptedPrivateKey: secretRequest.encryptedPrivateKey,
 			encryptedNote: secretRequest.encryptedNote,
+			allowText: secretRequest.allowText,
 			allowAttachment: secretRequest.allowAttachment,
 			wrappedResponseKey: secretRequest.wrappedResponseKey,
 			encryptedResponseMeta: secretRequest.encryptedResponseMeta,

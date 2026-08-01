@@ -2276,6 +2276,10 @@ export const postSecretResponse: Action = async (event) => {
 		return fail(400, { form });
 	}
 
+	if (encryptedResponseContent && !request.allowText) {
+		return fail(400, { form });
+	}
+
 	try {
 		const result = await submitSecretResponse({
 			requestIdHash,
