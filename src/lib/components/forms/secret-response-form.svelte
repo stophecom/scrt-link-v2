@@ -29,6 +29,7 @@
 		form: SuperValidated<SecretResponseFormSchema>;
 		publicKeyJWK: string;
 		requestIdHash: string;
+		allowText?: boolean;
 		allowAttachment?: boolean;
 		maxAttachmentSize?: number;
 		successMessage?: string;
@@ -38,6 +39,7 @@
 		form: formProp,
 		publicKeyJWK,
 		requestIdHash,
+		allowText = true,
 		allowAttachment = false,
 		maxAttachmentSize,
 		successMessage = $bindable('')
@@ -60,14 +62,18 @@
 		applyAction: false,
 
 		onSubmit: async ({ jsonData, cancel }) => {
-			const hasText = !!responseText.trim();
+			const hasText = allowText && !!responseText.trim();
 			const hasFile = !!fileContent && !!fileMeta;
 
 			if (!hasText && !hasFile) {
 				$message = {
 					status: 'error',
 					title: 'Error',
-					description: 'Please enter your response or attach a file.'
+					description: !allowText
+						? 'Please attach a file.'
+						: !allowAttachment
+							? 'Please enter your response.'
+							: 'Please enter your response or attach a file.'
 				};
 				cancel();
 				return;
@@ -160,20 +166,22 @@
 
 <FormWrapper message={$message}>
 	<form method="POST" use:enhance class="space-y-6">
-		<Form.Field form={sForm} name="encryptedResponseContent">
-			<Textarea
-				bind:value={responseText}
-				data-testid="input-response-content"
-				label={m.neat_shy_mole_type()}
-				placeholder={m.pale_soft_wren_hint()}
-				rows={3}
-			/>
-		</Form.Field>
+		{#if allowText}
+			<Form.Field form={sForm} name="encryptedResponseContent">
+				<Textarea
+					bind:value={responseText}
+					data-testid="input-response-content"
+					label={m.neat_shy_mole_type()}
+					placeholder={m.pale_soft_wren_hint()}
+					rows={3}
+				/>
+			</Form.Field>
+		{/if}
 
 		{#if allowAttachment && signingKeyPair}
 			<div>
 				<div class="mb-1 text-sm leading-none font-medium">
-					{m.flat_warm_resp_attachments_label()}
+					{m.flat_warm_resp_attachments_heading()}
 				</div>
 				<div class="min-h-32 py-2">
 					<SecretFileUpload

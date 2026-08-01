@@ -140,8 +140,8 @@ test('Create a secret request that allows an attachment', async () => {
 	await expect(page.getByTestId('input-request-note')).toBeVisible({ timeout: 15000 });
 	await page.getByTestId('input-request-note').fill(attachmentNoteText);
 
-	// Enable file attachments for this request
-	await page.getByTestId('input-allow-attachment').click();
+	// Allow both a text response and file attachments for this request
+	await page.getByTestId('segment-both').click();
 
 	await expect(page.getByTestId('submit-request')).toBeEnabled({ timeout: 10000 });
 	const responsePromise = page.waitForResponse((r) => r.url().includes('?/postSecretRequest'));
@@ -211,4 +211,27 @@ test('Requester can view and download the attachment', async () => {
 	await page.getByTestId('download-attachment').click();
 	const download = await downloadPromise;
 	expect(download.suggestedFilename()).toMatch(/\.html$/);
+});
+
+test('A files-only request hides the text field on the response page', async () => {
+	await page.goto('/account/requests');
+	await page.waitForURL('**/account/requests', { timeout: 15000 });
+	await page.waitForLoadState('networkidle');
+
+	await expect(page.getByTestId('input-request-note')).toBeVisible({ timeout: 15000 });
+	await page.getByTestId('segment-files').click();
+
+	await expect(page.getByTestId('submit-request')).toBeEnabled({ timeout: 10000 });
+	const responsePromise = page.waitForResponse((r) => r.url().includes('?/postSecretRequest'));
+	await page.getByTestId('submit-request').click();
+	await responsePromise;
+
+	await expect(page.getByTestId('request-link')).toBeVisible({ timeout: 15000 });
+	const filesOnlyLink = (await page.getByTestId('request-link').textContent())?.trim() ?? '';
+
+	await page.goto(filesOnlyLink);
+	await page.waitForLoadState('networkidle');
+
+	await expect(page.locator("input[type='file']")).toBeAttached({ timeout: 10000 });
+	await expect(page.getByTestId('input-response-content')).toHaveCount(0);
 });

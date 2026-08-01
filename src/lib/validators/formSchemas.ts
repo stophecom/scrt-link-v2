@@ -352,31 +352,37 @@ export const passwordChangeWithEncryptionFormSchema = () =>
 	});
 
 export const secretRequestFormSchema = () =>
-	z.object({
-		requestIdHash: z.string().length(64), // SHA-256 hash
-		publicKey: z.string().min(100).max(600), // RSA-2048 public JWK JSON is ~426 chars
-		encryptedPrivateKey: z.string().min(100).max(2500), // IV + AES-GCM(RSA-2048 private JWK) base64 is ~2256 chars
-		encryptedNote: z.string().max(10_000).optional(),
-		encryptedNoteForOwner: z.string().max(10_000).optional(),
-		allowAttachment: z.boolean().default(false),
-		expiresIn: z
-			.union(
-				[
-					z.literal(expiresInOptionsValues[0]),
-					z.literal(expiresInOptionsValues[1]),
-					...expiresInOptionsValues.slice(2).map((item) => z.literal(item))
-				],
-				{
-					error: (error) => {
-						if (error.code === 'invalid_union') {
-							return `Valid options are: ${expiresInOptionsValues.join(', ')}`;
+	z
+		.object({
+			requestIdHash: z.string().length(64), // SHA-256 hash
+			publicKey: z.string().min(100).max(600), // RSA-2048 public JWK JSON is ~426 chars
+			encryptedPrivateKey: z.string().min(100).max(2500), // IV + AES-GCM(RSA-2048 private JWK) base64 is ~2256 chars
+			encryptedNote: z.string().max(10_000).optional(),
+			encryptedNoteForOwner: z.string().max(10_000).optional(),
+			allowText: z.boolean().default(true),
+			allowAttachment: z.boolean().default(false),
+			expiresIn: z
+				.union(
+					[
+						z.literal(expiresInOptionsValues[0]),
+						z.literal(expiresInOptionsValues[1]),
+						...expiresInOptionsValues.slice(2).map((item) => z.literal(item))
+					],
+					{
+						error: (error) => {
+							if (error.code === 'invalid_union') {
+								return `Valid options are: ${expiresInOptionsValues.join(', ')}`;
+							}
+							return error.message ?? 'Unknown validation error.';
 						}
-						return error.message ?? 'Unknown validation error.';
 					}
-				}
-			)
-			.default(defaultExpiresInValue)
-	});
+				)
+				.default(defaultExpiresInValue)
+		})
+		.refine((data) => data.allowText || data.allowAttachment, {
+			message: 'Choose what the recipient is allowed to send.',
+			path: ['allowText']
+		});
 
 export const secretResponseFormSchema = () =>
 	z

@@ -245,6 +245,8 @@ export const secretRequest = pgTable(
 		encryptedNoteForOwner: text('encrypted_note_for_owner'),
 		// User-friendly tracking identifier
 		receiptId: text('receipt_id'),
+		// Whether the responder is allowed to write a text message
+		allowText: boolean('allow_text').notNull().default(true),
 		// Whether the responder is allowed to attach a file
 		allowAttachment: boolean('allow_attachment').notNull().default(false),
 		// Response fields (nullable — filled when someone responds)
