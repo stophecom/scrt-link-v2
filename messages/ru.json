@@ -802,7 +802,7 @@
 	"bold_true_ram_send": "Отправить зашифрованный ответ",
 	"proud_glad_bear_cheer": "Ответ отправлен!",
 	"calm_safe_seal_rest": "Ваш ответ был безопасно зашифрован и отправлен. Только отправитель запроса может его расшифровать.",
-	"warm_clear_jay_speak": "Сообщение от {name} <{email}>",
+	"warm_clear_jay_speak": "Запрос от {name} <{email}>",
 	"green_round_duck_trust": "Проверенный адрес электронной почты. Отвечайте только тем людям, которым доверяете.",
 	"maroon_heavy_lemur_emerge": "Разблокировать шифрование",
 	"ornate_fluffy_ox_explore": "Теперь вы можете закрыть вкладку.",

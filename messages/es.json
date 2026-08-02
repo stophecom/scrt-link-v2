@@ -802,7 +802,7 @@
 	"bold_true_ram_send": "Enviar respuesta cifrada",
 	"proud_glad_bear_cheer": "¡Respuesta enviada!",
 	"calm_safe_seal_rest": "Su respuesta ha sido cifrada y enviada de forma segura. Solo el solicitante puede descifrarla.",
-	"warm_clear_jay_speak": "Mensaje de {name} <{email}>",
+	"warm_clear_jay_speak": "Solicitud de {name} <{email}>",
 	"green_round_duck_trust": "Dirección de correo electrónico verificada. Responda solo a personas en las que confíe.",
 	"maroon_heavy_lemur_emerge": "Desbloquear cifrado",
 	"ornate_fluffy_ox_explore": "Ya puedes cerrar la pestaña.",

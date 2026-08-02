@@ -802,7 +802,7 @@
 	"bold_true_ram_send": "Verschlüsselte Antwort senden",
 	"proud_glad_bear_cheer": "Antwort übermittelt!",
 	"calm_safe_seal_rest": "Die Antwort wurde sicher verschlüsselt und übermittelt. Nur der Anfragende kann sie entschlüsseln.",
-	"warm_clear_jay_speak": "Nachricht von {name} <{email}>",
+	"warm_clear_jay_speak": "Anfrage von {name} <{email}>",
 	"green_round_duck_trust": "Verifizierte E-Mail-Adresse. Bitte nur vertrauenswürdigen Personen antworten.",
 	"maroon_heavy_lemur_emerge": "Verschlüsselung entsperren",
 	"ornate_fluffy_ox_explore": "Der Tab kann jetzt geschlossen werden.",
