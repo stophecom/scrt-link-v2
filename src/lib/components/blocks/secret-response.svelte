@@ -75,7 +75,7 @@
 {:else}
 	<Card class="mb-6">
 		<div class="bg-muted mb-6 rounded-lg p-4">
-			<p class="text-muted-foreground mb-1 flex items-center gap-1.5 text-sm font-medium">
+			<p class="text-muted-foreground flex items-center gap-1.5 text-sm font-medium">
 				{m.warm_clear_jay_speak({ name: data.requesterName || '', email: data.requesterEmail })}
 				{#if data.requesterEmailVerified}
 					<Tooltip.Root>

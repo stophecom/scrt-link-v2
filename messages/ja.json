@@ -802,7 +802,7 @@
 	"bold_true_ram_send": "暗号化された回答を送信",
 	"proud_glad_bear_cheer": "回答を送信しました！",
 	"calm_safe_seal_rest": "あなたの回答は安全に暗号化され、送信されました。",
-	"warm_clear_jay_speak": "{name} <{email}> からのメッセージ",
+	"warm_clear_jay_speak": "{name} <{email}> からのリクエスト",
 	"green_round_duck_trust": "確認済みのメールアドレス。信頼できる相手にのみ回答してください。",
 	"maroon_heavy_lemur_emerge": "暗号化をアンロック",
 	"ornate_fluffy_ox_explore": "タブを閉じても問題ありません。",

@@ -802,7 +802,7 @@
 	"bold_true_ram_send": "提交加密回复",
 	"proud_glad_bear_cheer": "回复已提交！",
 	"calm_safe_seal_rest": "您的回复已安全加密并提交。只有请求者才能解密。",
-	"warm_clear_jay_speak": "来自 {name} <{email}> 的消息",
+	"warm_clear_jay_speak": "来自 {name} <{email}> 的请求",
 	"green_round_duck_trust": "已验证的电子邮件地址。只回复您信任的人。",
 	"maroon_heavy_lemur_emerge": "解锁加密",
 	"ornate_fluffy_ox_explore": "您现在可以关闭此标签页了。",
