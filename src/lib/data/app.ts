@@ -27,6 +27,7 @@ export const firefoxExtensionUrl =
 export const edgeExtensionUrl =
 	'https://microsoftedge.microsoft.com/addons/detail/scrtlink-%E2%80%94-share-a-secre/eaehlboohgmeoflgdnkeigdogefihlbj';
 export const blueskyUrl = 'https://bsky.app/profile/scrt.link';
+export const xUrl = 'https://x.com/scrt_link';
 export const linkedinUrl = 'https://www.linkedin.com/company/santihans';
 export const santihansUrl = 'https://www.santihans.com';
 
