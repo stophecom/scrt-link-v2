@@ -802,7 +802,7 @@
 	"bold_true_ram_send": "Soumettre la réponse chiffrée",
 	"proud_glad_bear_cheer": "Réponse soumise !",
 	"calm_safe_seal_rest": "Votre réponse a été chiffrée et soumise en toute sécurité. Seul le demandeur peut la déchiffrer.",
-	"warm_clear_jay_speak": "Message de {name} <{email}>",
+	"warm_clear_jay_speak": "Demande de {name} <{email}>",
 	"green_round_duck_trust": "Adresse e-mail vérifiée. Ne répondez qu'aux personnes en qui vous avez confiance.",
 	"maroon_heavy_lemur_emerge": "Déverrouiller le chiffrement",
 	"ornate_fluffy_ox_explore": "Vous pouvez fermer l'onglet maintenant.",
