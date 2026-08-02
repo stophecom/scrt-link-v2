@@ -8,14 +8,13 @@
 	import Container from '$lib/components/ui/container/container.svelte';
 	import Markdown from '$lib/components/ui/markdown';
 	import { Section } from '$lib/components/ui/section';
-	import { blueskyUrl, linkedinUrl, santihansUrl } from '$lib/data/app';
+	import { linkedinUrl, santihansUrl } from '$lib/data/app';
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	const companyLinks = [
 		{ label: 'santihans.com', href: santihansUrl },
-		{ label: 'LinkedIn', href: linkedinUrl },
-		{ label: 'Bluesky', href: blueskyUrl }
+		{ label: 'LinkedIn', href: linkedinUrl }
 	];
 </script>
 
