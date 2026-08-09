@@ -145,6 +145,7 @@ export const getOrganizationSizes = async () => {
 		.select({
 			orgId: organization.id,
 			name: organization.name,
+			tier: organization.subscriptionTier,
 			memberCount: count(membership.userId),
 			totalSecrets: sql<number>`coalesce(sum(${stats.totalSecrets}), 0)`,
 			totalSecretRequests: sql<number>`coalesce(sum(${stats.totalSecretRequests}), 0)`
@@ -152,7 +153,7 @@ export const getOrganizationSizes = async () => {
 		.from(organization)
 		.innerJoin(membership, eq(membership.organizationId, organization.id))
 		.leftJoin(stats, sql`${stats.userId} = ${membership.userId} AND ${stats.scope} = 'user'`)
-		.groupBy(organization.id, organization.name)
+		.groupBy(organization.id, organization.name, organization.subscriptionTier)
 		.orderBy(sql`coalesce(sum(${stats.totalSecrets}), 0) DESC`);
 	return result;
 };
