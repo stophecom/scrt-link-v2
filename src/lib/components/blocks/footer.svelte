@@ -30,7 +30,7 @@
 				</div>
 			</div>
 
-			<div class="mb-4 grid w-full grid-cols-2 items-start gap-4 pt-1 md:flex md:gap-14">
+			<div class="mb-4 grid w-full grid-cols-2 items-start gap-4 gap-y-6 pt-1 md:flex md:gap-14">
 				<FooterMenu title={m.funny_swift_jay_promise()} menu={secretMenu()} />
 				<FooterMenu title={m.integrations_nav_label()} menu={integrationsMenu()} />
 				<FooterMenu title={m.tiny_suave_nils_accept()} menu={productMenu()} />

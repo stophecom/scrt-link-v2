@@ -3,6 +3,7 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Table from '$lib/components/ui/table';
+	import { TierOptions } from '$lib/data/enums';
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import type { PageData } from './$types';
@@ -12,6 +13,55 @@
 	const formatPercent = (value: number) => `${(value * 100).toFixed(1)}%`;
 	const formatDate = (date: Date) =>
 		new Intl.DateTimeFormat('en', { dateStyle: 'medium' }).format(new Date(date));
+
+	// Organizations table sorting
+	type Organization = PageData['organizationSizes'][number];
+	type OrganizationSortKey =
+		| 'name'
+		| 'tier'
+		| 'memberCount'
+		| 'totalSecrets'
+		| 'totalSecretRequests';
+
+	const tierOrder: (TierOptions | null)[] = [null, ...Object.values(TierOptions)];
+	const organizationColumns: { key: OrganizationSortKey; label: string; numeric: boolean }[] = [
+		{ key: 'name', label: 'Name', numeric: false },
+		{ key: 'tier', label: 'Tier', numeric: false },
+		{ key: 'memberCount', label: 'Members', numeric: true },
+		{ key: 'totalSecrets', label: 'Secrets', numeric: true },
+		{ key: 'totalSecretRequests', label: 'Secret Requests', numeric: true }
+	];
+
+	let organizationSortKey = $state<OrganizationSortKey>('totalSecrets');
+	let organizationSortAscending = $state(false);
+
+	const compareOrganizations = (a: Organization, b: Organization, key: OrganizationSortKey) => {
+		switch (key) {
+			case 'name':
+				return a.name.localeCompare(b.name);
+			case 'tier':
+				return tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier);
+			default:
+				return Number(a[key]) - Number(b[key]);
+		}
+	};
+
+	const sortedOrganizations = $derived(
+		[...data.organizationSizes].sort(
+			(a, b) =>
+				(organizationSortAscending ? 1 : -1) * compareOrganizations(a, b, organizationSortKey)
+		)
+	);
+
+	const sortOrganizationsBy = (key: OrganizationSortKey) => {
+		if (key === organizationSortKey) {
+			organizationSortAscending = !organizationSortAscending;
+			return;
+		}
+		organizationSortKey = key;
+		// Names read best A→Z, everything else most-first.
+		organizationSortAscending = key === 'name';
+	};
 </script>
 
 <!-- KPI Cards -->
@@ -253,16 +303,38 @@
 		<Table.Root>
 			<Table.Header>
 				<Table.Row>
-					<Table.Head>Name</Table.Head>
-					<Table.Head class="text-right">Members</Table.Head>
-					<Table.Head class="text-right">Secrets</Table.Head>
-					<Table.Head class="text-right">Secret Requests</Table.Head>
+					{#each organizationColumns as column (column.key)}
+						<Table.Head
+							class={column.numeric ? 'text-right' : ''}
+							aria-sort={organizationSortKey === column.key
+								? organizationSortAscending
+									? 'ascending'
+									: 'descending'
+								: 'none'}
+						>
+							<button
+								type="button"
+								class="hover:text-foreground inline-flex items-center gap-1 {column.numeric
+									? 'flex-row-reverse'
+									: ''}"
+								onclick={() => sortOrganizationsBy(column.key)}
+							>
+								{column.label}
+								<span class="text-muted-foreground text-xs">
+									{#if organizationSortKey === column.key}
+										{organizationSortAscending ? '↑' : '↓'}
+									{/if}
+								</span>
+							</button>
+						</Table.Head>
+					{/each}
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#each data.organizationSizes as org, i (i)}
+				{#each sortedOrganizations as org (org.orgId)}
 					<Table.Row>
 						<Table.Cell>{org.name}</Table.Cell>
+						<Table.Cell>{org.tier ?? '—'}</Table.Cell>
 						<Table.Cell class="text-right">{org.memberCount}</Table.Cell>
 						<Table.Cell class="text-right">{org.totalSecrets}</Table.Cell>
 						<Table.Cell class="text-right">{org.totalSecretRequests}</Table.Cell>
