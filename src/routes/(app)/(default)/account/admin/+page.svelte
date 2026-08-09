@@ -333,7 +333,12 @@
 			<Table.Body>
 				{#each sortedOrganizations as org (org.orgId)}
 					<Table.Row>
-						<Table.Cell>{org.name}</Table.Cell>
+						<Table.Cell>
+							{org.name}
+							{#if org.customDomain}
+								<span class="text-success block text-xs">{org.customDomain}</span>
+							{/if}
+						</Table.Cell>
 						<Table.Cell>{org.tier ?? '—'}</Table.Cell>
 						<Table.Cell class="text-right">{org.memberCount}</Table.Cell>
 						<Table.Cell class="text-right">{org.totalSecrets}</Table.Cell>
