@@ -44,7 +44,7 @@
 		"@tailwindcss/postcss": "^4.0.0",
 		"@types/grecaptcha": "^3.0.9",
 		"@types/node": "^25.5.2",
-		"@vitest/browser": "^3.2.6",
+		"@vitest/browser": "^3.2.7",
 		"bits-ui": "^2.17.2",
 		"clsx": "^2.1.1",
 		"drizzle-kit": "^0.31.9",
