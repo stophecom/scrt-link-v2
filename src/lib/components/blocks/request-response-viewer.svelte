@@ -100,7 +100,23 @@
 		}
 	};
 
+	// The response is only marked as viewed once the owner actually opens this page.
+	// (Doing this in the server `load` would mark it as viewed on link preloading.)
+	const markViewed = async () => {
+		try {
+			await fetch('?/markViewed', {
+				method: 'POST',
+				headers: { 'x-sveltekit-action': 'true' },
+				body: new FormData()
+			});
+		} catch (e) {
+			console.error('Failed to mark request as viewed:', e);
+		}
+	};
+
 	onMount(() => {
+		markViewed();
+
 		if (isKeyUnlocked()) {
 			decrypt();
 		}
