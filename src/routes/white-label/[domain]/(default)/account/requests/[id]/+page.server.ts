@@ -37,10 +37,6 @@ export const load: PageServerLoad = async (event) => {
 		error(400, 'No response has been submitted yet.');
 	}
 
-	if (!request.viewedAt) {
-		await markRequestViewed(request.id, user.id);
-	}
-
 	return {
 		request: {
 			id: request.id,
@@ -58,6 +54,25 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
+	// See the non-white-label route: marking as viewed in `load` would be triggered by
+	// link preloading (hover) instead of by the user opening the response.
+	markViewed: async (event) => {
+		assertFeatureEnabled(event);
+
+		const user = event.locals.user;
+		if (!user) {
+			return fail(401, { error: 'Unauthorized' });
+		}
+
+		if (!event.params.id) {
+			return fail(400, { error: 'Missing request ID' });
+		}
+
+		await markRequestViewed(event.params.id, user.id);
+
+		return { success: true };
+	},
+
 	deleteRequest: async (event) => {
 		assertFeatureEnabled(event);
 

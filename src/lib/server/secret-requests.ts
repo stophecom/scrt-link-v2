@@ -182,11 +182,19 @@ export const getRequestById = async (requestId: string, userId: string) => {
 	return result ?? null;
 };
 
+// Only sets `viewedAt` once, so the timestamp reflects the first time the owner
+// opened the response.
 export const markRequestViewed = async (requestId: string, userId: string) => {
 	await db
 		.update(secretRequest)
 		.set({ viewedAt: new Date() })
-		.where(and(eq(secretRequest.id, requestId), eq(secretRequest.userId, userId)));
+		.where(
+			and(
+				eq(secretRequest.id, requestId),
+				eq(secretRequest.userId, userId),
+				isNull(secretRequest.viewedAt)
+			)
+		);
 };
 
 export const fetchUserRequests = async (userId: string) => {

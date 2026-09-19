@@ -29,11 +29,6 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 		error(400, 'No response has been submitted yet.');
 	}
 
-	// Mark as viewed
-	if (!request.viewedAt) {
-		await markRequestViewed(request.id, user.id);
-	}
-
 	return {
 		request: {
 			id: request.id,
@@ -51,6 +46,24 @@ export const load: PageServerLoad = async ({ locals, params }) => {
 };
 
 export const actions: Actions = {
+	// Marking a request as viewed must not happen in `load`: a GET can be triggered by
+	// link preloading (hover), which would mark a response as viewed without the user
+	// ever opening it. The client calls this action once the response page is open.
+	markViewed: async ({ locals, params }) => {
+		const user = locals.user;
+		if (!user) {
+			return fail(401, { error: 'Unauthorized' });
+		}
+
+		if (!params.id) {
+			return fail(400, { error: 'Missing request ID' });
+		}
+
+		await markRequestViewed(params.id, user.id);
+
+		return { success: true };
+	},
+
 	deleteRequest: async ({ locals, params }) => {
 		const user = locals.user;
 		if (!user) {

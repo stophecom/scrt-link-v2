@@ -188,6 +188,7 @@
 										variant="outline"
 										href={localizeHref(`/account/requests/${request.id}`)}
 										data-testid="view-response"
+										data-sveltekit-preload-data="off"
 									>
 										<Eye class="mr-1.5 h-3.5 w-3.5" />
 										{m.keen_bright_fox_peek()}
