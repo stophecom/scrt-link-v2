@@ -123,6 +123,24 @@ test('Requests list shows unread item with matching receipt ID', async () => {
 	expect(found).toBe(true);
 });
 
+test('Hovering a request does not mark it as viewed', async () => {
+	// Regression: link preloading on hover used to trigger the server load of the
+	// response page, which marked the request as viewed without the owner opening it.
+	const row = page
+		.getByTestId('request-receipt-id')
+		.filter({ hasText: receiptId })
+		.locator('xpath=ancestor::tr');
+
+	await row.getByTestId('view-response').hover();
+	await row.getByTestId('request-status').hover();
+	await page.waitForTimeout(1000);
+
+	await page.reload();
+	await page.waitForLoadState('networkidle');
+
+	await expect(row.getByTestId('request-status-label')).toContainText('Unread');
+});
+
 test('View response and verify decrypted content', async () => {
 	// Click the first "View" button (most recent request)
 	await page.getByTestId('view-response').first().click();
@@ -130,6 +148,16 @@ test('View response and verify decrypted content', async () => {
 	// Wait for decryption and verify the response content
 	await expect(page.getByTestId('decrypted-response')).toBeVisible({ timeout: 15000 });
 	await expect(page.getByTestId('decrypted-response')).toContainText(responseText);
+
+	// Opening the response marks it as viewed.
+	await page.goto('/account/requests');
+	await page.waitForLoadState('networkidle');
+
+	const row = page
+		.getByTestId('request-receipt-id')
+		.filter({ hasText: receiptId })
+		.locator('xpath=ancestor::tr');
+	await expect(row.getByTestId('request-status-label')).toContainText('Viewed');
 });
 
 test('Create a secret request that allows an attachment', async () => {
