@@ -7,7 +7,10 @@ jobs:
   run-e2e-published:
     name: Run end-to-end tests on published site
     if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to 26.04, which Playwright 1.60 cannot install
+    # browsers on ("Playwright does not support chromium on ubuntu26.04-x64").
+    # Unpin once @playwright/test is bumped to a release that supports it.
+    runs-on: ubuntu-24.04
     # Without this, a hung `playwright install` (a known CDN-stall failure mode)
     # squats on the runner until GitHub's 6h max-job-time kills it.
     timeout-minutes: 20
