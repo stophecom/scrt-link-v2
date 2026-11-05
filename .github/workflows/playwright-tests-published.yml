@@ -22,16 +22,20 @@ jobs:
       - uses: pnpm/action-setup@v6
       - name: Install dependencies
         run: pnpm install
-      - name: Cache Playwright browsers
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+      # No browser cache here on purpose: actions/cache cannot run on
+      # deployment_status ("the event type deployment_status is not supported
+      # because it's not tied to a branch or tag ref"), so the step only ever
+      # logged a warning and never restored or saved anything.
       - name: Install Playwright browser
+        # Without --with-deps: the ubuntu-24.04 image already ships every library
+        # Playwright needs (apt reported them all "already the newest version").
+        # All --with-deps added was ~21 MB of optional fonts from
+        # azure.archive.ubuntu.com, whose downloads regularly crawl -- that is
+        # what blew this timeout, not the browser download.
         # Bound the flaky browser download so a stall fails fast and is retryable.
         # Only chromium is needed (playwright.config.ts specifies no other browser).
         timeout-minutes: 8
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
       - name: Run tests on preview PR
         if: github.event.deployment_status.environment != 'Production'
         run: xvfb-run npx playwright test

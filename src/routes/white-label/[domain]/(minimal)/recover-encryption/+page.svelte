@@ -6,4 +6,9 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<RecoverEncryptionPage form={data.form} hasRecoveryKey={data.hasRecoveryKey} />
+<RecoverEncryptionPage
+	form={data.form}
+	resetForm={data.resetForm}
+	hasRecoveryKey={data.hasRecoveryKey}
+	secretRequestCount={data.secretRequestCount}
+/>
