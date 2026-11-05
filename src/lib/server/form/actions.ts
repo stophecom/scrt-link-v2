@@ -26,6 +26,7 @@ import {
 	invite,
 	membership,
 	organization,
+	secretRequest,
 	user as userSchema,
 	userEncryptionKey,
 	userSettings,
@@ -48,6 +49,7 @@ import {
 	passwordFormSchema,
 	recoverySetupFormSchema,
 	recoveryVerifyFormSchema,
+	resetEncryptionSchema,
 	secretFormSchema,
 	secretRequestFormSchema,
 	secretResponseFormSchema,
@@ -65,6 +67,7 @@ import {
 	consumeVerificationCookie,
 	deleteEmailVerificationCookie,
 	deleteNeedsRecoveryCookie,
+	hasNeedsRecoveryCookie,
 	PASSWORD_VERIFIED_COOKIE,
 	RECOVERY_VERIFIED_COOKIE,
 	setEmailVerificationCookie,
@@ -2151,6 +2154,72 @@ export const verifyRecoveryKey: Action = async (event) => {
 		console.error('[verifyRecoveryKey] Unexpected error:', e);
 		error(500, 'Failed to verify recovery key.');
 	}
+};
+
+/**
+ * Escape hatch for a user who reaches the recovery flow with neither their
+ * password nor their recovery key. Their Master Key is unrecoverable, so we
+ * discard it along with the only data wrapped under it (secret requests) and
+ * drop the account back to the un-encrypted state. The mandatory-encryption
+ * guard then walks them through /set-password -> /encryption, where a fresh
+ * Master Key and a fresh recovery key are generated.
+ *
+ * Deliberately a server-side transaction: the client has nothing left to
+ * contribute here, and letting it drive the write is how an account ends up
+ * with a new password hash still pointing at a key store wrapped under the
+ * old PDK.
+ */
+export const resetEncryption: Action = async (event) => {
+	const user = event.locals.user;
+	if (!user) {
+		return redirectLocalized(307, '/login');
+	}
+
+	const form = await superValidate(event.request, zod4(resetEncryptionSchema()));
+
+	if (await isRateLimited(event)) return message(form, rateLimitErrorMessage(), { status: 429 });
+
+	if (!form.valid) {
+		return fail(400, { form });
+	}
+
+	// Only reachable from the password-reset recovery flow. The cookie is set
+	// right after the email OTP succeeded, so it proves the caller just
+	// demonstrated control of the account's inbox.
+	if (!hasNeedsRecoveryCookie(event, user.id)) {
+		return message(
+			form,
+			{
+				status: 'error',
+				title: m.weak_quaint_lamb_fry(),
+				description: m.sad_jolly_marten_fade()
+			},
+			{ status: 403 }
+		);
+	}
+
+	try {
+		await db.transaction(async (tx) => {
+			// Secret requests hold the RSA private key wrapped with the Master Key.
+			// Without the MK they are permanently undecryptable, so they go with it.
+			await tx.delete(secretRequest).where(eq(secretRequest.userId, user.id));
+			await tx.delete(userEncryptionKey).where(eq(userEncryptionKey.userId, user.id));
+			await tx
+				.update(userSchema)
+				.set({ encryptionEnabled: false })
+				.where(eq(userSchema.id, user.id));
+		});
+	} catch (e) {
+		console.error('[resetEncryption] Unexpected error:', e);
+		error(500, 'Failed to reset encryption.');
+	}
+
+	// Release the recovery guard. The user still has no password, but the
+	// account is now un-encrypted, so setPassword's no-encryption branch
+	// accepts a new one and /encryption re-enrolls them afterwards.
+	deleteNeedsRecoveryCookie(event);
+
+	return redirectLocalized(303, '/set-password');
 };
 
 // --- Secret Requests ---

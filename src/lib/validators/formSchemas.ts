@@ -336,6 +336,16 @@ export const recoveryVerifyFormSchema = () =>
 		recoveryKeyHash: z.string().length(64)
 	});
 
+// Last-resort escape hatch from the recovery flow: the user has neither their
+// password nor their recovery key, so the master key is gone for good and the
+// only way forward is to discard it and start over.
+export const resetEncryptionSchema = () =>
+	z.object({
+		confirm: z.boolean().refine((val) => val === true, {
+			message: m.gross_glad_marlin_cure()
+		})
+	});
+
 export const passwordChangeWithEncryptionFormSchema = () =>
 	z.object({
 		currentPassword: z
@@ -412,6 +422,7 @@ export type ChangeEmailRequestFormSchema = z.infer<ReturnType<typeof changeEmail
 export type ChangeEmailConfirmFormSchema = z.infer<ReturnType<typeof changeEmailConfirmFormSchema>>;
 export type UpdateBillingOwnerSchema = z.infer<ReturnType<typeof updateBillingOwnerSchema>>;
 export type DeleteAccountSchema = ReturnType<typeof deleteAccountSchema>;
+export type ResetEncryptionSchema = ReturnType<typeof resetEncryptionSchema>;
 export type DeleteOrganizationSchema = ReturnType<typeof deleteOrganizationSchema>;
 export type SecretFormSchema = z.infer<ReturnType<typeof secretFormSchema>>;
 export type UserFormSchema = z.infer<ReturnType<typeof userFormSchema>>;
