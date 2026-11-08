@@ -1,4 +1,4 @@
-import { type Actions, error, fail, redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { type Stripe } from 'stripe';
 
 import { getBaseUrl } from '$lib/constants';
@@ -14,6 +14,7 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 	const stripeCustomerId = locals.user?.stripeCustomerId;
 
 	let subscription: Stripe.Subscription | null = null;
+	let stripePortalUrl: string | null = null;
 	let orgSubscription: Stripe.Subscription | null = null;
 	let plans: Plan[] | null = null;
 	let orgId: string | null = null;
@@ -28,6 +29,13 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 
 		if (stripeCustomerId) {
 			subscription = await getActiveSubscription(stripeCustomerId);
+
+			if (subscription) {
+				({ url: stripePortalUrl } = await getStripePortalUrl(
+					stripeCustomerId,
+					getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing')
+				));
+			}
 		}
 
 		if (locals.user) {
@@ -49,25 +57,13 @@ export const load: PageServerLoad = async ({ fetch, locals }) => {
 		error(404, `Pricing page currently not available.`);
 	}
 
-	return { plans, subscription, orgSubscription, orgId, orgName, isPersistentHeader: true };
-};
-
-export const actions: Actions = {
-	manageSubscriptionOnStripe: async (event) => {
-		const stripeCustomerId = event.locals.user?.stripeCustomerId;
-		if (!stripeCustomerId) {
-			return fail(401);
-		}
-
-		const { url } = await getStripePortalUrl(
-			stripeCustomerId,
-			`${getAbsoluteLocalizedUrl(getBaseUrl(), '/pricing')}`
-		);
-
-		if (!url) {
-			return fail(401);
-		}
-
-		return redirect(303, url);
-	}
+	return {
+		plans,
+		subscription,
+		stripePortalUrl,
+		orgSubscription,
+		orgId,
+		orgName,
+		isPersistentHeader: true
+	};
 };

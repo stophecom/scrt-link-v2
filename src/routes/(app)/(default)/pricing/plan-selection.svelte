@@ -30,6 +30,7 @@
 		plans: Plan[];
 		user: LayoutServerData['user'];
 		subscription: Stripe.Subscription | null;
+		stripePortalUrl: string | null;
 		orgSubscription: Stripe.Subscription | null;
 		orgId: string | null;
 		orgName: string | null;
@@ -39,6 +40,7 @@
 		plans,
 		user,
 		subscription,
+		stripePortalUrl,
 		orgSubscription,
 		orgId,
 		orgName,
@@ -142,9 +144,11 @@
 {#snippet subscriptionInfo(variant: Variant, title: string, description: string)}
 	<Alert {variant} {title} class="mb-10 text-pretty">
 		{description}
-		<form class="mt-2 block" method="post" action="?/manageSubscriptionOnStripe">
-			<Button variant="link" type="submit">{m.polite_super_antelope_lock()}</Button>
-		</form>
+		{#if stripePortalUrl}
+			<Button class="mt-2 block" variant="link" href={stripePortalUrl}>
+				{m.polite_super_antelope_lock()}
+			</Button>
+		{/if}
 	</Alert>
 {/snippet}
 
