@@ -142,8 +142,15 @@ test('Hovering a request does not mark it as viewed', async () => {
 });
 
 test('View response and verify decrypted content', async () => {
-	// Click the first "View" button (most recent request)
-	await page.getByTestId('view-response').first().click();
+	// Open the response for this run's own request. Using `.first()` here raced with
+	// rows created by other runs against the shared preview database, which marked a
+	// different request as viewed and left this one "Unread".
+	await page
+		.getByTestId('request-receipt-id')
+		.filter({ hasText: receiptId })
+		.locator('xpath=ancestor::tr')
+		.getByTestId('view-response')
+		.click();
 
 	// Wait for decryption and verify the response content
 	await expect(page.getByTestId('decrypted-response')).toBeVisible({ timeout: 15000 });

@@ -51,6 +51,7 @@
 				plans={data.plans}
 				user={data.user}
 				subscription={data.subscription}
+				stripePortalUrl={data.stripePortalUrl}
 				orgSubscription={data.orgSubscription}
 				orgId={data.orgId}
 				orgName={data.orgName}
