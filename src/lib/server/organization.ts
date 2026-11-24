@@ -5,6 +5,7 @@ import { generateBase64Token } from '$lib/crypto';
 import { InviteStatus, MembershipRole, TierOptions } from '$lib/data/enums';
 import { DAY } from '$lib/data/units';
 
+import type { OwnedOrganizationState } from './account-deletion';
 import { db } from './db';
 import {
 	apiKey,
@@ -302,4 +303,37 @@ export const getMembersAndInvitesByOrganization = async (organizationId: Organiz
 	}
 
 	return Array.from(mergedMap.values());
+};
+
+/**
+ * Organizations where the given user holds the OWNER role, with head counts for
+ * owners and members. Feeds planOwnedOrganizationsForAccountDeletion.
+ */
+export const getOwnedOrganizationStates = async (
+	userId: User['id']
+): Promise<OwnedOrganizationState[]> => {
+	const ownedOrganizations = await db
+		.select({
+			id: organization.id,
+			name: organization.name,
+			stripeCustomerId: organization.stripeCustomerId
+		})
+		.from(membership)
+		.innerJoin(organization, eq(membership.organizationId, organization.id))
+		.where(and(eq(membership.userId, userId), eq(membership.role, MembershipRole.OWNER)));
+
+	return await Promise.all(
+		ownedOrganizations.map(async (org) => {
+			const memberships = await db
+				.select({ role: membership.role })
+				.from(membership)
+				.where(eq(membership.organizationId, org.id));
+
+			return {
+				...org,
+				ownerCount: memberships.filter((item) => item.role === MembershipRole.OWNER).length,
+				memberCount: memberships.length
+			};
+		})
+	);
 };

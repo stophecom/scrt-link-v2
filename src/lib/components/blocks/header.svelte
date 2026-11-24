@@ -17,6 +17,8 @@
 	import { localizeHref } from '$lib/paraglide/runtime';
 
 	import IntersectionObserver from '../helpers/intersection-observer.svelte';
+	import MainNav from './main-nav.svelte';
+	import MobileMenu from './mobile-menu.svelte';
 
 	type Props = {
 		user: App.Locals['user'];
@@ -107,6 +109,17 @@
 						{/if}
 					</a>
 
+					<div
+						class="hidden transition duration-150 ease-in-out lg:ms-4 lg:flex {intersecting &&
+						!persistHeader
+							? 'pointer-events-none translate-y-2 opacity-0'
+							: 'translate-y-0 opacity-100'}"
+					>
+						{#if !isMinimal && !user}
+							<MainNav />
+						{/if}
+					</div>
+
 					<div class="ml-auto grid grid-flow-col items-center gap-2">
 						{#if !isMinimal && user}
 							{#if tier === TierOptions.CONFIDENTIAL && !page.url.pathname.endsWith('/pricing')}
@@ -185,54 +198,14 @@
 							<Button variant="ghost" size="sm" href={localizeHref('/login')}>
 								{m.simple_dry_boar_dazzle()}
 							</Button>
-							<Button variant="outline" size="sm" href={localizeHref('/signup')}>
+							<Button variant="ghost" size="sm" href={localizeHref('/signup')}>
 								{m.large_smart_badger_beam()}
 							</Button>
 						{/if}
 
-						<!-- Hamburger menu (temporarily disabled)
-						{#if !isMinimal}
-							<DropdownMenu.Root>
-								<DropdownMenu.Trigger>
-									{#snippet child({ props })}
-										<Button {...props} variant="ghost" size="icon">
-											{#if props['data-state'] === 'open'}
-												<X class="h-5 w-5" />
-											{:else}
-												<Menu class="h-5 w-5" />
-											{/if}
-											<span class="sr-only">{m.plain_wise_crane_navigate()}</span>
-										</Button>
-									{/snippet}
-								</DropdownMenu.Trigger>
-								<DropdownMenu.Content
-									class="max-h-[calc(100vh-5rem)] w-72 overflow-y-auto sm:w-lg sm:p-6"
-									align="end"
-									sideOffset={-3}
-								>
-									<DropdownMenu.Arrow class="text-border" width={8} height={6} />
-
-									<div class="sm:grid sm:grid-cols-2 sm:gap-x-2">
-										{#each mainNav() as group, groupIndex (group.title)}
-											{#if groupIndex > 0}
-												<DropdownMenu.Separator class="sm:hidden" />
-											{/if}
-											<DropdownMenu.Group>
-												<DropdownMenu.Label>{group.title}</DropdownMenu.Label>
-												{#each group.items as item (item.href)}
-													<DropdownMenu.Item>
-														{#snippet child({ props })}
-															<a href={localizeHref(item.href)} {...props}>{item.label}</a>
-														{/snippet}
-													</DropdownMenu.Item>
-												{/each}
-											</DropdownMenu.Group>
-										{/each}
-									</div>
-								</DropdownMenu.Content>
-							</DropdownMenu.Root>
+						{#if !isMinimal && !user}
+							<MobileMenu />
 						{/if}
-						-->
 					</div>
 				</Container>
 			</div>
