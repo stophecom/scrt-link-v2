@@ -1,3 +1,4 @@
+import type { LucideIcon } from '@lucide/svelte';
 import {
 	ConciergeBell,
 	MessageCircleDashed,
@@ -11,7 +12,28 @@ import { m } from '$lib/paraglide/messages.js';
 
 import { chromeExtensionUrl, edgeExtensionUrl, firefoxExtensionUrl, githubUrl } from './app';
 
-export const secretMenu = () => [
+export type MenuItem = {
+	icon?: LucideIcon;
+	href: string;
+	label: string;
+	externalLink?: boolean;
+	badge?: string;
+};
+
+export type NavSection = {
+	title?: string;
+	items: MenuItem[];
+};
+
+export type NavGroup = {
+	title: string;
+	/** Top-level link. When set, the entry has no dropdown. */
+	href?: string;
+	/** Dropdown contents. A section title renders as a column heading. */
+	sections?: NavSection[];
+};
+
+export const secretMenu = (): MenuItem[] => [
 	{
 		icon: TypeOutline,
 		href: '/text',
@@ -45,7 +67,7 @@ export const secretMenu = () => [
 	}
 ];
 
-export const productMenu = () => [
+export const productMenu = (): MenuItem[] => [
 	{
 		href: '/pricing',
 		label: m.moving_quaint_buzzard_trip()
@@ -65,7 +87,7 @@ export const productMenu = () => [
 	}
 ];
 
-export const integrationsMenu = () => [
+export const integrationsMenu = (): MenuItem[] => [
 	{
 		href: '/api-documentation',
 		label: 'API Docs'
@@ -91,7 +113,7 @@ export const integrationsMenu = () => [
 	}
 ];
 
-export const companyMenu = () => [
+export const companyMenu = (): MenuItem[] => [
 	{
 		href: '/about',
 		label: m.polite_misty_jan_hint()
@@ -110,7 +132,7 @@ export const companyMenu = () => [
 	}
 ];
 
-export const helpMenu = () => [
+export const helpMenu = (): MenuItem[] => [
 	{
 		href: '/contact',
 		label: m.early_bright_salmon_comfort()
@@ -170,22 +192,34 @@ const dpa = (short?: boolean) => ({
 	label: short ? m.dpa_title_short() : m.dpa_title()
 });
 
-export const mainNav = () => [
+/**
+ * Main navigation. Secrets and Resources open a flyout; White-label and
+ * Pricing are top-level links.
+ */
+export const mainNav = (): NavGroup[] => [
 	{
-		title: m.integrations_nav_label(),
-		items: integrationsMenu()
+		title: m.funny_swift_jay_promise(),
+		sections: [{ items: secretMenu() }]
 	},
 	{
-		title: m.tiny_suave_nils_accept(),
-		items: productMenu()
+		// TODO: replace with an i18n key once it exists.
+		title: 'Resources',
+		sections: [
+			{ title: m.integrations_nav_label(), items: integrationsMenu() },
+			{
+				title: m.chunky_raw_osprey_dial(),
+				items: [...companyMenu(), { href: '/alternatives', label: m.alternatives_nav_label() }]
+			},
+			{ title: m.equal_away_frog_aim(), items: helpMenu() }
+		]
 	},
 	{
-		title: m.chunky_raw_osprey_dial(),
-		items: companyMenu().filter((item) => ['/about', '/blog', '/security'].includes(item.href))
+		title: m.bold_slim_ram_roam(),
+		href: '/business'
 	},
 	{
-		title: m.equal_away_frog_aim(),
-		items: helpMenu().filter((item) => ['/faq', '/contact'].includes(item.href))
+		title: m.moving_quaint_buzzard_trip(),
+		href: '/pricing'
 	}
 ];
 
